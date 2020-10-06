@@ -1,3 +1,42 @@
+const ringDie = [
+  {},
+  { opportunity: 1, strife: 1 },
+  { opportunity: 1 },
+  { success: 1, strife: 1 },
+  { success: 1 },
+  { explosion: 1, strife: 1 },
+];
+
+const skillDie = [
+  {},
+  {},
+  { opportunity: 1 },
+  { opportunity: 1 },
+  { opportunity: 1 },
+  { success: 1, strife: 1 },
+  { success: 1, strife: 1 },
+  { success: 1 },
+  { success: 1 },
+  { success: 1, opportunity: 1 },
+  { explosion: 1, strife: 1 },
+  { explosion: 1 },
+];
+
+const rollDice = (dice) => {
+  return dice[Math.floor(Math.random() * dice.length)];
+};
+
+const rollDices = ({ ring, skill }) => {
+  return [
+    ...[...Array(ring)].map(() => {
+      return { type: "ring", ...rollDice(ringDie) };
+    }),
+    ...[...Array(skill)].map(() => {
+      return { type: "skill", ...rollDice(skillDie) };
+    }),
+  ];
+};
+
 export const push = async (roll) => {
   // Will do an actual server call in real life
   // Fow now actually handle the whole logic there
@@ -5,7 +44,7 @@ export const push = async (roll) => {
 
   switch (roll.step) {
     case "intent":
-      return { ...roll, step: "roll" };
+      return { ...roll, unmodifiedRoll: rollDices(roll), step: "choice" };
     default:
       throw new Error(`Step ${roll.step} not implemented`);
   }
