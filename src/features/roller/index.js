@@ -14,7 +14,7 @@ export default () => {
 
   return (
     <div className={styles.layout}>
-      <Intent completed={step !== INTENT} onFinish={onFinish} />
+      <Intent completed={step !== INTENT} onFinish={onFinish} values={roll} />
     </div>
   );
 };

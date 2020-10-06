@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { push } from "./server";
 
+const initialState = {
+  step: "intent",
+  tn: 1,
+  ring: 1,
+  skill: 1,
+};
+
 const slice = createSlice({
   name: "roll",
-  initialState: {
-    step: "intent",
-  },
+  initialState,
   reducers: {
     localUpdate: (state, action) => {
       const { step } = action.payload;

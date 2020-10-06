@@ -12,15 +12,9 @@ const tailLayout = {
   wrapperCol: { span: 24 },
 };
 
-const initialValues = {
-  tn: 1,
-  ring: 1,
-  skill: 1,
-};
-
-export default ({ completed, onFinish }) => {
+export default ({ completed, onFinish, values }) => {
   return (
-    <Form {...layout} initialValues={initialValues} onFinish={onFinish}>
+    <Form {...layout} initialValues={values} onFinish={onFinish}>
       <Form.Item
         label="Description"
         name="description"
