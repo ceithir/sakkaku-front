@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.css";
+import Roller from "./features/roller";
 
 const App = () => {
-  return <strong>Ring</strong>;
+  return <Roller />;
 };
 
 export default App;
