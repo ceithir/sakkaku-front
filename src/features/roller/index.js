@@ -4,16 +4,15 @@ import Intent from "./Intent";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAll, create, softReset, keep } from "./reducer";
 import { Button } from "antd";
-import Dices from "./Dices";
 import Keep from "./Keep";
 import Kept from "./Kept";
+import Result from "./Result";
 
 const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const { rolledDices, keptDices } = roll;
-  const { keepSelection } = roll;
+  const { rolledDices, keptDices, keepSelection, tn } = roll;
   const completed = keptDices?.length;
 
   return (
@@ -32,7 +31,7 @@ const Roller = () => {
       {keptDices && (
         <>
           <Kept dices={rolledDices} selection={keepSelection} />
-          <Dices dices={keptDices} />
+          <Result dices={keptDices} tn={tn} />
         </>
       )}
       {completed && (
