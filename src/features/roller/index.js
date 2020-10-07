@@ -9,7 +9,7 @@ import Dices from "./Dices";
 const INTENT = "intent";
 const STEPS = [INTENT];
 
-export default () => {
+const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
@@ -30,3 +30,5 @@ export default () => {
     </div>
   );
 };
+
+export default Roller;

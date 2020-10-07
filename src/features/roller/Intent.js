@@ -12,7 +12,7 @@ const tailLayout = {
   wrapperCol: { span: 24 },
 };
 
-export default ({ completed, onFinish, values }) => {
+const Intent = ({ completed, onFinish, values }) => {
   return (
     <Form {...layout} initialValues={values} onFinish={onFinish}>
       <Form.Item
@@ -41,3 +41,5 @@ export default ({ completed, onFinish, values }) => {
     </Form>
   );
 };
+
+export default Intent;

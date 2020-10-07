@@ -72,7 +72,7 @@ const getText = ({ opportunity, strife, success, explosion }) => {
   );
 };
 
-export default ({ dices }) => {
+const Dices = ({ dices }) => {
   const listData = dices.map((dice, index) => {
     return {
       key: index.toString(),
@@ -98,3 +98,5 @@ export default ({ dices }) => {
     />
   );
 };
+
+export default Dices;
