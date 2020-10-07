@@ -46,13 +46,54 @@ export const create = async (roll) => {
 };
 
 export const keep = async (roll, toKeep) => {
-  const dices = roll.rerolledDices || roll.rolledDices;
+  const dices = roll.rolledDices;
+  const keptDices = dices.filter((_, index) => {
+    return toKeep.includes(index);
+  });
 
   return {
     ...roll,
     keepSelection: toKeep,
-    keptDices: dices.filter((_, index) => {
-      return toKeep.includes(index);
-    }),
+    keptDices,
+    unresolvedExplosions: keptDices.filter((dice) => dice.explosion),
+  };
+};
+
+export const explode = async (roll, index) => {
+  const currentExplosion = roll.unresolvedExplosions[index];
+  const explosionsLeft = roll.unresolvedExplosions.filter(
+    (_, i) => i !== index
+  );
+  const { type, explosion } = currentExplosion;
+
+  return {
+    ...roll,
+    unresolvedExplosions: explosionsLeft,
+    temporaryDices: [
+      ...(roll.temporaryDices || []),
+      ...[...Array(explosion)].map(() => {
+        return { type, ...rollDice(type === "skill" ? skillDie : ringDie) };
+      }),
+    ],
+  };
+};
+
+export const keepTemporary = async (roll, index) => {
+  const newDice = roll.temporaryDices[index];
+
+  return {
+    ...roll,
+    temporaryDices: roll.temporaryDices.filter((_, i) => i !== index),
+    keptDices: [...roll.keptDices, newDice],
+    unresolvedExplosions: newDice.explosion
+      ? [...roll.unresolvedExplosions, newDice]
+      : roll.unresolvedExplosions,
+  };
+};
+
+export const discardTemporary = async (roll, index) => {
+  return {
+    ...roll,
+    temporaryDices: roll.temporaryDices.filter((_, i) => i !== index),
   };
 };

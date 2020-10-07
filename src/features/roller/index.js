@@ -2,18 +2,39 @@ import React from "react";
 import styles from "./index.module.css";
 import Intent from "./Intent";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAll, create, softReset, keep } from "./reducer";
+import {
+  selectAll,
+  create,
+  softReset,
+  keep,
+  explodeDie,
+  keepTemporary,
+  discardTemporary,
+} from "./reducer";
 import { Button } from "antd";
 import Keep from "./Keep";
 import Kept from "./Kept";
 import Result from "./Result";
+import Explode from "./Explode";
+import KeptExplosions from "./KeptExplosions";
 
 const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const { rolledDices, keptDices, keepSelection, tn } = roll;
-  const completed = keptDices?.length;
+  const {
+    rolledDices,
+    keptDices,
+    keepSelection,
+    tn,
+    unresolvedExplosions,
+    temporaryDices,
+    ring,
+  } = roll;
+  const completed =
+    keptDices?.length &&
+    !unresolvedExplosions?.length &&
+    !temporaryDices?.length;
 
   return (
     <div className={styles.layout}>
@@ -31,11 +52,23 @@ const Roller = () => {
       {keptDices && (
         <>
           <Kept dices={rolledDices} selection={keepSelection} />
-          <Result dices={keptDices} tn={tn} />
+          {!completed && (
+            <Explode
+              unresolved={unresolvedExplosions}
+              temporary={temporaryDices}
+              roll={(data) => dispatch(explodeDie(roll, data))}
+              keep={(data) => dispatch(keepTemporary(roll, data))}
+              discard={(data) => dispatch(discardTemporary(roll, data))}
+            />
+          )}
+          <KeptExplosions keptDices={keptDices} ring={ring} />
         </>
       )}
       {completed && (
-        <Button onClick={() => dispatch(softReset())}>Reroll</Button>
+        <>
+          <Result dices={keptDices} tn={tn} />
+          <Button onClick={() => dispatch(softReset())}>Reroll</Button>
+        </>
       )}
     </div>
   );

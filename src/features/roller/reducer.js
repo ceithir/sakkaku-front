@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { create as createOnServer, keep as keepOnServer } from "./server";
+import {
+  create as createOnServer,
+  keep as keepOnServer,
+  explode as explodeOnServer,
+  keepTemporary as keepTemporaryOnServer,
+  discardTemporary as discardTemporaryOnServer,
+} from "./server";
 
 const initialState = {
   description: "Example",
@@ -21,6 +27,8 @@ const slice = createSlice({
         rolledDices,
         keptDices,
         keepSelection,
+        unresolvedExplosions,
+        temporaryDices,
       } = action.payload;
       state.description = description;
       state.tn = tn;
@@ -31,12 +39,16 @@ const slice = createSlice({
       state.keptDices = keptDices;
 
       state.keepSelection = keepSelection;
+      state.unresolvedExplosions = unresolvedExplosions;
+      state.temporaryDices = temporaryDices;
     },
     softReset: (state) => {
       state.rolledDices = undefined;
       state.keptDices = undefined;
 
       state.keepSelection = undefined;
+      state.unresolvedExplosions = undefined;
+      state.temporaryDices = undefined;
     },
   },
 });
@@ -52,6 +64,24 @@ export const create = (request) => (dispatch) => {
 
 export const keep = (roll, request) => (dispatch) => {
   keepOnServer(roll, request).then((response) => {
+    dispatch(set(response));
+  });
+};
+
+export const explodeDie = (roll, die) => (dispatch) => {
+  explodeOnServer(roll, die).then((response) => {
+    dispatch(set(response));
+  });
+};
+
+export const keepTemporary = (roll, index) => (dispatch) => {
+  keepTemporaryOnServer(roll, index).then((response) => {
+    dispatch(set(response));
+  });
+};
+
+export const discardTemporary = (roll, index) => (dispatch) => {
+  discardTemporaryOnServer(roll, index).then((response) => {
     dispatch(set(response));
   });
 };
