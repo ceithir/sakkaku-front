@@ -3,7 +3,7 @@ import styles from "./index.module.css";
 import Intent from "./Intent";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAll, create, softReset, keep, reroll } from "./reducer";
-import { Button } from "antd";
+import { Button, Card } from "antd";
 import Keep from "./Keep";
 import KeepExplosions from "./KeepExplosions";
 import Kept from "./Kept";
@@ -36,61 +36,68 @@ const Roller = () => {
 
   return (
     <div className={styles.layout}>
-      <Intent
-        completed={dicesRolled}
-        onFinish={(data) => dispatch(create({ ...roll, ...data }))}
-        values={roll}
-      />
-      {dicesRolled && (
-        <>
-          {!rerollDone && (
-            <>
-              {modifier === "distinction" && (
-                <Distinction
-                  dices={dices}
-                  onFinish={(data) => dispatch(reroll(roll, data))}
-                />
-              )}
-              {modifier === "adversity" && (
-                <Adversity
-                  dices={dices}
-                  onFinish={(data) => dispatch(reroll(roll, data))}
-                />
-              )}
-            </>
-          )}
-          {rerollDone && (
-            <>
-              {!trulyCompromised && atLeastOneUnresolvedDice && (
-                <>
-                  {!atLeastOneKeptDice && (
-                    <Keep
-                      dices={dices}
-                      max={ring}
-                      onFinish={(data) => dispatch(keep(roll, data))}
-                      compromised={compromised}
-                    />
-                  )}
-                  {atLeastOneKeptDice && (
-                    <KeepExplosions
-                      dices={dices}
-                      onFinish={(data) => dispatch(keep(roll, data))}
-                      compromised={compromised}
-                    />
-                  )}
-                </>
-              )}
-              {completed && (
-                <>
-                  <Kept dices={dices} trulyCompromised={trulyCompromised} />
-                  <Result dices={keptDices} tn={tn} />
-                  <Button onClick={() => dispatch(softReset())}>Reroll</Button>
-                </>
-              )}
-            </>
-          )}
-        </>
-      )}
+      <Card>
+        <Intent
+          completed={dicesRolled}
+          onFinish={(data) => dispatch(create({ ...roll, ...data }))}
+          values={roll}
+        />
+        {dicesRolled && (
+          <>
+            {!rerollDone && (
+              <>
+                {modifier === "distinction" && (
+                  <Distinction
+                    dices={dices}
+                    onFinish={(data) => dispatch(reroll(roll, data))}
+                  />
+                )}
+                {modifier === "adversity" && (
+                  <Adversity
+                    dices={dices}
+                    onFinish={(data) => dispatch(reroll(roll, data))}
+                  />
+                )}
+              </>
+            )}
+            {rerollDone && (
+              <>
+                {!trulyCompromised && atLeastOneUnresolvedDice && (
+                  <>
+                    {!atLeastOneKeptDice && (
+                      <Keep
+                        dices={dices}
+                        max={ring}
+                        onFinish={(data) => dispatch(keep(roll, data))}
+                        compromised={compromised}
+                      />
+                    )}
+                    {atLeastOneKeptDice && (
+                      <KeepExplosions
+                        dices={dices}
+                        onFinish={(data) => dispatch(keep(roll, data))}
+                        compromised={compromised}
+                      />
+                    )}
+                  </>
+                )}
+                {completed && (
+                  <>
+                    <Kept dices={dices} trulyCompromised={trulyCompromised} />
+                    <Result dices={keptDices} tn={tn} />
+                    <Button
+                      type="primary"
+                      onClick={() => dispatch(softReset())}
+                    >
+                      Reroll
+                    </Button>
+                  </>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </Card>
     </div>
   );
 };
