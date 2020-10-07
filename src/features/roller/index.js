@@ -15,15 +15,24 @@ const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const { dices, tn, rerolled, modifier, ring } = roll;
+  const { dices, tn, rerolled, modifier, ring, compromised } = roll;
 
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =
     dicesRolled && dices.some((dice) => dice.status === "pending");
   const keptDices = dices.filter((dice) => dice.status === "kept");
   const atLeastOneKeptDice = keptDices.length > 0;
-  const completed = atLeastOneKeptDice && !atLeastOneUnresolvedDice;
   const rerollDone = rerolled || modifier === "none";
+  const trulyCompromised =
+    compromised &&
+    dicesRolled &&
+    rerollDone &&
+    !atLeastOneKeptDice &&
+    dices
+      .filter((dice) => dice.status === "pending")
+      .every((dice) => dice.value.strife);
+  const completed =
+    (atLeastOneKeptDice && !atLeastOneUnresolvedDice) || trulyCompromised;
 
   return (
     <div className={styles.layout}>
@@ -52,26 +61,28 @@ const Roller = () => {
           )}
           {rerollDone && (
             <>
-              {atLeastOneUnresolvedDice && (
+              {!trulyCompromised && atLeastOneUnresolvedDice && (
                 <>
                   {!atLeastOneKeptDice && (
                     <Keep
                       dices={dices}
                       max={ring}
                       onFinish={(data) => dispatch(keep(roll, data))}
+                      compromised={compromised}
                     />
                   )}
                   {atLeastOneKeptDice && (
                     <KeepExplosions
                       dices={dices}
                       onFinish={(data) => dispatch(keep(roll, data))}
+                      compromised={compromised}
                     />
                   )}
                 </>
               )}
               {completed && (
                 <>
-                  <Kept dices={dices} />
+                  <Kept dices={dices} trulyCompromised={trulyCompromised} />
                   <Result dices={keptDices} tn={tn} />
                   <Button onClick={() => dispatch(softReset())}>Reroll</Button>
                 </>

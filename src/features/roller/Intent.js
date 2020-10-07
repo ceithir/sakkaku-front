@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, InputNumber, Button, Radio } from "antd";
+import { Form, Input, InputNumber, Button, Radio, Switch } from "antd";
 import styles from "./Intent.module.css";
 
 const layout = {
@@ -37,6 +37,13 @@ const Intent = ({ completed, onFinish, values }) => {
           <Radio.Button value="distinction">Distinction</Radio.Button>
           <Radio.Button value="adversity">Adversity</Radio.Button>
         </Radio.Group>
+      </Form.Item>
+      <Form.Item
+        label="Compromised?"
+        name="compromised"
+        valuePropName="checked"
+      >
+        <Switch disabled={completed} />
       </Form.Item>
       {!completed && (
         <Form.Item {...tailLayout}>

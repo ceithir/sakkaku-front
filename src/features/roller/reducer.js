@@ -11,6 +11,7 @@ const initialState = {
   ring: 1,
   skill: 1,
   modifier: "none",
+  compromised: false,
   dices: [],
   rerolled: false,
 };
@@ -28,12 +29,14 @@ const slice = createSlice({
         modifier,
         dices,
         rerolled,
+        compromised,
       } = action.payload;
       state.description = description;
       state.tn = tn;
       state.ring = ring;
       state.skill = skill;
       state.modifier = modifier;
+      state.compromised = compromised;
 
       state.dices = dices;
       state.rerolled = rerolled;

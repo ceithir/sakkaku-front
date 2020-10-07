@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DicesBox from "./DicesBox";
 import { Button } from "antd";
 
-const KeepExplosions = ({ dices, onFinish }) => {
+const KeepExplosions = ({ dices, onFinish, compromised }) => {
   const [toKeep, setToKeep] = useState([]);
   const toggle = (index) => {
     if (toKeep.includes(index)) {
@@ -15,11 +15,14 @@ const KeepExplosions = ({ dices, onFinish }) => {
     <DicesBox
       text={`Select which explosions you wish to keep (if any):`}
       dices={dices.map((dice, index) => {
+        const available =
+          dice.status === "pending" && (!compromised || !dice.value.strife);
+
         return {
           ...dice,
-          selectable: dice.status === "pending",
+          selectable: available,
           selected: dice.status === "kept" || toKeep.includes(index),
-          disabled: !["pending", "kept"].includes(dice.status),
+          disabled: !available && dice.status !== "kept",
           toggle: () => toggle(index),
         };
       })}
