@@ -30,7 +30,7 @@ const Dices = ({ dices }) => {
           className={classNames(styles.dice, {
             [styles.selectable]: selectable,
             [styles.selected]: selected,
-            [styles.unselectable]: (toggle && !selectable) || disabled,
+            [styles.unselectable]: disabled,
           })}
           onClick={selectable ? toggle : undefined}
         >

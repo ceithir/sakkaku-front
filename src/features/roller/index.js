@@ -2,41 +2,26 @@ import React from "react";
 import styles from "./index.module.css";
 import Intent from "./Intent";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectAll,
-  create,
-  softReset,
-  keep,
-  explodeDie,
-  keepTemporary,
-  discardTemporary,
-} from "./reducer";
+import { selectAll, create, softReset, keep } from "./reducer";
 import { Button } from "antd";
 import Keep from "./Keep";
+import KeepExplosions from "./KeepExplosions";
 import Kept from "./Kept";
 import Result from "./Result";
-import Explode from "./Explode";
 
 const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const { dices, tn, temporaryDices } = roll;
+  const { dices, tn } = roll;
 
   const dicesRolled = dices.length > 0;
+  const atLeastOneUnresolvedDice =
+    dicesRolled && dices.some((dice) => dice.status === "pending");
   const keptDices = dices.filter((dice) => dice.status === "kept");
   const atLeastOneKeptDice = keptDices.length > 0;
-  const atLeastOneExplosion =
-    atLeastOneKeptDice &&
-    keptDices.filter((dice) => dice.value.explosion).length > 0;
-  const atLeastOneUnresolvedExplosion =
-    atLeastOneExplosion &&
-    keptDices.filter((dice) => dice.value.explosion && !dice.exploded).length >
-      0;
-  const completed =
-    atLeastOneKeptDice &&
-    !atLeastOneUnresolvedExplosion &&
-    !temporaryDices?.length;
+
+  const completed = atLeastOneKeptDice && !atLeastOneUnresolvedDice;
 
   return (
     <div className={styles.layout}>
@@ -45,25 +30,18 @@ const Roller = () => {
         onFinish={(data) => dispatch(create({ ...roll, ...data }))}
         values={roll}
       />
-      {dicesRolled && !atLeastOneKeptDice && (
+      {atLeastOneUnresolvedDice && !atLeastOneKeptDice && (
         <Keep dices={dices} onFinish={(data) => dispatch(keep(roll, data))} />
       )}
-      {atLeastOneKeptDice && (
-        <>
-          <Kept dices={dices} />
-          {atLeastOneExplosion && !completed && (
-            <Explode
-              dices={dices}
-              temporary={temporaryDices}
-              roll={(data) => dispatch(explodeDie(roll, data))}
-              keep={(data) => dispatch(keepTemporary(roll, data))}
-              discard={(data) => dispatch(discardTemporary(roll, data))}
-            />
-          )}
-        </>
+      {atLeastOneUnresolvedDice && atLeastOneKeptDice && (
+        <KeepExplosions
+          dices={dices}
+          onFinish={(data) => dispatch(keep(roll, data))}
+        />
       )}
       {completed && (
         <>
+          <Kept dices={dices} />
           <Result dices={keptDices} tn={tn} />
           <Button onClick={() => dispatch(softReset())}>Reroll</Button>
         </>

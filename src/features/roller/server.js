@@ -26,13 +26,21 @@ const rollDice = (dice) => {
   return dice[Math.floor(Math.random() * dice.length)];
 };
 
+const rollSameDice = ({ type }) => {
+  return {
+    type,
+    value: rollDice(type === "skill" ? skillDie : ringDie),
+    status: "pending",
+  };
+};
+
 const rollDices = ({ ring, skill }) => {
   return [
     ...[...Array(ring)].map(() => {
-      return { type: "ring", value: rollDice(ringDie) };
+      return { type: "ring", value: rollDice(ringDie), status: "pending" };
     }),
     ...[...Array(skill)].map(() => {
-      return { type: "skill", value: rollDice(skillDie) };
+      return { type: "skill", value: rollDice(skillDie), status: "pending" };
     }),
   ];
 };
@@ -44,69 +52,33 @@ const rollDices = ({ ring, skill }) => {
 export const create = async (roll) => {
   return {
     ...roll,
-    dices: rollDices(roll).map((dice) => {
-      return {
-        ...dice,
-        status: "pending",
-      };
-    }),
+    dices: rollDices(roll),
   };
 };
 
 export const keep = async (roll, toKeep) => {
   return {
     ...roll,
-    dices: roll.dices.map((dice, index) => {
-      return {
-        ...dice,
-        status: toKeep.includes(index) ? "kept" : "discarded",
-      };
-    }),
-  };
-};
-
-export const explode = async (roll, index) => {
-  const {
-    type,
-    value: { explosion },
-  } = roll.dices[index];
-
-  return {
-    ...roll,
-    dices: roll.dices.map((dice, i) => {
-      if (i !== index) {
-        return dice;
-      }
-      return {
-        ...dice,
-        exploded: true,
-      };
-    }),
-    temporaryDices: [
-      ...(roll.temporaryDices || []),
-      ...[...Array(explosion)].map(() => {
-        return { type, value: rollDice(type === "skill" ? skillDie : ringDie) };
+    dices: [
+      ...roll.dices.map((dice, index) => {
+        return {
+          ...dice,
+          status:
+            dice.status === "pending"
+              ? toKeep.includes(index)
+                ? "kept"
+                : "discarded"
+              : dice.status,
+        };
       }),
+      ...roll.dices
+        .filter(
+          (dice, index) =>
+            dice.status === "pending" &&
+            toKeep.includes(index) &&
+            dice.value.explosion
+        )
+        .map((dice) => rollSameDice(dice)),
     ],
-  };
-};
-
-export const keepTemporary = async (roll, index) => {
-  const newDice = roll.temporaryDices[index];
-
-  return {
-    ...roll,
-    temporaryDices: roll.temporaryDices.filter((_, i) => i !== index),
-    dices: [...roll.dices, { ...newDice, status: "kept" }],
-  };
-};
-
-export const discardTemporary = async (roll, index) => {
-  const newDice = roll.temporaryDices[index];
-
-  return {
-    ...roll,
-    temporaryDices: roll.temporaryDices.filter((_, i) => i !== index),
-    dices: [...roll.dices, { ...newDice, status: "discarded" }],
   };
 };

@@ -21,10 +21,12 @@ const Keep = ({ dices, onFinish }) => {
       text={`Please select ${canKeepCount} dice${canKeepCount > 1 ? "s" : ""}.`}
       dices={dices.map((dice, index) => {
         const selected = toKeep.includes(index);
+        const selectable = selected || canKeep;
         return {
           ...dice,
-          selectable: selected || canKeep,
+          selectable,
           selected,
+          disabled: !selectable,
           toggle: () => toggle(index),
         };
       })}
