@@ -42,7 +42,7 @@ const rollDices = ({ ring, skill }) => {
 // Without all the important validations
 
 export const create = async (roll) => {
-  return { ...roll, rolledDices: rollDices(roll), step: "choice" };
+  return { ...roll, rolledDices: rollDices(roll) };
 };
 
 export const keep = async (roll, toKeep) => {
