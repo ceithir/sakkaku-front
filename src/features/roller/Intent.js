@@ -23,13 +23,13 @@ export default ({ completed, onFinish, values }) => {
         <Input disabled={completed} />
       </Form.Item>
       <Form.Item label="TN" name="tn" rules={[{ required: true }]}>
-        <InputNumber disabled={completed} />
+        <InputNumber disabled={completed} min={1} />
       </Form.Item>
       <Form.Item label="Ring" name="ring" rules={[{ required: true }]}>
-        <InputNumber disabled={completed} />
+        <InputNumber disabled={completed} min={1} max={5} />
       </Form.Item>
       <Form.Item label="Skill" name="skill" rules={[{ required: true }]}>
-        <InputNumber disabled={completed} />
+        <InputNumber disabled={completed} min={0} max={5} />
       </Form.Item>
       {!completed && (
         <Form.Item {...tailLayout}>
