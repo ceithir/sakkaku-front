@@ -35,6 +35,8 @@ const Roller = () => {
     keptDices?.length &&
     !unresolvedExplosions?.length &&
     !temporaryDices?.length;
+  const atLeastOneExplosion =
+    keptDices && keptDices.filter((dice) => dice.explosion).length > 0;
 
   return (
     <div className={styles.layout}>
@@ -52,8 +54,9 @@ const Roller = () => {
       {keptDices && (
         <>
           <Kept dices={rolledDices} selection={keepSelection} />
-          {!completed && (
+          {atLeastOneExplosion && !completed && (
             <Explode
+              dices={keptDices}
               unresolved={unresolvedExplosions}
               temporary={temporaryDices}
               roll={(data) => dispatch(explodeDie(roll, data))}

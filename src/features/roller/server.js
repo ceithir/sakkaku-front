@@ -55,15 +55,15 @@ export const keep = async (roll, toKeep) => {
     ...roll,
     keepSelection: toKeep,
     keptDices,
-    unresolvedExplosions: keptDices.filter((dice) => dice.explosion),
+    unresolvedExplosions: keptDices
+      .filter((dice) => dice.explosion)
+      .map((_, index) => index),
   };
 };
 
 export const explode = async (roll, index) => {
-  const currentExplosion = roll.unresolvedExplosions[index];
-  const explosionsLeft = roll.unresolvedExplosions.filter(
-    (_, i) => i !== index
-  );
+  const currentExplosion = roll.keptDices[index];
+  const explosionsLeft = roll.unresolvedExplosions.filter((i) => i !== index);
   const { type, explosion } = currentExplosion;
 
   return {
@@ -86,7 +86,10 @@ export const keepTemporary = async (roll, index) => {
     temporaryDices: roll.temporaryDices.filter((_, i) => i !== index),
     keptDices: [...roll.keptDices, newDice],
     unresolvedExplosions: newDice.explosion
-      ? [...roll.unresolvedExplosions, newDice]
+      ? [
+          ...roll.unresolvedExplosions,
+          roll.keptDices.filter((dice) => dice.explosion).length,
+        ]
       : roll.unresolvedExplosions,
   };
 };

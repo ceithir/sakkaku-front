@@ -6,17 +6,19 @@ import { Button, Typography } from "antd";
 
 const { Text } = Typography;
 
-const Explode = ({ unresolved, roll, temporary, keep, discard }) => {
+const Explode = ({ dices, unresolved, roll, temporary, keep, discard }) => {
   return (
     <DicesBox
       text={`Some dices can explode:`}
-      dices={unresolved.map((dice, index) => {
-        return {
-          ...dice,
-          selectable: !temporary?.length,
-          toggle: () => roll(index),
-        };
-      })}
+      dices={dices
+        .filter((dice) => dice.explosion)
+        .map((dice, index) => {
+          return {
+            ...dice,
+            selectable: unresolved.includes(index) && !temporary?.length,
+            toggle: () => roll(index),
+          };
+        })}
       footer={
         !!temporary?.length &&
         temporary.map((dice, index) => {

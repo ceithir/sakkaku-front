@@ -32,7 +32,7 @@ const Dices = ({ dices }) => {
             [styles.selected]: selected,
             [styles.unselectable]: (toggle && !selectable) || disabled,
           })}
-          onClick={toggle}
+          onClick={selectable ? toggle : undefined}
         >
           <Dice dice={dice} />
         </List.Item>
