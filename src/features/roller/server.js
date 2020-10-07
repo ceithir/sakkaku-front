@@ -67,7 +67,7 @@ export const keep = async (roll, toKeep) => {
             dice.status === "pending"
               ? toKeep.includes(index)
                 ? "kept"
-                : "discarded"
+                : "dropped"
               : dice.status,
         };
       }),

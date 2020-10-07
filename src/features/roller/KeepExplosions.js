@@ -19,7 +19,7 @@ const KeepExplosions = ({ dices, onFinish }) => {
           ...dice,
           selectable: dice.status === "pending",
           selected: dice.status === "kept" || toKeep.includes(index),
-          disabled: dice.status === "discarded",
+          disabled: dice.status === "dropped",
           toggle: () => toggle(index),
         };
       })}
