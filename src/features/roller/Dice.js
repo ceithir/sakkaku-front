@@ -14,7 +14,10 @@ import successSkill from "./images/whites.png";
 import successOpportunitySkill from "./images/whiteso.png";
 import successStrifeSkill from "./images/whitest.png";
 
-const getImage = ({ type, opportunity, strife, success, explosion }) => {
+const getImage = ({
+  type,
+  value: { opportunity, strife, success, explosion },
+}) => {
   if (type === "skill") {
     if (explosion) {
       if (strife) {
@@ -60,7 +63,7 @@ const getImage = ({ type, opportunity, strife, success, explosion }) => {
   return blankRing;
 };
 
-const getText = ({ opportunity, strife, success, explosion }) => {
+const getText = ({ value: { opportunity, strife, success, explosion } }) => {
   return (
     [
       opportunity && `Opportunity: ${opportunity}`,

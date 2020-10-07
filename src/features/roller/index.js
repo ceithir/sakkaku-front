@@ -27,10 +27,12 @@ const Roller = () => {
   const keptDices = dices.filter((dice) => dice.status === "kept");
   const atLeastOneKeptDice = keptDices.length > 0;
   const atLeastOneExplosion =
-    atLeastOneKeptDice && keptDices.filter((dice) => dice.explosion).length > 0;
+    atLeastOneKeptDice &&
+    keptDices.filter((dice) => dice.value.explosion).length > 0;
   const atLeastOneUnresolvedExplosion =
     atLeastOneExplosion &&
-    keptDices.filter((dice) => dice.explosion && !dice.exploded).length > 0;
+    keptDices.filter((dice) => dice.value.explosion && !dice.exploded).length >
+      0;
   const completed =
     atLeastOneKeptDice &&
     !atLeastOneUnresolvedExplosion &&

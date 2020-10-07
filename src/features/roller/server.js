@@ -29,10 +29,10 @@ const rollDice = (dice) => {
 const rollDices = ({ ring, skill }) => {
   return [
     ...[...Array(ring)].map(() => {
-      return { type: "ring", ...rollDice(ringDie) };
+      return { type: "ring", value: rollDice(ringDie) };
     }),
     ...[...Array(skill)].map(() => {
-      return { type: "skill", ...rollDice(skillDie) };
+      return { type: "skill", value: rollDice(skillDie) };
     }),
   ];
 };
@@ -42,10 +42,9 @@ const rollDices = ({ ring, skill }) => {
 // Without all the important validations
 
 export const create = async (roll) => {
-  const dices = rollDices(roll);
   return {
     ...roll,
-    dices: dices.map((dice) => {
+    dices: rollDices(roll).map((dice) => {
       return {
         ...dice,
         status: "pending",
@@ -67,7 +66,10 @@ export const keep = async (roll, toKeep) => {
 };
 
 export const explode = async (roll, index) => {
-  const { type, explosion } = roll.dices[index];
+  const {
+    type,
+    value: { explosion },
+  } = roll.dices[index];
 
   return {
     ...roll,
@@ -83,7 +85,7 @@ export const explode = async (roll, index) => {
     temporaryDices: [
       ...(roll.temporaryDices || []),
       ...[...Array(explosion)].map(() => {
-        return { type, ...rollDice(type === "skill" ? skillDie : ringDie) };
+        return { type, value: rollDice(type === "skill" ? skillDie : ringDie) };
       }),
     ],
   };

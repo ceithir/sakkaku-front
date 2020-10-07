@@ -8,18 +8,22 @@ const Result = ({ dices, tn }) => {
     {
       type: "Successes",
       count: dices.reduce(
-        (acc, dice) => acc + (dice.explosion || 0) + (dice.success || 0),
+        (acc, dice) =>
+          acc + (dice.value.explosion || 0) + (dice.value.success || 0),
         0
       ),
       target: tn,
     },
     {
       type: "Strifes",
-      count: dices.reduce((acc, dice) => acc + (dice.strife || 0), 0),
+      count: dices.reduce((acc, dice) => acc + (dice.value.strife || 0), 0),
     },
     {
       type: "Opportunities",
-      count: dices.reduce((acc, dice) => acc + (dice.opportunity || 0), 0),
+      count: dices.reduce(
+        (acc, dice) => acc + (dice.value.opportunity || 0),
+        0
+      ),
     },
   ];
 
