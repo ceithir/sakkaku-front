@@ -16,55 +16,48 @@ import Keep from "./Keep";
 import Kept from "./Kept";
 import Result from "./Result";
 import Explode from "./Explode";
-import KeptExplosions from "./KeptExplosions";
 
 const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const {
-    rolledDices,
-    keptDices,
-    keepSelection,
-    tn,
-    unresolvedExplosions,
-    temporaryDices,
-    ring,
-  } = roll;
-  const completed =
-    keptDices?.length &&
-    !unresolvedExplosions?.length &&
-    !temporaryDices?.length;
+  const { dices, tn, temporaryDices } = roll;
+
+  const dicesRolled = dices.length > 0;
+  const keptDices = dices.filter((dice) => dice.status === "kept");
+  const atLeastOneKeptDice = keptDices.length > 0;
   const atLeastOneExplosion =
-    keptDices && keptDices.filter((dice) => dice.explosion).length > 0;
+    atLeastOneKeptDice && keptDices.filter((dice) => dice.explosion).length > 0;
+  const atLeastOneUnresolvedExplosion =
+    atLeastOneExplosion &&
+    keptDices.filter((dice) => dice.explosion && !dice.exploded).length > 0;
+  const completed =
+    atLeastOneKeptDice &&
+    !atLeastOneUnresolvedExplosion &&
+    !temporaryDices?.length;
 
   return (
     <div className={styles.layout}>
       <Intent
-        completed={rolledDices?.length}
+        completed={dicesRolled}
         onFinish={(data) => dispatch(create({ ...roll, ...data }))}
         values={roll}
       />
-      {rolledDices && !keptDices && (
-        <Keep
-          dices={rolledDices}
-          onFinish={(data) => dispatch(keep(roll, data))}
-        />
+      {dicesRolled && !atLeastOneKeptDice && (
+        <Keep dices={dices} onFinish={(data) => dispatch(keep(roll, data))} />
       )}
-      {keptDices && (
+      {atLeastOneKeptDice && (
         <>
-          <Kept dices={rolledDices} selection={keepSelection} />
+          <Kept dices={dices} />
           {atLeastOneExplosion && !completed && (
             <Explode
-              dices={keptDices}
-              unresolved={unresolvedExplosions}
+              dices={dices}
               temporary={temporaryDices}
               roll={(data) => dispatch(explodeDie(roll, data))}
               keep={(data) => dispatch(keepTemporary(roll, data))}
               discard={(data) => dispatch(discardTemporary(roll, data))}
             />
           )}
-          <KeptExplosions keptDices={keptDices} ring={ring} />
         </>
       )}
       {completed && (

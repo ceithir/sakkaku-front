@@ -1,12 +1,12 @@
 import React from "react";
 import DicesBox from "./DicesBox";
 
-const Kept = ({ dices, selection }) => {
+const Kept = ({ dices }) => {
   return (
     <DicesBox
       text={`You have kept:`}
-      dices={dices.map((dice, index) => {
-        const selected = selection.includes(index);
+      dices={dices.map((dice) => {
+        const selected = dice.status === "kept";
         return {
           ...dice,
           disabled: !selected,

@@ -12,6 +12,8 @@ const initialState = {
   tn: 1,
   ring: 1,
   skill: 1,
+  dices: [],
+  temporaryDices: [],
 };
 
 const slice = createSlice({
@@ -24,31 +26,20 @@ const slice = createSlice({
         tn,
         ring,
         skill,
-        rolledDices,
-        keptDices,
-        keepSelection,
-        unresolvedExplosions,
         temporaryDices,
+        dices,
       } = action.payload;
       state.description = description;
       state.tn = tn;
       state.ring = ring;
       state.skill = skill;
 
-      state.rolledDices = rolledDices;
-      state.keptDices = keptDices;
-
-      state.keepSelection = keepSelection;
-      state.unresolvedExplosions = unresolvedExplosions;
+      state.dices = dices;
       state.temporaryDices = temporaryDices;
     },
     softReset: (state) => {
-      state.rolledDices = undefined;
-      state.keptDices = undefined;
-
-      state.keepSelection = undefined;
-      state.unresolvedExplosions = undefined;
-      state.temporaryDices = undefined;
+      state.dices = [];
+      state.temporaryDices = [];
     },
   },
 });

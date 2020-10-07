@@ -42,33 +42,44 @@ const rollDices = ({ ring, skill }) => {
 // Without all the important validations
 
 export const create = async (roll) => {
-  return { ...roll, rolledDices: rollDices(roll) };
+  const dices = rollDices(roll);
+  return {
+    ...roll,
+    dices: dices.map((dice) => {
+      return {
+        ...dice,
+        status: "pending",
+      };
+    }),
+  };
 };
 
 export const keep = async (roll, toKeep) => {
-  const dices = roll.rolledDices;
-  const keptDices = dices.filter((_, index) => {
-    return toKeep.includes(index);
-  });
-
   return {
     ...roll,
-    keepSelection: toKeep,
-    keptDices,
-    unresolvedExplosions: keptDices
-      .filter((dice) => dice.explosion)
-      .map((_, index) => index),
+    dices: roll.dices.map((dice, index) => {
+      return {
+        ...dice,
+        status: toKeep.includes(index) ? "kept" : "discarded",
+      };
+    }),
   };
 };
 
 export const explode = async (roll, index) => {
-  const currentExplosion = roll.keptDices[index];
-  const explosionsLeft = roll.unresolvedExplosions.filter((i) => i !== index);
-  const { type, explosion } = currentExplosion;
+  const { type, explosion } = roll.dices[index];
 
   return {
     ...roll,
-    unresolvedExplosions: explosionsLeft,
+    dices: roll.dices.map((dice, i) => {
+      if (i !== index) {
+        return dice;
+      }
+      return {
+        ...dice,
+        exploded: true,
+      };
+    }),
     temporaryDices: [
       ...(roll.temporaryDices || []),
       ...[...Array(explosion)].map(() => {
@@ -84,19 +95,16 @@ export const keepTemporary = async (roll, index) => {
   return {
     ...roll,
     temporaryDices: roll.temporaryDices.filter((_, i) => i !== index),
-    keptDices: [...roll.keptDices, newDice],
-    unresolvedExplosions: newDice.explosion
-      ? [
-          ...roll.unresolvedExplosions,
-          roll.keptDices.filter((dice) => dice.explosion).length,
-        ]
-      : roll.unresolvedExplosions,
+    dices: [...roll.dices, { ...newDice, status: "kept" }],
   };
 };
 
 export const discardTemporary = async (roll, index) => {
+  const newDice = roll.temporaryDices[index];
+
   return {
     ...roll,
     temporaryDices: roll.temporaryDices.filter((_, i) => i !== index),
+    dices: [...roll.dices, { ...newDice, status: "discarded" }],
   };
 };
