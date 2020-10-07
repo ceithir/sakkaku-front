@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, InputNumber, Button } from "antd";
+import { Form, Input, InputNumber, Button, Radio } from "antd";
 import styles from "./Intent.module.css";
 
 const layout = {
@@ -30,6 +30,13 @@ const Intent = ({ completed, onFinish, values }) => {
       </Form.Item>
       <Form.Item label="Skill" name="skill" rules={[{ required: true }]}>
         <InputNumber disabled={completed} min={0} max={5} />
+      </Form.Item>
+      <Form.Item label="Modifier" name="modifier">
+        <Radio.Group disabled={completed}>
+          <Radio.Button value="none">None</Radio.Button>
+          <Radio.Button value="distinction">Distinction</Radio.Button>
+          <Radio.Button value="adversity">Adversity</Radio.Button>
+        </Radio.Group>
       </Form.Item>
       {!completed && (
         <Form.Item {...tailLayout}>

@@ -2,28 +2,25 @@ import React, { useState } from "react";
 import DicesBox from "./DicesBox";
 import { Button } from "antd";
 
-const Keep = ({ dices, onFinish }) => {
+const Keep = ({ dices, max, onFinish }) => {
   const [toKeep, setToKeep] = useState([]);
-  const canKeepCount = dices.filter((dice) => dice.type === "ring").length;
-  const canKeep = canKeepCount > toKeep.length;
+
+  const canKeep = max > toKeep.length;
   const toggle = (index) => {
     if (toKeep.includes(index)) {
       return setToKeep(toKeep.filter((i) => i !== index));
-    }
-    if (!canKeep) {
-      return;
     }
     return setToKeep([...toKeep, index]);
   };
 
   return (
     <DicesBox
-      text={`You can choose up to ${canKeepCount} dice${
-        canKeepCount > 1 ? "s" : ""
+      text={`You can choose up to ${max} dice${
+        max > 1 ? "s" : ""
       } to keep (min 1).`}
       dices={dices.map((dice, index) => {
         const selected = toKeep.includes(index);
-        const selectable = selected || canKeep;
+        const selectable = (selected || canKeep) && dice.status === "pending";
         return {
           ...dice,
           selectable,

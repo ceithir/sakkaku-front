@@ -82,3 +82,25 @@ export const keep = async (roll, toKeep) => {
     ],
   };
 };
+
+export const reroll = async (roll, toReroll) => {
+  return {
+    ...roll,
+    rerolled: true,
+    dices: [
+      ...roll.dices.map((dice, index) => {
+        if (!toReroll.includes(index)) {
+          return dice;
+        }
+
+        return {
+          ...dice,
+          status: "rerolled",
+        };
+      }),
+      ...roll.dices
+        .filter((_, index) => toReroll.includes(index))
+        .map((dice) => rollSameDice(dice)),
+    ],
+  };
+};

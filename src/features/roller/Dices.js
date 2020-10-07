@@ -31,6 +31,7 @@ const Dices = ({ dices }) => {
             [styles.selectable]: selectable,
             [styles.selected]: selected,
             [styles.unselectable]: disabled,
+            [styles.rerolled]: dice.status === "rerolled",
           })}
           onClick={selectable ? toggle : undefined}
         >
