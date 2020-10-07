@@ -7,9 +7,9 @@ import {
 
 const initialState = {
   description: "Example",
-  tn: 1,
-  ring: 1,
-  skill: 1,
+  tn: 2,
+  ring: 2,
+  skill: 2,
   modifier: "none",
   compromised: false,
   dices: [],
