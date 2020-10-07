@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { create as createOnServer } from "./server";
+import { create as createOnServer, keep as keepOnServer } from "./server";
 
 const initialState = {
   step: "intent",
@@ -20,18 +20,27 @@ const slice = createSlice({
         ring,
         skill,
         step,
-        unmodifiedRoll,
+        rolledDices,
+        keptDices,
+        keepSelection,
       } = action.payload;
       state.step = step;
       state.description = description;
       state.tn = tn;
       state.ring = ring;
       state.skill = skill;
-      state.unmodifiedRoll = unmodifiedRoll;
+
+      state.rolledDices = rolledDices;
+      state.keptDices = keptDices;
+
+      state.keepSelection = keepSelection;
     },
     softReset: (state) => {
       state.step = initialState.step;
-      state.unmodifiedRoll = undefined;
+      state.rolledDices = undefined;
+      state.keptDices = undefined;
+
+      state.keepSelection = undefined;
     },
   },
 });
@@ -41,6 +50,12 @@ export const { softReset } = slice.actions;
 
 export const create = (request) => (dispatch) => {
   createOnServer(request).then((response) => {
+    dispatch(set(response));
+  });
+};
+
+export const keep = (roll, request) => (dispatch) => {
+  keepOnServer(roll, request).then((response) => {
     dispatch(set(response));
   });
 };

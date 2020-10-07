@@ -13,6 +13,8 @@ import opportunitySkill from "./images/whiteo.png";
 import successSkill from "./images/whites.png";
 import successOpportunitySkill from "./images/whiteso.png";
 import successStrifeSkill from "./images/whitest.png";
+import styles from "./Dices.module.css";
+import classNames from "classnames";
 
 const getImage = ({ type, opportunity, strife, success, explosion }) => {
   if (type === "skill") {
@@ -78,21 +80,36 @@ const Dices = ({ dices }) => {
       key: index.toString(),
       image: getImage(dice),
       text: getText(dice),
+      selectable: dice.selectable,
+      selected: dice.selected,
+      toggle: dice.toggle,
+      disabled: dice.disabled,
     };
   });
 
   return (
     <List
-      grid={{ gutter: 16, column: 10 }}
+      grid={{ gutter: 0, column: 10 }}
       dataSource={listData}
-      renderItem={(item) => (
-        <List.Item key={item.key}>
-          <Image
-            src={item.image}
-            alt={item.text}
-            title={item.text}
-            preview={false}
-          />
+      renderItem={({
+        key,
+        image,
+        text,
+        selectable,
+        selected,
+        toggle,
+        disabled,
+      }) => (
+        <List.Item
+          key={key}
+          className={classNames(styles.dice, {
+            [styles.selectable]: selectable,
+            [styles.selected]: selected,
+            [styles.unselectable]: (toggle && !selectable) || disabled,
+          })}
+          onClick={toggle}
+        >
+          <Image src={image} alt={text} title={text} preview={false} />
         </List.Item>
       )}
     />

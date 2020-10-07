@@ -1,0 +1,21 @@
+.dice {
+  padding: 4px !important;
+  margin-right: 2px;
+}
+
+.selectable {
+  cursor: pointer;
+}
+
+.selectable:hover {
+  background-color: #69c0ff;
+}
+
+.selected {
+  background-color: #91d5ff;
+}
+
+.unselectable {
+  opacity: 50%;
+  background-color: #bfbfbf;
+}

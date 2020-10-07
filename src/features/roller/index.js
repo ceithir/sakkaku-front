@@ -2,28 +2,39 @@ import React from "react";
 import styles from "./index.module.css";
 import Intent from "./Intent";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAll, create, softReset } from "./reducer";
+import { selectAll, create, softReset, keep } from "./reducer";
 import { Button } from "antd";
 import Dices from "./Dices";
-
-const INTENT = "intent";
-const STEPS = [INTENT];
+import Keep from "./Keep";
+import Kept from "./Kept";
 
 const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const { step, unmodifiedRoll } = roll;
-  const completed = !STEPS.includes(step);
+  const { rolledDices, keptDices } = roll;
+  const { keepSelection } = roll;
+  const completed = keptDices?.length;
 
   return (
     <div className={styles.layout}>
       <Intent
-        completed={step !== INTENT}
+        completed={rolledDices?.length}
         onFinish={(data) => dispatch(create({ ...roll, ...data }))}
         values={roll}
       />
-      {unmodifiedRoll && <Dices dices={unmodifiedRoll} />}
+      {rolledDices && !keptDices && (
+        <Keep
+          dices={rolledDices}
+          onFinish={(data) => dispatch(keep(roll, data))}
+        />
+      )}
+      {keptDices && (
+        <>
+          <Kept dices={rolledDices} selection={keepSelection} />
+          <Dices dices={keptDices} />
+        </>
+      )}
       {completed && (
         <Button onClick={() => dispatch(softReset())}>Reroll</Button>
       )}

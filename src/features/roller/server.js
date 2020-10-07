@@ -42,5 +42,17 @@ const rollDices = ({ ring, skill }) => {
 // Without all the important validations
 
 export const create = async (roll) => {
-  return { ...roll, unmodifiedRoll: rollDices(roll), step: "choice" };
+  return { ...roll, rolledDices: rollDices(roll), step: "choice" };
+};
+
+export const keep = async (roll, toKeep) => {
+  const dices = roll.rerolledDices || roll.rolledDices;
+
+  return {
+    ...roll,
+    keepSelection: toKeep,
+    keptDices: dices.filter((_, index) => {
+      return toKeep.includes(index);
+    }),
+  };
 };
