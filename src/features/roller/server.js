@@ -37,15 +37,10 @@ const rollDices = ({ ring, skill }) => {
   ];
 };
 
-export const push = async (roll) => {
-  // Will do an actual server call in real life
-  // Fow now actually handle the whole logic there
-  // Without all the important validations
+// Will do an actual server call in real life
+// Fow now actually handle the whole logic there
+// Without all the important validations
 
-  switch (roll.step) {
-    case "intent":
-      return { ...roll, unmodifiedRoll: rollDices(roll), step: "choice" };
-    default:
-      throw new Error(`Step ${roll.step} not implemented`);
-  }
+export const create = async (roll) => {
+  return { ...roll, unmodifiedRoll: rollDices(roll), step: "choice" };
 };

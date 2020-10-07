@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { push } from "./server";
+import { create as createOnServer } from "./server";
 
 const initialState = {
   step: "intent",
@@ -13,9 +13,20 @@ const slice = createSlice({
   name: "roll",
   initialState,
   reducers: {
-    localUpdate: (state, action) => {
-      const { step, unmodifiedRoll } = action.payload;
+    set: (state, action) => {
+      const {
+        description,
+        tn,
+        ring,
+        skill,
+        step,
+        unmodifiedRoll,
+      } = action.payload;
       state.step = step;
+      state.description = description;
+      state.tn = tn;
+      state.ring = ring;
+      state.skill = skill;
       state.unmodifiedRoll = unmodifiedRoll;
     },
     softReset: (state) => {
@@ -25,14 +36,15 @@ const slice = createSlice({
   },
 });
 
-const { localUpdate } = slice.actions;
+const { set } = slice.actions;
 export const { softReset } = slice.actions;
 
-export const update = (request) => (dispatch) => {
-  push(request).then((response) => {
-    dispatch(localUpdate(response));
+export const create = (request) => (dispatch) => {
+  createOnServer(request).then((response) => {
+    dispatch(set(response));
   });
 };
+
 export const selectAll = (state) => state.roll;
 
 export default slice.reducer;
