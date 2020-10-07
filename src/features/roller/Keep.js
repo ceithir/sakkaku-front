@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import Dices from "./Dices";
-import { Typography, Button } from "antd";
-
-const { Paragraph } = Typography;
+import DicesBox from "./DicesBox";
+import { Button } from "antd";
 
 const Keep = ({ dices, onFinish }) => {
   const [toKeep, setToKeep] = useState([]);
@@ -19,27 +17,25 @@ const Keep = ({ dices, onFinish }) => {
   };
 
   return (
-    <div>
-      <Paragraph>{`Please select ${canKeepCount} dice${
-        canKeepCount > 1 ? "s" : ""
-      }.`}</Paragraph>
-      <Dices
-        dices={dices.map((dice, index) => {
-          const selected = toKeep.includes(index);
-          return {
-            ...dice,
-            selectable: selected || canKeep,
-            selected,
-            toggle: () => toggle(index),
-          };
-        })}
-      />
-      {!canKeep && (
-        <Button type="primary" onClick={() => onFinish(toKeep)}>
-          Continue
-        </Button>
-      )}
-    </div>
+    <DicesBox
+      text={`Please select ${canKeepCount} dice${canKeepCount > 1 ? "s" : ""}.`}
+      dices={dices.map((dice, index) => {
+        const selected = toKeep.includes(index);
+        return {
+          ...dice,
+          selectable: selected || canKeep,
+          selected,
+          toggle: () => toggle(index),
+        };
+      })}
+      footer={
+        !canKeep && (
+          <Button type="primary" onClick={() => onFinish(toKeep)}>
+            Continue
+          </Button>
+        )
+      }
+    />
   );
 };
 
