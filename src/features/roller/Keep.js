@@ -18,7 +18,9 @@ const Keep = ({ dices, onFinish }) => {
 
   return (
     <DicesBox
-      text={`Please select ${canKeepCount} dice${canKeepCount > 1 ? "s" : ""}.`}
+      text={`You can choose up to ${canKeepCount} dice${
+        canKeepCount > 1 ? "s" : ""
+      } to keep (min 1).`}
       dices={dices.map((dice, index) => {
         const selected = toKeep.includes(index);
         const selectable = selected || canKeep;
@@ -31,7 +33,7 @@ const Keep = ({ dices, onFinish }) => {
         };
       })}
       footer={
-        !canKeep && (
+        toKeep.length >= 1 && (
           <Button type="primary" onClick={() => onFinish(toKeep)}>
             Continue
           </Button>
