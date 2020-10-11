@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DicesBox from "./DicesBox";
 import { Button } from "antd";
 
-const Adversity = ({ dices, onFinish }) => {
+const Adversity = ({ dices, onFinish, loading }) => {
   const [toReroll, setToReroll] = useState([]);
   const successDices = dices.filter(
     ({ value }) => value.success || value.explosion
@@ -33,7 +33,11 @@ const Adversity = ({ dices, onFinish }) => {
       })}
       footer={
         toReroll.length >= min && (
-          <Button type="primary" onClick={() => onFinish(toReroll)}>
+          <Button
+            type="primary"
+            onClick={() => onFinish(toReroll)}
+            disabled={loading}
+          >
             Continue
           </Button>
         )

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DicesBox from "./DicesBox";
 import { Button } from "antd";
 
-const KeepExplosions = ({ dices, onFinish, compromised }) => {
+const KeepExplosions = ({ dices, onFinish, compromised, loading }) => {
   const [toKeep, setToKeep] = useState([]);
   const toggle = (index) => {
     if (toKeep.includes(index)) {
@@ -27,7 +27,11 @@ const KeepExplosions = ({ dices, onFinish, compromised }) => {
         };
       })}
       footer={
-        <Button type="primary" onClick={() => onFinish(toKeep)}>
+        <Button
+          type="primary"
+          onClick={() => onFinish(toKeep)}
+          disabled={loading}
+        >
           Continue
         </Button>
       }

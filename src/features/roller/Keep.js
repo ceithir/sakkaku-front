@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import DicesBox from "./DicesBox";
 import { Button } from "antd";
 
-const Keep = ({ dices, max, onFinish, compromised, trulyCompromised }) => {
+const Keep = ({
+  dices,
+  max,
+  onFinish,
+  compromised,
+  trulyCompromised,
+  loading,
+}) => {
   const [toKeep, setToKeep] = useState([]);
 
   const canKeep = max > toKeep.length;
@@ -34,7 +41,11 @@ const Keep = ({ dices, max, onFinish, compromised, trulyCompromised }) => {
       })}
       footer={
         (toKeep.length >= 1 || trulyCompromised) && (
-          <Button type="primary" onClick={() => onFinish(toKeep)}>
+          <Button
+            type="primary"
+            onClick={() => onFinish(toKeep)}
+            disabled={loading}
+          >
             Continue
           </Button>
         )

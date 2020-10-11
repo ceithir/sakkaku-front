@@ -12,7 +12,7 @@ const tailLayout = {
   wrapperCol: { span: 24 },
 };
 
-const Intent = ({ completed, onFinish, values }) => {
+const Intent = ({ completed, onFinish, values, loading }) => {
   return (
     <Form
       {...layout}
@@ -59,7 +59,12 @@ const Intent = ({ completed, onFinish, values }) => {
       </Form.Item>
       {!completed && (
         <Form.Item {...tailLayout}>
-          <Button type="primary" htmlType="submit" className={styles.submit}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className={styles.submit}
+            disabled={loading}
+          >
             Roll
           </Button>
         </Form.Item>

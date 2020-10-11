@@ -8,6 +8,7 @@ const initialState = {
   modifiers: [],
   dices: [],
   metadata: {},
+  loading: false,
 };
 
 const slice = createSlice({
@@ -40,18 +41,17 @@ const slice = createSlice({
     setMetadata: (state, action) => {
       state.metadata = action.payload;
     },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 });
 
-const { setParameters, updateDices, setMetadata } = slice.actions;
+const { setParameters, updateDices, setMetadata, setLoading } = slice.actions;
 export const { softReset } = slice.actions;
 
 const serverRoot =
   process.env.NODE_ENV === "production" ? "/api" : "http://127.0.0.1:8000/api";
-
-const genericError = () => {
-  console.error("TODO");
-};
 
 const postOnServer = async (uri, request, callback) => {
   try {
@@ -69,11 +69,12 @@ const postOnServer = async (uri, request, callback) => {
     const data = await response.json();
     callback(data);
   } catch (_) {
-    genericError();
+    console.error("TODO");
   }
 };
 
 export const create = (request) => (dispatch) => {
+  dispatch(setLoading(true));
   dispatch(setParameters(request));
 
   const { tn, ring, skill, modifiers } = request;
@@ -87,11 +88,13 @@ export const create = (request) => (dispatch) => {
     },
     (data) => {
       dispatch(updateDices(data["dices"]));
+      dispatch(setLoading(false));
     }
   );
 };
 
 export const reroll = (roll, positions, modifier) => (dispatch) => {
+  dispatch(setLoading(true));
   const { tn, ring, skill, modifiers, dices } = roll;
   postOnServer(
     "/public/ffg/l5r/rolls/reroll",
@@ -106,11 +109,13 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
     (data) => {
       dispatch(updateDices(data["dices"]));
       dispatch(setMetadata(data["metadata"]));
+      dispatch(setLoading(false));
     }
   );
 };
 
 export const keep = (roll, positions) => (dispatch) => {
+  dispatch(setLoading(true));
   const { tn, ring, skill, modifiers, dices, metadata } = roll;
   postOnServer(
     "/public/ffg/l5r/rolls/keep",
@@ -124,6 +129,7 @@ export const keep = (roll, positions) => (dispatch) => {
     },
     (data) => {
       dispatch(updateDices(data["dices"]));
+      dispatch(setLoading(false));
     }
   );
 };

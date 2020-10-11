@@ -15,7 +15,7 @@ const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const { dices, tn, metadata, modifiers, ring, compromised } = roll;
+  const { dices, tn, metadata, modifiers, ring, compromised, loading } = roll;
 
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =
@@ -41,6 +41,7 @@ const Roller = () => {
           completed={dicesRolled}
           onFinish={(data) => dispatch(create({ ...roll, ...data }))}
           values={roll}
+          loading={loading}
         />
         {dicesRolled && (
           <>
@@ -52,6 +53,7 @@ const Roller = () => {
                     onFinish={(positions) =>
                       dispatch(reroll(roll, positions, "distinction"))
                     }
+                    loading={loading}
                   />
                 )}
                 {modifiers.includes("adversity") && (
@@ -60,6 +62,7 @@ const Roller = () => {
                     onFinish={(positions) =>
                       dispatch(reroll(roll, positions, "adversity"))
                     }
+                    loading={loading}
                   />
                 )}
               </>
@@ -75,6 +78,7 @@ const Roller = () => {
                         onFinish={(data) => dispatch(keep(roll, data))}
                         compromised={compromised}
                         trulyCompromised={trulyCompromised}
+                        loading={loading}
                       />
                     )}
                     {atLeastOneKeptDice && (
@@ -82,6 +86,7 @@ const Roller = () => {
                         dices={dices}
                         onFinish={(data) => dispatch(keep(roll, data))}
                         compromised={compromised}
+                        loading={loading}
                       />
                     )}
                   </>
