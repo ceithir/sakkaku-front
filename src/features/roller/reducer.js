@@ -1,72 +1,131 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  create as createOnServer,
-  keep as keepOnServer,
-  reroll as rerollOnServer,
-} from "./server";
 
 const initialState = {
   description: "Example",
   tn: 2,
   ring: 2,
   skill: 2,
-  modifier: "none",
-  compromised: false,
+  modifiers: [],
   dices: [],
-  rerolled: false,
+  metadata: {},
 };
 
 const slice = createSlice({
   name: "roll",
   initialState,
   reducers: {
-    set: (state, action) => {
+    softReset: (state) => {
+      state.dices = [];
+      state.metadata = {};
+    },
+    setParameters: (state, action) => {
       const {
         description,
         tn,
         ring,
         skill,
-        modifier,
-        dices,
-        rerolled,
+        modifiers,
         compromised,
       } = action.payload;
       state.description = description;
       state.tn = tn;
       state.ring = ring;
       state.skill = skill;
-      state.modifier = modifier;
+      state.modifiers = modifiers;
       state.compromised = compromised;
-
-      state.dices = dices;
-      state.rerolled = rerolled;
     },
-    softReset: (state) => {
-      state.dices = [];
-      state.rerolled = false;
+    updateDices: (state, action) => {
+      state.dices = action.payload;
+    },
+    setMetadata: (state, action) => {
+      state.metadata = action.payload;
     },
   },
 });
 
-const { set } = slice.actions;
+const { setParameters, updateDices, setMetadata } = slice.actions;
 export const { softReset } = slice.actions;
 
+const serverRoot =
+  process.env.NODE_ENV === "production" ? "/api" : "http://127.0.0.1:8000/api";
+
+const genericError = () => {
+  console.error("TODO");
+};
+
+const postOnServer = async (uri, request, callback) => {
+  try {
+    const response = await fetch(`${serverRoot}${uri}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
+    if (![200, 201, 204].includes(response.status)) {
+      throw new Error();
+    }
+    const data = await response.json();
+    callback(data);
+  } catch (_) {
+    genericError();
+  }
+};
+
 export const create = (request) => (dispatch) => {
-  createOnServer(request).then((response) => {
-    dispatch(set(response));
-  });
+  dispatch(setParameters(request));
+
+  const { tn, ring, skill, modifiers } = request;
+  postOnServer(
+    "/public/ffg/l5r/rolls/create",
+    {
+      tn,
+      ring,
+      skill,
+      modifiers,
+    },
+    (data) => {
+      dispatch(updateDices(data["dices"]));
+    }
+  );
 };
 
-export const keep = (roll, request) => (dispatch) => {
-  keepOnServer(roll, request).then((response) => {
-    dispatch(set(response));
-  });
+export const reroll = (roll, positions, modifier) => (dispatch) => {
+  const { tn, ring, skill, modifiers, dices } = roll;
+  postOnServer(
+    "/public/ffg/l5r/rolls/reroll",
+    {
+      roll: {
+        parameters: { tn, ring, skill, modifiers },
+        dices,
+      },
+      positions,
+      modifier,
+    },
+    (data) => {
+      dispatch(updateDices(data["dices"]));
+      dispatch(setMetadata(data["metadata"]));
+    }
+  );
 };
 
-export const reroll = (roll, request) => (dispatch) => {
-  rerollOnServer(roll, request).then((response) => {
-    dispatch(set(response));
-  });
+export const keep = (roll, positions) => (dispatch) => {
+  const { tn, ring, skill, modifiers, dices, metadata } = roll;
+  postOnServer(
+    "/public/ffg/l5r/rolls/keep",
+    {
+      roll: {
+        parameters: { tn, ring, skill, modifiers },
+        dices,
+        metadata,
+      },
+      positions,
+    },
+    (data) => {
+      dispatch(updateDices(data["dices"]));
+    }
+  );
 };
 
 export const selectAll = (state) => state.roll;

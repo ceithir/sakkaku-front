@@ -3,7 +3,7 @@ import DicesBox from "./DicesBox";
 
 const Kept = ({ dices, trulyCompromised }) => {
   const text = trulyCompromised
-    ? "You cannot keep any dice due to being compromised."
+    ? "You couldn't keep any dice due to being compromised."
     : "You have kept:";
 
   return (

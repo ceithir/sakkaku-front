@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DicesBox from "./DicesBox";
 import { Button } from "antd";
 
-const Keep = ({ dices, max, onFinish, compromised }) => {
+const Keep = ({ dices, max, onFinish, compromised, trulyCompromised }) => {
   const [toKeep, setToKeep] = useState([]);
 
   const canKeep = max > toKeep.length;
@@ -12,9 +12,9 @@ const Keep = ({ dices, max, onFinish, compromised }) => {
     }
     return setToKeep([...toKeep, index]);
   };
-  const text = `You can choose up to ${max} dice${
-    max > 1 ? "s" : ""
-  } to keep (min 1).`;
+  const text = trulyCompromised
+    ? "You cannot keep any dice due to being compromised."
+    : `You can choose up to ${max} dice${max > 1 ? "s" : ""} to keep (min 1).`;
 
   return (
     <DicesBox
@@ -33,7 +33,7 @@ const Keep = ({ dices, max, onFinish, compromised }) => {
         };
       })}
       footer={
-        toKeep.length >= 1 && (
+        (toKeep.length >= 1 || trulyCompromised) && (
           <Button type="primary" onClick={() => onFinish(toKeep)}>
             Continue
           </Button>

@@ -14,7 +14,19 @@ const tailLayout = {
 
 const Intent = ({ completed, onFinish, values }) => {
   return (
-    <Form {...layout} initialValues={values} onFinish={onFinish}>
+    <Form
+      {...layout}
+      initialValues={values}
+      onFinish={(data) => {
+        onFinish({
+          ...data,
+          modifiers: [
+            data["modifier"],
+            data["compromised"] && "compromised",
+          ].filter(Boolean),
+        });
+      }}
+    >
       <Form.Item
         label="Description"
         name="description"
