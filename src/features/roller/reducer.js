@@ -50,7 +50,7 @@ const slice = createSlice({
       state.loading = action.payload;
     },
     setId: (state, action) => {
-      state.id = action.id;
+      state.id = action.payload;
     },
   },
 });
