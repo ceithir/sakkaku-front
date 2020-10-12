@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { postOnServer } from "../../server";
 
 const initialState = {
   description: "Example",
@@ -50,55 +51,32 @@ const slice = createSlice({
 const { setParameters, updateDices, setMetadata, setLoading } = slice.actions;
 export const { softReset } = slice.actions;
 
-const serverRoot =
-  process.env.NODE_ENV === "production" ? "/api" : "http://127.0.0.1:8000/api";
-
-const postOnServer = async (uri, request, callback) => {
-  try {
-    const response = await fetch(`${serverRoot}${uri}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(request),
-    });
-    if (![200, 201, 204].includes(response.status)) {
-      throw new Error();
-    }
-    const data = await response.json();
-    callback(data);
-  } catch (_) {
-    console.error("TODO");
-  }
-};
-
 export const create = (request) => (dispatch) => {
   dispatch(setLoading(true));
   dispatch(setParameters(request));
 
   const { tn, ring, skill, modifiers } = request;
-  postOnServer(
-    "/public/ffg/l5r/rolls/create",
-    {
+  postOnServer({
+    uri: "/public/ffg/l5r/rolls/create",
+    body: {
       tn,
       ring,
       skill,
       modifiers,
     },
-    (data) => {
+    success: (data) => {
       dispatch(updateDices(data["dices"]));
       dispatch(setLoading(false));
-    }
-  );
+    },
+  });
 };
 
 export const reroll = (roll, positions, modifier) => (dispatch) => {
   dispatch(setLoading(true));
   const { tn, ring, skill, modifiers, dices } = roll;
-  postOnServer(
-    "/public/ffg/l5r/rolls/reroll",
-    {
+  postOnServer({
+    uri: "/public/ffg/l5r/rolls/reroll",
+    body: {
       roll: {
         parameters: { tn, ring, skill, modifiers },
         dices,
@@ -106,20 +84,20 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
       positions,
       modifier,
     },
-    (data) => {
+    success: (data) => {
       dispatch(updateDices(data["dices"]));
       dispatch(setMetadata(data["metadata"]));
       dispatch(setLoading(false));
-    }
-  );
+    },
+  });
 };
 
 export const keep = (roll, positions) => (dispatch) => {
   dispatch(setLoading(true));
   const { tn, ring, skill, modifiers, dices, metadata } = roll;
-  postOnServer(
-    "/public/ffg/l5r/rolls/keep",
-    {
+  postOnServer({
+    uri: "/public/ffg/l5r/rolls/keep",
+    body: {
       roll: {
         parameters: { tn, ring, skill, modifiers },
         dices,
@@ -127,11 +105,11 @@ export const keep = (roll, positions) => (dispatch) => {
       },
       positions,
     },
-    (data) => {
+    success: (data) => {
       dispatch(updateDices(data["dices"]));
       dispatch(setLoading(false));
-    }
-  );
+    },
+  });
 };
 
 export const selectAll = (state) => state.roll;

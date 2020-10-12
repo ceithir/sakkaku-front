@@ -18,7 +18,7 @@ yarn test
 
 ### Local API path
 
-As of now, the url of the API to connect with is hardcoded directly in the `src/features/roller/reducer.js` file.
+As of now, the url of the API to connect with is hardcoded directly in the `src/server.js` file.
 
 To be replaced with an envvar eventually.
 
