@@ -116,6 +116,26 @@ export const create = (request, user) => (dispatch) => {
 
 export const reroll = (roll, positions, modifier) => (dispatch) => {
   dispatch(setLoading(true));
+
+  const success = (data) => {
+    dispatch(updateDices(data["dices"]));
+    dispatch(setMetadata(data["metadata"]));
+    dispatch(setLoading(false));
+  };
+
+  const { id } = roll;
+  if (id) {
+    authentifiedPostOnServer({
+      uri: `/ffg/l5r/rolls/${id}/reroll`,
+      body: {
+        positions,
+        modifier,
+      },
+      success,
+    });
+    return;
+  }
+
   const { tn, ring, skill, modifiers, dices } = roll;
   postOnServer({
     uri: "/public/ffg/l5r/rolls/reroll",
@@ -127,16 +147,30 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
       positions,
       modifier,
     },
-    success: (data) => {
-      dispatch(updateDices(data["dices"]));
-      dispatch(setMetadata(data["metadata"]));
-      dispatch(setLoading(false));
-    },
+    success,
   });
 };
 
 export const keep = (roll, positions) => (dispatch) => {
   dispatch(setLoading(true));
+
+  const success = (data) => {
+    dispatch(updateDices(data["dices"]));
+    dispatch(setLoading(false));
+  };
+
+  const { id } = roll;
+  if (id) {
+    authentifiedPostOnServer({
+      uri: `/ffg/l5r/rolls/${id}/keep`,
+      body: {
+        positions,
+      },
+      success,
+    });
+    return;
+  }
+
   const { tn, ring, skill, modifiers, dices, metadata } = roll;
   postOnServer({
     uri: "/public/ffg/l5r/rolls/keep",
@@ -148,10 +182,7 @@ export const keep = (roll, positions) => (dispatch) => {
       },
       positions,
     },
-    success: (data) => {
-      dispatch(updateDices(data["dices"]));
-      dispatch(setLoading(false));
-    },
+    success,
   });
 };
 
