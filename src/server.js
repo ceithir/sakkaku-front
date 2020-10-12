@@ -4,8 +4,10 @@ const serverRoot =
 const requestOnServer = async ({ uri, method, body, success, error }) => {
   const headers = {
     Accept: "application/json",
-    "Content-Type": body ? "application/json" : undefined,
   };
+  if (body) {
+    headers["Content-Type"] = "application/json";
+  }
 
   try {
     const response = await fetch(`${serverRoot}${uri}`, {
@@ -25,4 +27,8 @@ const requestOnServer = async ({ uri, method, body, success, error }) => {
 
 export const postOnServer = async ({ uri, body, success, error }) => {
   return requestOnServer({ uri, method: "POST", body, success, error });
+};
+
+export const getOnServer = async ({ uri, success, error }) => {
+  return requestOnServer({ uri, method: "GET", success, error });
 };

@@ -5,7 +5,7 @@ import styles from "./Layout.module.css";
 
 const { Header, Content, Footer } = Layout;
 
-const CustomLayout = ({ children }) => {
+const CustomLayout = ({ user, children }) => {
   return (
     <Layout className={styles.layout}>
       <Header>
@@ -19,7 +19,11 @@ const CustomLayout = ({ children }) => {
             <a href="/">Roll</a>
           </Menu.Item>
           <Menu.Item className={styles.login}>
-            <a href="/login">Login</a>
+            {user ? (
+              <a href="/user/profile">{user.name}</a>
+            ) : (
+              <a href="/login">Login</a>
+            )}
           </Menu.Item>
         </Menu>
       </Header>
