@@ -34,6 +34,7 @@ const Roller = () => {
     dices
       .filter((dice) => dice.status === "pending")
       .every((dice) => dice.value.strife);
+  const voided = modifiers.includes("void");
 
   return (
     <div className={styles.layout}>
@@ -75,7 +76,7 @@ const Roller = () => {
                     {!atLeastOneKeptDice && (
                       <Keep
                         dices={dices}
-                        max={ring}
+                        max={voided ? ring + 1 : ring}
                         onFinish={(data) => dispatch(keep(roll, data))}
                         compromised={compromised}
                         trulyCompromised={trulyCompromised}

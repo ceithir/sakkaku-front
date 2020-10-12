@@ -27,6 +27,7 @@ const Intent = ({ completed, onFinish, values, loading }) => {
           modifiers: [
             data["modifier"],
             data["compromised"] && "compromised",
+            data["void"] && "void",
           ].filter(Boolean),
         });
       }}
@@ -51,6 +52,9 @@ const Intent = ({ completed, onFinish, values, loading }) => {
         <InputNumber disabled={completed} min={0} max={5} />
       </Form.Item>
       <Divider />
+      <Form.Item label="Void?" name="void" valuePropName="checked">
+        <Switch disabled={completed} />
+      </Form.Item>
       <Form.Item label="Advantage / Disadvantage" name="modifier">
         <Radio.Group disabled={completed}>
           <Radio.Button value="">None</Radio.Button>
