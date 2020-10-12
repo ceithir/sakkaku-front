@@ -3,8 +3,8 @@ import { Form, Input, InputNumber, Button, Radio, Switch } from "antd";
 import styles from "./Intent.module.css";
 
 const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 },
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
 };
 
 const tailLayout = {
@@ -43,9 +43,9 @@ const Intent = ({ completed, onFinish, values, loading }) => {
       <Form.Item label="Skill" name="skill" rules={[{ required: true }]}>
         <InputNumber disabled={completed} min={0} max={5} />
       </Form.Item>
-      <Form.Item label="Modifier" name="modifier">
+      <Form.Item label="Advantage / Disadvantage" name="modifier">
         <Radio.Group disabled={completed}>
-          <Radio.Button value="none">None</Radio.Button>
+          <Radio.Button value="">None</Radio.Button>
           <Radio.Button value="distinction">Distinction</Radio.Button>
           <Radio.Button value="adversity">Adversity</Radio.Button>
         </Radio.Group>
