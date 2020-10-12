@@ -1,0 +1,42 @@
+.layout {
+  min-height: 100vh;
+  background-color: #fafafa;
+}
+
+.layout > header {
+  margin-bottom: 24px;
+}
+
+.logo img {
+  height: 56px;
+  padding-bottom: 2px;
+}
+
+.footer {
+  text-align: center;
+  background-color: #f0f2f5;
+}
+
+.login {
+  float: right;
+}
+
+@media (max-width: 576px) {
+  .layout > header {
+    padding: 0;
+    margin-bottom: 0;
+  }
+
+  .logo {
+    padding-left: 12px !important;
+  }
+
+  .layout > header ul > li {
+    display: none !important;
+  }
+
+  .layout > header ul > li.logo,
+  .layout > header ul > li.login {
+    display: inline-block !important;
+  }
+}
