@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer } from "../../server";
 
 const initialState = {
-  description: "Example",
+  campaign: "Test campaign",
+  character: "Test character",
+  description: "Test roll",
   tn: 2,
   ring: 2,
   skill: 2,
@@ -22,6 +24,8 @@ const slice = createSlice({
     },
     setParameters: (state, action) => {
       const {
+        campaign,
+        character,
         description,
         tn,
         ring,
@@ -29,7 +33,9 @@ const slice = createSlice({
         modifiers,
         compromised,
       } = action.payload;
-      state.description = description;
+      state.campaign = campaign;
+      state.character = character;
+      state.character = description;
       state.tn = tn;
       state.ring = ring;
       state.skill = skill;

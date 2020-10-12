@@ -1,6 +1,8 @@
 import React from "react";
-import { Form, Input, InputNumber, Button, Radio, Switch } from "antd";
+import { Form, Input, InputNumber, Button, Radio, Switch, Divider } from "antd";
 import styles from "./Intent.module.css";
+
+const { TextArea } = Input;
 
 const layout = {
   labelCol: { span: 8 },
@@ -29,9 +31,16 @@ const Intent = ({ completed, onFinish, values, loading }) => {
         });
       }}
     >
-      <Form.Item label="Description" name="description" rules={defaultRules}>
+      <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
         <Input disabled={completed} />
       </Form.Item>
+      <Form.Item label="Character" name="character" rules={defaultRules}>
+        <Input disabled={completed} />
+      </Form.Item>
+      <Form.Item label="Description" name="description" rules={defaultRules}>
+        <TextArea disabled={completed} />
+      </Form.Item>
+      <Divider />
       <Form.Item label="TN" name="tn" rules={defaultRules}>
         <InputNumber disabled={completed} min={1} />
       </Form.Item>
@@ -41,6 +50,7 @@ const Intent = ({ completed, onFinish, values, loading }) => {
       <Form.Item label="Skill" name="skill" rules={defaultRules}>
         <InputNumber disabled={completed} min={0} max={5} />
       </Form.Item>
+      <Divider />
       <Form.Item label="Advantage / Disadvantage" name="modifier">
         <Radio.Group disabled={completed}>
           <Radio.Button value="">None</Radio.Button>
@@ -56,16 +66,19 @@ const Intent = ({ completed, onFinish, values, loading }) => {
         <Switch disabled={completed} />
       </Form.Item>
       {!completed && (
-        <Form.Item {...tailLayout}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.submit}
-            disabled={loading}
-          >
-            Roll
-          </Button>
-        </Form.Item>
+        <>
+          <Divider />
+          <Form.Item {...tailLayout}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className={styles.submit}
+              disabled={loading}
+            >
+              Roll
+            </Button>
+          </Form.Item>
+        </>
       )}
     </Form>
   );
