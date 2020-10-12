@@ -31,7 +31,6 @@ const slice = createSlice({
         ring,
         skill,
         modifiers,
-        compromised,
       } = action.payload;
       state.campaign = campaign;
       state.character = character;
@@ -40,7 +39,6 @@ const slice = createSlice({
       state.ring = ring;
       state.skill = skill;
       state.modifiers = modifiers;
-      state.compromised = compromised;
     },
     updateDices: (state, action) => {
       state.dices = action.payload;

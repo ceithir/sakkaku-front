@@ -15,7 +15,7 @@ const Roller = () => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const { dices, tn, metadata, modifiers, ring, compromised, loading } = roll;
+  const { dices, tn, metadata, modifiers, ring, loading } = roll;
 
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =
@@ -25,6 +25,7 @@ const Roller = () => {
   const rerollDone =
     metadata?.rerolls?.length ||
     !(modifiers.includes("adversity") || modifiers.includes("distinction"));
+  const compromised = modifiers.includes("compromised");
   const trulyCompromised =
     compromised &&
     dicesRolled &&
