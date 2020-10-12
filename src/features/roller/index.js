@@ -11,7 +11,7 @@ import Result from "./Result";
 import Distinction from "./Distinction";
 import Adversity from "./Adversity";
 
-const Roller = () => {
+const Roller = ({ user }) => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const Roller = () => {
       <Card>
         <Intent
           completed={dicesRolled}
-          onFinish={(data) => dispatch(create({ ...roll, ...data }))}
+          onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
           values={roll}
           loading={loading}
         />

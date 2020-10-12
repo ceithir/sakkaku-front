@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <Layout user={user}>
-      <Roller />
+      <Roller user={user} />
     </Layout>
   );
 };

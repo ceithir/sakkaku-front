@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { postOnServer } from "../../server";
+import { postOnServer, authentifiedPostOnServer } from "../../server";
 
 const initialState = {
   campaign: "Test campaign",
@@ -49,17 +49,56 @@ const slice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
+    setId: (state, action) => {
+      state.id = action.id;
+    },
   },
 });
 
-const { setParameters, updateDices, setMetadata, setLoading } = slice.actions;
+const {
+  setParameters,
+  updateDices,
+  setMetadata,
+  setLoading,
+  setId,
+} = slice.actions;
 export const { softReset } = slice.actions;
 
-export const create = (request) => (dispatch) => {
+export const create = (request, user) => (dispatch) => {
   dispatch(setLoading(true));
   dispatch(setParameters(request));
 
-  const { tn, ring, skill, modifiers } = request;
+  const {
+    tn,
+    ring,
+    skill,
+    modifiers,
+    campaign,
+    character,
+    description,
+  } = request;
+
+  if (user) {
+    authentifiedPostOnServer({
+      uri: "/ffg/l5r/rolls/create",
+      body: {
+        tn,
+        ring,
+        skill,
+        modifiers,
+        campaign,
+        character,
+        description,
+      },
+      success: (data) => {
+        dispatch(updateDices(data["dices"]));
+        dispatch(setId(data["id"]));
+        dispatch(setLoading(false));
+      },
+    });
+    return;
+  }
+
   postOnServer({
     uri: "/public/ffg/l5r/rolls/create",
     body: {
