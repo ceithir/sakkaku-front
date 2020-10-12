@@ -12,6 +12,8 @@ const tailLayout = {
   wrapperCol: { span: 24 },
 };
 
+const defaultRules = [{ required: true, message: "Please fill this field" }];
+
 const Intent = ({ completed, onFinish, values, loading }) => {
   return (
     <Form
@@ -27,20 +29,16 @@ const Intent = ({ completed, onFinish, values, loading }) => {
         });
       }}
     >
-      <Form.Item
-        label="Description"
-        name="description"
-        rules={[{ required: true, message: "Roll description is required" }]}
-      >
+      <Form.Item label="Description" name="description" rules={defaultRules}>
         <Input disabled={completed} />
       </Form.Item>
-      <Form.Item label="TN" name="tn" rules={[{ required: true }]}>
+      <Form.Item label="TN" name="tn" rules={defaultRules}>
         <InputNumber disabled={completed} min={1} />
       </Form.Item>
-      <Form.Item label="Ring" name="ring" rules={[{ required: true }]}>
+      <Form.Item label="Ring" name="ring" rules={defaultRules}>
         <InputNumber disabled={completed} min={1} max={5} />
       </Form.Item>
-      <Form.Item label="Skill" name="skill" rules={[{ required: true }]}>
+      <Form.Item label="Skill" name="skill" rules={defaultRules}>
         <InputNumber disabled={completed} min={0} max={5} />
       </Form.Item>
       <Form.Item label="Advantage / Disadvantage" name="modifier">
