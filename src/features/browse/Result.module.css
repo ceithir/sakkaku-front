@@ -1,0 +1,9 @@
+.result {
+  display: flex;
+}
+
+.result img {
+  display: inline-block;
+  height: 20px;
+  margin-left: 4px;
+}

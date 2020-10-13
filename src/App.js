@@ -3,6 +3,8 @@ import "./App.css";
 import Roller from "./features/roller";
 import Layout from "./features/navigation/Layout";
 import { getOnServer } from "./server";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import List from "./features/browse/List";
 
 const App = () => {
   const [user, setUser] = useState();
@@ -17,9 +19,18 @@ const App = () => {
   }, []);
 
   return (
-    <Layout user={user}>
-      <Roller user={user} />
-    </Layout>
+    <Router>
+      <Layout user={user}>
+        <Switch>
+          <Route path="/rolls">
+            <List />
+          </Route>
+          <Route path="/">
+            <Roller user={user} />
+          </Route>
+        </Switch>
+      </Layout>
+    </Router>
   );
 };
 

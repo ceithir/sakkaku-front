@@ -18,6 +18,9 @@ const CustomLayout = ({ user, children }) => {
           <Menu.Item>
             <a href="/">Roll</a>
           </Menu.Item>
+          <Menu.Item>
+            <a href="/rolls">All rolls</a>
+          </Menu.Item>
           <Menu.Item className={styles.login}>
             {user ? (
               <a href="/user/profile">{user.name}</a>
