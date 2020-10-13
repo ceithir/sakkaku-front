@@ -19,7 +19,7 @@ const defaultRules = [{ required: true, message: "Please fill this field" }];
 const Intent = ({ onFinish, values, loading }) => {
   return (
     <Form
-      className="boxed"
+      className={`boxed ${styles.form}`}
       {...layout}
       initialValues={values}
       onFinish={(data) => {

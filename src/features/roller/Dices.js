@@ -22,7 +22,7 @@ const Dices = ({ dices }) => {
 
   return (
     <List
-      grid={{ gutter: 0, column: 10 }}
+      grid={{ gutter: 0, column: 10, xs: 5 }}
       dataSource={listData}
       renderItem={({ key, dice, selectable, selected, toggle, disabled }) => (
         <List.Item

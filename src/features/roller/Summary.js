@@ -22,7 +22,11 @@ const Summary = ({
 
   return (
     <Card>
-      <Descriptions title="Declared Intention" column={3} bordered>
+      <Descriptions
+        title="Declared Intention"
+        column={{ md: 3, sm: 1, xs: 1 }}
+        bordered
+      >
         <Descriptions.Item label="Campaign">{campaign}</Descriptions.Item>
         <Descriptions.Item label="Character" span={player ? 1 : 2}>
           {character}
