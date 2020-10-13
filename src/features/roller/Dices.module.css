@@ -23,3 +23,7 @@
 .rerolled {
   background-color: #ffbb96;
 }
+
+.from-reroll {
+  border: 1px solid #ffbb96 !important;
+}
