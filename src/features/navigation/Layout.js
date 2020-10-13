@@ -22,6 +22,11 @@ const CustomLayout = ({ user, children }) => {
           <Menu.Item>
             <Link to="/rolls">All rolls</Link>
           </Menu.Item>
+          {user && (
+            <Menu.Item>
+              <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
+            </Menu.Item>
+          )}
           <Menu.Item className={styles.login}>
             {user ? (
               <a href="/user/profile">{user.name}</a>
