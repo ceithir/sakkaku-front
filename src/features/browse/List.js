@@ -25,6 +25,13 @@ const columns = [
     title: "Character",
     dataIndex: "character",
     key: "character",
+    render: ({ character, campaign }) => {
+      return (
+        <Link href={`/rolls?${queryString.stringify({ campaign, character })}`}>
+          {character}
+        </Link>
+      );
+    },
   },
   {
     title: "Player",
@@ -129,7 +136,7 @@ const List = () => {
       return {
         key: id,
         campaign,
-        character,
+        character: { campaign, character },
         player: user,
         description: { description, id },
         tn,
