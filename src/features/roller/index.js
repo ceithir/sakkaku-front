@@ -9,6 +9,10 @@ import Adversity from "./Adversity";
 import Summary from "./Summary";
 import Complete from "./Complete";
 import Layout from "./Layout";
+import { Alert, Typography } from "antd";
+import styles from "./index.module.css";
+
+const { Paragraph, Link } = Typography;
 
 const Roller = ({ user }) => {
   const roll = useSelector(selectAll);
@@ -37,6 +41,25 @@ const Roller = ({ user }) => {
 
   return (
     <Layout>
+      {!user && (
+        <Alert
+          className={styles.alert}
+          message={
+            <>
+              <Paragraph>You are not logged in.</Paragraph>
+              <Paragraph>
+                Rolls made as guest are not saved in the database and cannot be
+                linked to.
+              </Paragraph>
+              <Paragraph>
+                Please <Link href="/login">log in</Link> first if you wish to
+                post your results elsewhere.
+              </Paragraph>
+            </>
+          }
+          type="warning"
+        />
+      )}
       {!dicesRolled && (
         <Intent
           onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}

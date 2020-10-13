@@ -1,0 +1,9 @@
+.alert {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 576px) {
+  .alert {
+    margin-top: 24px;
+  }
+}
