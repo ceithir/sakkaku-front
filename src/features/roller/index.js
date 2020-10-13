@@ -18,6 +18,7 @@ import {
   setPlayer,
 } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
+import NextButton from "./NextButton";
 
 const { Paragraph, Link } = Typography;
 
@@ -136,7 +137,11 @@ const Roller = ({ user, save }) => {
                 <Complete
                   dices={dices}
                   tn={tn}
-                  onClick={() => dispatch(softReset())}
+                  footer={
+                    <NextButton onClick={() => dispatch(softReset())}>
+                      New roll
+                    </NextButton>
+                  }
                 />
               )}
             </>

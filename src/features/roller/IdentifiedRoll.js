@@ -65,14 +65,7 @@ const IdentifiedRoll = ({ user }) => {
     <>
       <Summary player={player} {...data} {...parameters} />
       {result ? (
-        <Complete
-          dices={dices}
-          tn={parameters.tn}
-          onClick={() => {
-            window.location = "/";
-          }}
-          footer={<GoBackButton />}
-        />
+        <Complete dices={dices} tn={parameters.tn} footer={<GoBackButton />} />
       ) : (
         <DicesBox
           text={`Check in progress. Current dice pool:`}
