@@ -3,7 +3,7 @@ import Result from "./Result";
 import NextButton from "./NextButton";
 import DicesBox from "./DicesBox";
 
-const Complete = ({ dices, tn, onClick }) => {
+const Complete = ({ dices, tn, onClick, footer }) => {
   return (
     <DicesBox
       title={`Check Result`}
@@ -19,6 +19,7 @@ const Complete = ({ dices, tn, onClick }) => {
         <>
           <Result dices={dices} tn={tn} />
           <NextButton onClick={onClick}>New roll</NextButton>
+          {footer}
         </>
       }
     />

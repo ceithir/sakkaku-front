@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Button } from "antd";
 import { getOnServer } from "../../server";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
@@ -8,6 +8,17 @@ import Summary from "./Summary";
 import DicesBox from "./DicesBox";
 import Roller from "./index";
 import Loader from "../navigation/Loader";
+
+const GoBackButton = () => {
+  const history = useHistory();
+  return (
+    <Button
+      onClick={() => {
+        history.length > 2 ? history.goBack() : history.push("/rolls");
+      }}
+    >{`Go back`}</Button>
+  );
+};
 
 const IdentifiedRoll = ({ user }) => {
   const { id } = useParams();
@@ -60,6 +71,7 @@ const IdentifiedRoll = ({ user }) => {
           onClick={() => {
             window.location = "/";
           }}
+          footer={<GoBackButton />}
         />
       ) : (
         <DicesBox
@@ -73,15 +85,7 @@ const IdentifiedRoll = ({ user }) => {
               selected,
             };
           })}
-          footer={
-            <Button
-              onClick={() => {
-                !!document.referrer
-                  ? window.history.back()
-                  : (window.location = "/rolls");
-              }}
-            >{`Go back`}</Button>
-          }
+          footer={<GoBackButton />}
         />
       )}
     </>
