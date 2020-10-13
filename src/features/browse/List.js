@@ -39,6 +39,7 @@ const columns = [
     title: "TN",
     dataIndex: "tn",
     key: "tn",
+    align: "center",
   },
   {
     title: "Result",
@@ -51,6 +52,23 @@ const columns = [
       }
 
       return <Result {...result} />;
+    },
+  },
+  {
+    title: "Success?",
+    dataIndex: "success",
+    key: "success",
+    align: "center",
+    render: ({ result, tn }) => {
+      if (!result) {
+        return <Text type="secondary">{"/"}</Text>;
+      }
+
+      return result.success >= tn ? (
+        <Text type="success">{"Yes"}</Text>
+      ) : (
+        <Text type="danger">{"No"}</Text>
+      );
     },
   },
 ];
@@ -92,14 +110,17 @@ const List = () => {
 
   const dataSource = data.items.map(
     ({ id, campaign, character, user, description, result, roll }) => {
+      const tn = roll.parameters.tn;
+
       return {
         key: id,
         campaign,
         character,
         player: user,
         description,
-        tn: roll.parameters.tn,
+        tn,
         result,
+        success: { result, tn },
       };
     }
   );
