@@ -27,6 +27,7 @@ const columns = [
         </Text>
       );
     },
+    responsive: ["md"],
   },
   {
     title: "Campaign",
@@ -39,6 +40,7 @@ const columns = [
         </Link>
       );
     },
+    responsive: ["md"],
   },
   {
     title: "Character",
@@ -67,17 +69,20 @@ const columns = [
         </Link>
       );
     },
+    responsive: ["md"],
   },
   {
     title: "Description",
     dataIndex: "description",
     key: "description",
+    responsive: ["md"],
   },
   {
     title: "TN",
     dataIndex: "tn",
     key: "tn",
     align: "center",
+    responsive: ["md"],
   },
   {
     title: "Result",
@@ -115,6 +120,7 @@ const columns = [
         <Text type="danger">{"No"}</Text>
       );
     },
+    responsive: ["sm"],
   },
 ];
 
