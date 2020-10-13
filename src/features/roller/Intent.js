@@ -19,6 +19,7 @@ const defaultRules = [{ required: true, message: "Please fill this field" }];
 const Intent = ({ onFinish, values, loading }) => {
   return (
     <Form
+      className="boxed"
       {...layout}
       initialValues={values}
       onFinish={(data) => {

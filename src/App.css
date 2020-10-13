@@ -1,1 +1,7 @@
 @import "~antd/dist/antd.css";
+
+.boxed {
+  max-width: 576px;
+  margin: 0 auto;
+  margin-top: 24px;
+}

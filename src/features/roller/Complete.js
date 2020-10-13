@@ -5,13 +5,15 @@ import Result from "./Result";
 
 const Complete = ({ dices, tn, onClick }) => {
   return (
-    <Card>
+    <>
       <Kept dices={dices} />
-      <Result dices={dices} tn={tn} />
-      <Button type="primary" onClick={onClick}>
-        Reroll
-      </Button>
-    </Card>
+      <Card className="boxed">
+        <Result dices={dices} tn={tn} />
+        <Button type="primary" onClick={onClick}>
+          Reroll
+        </Button>
+      </Card>
+    </>
   );
 };
 

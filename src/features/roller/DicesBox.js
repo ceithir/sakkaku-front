@@ -1,16 +1,16 @@
 import React from "react";
 import Dices from "./Dices";
-import { Typography } from "antd";
+import { Typography, Card } from "antd";
 
 const { Paragraph } = Typography;
 
 const DicesBox = ({ dices, text, footer }) => {
   return (
-    <div>
+    <Card className="boxed">
       <Paragraph>{text}</Paragraph>
       <Dices dices={dices} />
       {footer}
-    </div>
+    </Card>
   );
 };
 

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Card, Button } from "antd";
+import { Button } from "antd";
 import { getOnServer } from "../../server";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import Complete from "./Complete";
-import Layout from "./Layout";
 import Summary from "./Summary";
 import DicesBox from "./DicesBox";
 import Roller from "./index";
@@ -52,7 +51,7 @@ const IdentifiedRoll = ({ user }) => {
   }
 
   return (
-    <Layout>
+    <>
       <Summary player={player} {...data} {...parameters} />
       {result ? (
         <Complete
@@ -63,29 +62,29 @@ const IdentifiedRoll = ({ user }) => {
           }}
         />
       ) : (
-        <Card>
-          <DicesBox
-            text={`Check in progress. Current dice pool:`}
-            dices={dices.map((dice) => {
-              const selected = dice.status === "kept";
-              const disabled = !["kept", "pending"].includes(dice.status);
-              return {
-                ...dice,
-                disabled,
-                selected,
-              };
-            })}
-          />
-          <Button
-            onClick={() => {
-              !!document.referrer
-                ? window.history.back()
-                : (window.location = "/rolls");
-            }}
-          >{`Go back`}</Button>
-        </Card>
+        <DicesBox
+          text={`Check in progress. Current dice pool:`}
+          dices={dices.map((dice) => {
+            const selected = dice.status === "kept";
+            const disabled = !["kept", "pending"].includes(dice.status);
+            return {
+              ...dice,
+              disabled,
+              selected,
+            };
+          })}
+          footer={
+            <Button
+              onClick={() => {
+                !!document.referrer
+                  ? window.history.back()
+                  : (window.location = "/rolls");
+              }}
+            >{`Go back`}</Button>
+          }
+        />
       )}
-    </Layout>
+    </>
   );
 };
 

@@ -8,7 +8,6 @@ import Distinction from "./Distinction";
 import Adversity from "./Adversity";
 import Summary from "./Summary";
 import Complete from "./Complete";
-import Layout from "./Layout";
 import { Alert, Typography } from "antd";
 import styles from "./index.module.css";
 import {
@@ -58,10 +57,10 @@ const Roller = ({ user, save }) => {
   const voided = modifiers.includes("void");
 
   return (
-    <Layout>
+    <>
       {!user && (
         <Alert
-          className={styles.alert}
+          className={`boxed ${styles.alert}`}
           message={
             <>
               <Paragraph>You are not logged in.</Paragraph>
@@ -144,7 +143,7 @@ const Roller = ({ user, save }) => {
           )}
         </>
       )}
-    </Layout>
+    </>
   );
 };
 
