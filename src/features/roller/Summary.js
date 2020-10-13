@@ -1,7 +1,5 @@
 import React from "react";
-import { Descriptions, Typography, Card } from "antd";
-
-const { Title } = Typography;
+import { Descriptions, Card } from "antd";
 
 const Summary = ({
   campaign,
@@ -24,22 +22,20 @@ const Summary = ({
 
   return (
     <Card>
-      <Title level={2}>{`L5R Check`}</Title>
-      <Descriptions title="Context" column={3}>
+      <Descriptions title="Declared Intention" column={3} bordered>
         <Descriptions.Item label="Campaign">{campaign}</Descriptions.Item>
         <Descriptions.Item label="Character">{character}</Descriptions.Item>
         {player && (
           <Descriptions.Item label="Player">{player.name}</Descriptions.Item>
         )}
-      </Descriptions>
-      <Descriptions title="Parameters" column={2}>
-        <Descriptions.Item label="Description" span={2}>
+        <Descriptions.Item label="Description" span={3}>
           {description}
         </Descriptions.Item>
         <Descriptions.Item label="TN">{tn}</Descriptions.Item>
-        <Descriptions.Item label="Dice Pool">{`Ring ${ring}, Skill ${skill}`}</Descriptions.Item>
+        <Descriptions.Item label="Ring">{ring}</Descriptions.Item>
+        <Descriptions.Item label="Skill">{skill}</Descriptions.Item>
         {special && (
-          <Descriptions.Item label="Special" span={2}>
+          <Descriptions.Item label="Special" span={3}>
             {special}
           </Descriptions.Item>
         )}
