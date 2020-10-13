@@ -3,10 +3,6 @@
   background-color: #fafafa;
 }
 
-.layout > header {
-  margin-bottom: 24px;
-}
-
 .logo img {
   height: 56px;
   padding-bottom: 2px;
@@ -24,7 +20,6 @@
 @media (max-width: 576px) {
   .layout > header {
     padding: 0;
-    margin-bottom: 0;
   }
 
   .logo {
