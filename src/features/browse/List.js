@@ -13,6 +13,13 @@ const columns = [
     title: "Campaign",
     dataIndex: "campaign",
     key: "campaign",
+    render: (campaign) => {
+      return (
+        <Link href={`/rolls?${queryString.stringify({ campaign })}`}>
+          {campaign}
+        </Link>
+      );
+    },
   },
   {
     title: "Character",
@@ -82,11 +89,16 @@ const List = () => {
   const [error, setError] = useState(false);
   const [data, setData] = useState();
 
-  const page = parseInt(queryString.parse(window.location.search)["page"]) || 1;
+  const query = queryString.parse(window.location.search);
+  const page = parseInt(query["page"]) || 1;
+  const uri = `/public/ffg/l5r/rolls?${queryString.stringify({
+    ...query,
+    page,
+  })}`;
 
   useEffect(() => {
     getOnServer({
-      uri: `/public/ffg/l5r/rolls?${queryString.stringify({ page })}`,
+      uri,
       success: (data) => {
         setData(data);
         setLoading(false);
@@ -96,7 +108,7 @@ const List = () => {
         setLoading(false);
       },
     });
-  }, [page]);
+  }, [uri]);
 
   if (loading) {
     return <Spin />;
