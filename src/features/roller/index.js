@@ -17,6 +17,7 @@ import {
   setMetadata,
   setPlayer,
 } from "./reducer";
+import DefaultErrorMessage from "../../DefaultErrorMessage";
 
 const { Paragraph, Link } = Typography;
 
@@ -35,7 +36,7 @@ const Roller = ({ user, save }) => {
     dispatch(setPlayer(save.user));
   }, [save, dispatch]);
 
-  const { dices, tn, metadata, modifiers, ring, loading } = roll;
+  const { dices, tn, metadata, modifiers, ring, loading, error } = roll;
 
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =
@@ -55,6 +56,10 @@ const Roller = ({ user, save }) => {
       .filter((dice) => dice.status === "pending")
       .every((dice) => dice.value.strife);
   const voided = modifiers.includes("void");
+
+  if (error) {
+    return <DefaultErrorMessage />;
+  }
 
   return (
     <>

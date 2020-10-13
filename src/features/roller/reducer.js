@@ -12,6 +12,7 @@ const initialState = {
   dices: [],
   metadata: {},
   loading: false,
+  error: false,
 };
 
 const slice = createSlice({
@@ -59,6 +60,9 @@ const slice = createSlice({
     setPlayer: (state, action) => {
       state.player = action.payload;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
   },
 });
 
@@ -72,9 +76,15 @@ export const {
   softReset,
 } = slice.actions;
 
+const { setError } = slice.actions;
+
 export const create = (request, user) => (dispatch) => {
   dispatch(setLoading(true));
   dispatch(setParameters(request));
+
+  const error = () => {
+    dispatch(setError(true));
+  };
 
   const {
     tn,
@@ -104,6 +114,7 @@ export const create = (request, user) => (dispatch) => {
         dispatch(setPlayer(user));
         dispatch(setLoading(false));
       },
+      error,
     });
     return;
   }
@@ -120,6 +131,7 @@ export const create = (request, user) => (dispatch) => {
       dispatch(setDices(data["dices"]));
       dispatch(setLoading(false));
     },
+    error,
   });
 };
 
@@ -131,6 +143,9 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
     dispatch(setMetadata(data["metadata"]));
     dispatch(setLoading(false));
   };
+  const error = () => {
+    dispatch(setError(true));
+  };
 
   const { id } = roll;
   if (id) {
@@ -141,6 +156,7 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
         modifier,
       },
       success,
+      error,
     });
     return;
   }
@@ -157,6 +173,7 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
       modifier,
     },
     success,
+    error,
   });
 };
 
@@ -167,6 +184,9 @@ export const keep = (roll, positions) => (dispatch) => {
     dispatch(setDices(data["dices"]));
     dispatch(setLoading(false));
   };
+  const error = () => {
+    dispatch(setError(true));
+  };
 
   const { id } = roll;
   if (id) {
@@ -176,6 +196,7 @@ export const keep = (roll, positions) => (dispatch) => {
         positions,
       },
       success,
+      error,
     });
     return;
   }
@@ -192,6 +213,7 @@ export const keep = (roll, positions) => (dispatch) => {
       positions,
     },
     success,
+    error,
   });
 };
 
