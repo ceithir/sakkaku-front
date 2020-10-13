@@ -38,13 +38,13 @@ const Intent = ({ onFinish, values, loading }) => {
       <Form.Item label="Character" name="character" rules={defaultRules}>
         <Input />
       </Form.Item>
+      <Form.Item label="TN" name="tn" rules={defaultRules}>
+        <InputNumber min={1} />
+      </Form.Item>
       <Form.Item label="Description" name="description" rules={defaultRules}>
         <TextArea />
       </Form.Item>
       <Divider />
-      <Form.Item label="TN" name="tn" rules={defaultRules}>
-        <InputNumber min={1} />
-      </Form.Item>
       <Form.Item label="Ring" name="ring" rules={defaultRules}>
         <InputNumber min={1} max={5} />
       </Form.Item>
