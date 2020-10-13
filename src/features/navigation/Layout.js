@@ -2,6 +2,7 @@ import React from "react";
 import { Layout, Menu } from "antd";
 import logo from "./logo.png";
 import styles from "./Layout.module.css";
+import { Link } from "react-router-dom";
 
 const { Header, Content, Footer } = Layout;
 
@@ -11,15 +12,15 @@ const CustomLayout = ({ user, children }) => {
       <Header>
         <Menu theme="dark" mode="horizontal">
           <Menu.Item className={styles.logo}>
-            <a href="/">
+            <Link to="/">
               <img alt="Logo" src={logo} />
-            </a>
+            </Link>
           </Menu.Item>
           <Menu.Item>
-            <a href="/">Roll</a>
+            <Link to="/">Roll</Link>
           </Menu.Item>
           <Menu.Item>
-            <a href="/rolls">All rolls</a>
+            <Link to="/rolls">All rolls</Link>
           </Menu.Item>
           <Menu.Item className={styles.login}>
             {user ? (
