@@ -55,9 +55,6 @@ const columns = [
     title: "Description",
     dataIndex: "description",
     key: "description",
-    render: ({ description, id }) => {
-      return <Link to={`/rolls/${id}`}>{description}</Link>;
-    },
   },
   {
     title: "TN",
@@ -69,13 +66,20 @@ const columns = [
     title: "Result",
     dataIndex: "result",
     key: "result",
-    width: 160,
-    render: (result) => {
-      if (!result) {
-        return <Text type="secondary">Ongoing…</Text>;
-      }
-
-      return <Result {...result} />;
+    width: 200,
+    render: ({ result, id }) => {
+      return (
+        <div className={styles["see-more"]}>
+          {result ? (
+            <Result {...result} />
+          ) : (
+            <Text type="secondary">Ongoing…</Text>
+          )}
+          <Link title="See more" to={`/rolls/${id}`}>
+            {"➥"}
+          </Link>
+        </div>
+      );
     },
   },
   {
@@ -147,9 +151,9 @@ const List = () => {
         campaign,
         character: { campaign, character },
         player: user,
-        description: { description, id },
+        description,
         tn,
-        result,
+        result: { result, id },
         success: { result, tn },
       };
     }

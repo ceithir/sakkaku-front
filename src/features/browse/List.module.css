@@ -3,3 +3,13 @@
   margin-top: 12px;
   margin-bottom: 12px;
 }
+
+.see-more {
+  display: flex;
+  align-items: center;
+}
+
+.see-more a {
+  font-size: 20px;
+  margin-left: 6px;
+}

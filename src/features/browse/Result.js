@@ -8,11 +8,11 @@ const Result = ({ opportunity, success, strife }) => {
   return (
     <span className={styles.result}>
       <img src={successImage} title="Success" alt="Success" />
-      {`: ${success}, `}
+      <span>{`: ${success}, `}</span>
       <img src={opportunityImage} title="Opportunity" alt="Opportunity" />
-      {`: ${opportunity}, `}
+      <span>{`: ${opportunity}, `}</span>
       <img src={strifeImage} title="Strife" alt="Strife" />
-      {`: ${strife}`}
+      <span>{`: ${strife}`}</span>
     </span>
   );
 };
