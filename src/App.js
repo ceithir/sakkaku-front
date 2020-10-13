@@ -24,7 +24,7 @@ const App = () => {
       <Layout user={user}>
         <Switch>
           <Route path="/rolls/:id">
-            <IdentifiedRoll />
+            <IdentifiedRoll user={user} />
           </Route>
           <Route path="/rolls">
             <List />

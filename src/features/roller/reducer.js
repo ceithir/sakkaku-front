@@ -21,6 +21,8 @@ const slice = createSlice({
     softReset: (state) => {
       state.dices = [];
       state.metadata = {};
+      state.id = null;
+      window.history.pushState(null, null, "/rolls");
     },
     setParameters: (state, action) => {
       const {
@@ -40,7 +42,7 @@ const slice = createSlice({
       state.skill = skill;
       state.modifiers = modifiers;
     },
-    updateDices: (state, action) => {
+    setDices: (state, action) => {
       state.dices = action.payload;
     },
     setMetadata: (state, action) => {
@@ -50,7 +52,9 @@ const slice = createSlice({
       state.loading = action.payload;
     },
     setId: (state, action) => {
-      state.id = action.payload;
+      const id = action.payload;
+      state.id = id;
+      window.history.pushState(null, null, `/rolls/${id}`);
     },
     setPlayer: (state, action) => {
       state.player = action.payload;
@@ -58,15 +62,15 @@ const slice = createSlice({
   },
 });
 
-const {
+export const {
   setParameters,
-  updateDices,
+  setDices,
   setMetadata,
   setLoading,
   setId,
   setPlayer,
+  softReset,
 } = slice.actions;
-export const { softReset } = slice.actions;
 
 export const create = (request, user) => (dispatch) => {
   dispatch(setLoading(true));
@@ -95,7 +99,7 @@ export const create = (request, user) => (dispatch) => {
         description,
       },
       success: (data) => {
-        dispatch(updateDices(data["dices"]));
+        dispatch(setDices(data["dices"]));
         dispatch(setId(data["id"]));
         dispatch(setPlayer(user));
         dispatch(setLoading(false));
@@ -113,7 +117,7 @@ export const create = (request, user) => (dispatch) => {
       modifiers,
     },
     success: (data) => {
-      dispatch(updateDices(data["dices"]));
+      dispatch(setDices(data["dices"]));
       dispatch(setLoading(false));
     },
   });
@@ -123,7 +127,7 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
   dispatch(setLoading(true));
 
   const success = (data) => {
-    dispatch(updateDices(data["dices"]));
+    dispatch(setDices(data["dices"]));
     dispatch(setMetadata(data["metadata"]));
     dispatch(setLoading(false));
   };
@@ -160,7 +164,7 @@ export const keep = (roll, positions) => (dispatch) => {
   dispatch(setLoading(true));
 
   const success = (data) => {
-    dispatch(updateDices(data["dices"]));
+    dispatch(setDices(data["dices"]));
     dispatch(setLoading(false));
   };
 

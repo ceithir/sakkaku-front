@@ -11,12 +11,30 @@ import Complete from "./Complete";
 import Layout from "./Layout";
 import { Alert, Typography } from "antd";
 import styles from "./index.module.css";
+import {
+  setId,
+  setParameters,
+  setDices,
+  setMetadata,
+  setPlayer,
+} from "./reducer";
 
 const { Paragraph, Link } = Typography;
 
-const Roller = ({ user }) => {
+const Roller = ({ user, save }) => {
   const roll = useSelector(selectAll);
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (!save || !dispatch) {
+      return;
+    }
+    dispatch(setId(save.id));
+    dispatch(setParameters({ ...save, ...save.roll.parameters }));
+    dispatch(setDices(save.roll.dices));
+    dispatch(setMetadata(save.roll.metadata));
+    dispatch(setPlayer(save.user));
+  }, [save, dispatch]);
 
   const { dices, tn, metadata, modifiers, ring, loading } = roll;
 

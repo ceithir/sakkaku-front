@@ -7,8 +7,9 @@ import Complete from "./Complete";
 import Layout from "./Layout";
 import Summary from "./Summary";
 import DicesBox from "./DicesBox";
+import Roller from "./index";
 
-const IdentifiedRoll = () => {
+const IdentifiedRoll = ({ user }) => {
   const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
@@ -37,13 +38,17 @@ const IdentifiedRoll = () => {
     return <DefaultErrorMessage />;
   }
 
-  const { roll, user: player } = data;
+  const { roll, user: player, result } = data;
   const { dices, parameters } = roll;
+
+  if (!result && user && player && user.id === player.id) {
+    return <Roller user={user} save={data} />;
+  }
 
   return (
     <Layout>
       <Summary player={player} {...data} {...parameters} />
-      {data.result ? (
+      {result ? (
         <Complete
           dices={dices}
           tn={parameters.tn}
