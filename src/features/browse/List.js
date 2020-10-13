@@ -42,7 +42,11 @@ const columns = [
         return <Text delete>Deleted account</Text>;
       }
 
-      return <Text>{player.name}</Text>;
+      return (
+        <Link href={`/rolls?${queryString.stringify({ player: player.id })}`}>
+          {player.name}
+        </Link>
+      );
     },
   },
   {
