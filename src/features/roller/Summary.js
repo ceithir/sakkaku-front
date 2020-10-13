@@ -24,7 +24,9 @@ const Summary = ({
     <Card>
       <Descriptions title="Declared Intention" column={3} bordered>
         <Descriptions.Item label="Campaign">{campaign}</Descriptions.Item>
-        <Descriptions.Item label="Character">{character}</Descriptions.Item>
+        <Descriptions.Item label="Character" span={player ? 1 : 2}>
+          {character}
+        </Descriptions.Item>
         {player && (
           <Descriptions.Item label="Player">{player.name}</Descriptions.Item>
         )}
