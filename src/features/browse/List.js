@@ -12,6 +12,23 @@ const { Text } = Typography;
 
 const columns = [
   {
+    title: "Date",
+    dataIndex: "date",
+    key: "campaign",
+    render: (date) => {
+      return (
+        <Text>
+          {new Date(date).toLocaleDateString(undefined, {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            timeZoneName: "short",
+          })}
+        </Text>
+      );
+    },
+  },
+  {
     title: "Campaign",
     dataIndex: "campaign",
     key: "campaign",
@@ -143,11 +160,21 @@ const List = () => {
   }
 
   const dataSource = data.items.map(
-    ({ id, campaign, character, user, description, result, roll }) => {
+    ({
+      id,
+      created_at,
+      campaign,
+      character,
+      user,
+      description,
+      result,
+      roll,
+    }) => {
       const tn = roll.parameters.tn;
 
       return {
         key: id,
+        date: created_at,
         campaign,
         character: { campaign, character },
         player: user,
