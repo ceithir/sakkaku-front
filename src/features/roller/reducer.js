@@ -52,6 +52,9 @@ const slice = createSlice({
     setId: (state, action) => {
       state.id = action.payload;
     },
+    setPlayer: (state, action) => {
+      state.player = action.payload;
+    },
   },
 });
 
@@ -61,6 +64,7 @@ const {
   setMetadata,
   setLoading,
   setId,
+  setPlayer,
 } = slice.actions;
 export const { softReset } = slice.actions;
 
@@ -93,6 +97,7 @@ export const create = (request, user) => (dispatch) => {
       success: (data) => {
         dispatch(updateDices(data["dices"]));
         dispatch(setId(data["id"]));
+        dispatch(setPlayer(user));
         dispatch(setLoading(false));
       },
     });
