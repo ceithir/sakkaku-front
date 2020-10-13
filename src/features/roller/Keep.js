@@ -1,15 +1,8 @@
 import React, { useState } from "react";
 import DicesBox from "./DicesBox";
-import { Button } from "antd";
+import NextButton from "./NextButton";
 
-const Keep = ({
-  dices,
-  max,
-  onFinish,
-  compromised,
-  trulyCompromised,
-  loading,
-}) => {
+const Keep = ({ dices, max, onFinish, compromised, trulyCompromised }) => {
   const [toKeep, setToKeep] = useState([]);
 
   const canKeep = max > toKeep.length;
@@ -21,10 +14,23 @@ const Keep = ({
   };
   const text = trulyCompromised
     ? "You cannot keep any dice due to being compromised."
-    : `You can choose up to ${max} dice${max > 1 ? "s" : ""} to keep (min 1).`;
+    : `You can keep up to ${max} dice${max > 1 ? "s" : ""} (min 1).`;
+
+  const buttonText = () => {
+    if (trulyCompromised) {
+      return "Continue";
+    }
+
+    if (toKeep.length === 1) {
+      return "Keep that dice";
+    }
+
+    return "Keep these dices";
+  };
 
   return (
     <DicesBox
+      title={`Keep step`}
       text={text}
       dices={dices.map((dice, index) => {
         const selected = toKeep.includes(index);
@@ -41,13 +47,9 @@ const Keep = ({
       })}
       footer={
         (toKeep.length >= 1 || trulyCompromised) && (
-          <Button
-            type="primary"
-            onClick={() => onFinish(toKeep)}
-            disabled={loading}
-          >
-            Continue
-          </Button>
+          <NextButton onClick={() => onFinish(toKeep)}>
+            {buttonText()}
+          </NextButton>
         )
       }
     />

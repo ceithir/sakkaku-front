@@ -218,5 +218,6 @@ export const keep = (roll, positions) => (dispatch) => {
 };
 
 export const selectAll = (state) => state.roll;
+export const selectLoading = (state) => state.roll.loading;
 
 export default slice.reducer;

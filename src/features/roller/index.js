@@ -36,7 +36,7 @@ const Roller = ({ user, save }) => {
     dispatch(setPlayer(save.user));
   }, [save, dispatch]);
 
-  const { dices, tn, metadata, modifiers, ring, loading, error } = roll;
+  const { dices, tn, metadata, modifiers, ring, error } = roll;
 
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =
@@ -86,7 +86,6 @@ const Roller = ({ user, save }) => {
         <Intent
           onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
           values={roll}
-          loading={loading}
         />
       )}
       {dicesRolled && (
@@ -100,7 +99,6 @@ const Roller = ({ user, save }) => {
                   onFinish={(positions) =>
                     dispatch(reroll(roll, positions, "distinction"))
                   }
-                  loading={loading}
                 />
               )}
               {modifiers.includes("adversity") && (
@@ -109,7 +107,6 @@ const Roller = ({ user, save }) => {
                   onFinish={(positions) =>
                     dispatch(reroll(roll, positions, "adversity"))
                   }
-                  loading={loading}
                 />
               )}
             </>
@@ -125,7 +122,6 @@ const Roller = ({ user, save }) => {
                       onFinish={(data) => dispatch(keep(roll, data))}
                       compromised={compromised}
                       trulyCompromised={trulyCompromised}
-                      loading={loading}
                     />
                   )}
                   {atLeastOneKeptDice && (
@@ -133,7 +129,6 @@ const Roller = ({ user, save }) => {
                       dices={dices}
                       onFinish={(data) => dispatch(keep(roll, data))}
                       compromised={compromised}
-                      loading={loading}
                     />
                   )}
                 </>

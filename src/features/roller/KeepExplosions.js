@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import DicesBox from "./DicesBox";
-import { Button } from "antd";
+import NextButton from "./NextButton";
 
-const KeepExplosions = ({ dices, onFinish, compromised, loading }) => {
+const KeepExplosions = ({ dices, onFinish, compromised }) => {
   const [toKeep, setToKeep] = useState([]);
 
   useEffect(() => {
@@ -14,6 +14,18 @@ const KeepExplosions = ({ dices, onFinish, compromised, loading }) => {
       return setToKeep(toKeep.filter((i) => i !== index));
     }
     return setToKeep([...toKeep, index]);
+  };
+
+  const buttonText = () => {
+    if (toKeep.length === 0) {
+      return "Don't keep anything else";
+    }
+
+    if (toKeep.length === 1) {
+      return "Also keep that dice";
+    }
+
+    return "Also keep these dices";
   };
 
   return (
@@ -32,13 +44,7 @@ const KeepExplosions = ({ dices, onFinish, compromised, loading }) => {
         };
       })}
       footer={
-        <Button
-          type="primary"
-          onClick={() => onFinish(toKeep)}
-          disabled={loading}
-        >
-          Continue
-        </Button>
+        <NextButton onClick={() => onFinish(toKeep)}>{buttonText()}</NextButton>
       }
     />
   );

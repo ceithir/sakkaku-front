@@ -1,6 +1,7 @@
 import React from "react";
-import { Form, Input, InputNumber, Button, Radio, Switch, Divider } from "antd";
+import { Form, Input, InputNumber, Radio, Switch, Divider } from "antd";
 import styles from "./Intent.module.css";
+import NextButton from "./NextButton";
 
 const { TextArea } = Input;
 
@@ -16,7 +17,7 @@ const tailLayout = {
 
 const defaultRules = [{ required: true, message: "Please fill this field" }];
 
-const Intent = ({ onFinish, values, loading }) => {
+const Intent = ({ onFinish, values }) => {
   return (
     <Form
       className={`boxed ${styles.form}`}
@@ -72,14 +73,7 @@ const Intent = ({ onFinish, values, loading }) => {
       </Form.Item>
       <Divider />
       <Form.Item {...tailLayout}>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className={styles.submit}
-          disabled={loading}
-        >
-          Roll
-        </Button>
+        <NextButton htmlType="submit">Roll</NextButton>
       </Form.Item>
     </Form>
   );

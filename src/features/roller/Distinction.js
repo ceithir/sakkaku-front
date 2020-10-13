@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import DicesBox from "./DicesBox";
-import { Button } from "antd";
+import NextButton from "./NextButton";
 
-const Distinction = ({ dices, onFinish, loading }) => {
+const Distinction = ({ dices, onFinish }) => {
   const [toReroll, setToReroll] = useState([]);
   const max = 2;
   const toggle = (index) => {
@@ -45,13 +45,9 @@ const Distinction = ({ dices, onFinish, loading }) => {
         };
       })}
       footer={
-        <Button
-          type="primary"
-          onClick={() => onFinish(toReroll)}
-          disabled={loading}
-        >
+        <NextButton onClick={() => onFinish(toReroll)}>
           {buttonText()}
-        </Button>
+        </NextButton>
       }
     />
   );

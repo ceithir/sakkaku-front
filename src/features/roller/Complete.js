@@ -1,7 +1,8 @@
 import React from "react";
-import { Card, Button } from "antd";
+import { Card } from "antd";
 import Kept from "./Kept";
 import Result from "./Result";
+import NextButton from "./NextButton";
 
 const Complete = ({ dices, tn, onClick }) => {
   return (
@@ -9,9 +10,7 @@ const Complete = ({ dices, tn, onClick }) => {
       <Kept dices={dices} />
       <Card className="boxed">
         <Result dices={dices} tn={tn} />
-        <Button type="primary" onClick={onClick}>
-          Reroll
-        </Button>
+        <NextButton onClick={onClick}>New roll</NextButton>
       </Card>
     </>
   );
