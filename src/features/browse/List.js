@@ -5,8 +5,9 @@ import Result from "./Result";
 import queryString from "query-string";
 import styles from "./List.module.css";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
+import { Link, useLocation, useHistory } from "react-router-dom";
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 const columns = [
   {
@@ -15,7 +16,7 @@ const columns = [
     key: "campaign",
     render: (campaign) => {
       return (
-        <Link href={`/rolls?${queryString.stringify({ campaign })}`}>
+        <Link to={`/rolls?${queryString.stringify({ campaign })}`}>
           {campaign}
         </Link>
       );
@@ -27,7 +28,7 @@ const columns = [
     key: "character",
     render: ({ character, campaign }) => {
       return (
-        <Link href={`/rolls?${queryString.stringify({ campaign, character })}`}>
+        <Link to={`/rolls?${queryString.stringify({ campaign, character })}`}>
           {character}
         </Link>
       );
@@ -43,7 +44,7 @@ const columns = [
       }
 
       return (
-        <Link href={`/rolls?${queryString.stringify({ player: player.id })}`}>
+        <Link to={`/rolls?${queryString.stringify({ player: player.id })}`}>
           {player.name}
         </Link>
       );
@@ -54,7 +55,7 @@ const columns = [
     dataIndex: "description",
     key: "description",
     render: ({ description, id }) => {
-      return <Link href={`/rolls/${id}`}>{description}</Link>;
+      return <Link to={`/rolls/${id}`}>{description}</Link>;
     },
   },
   {
@@ -99,8 +100,10 @@ const List = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [data, setData] = useState();
+  const location = useLocation();
+  const history = useHistory();
 
-  const query = queryString.parse(window.location.search);
+  const query = queryString.parse(location.search);
   const page = parseInt(query["page"]) || 1;
   const uri = `/public/ffg/l5r/rolls?${queryString.stringify({
     ...query,
@@ -168,15 +171,15 @@ const List = () => {
         total={data["total"]}
         itemRender={(_, type, originalElement) => {
           if (type === "prev") {
-            return <a href={pageLink(page - 1)}>{"<"}</a>;
+            return <Link to={pageLink(page - 1)}>{"<"}</Link>;
           }
           if (type === "next") {
-            return <a href={pageLink(page + 1)}>{">"}</a>;
+            return <Link to={pageLink(page + 1)}>{">"}</Link>;
           }
           return originalElement;
         }}
         onChange={(pageNumber) => {
-          window.location = pageLink(pageNumber);
+          history.push(pageLink(pageNumber));
         }}
       />
     </>
