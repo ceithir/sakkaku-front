@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Spin, Card, Button } from "antd";
+import { Card, Button } from "antd";
 import { getOnServer } from "../../server";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import Complete from "./Complete";
@@ -8,6 +8,7 @@ import Layout from "./Layout";
 import Summary from "./Summary";
 import DicesBox from "./DicesBox";
 import Roller from "./index";
+import Loader from "../navigation/Loader";
 
 const IdentifiedRoll = ({ user }) => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const IdentifiedRoll = ({ user }) => {
   const [data, setData] = useState();
 
   useEffect(() => {
+    setLoading(true);
     getOnServer({
       uri: `/public/ffg/l5r/rolls/${id}`,
       success: (data) => {
@@ -31,11 +33,15 @@ const IdentifiedRoll = ({ user }) => {
   }, [id]);
 
   if (loading) {
-    return <Spin />;
+    return <Loader />;
   }
 
   if (error) {
     return <DefaultErrorMessage />;
+  }
+
+  if (!data) {
+    return null;
   }
 
   const { roll, user: player, result } = data;

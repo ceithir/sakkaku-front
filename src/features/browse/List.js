@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Spin, Table, Typography, Pagination } from "antd";
+import { Table, Typography, Pagination } from "antd";
 import { getOnServer } from "../../server";
 import Result from "./Result";
 import queryString from "query-string";
 import styles from "./List.module.css";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import { Link, useLocation, useHistory } from "react-router-dom";
+import Loader from "../navigation/Loader";
 
 const { Text } = Typography;
 
@@ -111,6 +112,7 @@ const List = () => {
   })}`;
 
   useEffect(() => {
+    setLoading(true);
     getOnServer({
       uri,
       success: (data) => {
@@ -125,7 +127,7 @@ const List = () => {
   }, [uri]);
 
   if (loading) {
-    return <Spin />;
+    return <Loader />;
   }
 
   if (error) {
