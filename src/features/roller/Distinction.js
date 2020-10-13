@@ -12,9 +12,27 @@ const Distinction = ({ dices, onFinish, loading }) => {
     return setToReroll([...toReroll, index]);
   };
 
+  const buttonText = () => {
+    if (toReroll.length === 0) {
+      return "Don't reroll anything";
+    }
+
+    if (toReroll.length === 1) {
+      return "Reroll that dice";
+    }
+
+    return "Reroll these dices";
+  };
+
   return (
     <DicesBox
-      text={`You can choose up to ${max} dices to reroll.`}
+      title={`Reroll step`}
+      text={
+        <>
+          Thanks to your <strong>Distinction</strong>, you can select up to{" "}
+          {max} dices to be rerolled:
+        </>
+      }
       dices={dices.map((dice, index) => {
         const selected = toReroll.includes(index);
         const selectable = selected || toReroll.length < max;
@@ -32,7 +50,7 @@ const Distinction = ({ dices, onFinish, loading }) => {
           onClick={() => onFinish(toReroll)}
           disabled={loading}
         >
-          Continue
+          {buttonText()}
         </Button>
       }
     />
