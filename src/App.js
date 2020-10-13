@@ -5,6 +5,7 @@ import Layout from "./features/navigation/Layout";
 import { getOnServer } from "./server";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import List from "./features/browse/List";
+import IdentifiedRoll from "./features/roller/IdentifiedRoll";
 
 const App = () => {
   const [user, setUser] = useState();
@@ -22,6 +23,9 @@ const App = () => {
     <Router>
       <Layout user={user}>
         <Switch>
+          <Route path="/rolls/:id">
+            <IdentifiedRoll />
+          </Route>
           <Route path="/rolls">
             <List />
           </Route>

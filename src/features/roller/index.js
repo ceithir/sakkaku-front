@@ -1,16 +1,14 @@
 import React from "react";
-import styles from "./index.module.css";
 import Intent from "./Intent";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAll, create, softReset, keep, reroll } from "./reducer";
-import { Button } from "antd";
 import Keep from "./Keep";
 import KeepExplosions from "./KeepExplosions";
-import Kept from "./Kept";
-import Result from "./Result";
 import Distinction from "./Distinction";
 import Adversity from "./Adversity";
 import Summary from "./Summary";
+import Complete from "./Complete";
+import Layout from "./Layout";
 
 const Roller = ({ user }) => {
   const roll = useSelector(selectAll);
@@ -38,81 +36,74 @@ const Roller = ({ user }) => {
   const voided = modifiers.includes("void");
 
   return (
-    <div className={styles.layout}>
-      <>
-        {!dicesRolled && (
-          <Intent
-            onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
-            values={roll}
-            loading={loading}
-          />
-        )}
-        {dicesRolled && (
-          <>
-            <Summary {...roll} />
-            {!rerollDone && (
-              <>
-                {modifiers.includes("distinction") && (
-                  <Distinction
-                    dices={dices}
-                    onFinish={(positions) =>
-                      dispatch(reroll(roll, positions, "distinction"))
-                    }
-                    loading={loading}
-                  />
-                )}
-                {modifiers.includes("adversity") && (
-                  <Adversity
-                    dices={dices}
-                    onFinish={(positions) =>
-                      dispatch(reroll(roll, positions, "adversity"))
-                    }
-                    loading={loading}
-                  />
-                )}
-              </>
-            )}
-            {rerollDone && (
-              <>
-                {atLeastOneUnresolvedDice ? (
-                  <>
-                    {!atLeastOneKeptDice && (
-                      <Keep
-                        dices={dices}
-                        max={voided ? ring + 1 : ring}
-                        onFinish={(data) => dispatch(keep(roll, data))}
-                        compromised={compromised}
-                        trulyCompromised={trulyCompromised}
-                        loading={loading}
-                      />
-                    )}
-                    {atLeastOneKeptDice && (
-                      <KeepExplosions
-                        dices={dices}
-                        onFinish={(data) => dispatch(keep(roll, data))}
-                        compromised={compromised}
-                        loading={loading}
-                      />
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <Kept dices={dices} trulyCompromised={trulyCompromised} />
-                    <Result dices={keptDices} tn={tn} />
-                    <Button
-                      type="primary"
-                      onClick={() => dispatch(softReset())}
-                    >
-                      Reroll
-                    </Button>
-                  </>
-                )}
-              </>
-            )}
-          </>
-        )}
-      </>
-    </div>
+    <Layout>
+      {!dicesRolled && (
+        <Intent
+          onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
+          values={roll}
+          loading={loading}
+        />
+      )}
+      {dicesRolled && (
+        <>
+          <Summary {...roll} />
+          {!rerollDone && (
+            <>
+              {modifiers.includes("distinction") && (
+                <Distinction
+                  dices={dices}
+                  onFinish={(positions) =>
+                    dispatch(reroll(roll, positions, "distinction"))
+                  }
+                  loading={loading}
+                />
+              )}
+              {modifiers.includes("adversity") && (
+                <Adversity
+                  dices={dices}
+                  onFinish={(positions) =>
+                    dispatch(reroll(roll, positions, "adversity"))
+                  }
+                  loading={loading}
+                />
+              )}
+            </>
+          )}
+          {rerollDone && (
+            <>
+              {atLeastOneUnresolvedDice ? (
+                <>
+                  {!atLeastOneKeptDice && (
+                    <Keep
+                      dices={dices}
+                      max={voided ? ring + 1 : ring}
+                      onFinish={(data) => dispatch(keep(roll, data))}
+                      compromised={compromised}
+                      trulyCompromised={trulyCompromised}
+                      loading={loading}
+                    />
+                  )}
+                  {atLeastOneKeptDice && (
+                    <KeepExplosions
+                      dices={dices}
+                      onFinish={(data) => dispatch(keep(roll, data))}
+                      compromised={compromised}
+                      loading={loading}
+                    />
+                  )}
+                </>
+              ) : (
+                <Complete
+                  dices={dices}
+                  tn={tn}
+                  onClick={() => dispatch(softReset())}
+                />
+              )}
+            </>
+          )}
+        </>
+      )}
+    </Layout>
   );
 };
 

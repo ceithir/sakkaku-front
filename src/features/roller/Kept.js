@@ -1,10 +1,8 @@
 import React from "react";
 import DicesBox from "./DicesBox";
 
-const Kept = ({ dices, trulyCompromised }) => {
-  const text = trulyCompromised
-    ? "You couldn't keep any dice due to being compromised."
-    : "You have kept:";
+const Kept = ({ dices }) => {
+  const text = "Dices kept:";
 
   return (
     <DicesBox

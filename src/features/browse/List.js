@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Spin, Alert, Table, Typography, Pagination } from "antd";
+import { Spin, Table, Typography, Pagination } from "antd";
 import { getOnServer } from "../../server";
 import Result from "./Result";
 import queryString from "query-string";
 import styles from "./List.module.css";
+import DefaultErrorMessage from "../../DefaultErrorMessage";
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 const columns = [
   {
@@ -34,6 +35,9 @@ const columns = [
     title: "Description",
     dataIndex: "description",
     key: "description",
+    render: ({ description, id }) => {
+      return <Link href={`/rolls/${id}`}>{description}</Link>;
+    },
   },
   {
     title: "TN",
@@ -99,13 +103,7 @@ const List = () => {
   }
 
   if (error) {
-    return (
-      <Alert
-        message="Something bad happened. Try reloading the page. If things are still broken, please contact administrator through the link at the bottom of the page."
-        type="error"
-        banner={true}
-      />
-    );
+    return <DefaultErrorMessage />;
   }
 
   const dataSource = data.items.map(
@@ -117,7 +115,7 @@ const List = () => {
         campaign,
         character,
         player: user,
-        description,
+        description: { description, id },
         tn,
         result,
         success: { result, tn },

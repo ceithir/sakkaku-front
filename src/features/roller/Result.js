@@ -4,10 +4,12 @@ import { Typography, List } from "antd";
 const { Text } = Typography;
 
 const Result = ({ dices, tn }) => {
+  const keptDices = dices.filter(({ status }) => status === "kept");
+
   const data = [
     {
       type: "Successes",
-      count: dices.reduce(
+      count: keptDices.reduce(
         (acc, dice) =>
           acc + (dice.value.explosion || 0) + (dice.value.success || 0),
         0
@@ -16,11 +18,11 @@ const Result = ({ dices, tn }) => {
     },
     {
       type: "Strifes",
-      count: dices.reduce((acc, dice) => acc + (dice.value.strife || 0), 0),
+      count: keptDices.reduce((acc, dice) => acc + (dice.value.strife || 0), 0),
     },
     {
       type: "Opportunities",
-      count: dices.reduce(
+      count: keptDices.reduce(
         (acc, dice) => acc + (dice.value.opportunity || 0),
         0
       ),
