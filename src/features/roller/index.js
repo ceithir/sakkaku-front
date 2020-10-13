@@ -3,13 +3,14 @@ import styles from "./index.module.css";
 import Intent from "./Intent";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAll, create, softReset, keep, reroll } from "./reducer";
-import { Button, Card } from "antd";
+import { Button } from "antd";
 import Keep from "./Keep";
 import KeepExplosions from "./KeepExplosions";
 import Kept from "./Kept";
 import Result from "./Result";
 import Distinction from "./Distinction";
 import Adversity from "./Adversity";
+import Summary from "./Summary";
 
 const Roller = ({ user }) => {
   const roll = useSelector(selectAll);
@@ -38,15 +39,17 @@ const Roller = ({ user }) => {
 
   return (
     <div className={styles.layout}>
-      <Card>
-        <Intent
-          completed={dicesRolled}
-          onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
-          values={roll}
-          loading={loading}
-        />
+      <>
+        {!dicesRolled && (
+          <Intent
+            onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
+            values={roll}
+            loading={loading}
+          />
+        )}
         {dicesRolled && (
           <>
+            <Summary {...roll} />
             {!rerollDone && (
               <>
                 {modifiers.includes("distinction") && (
@@ -108,7 +111,7 @@ const Roller = ({ user }) => {
             )}
           </>
         )}
-      </Card>
+      </>
     </div>
   );
 };
