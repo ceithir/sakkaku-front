@@ -12,9 +12,22 @@ const Keep = ({ dices, max, onFinish, compromised, trulyCompromised }) => {
     }
     return setToKeep([...toKeep, index]);
   };
-  const text = trulyCompromised
-    ? "You cannot keep any dice due to being compromised."
-    : `You can keep up to ${max} dice${max > 1 ? "s" : ""} (min 1).`;
+
+  const text = () => {
+    if (trulyCompromised) {
+      return "Being compromised, you cannot keep any dice with strife… Which, in this very specific case, means you cannot keep any dice at all.";
+    }
+
+    const defaultText = `You can keep up to ${max} dice${
+      max > 1 ? "s" : ""
+    } (min 1).`;
+
+    if (compromised) {
+      return `${defaultText} Due to being compromised, you however cannot keep any dice with strife.`;
+    }
+
+    return defaultText;
+  };
 
   const buttonText = () => {
     if (trulyCompromised) {
@@ -31,7 +44,7 @@ const Keep = ({ dices, max, onFinish, compromised, trulyCompromised }) => {
   return (
     <DicesBox
       title={`Keep step`}
-      text={text}
+      text={text()}
       dices={dices.map((dice, index) => {
         const selected = toKeep.includes(index);
         const available =
