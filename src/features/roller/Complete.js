@@ -1,18 +1,27 @@
 import React from "react";
-import { Card } from "antd";
-import Kept from "./Kept";
 import Result from "./Result";
 import NextButton from "./NextButton";
+import DicesBox from "./DicesBox";
 
 const Complete = ({ dices, tn, onClick }) => {
   return (
-    <>
-      <Kept dices={dices} />
-      <Card className="boxed">
-        <Result dices={dices} tn={tn} />
-        <NextButton onClick={onClick}>New roll</NextButton>
-      </Card>
-    </>
+    <DicesBox
+      title={`Check Result`}
+      dices={dices.map((dice) => {
+        const selected = dice.status === "kept";
+        return {
+          ...dice,
+          disabled: !selected,
+          selected,
+        };
+      })}
+      footer={
+        <>
+          <Result dices={dices} tn={tn} />
+          <NextButton onClick={onClick}>New roll</NextButton>
+        </>
+      }
+    />
   );
 };
 

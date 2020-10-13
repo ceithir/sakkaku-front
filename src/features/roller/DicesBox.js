@@ -8,7 +8,7 @@ const DicesBox = ({ dices, text, footer, title }) => {
   return (
     <Card className="boxed">
       {title && <Title level={3}>{title}</Title>}
-      <Paragraph>{text}</Paragraph>
+      {text && <Paragraph>{text}</Paragraph>}
       <Dices dices={dices} />
       {footer}
     </Card>
