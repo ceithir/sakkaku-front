@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DicesBox from "./DicesBox";
 import { Button } from "antd";
 
 const KeepExplosions = ({ dices, onFinish, compromised, loading }) => {
   const [toKeep, setToKeep] = useState([]);
+
+  useEffect(() => {
+    setToKeep([]);
+  }, [dices.length]);
+
   const toggle = (index) => {
     if (toKeep.includes(index)) {
       return setToKeep(toKeep.filter((i) => i !== index));
