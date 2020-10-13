@@ -92,8 +92,8 @@ const List = () => {
         setLoading(false);
       },
       error: (_) => {
-        setLoading(false);
         setError(true);
+        setLoading(false);
       },
     });
   }, [page]);
@@ -104,6 +104,10 @@ const List = () => {
 
   if (error) {
     return <DefaultErrorMessage />;
+  }
+
+  if (!data) {
+    return null;
   }
 
   const dataSource = data.items.map(
