@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography, List } from "antd";
+import { countDices } from "./utils";
 
 const { Text } = Typography;
 
@@ -8,19 +9,7 @@ const Result = ({ dices, tn, extra }) => {
     return status === "kept" || (extra && extra.includes(index));
   });
 
-  const successCount = keptDices.reduce(
-    (acc, dice) =>
-      acc + (dice.value.explosion || 0) + (dice.value.success || 0),
-    0
-  );
-  const opportunityCount = keptDices.reduce(
-    (acc, dice) => acc + (dice.value.opportunity || 0),
-    0
-  );
-  const strifeCount = keptDices.reduce(
-    (acc, dice) => acc + (dice.value.strife || 0),
-    0
-  );
+  const { successCount, opportunityCount, strifeCount } = countDices(keptDices);
 
   const data = [
     {
