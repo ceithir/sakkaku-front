@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Tooltip } from "antd";
+import { List } from "antd";
 import styles from "./Dices.module.css";
 import classNames from "classnames";
 import Dice from "./Dice";
@@ -29,23 +29,6 @@ const Dices = ({ dices }) => {
         const rerolled = dice.status === "rerolled";
         const fromReroll = modifier && dice.status !== "rerolled";
 
-        const tooltipText = () => {
-          if (rerolled) {
-            if (modifier === "adversity") {
-              return "Rerolled due to Adversity";
-            }
-            if (modifier === "distinction") {
-              return "Rerolled thanks to Distinction";
-            }
-          }
-
-          if (fromReroll) {
-            return "This dice is the result of a reroll";
-          }
-
-          return;
-        };
-
         return (
           <List.Item
             key={key}
@@ -58,11 +41,7 @@ const Dices = ({ dices }) => {
             })}
             onClick={selectable ? toggle : undefined}
           >
-            <Tooltip title={tooltipText()}>
-              <div>
-                <Dice dice={dice} />
-              </div>
-            </Tooltip>
+            <Dice dice={dice} />
           </List.Item>
         );
       }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "antd";
+import { Tooltip, Image } from "antd";
 import blankRing from "./images/black.png";
 import strifeOpportunityRing from "./images/blackot.png";
 import strifeSuccessRing from "./images/blackst.png";
@@ -63,7 +63,7 @@ const getImage = ({
   return blankRing;
 };
 
-const getText = ({ value: { opportunity, strife, success, explosion } }) => {
+const valueText = ({ value: { opportunity, strife, success, explosion } }) => {
   return (
     [
       opportunity && `Opportunity: ${opportunity}`,
@@ -72,13 +72,46 @@ const getText = ({ value: { opportunity, strife, success, explosion } }) => {
       strife && `Strife: ${strife}`,
     ]
       .filter(Boolean)
-      .join("; ") || "Nothing"
+      .join("; ") || "Blank"
   );
 };
 
+const statusText = ({ status, metadata }) => {
+  const modifier = metadata?.modifier;
+  const rerolled = status === "rerolled";
+  const fromReroll = modifier && status !== "rerolled";
+
+  if (rerolled) {
+    if (modifier === "adversity") {
+      return "Rerolled due to Adversity";
+    }
+    if (modifier === "distinction") {
+      return "Rerolled thanks to Distinction";
+    }
+  }
+
+  return [
+    fromReroll && modifier === "adversity" && "Adversity reroll",
+    fromReroll && modifier === "distinction" && "Distinction reroll",
+    status === "dropped" && "Dropped",
+    status === "kept" && "Kept",
+  ]
+    .filter(Boolean)
+    .join(" – ");
+};
+
+const getText = (dice) => {
+  return [valueText(dice), statusText(dice)].filter(Boolean).join(" – ");
+};
+
 const Dice = ({ dice }) => {
-  const text = getText(dice);
-  return <Image src={getImage(dice)} alt={text} title={text} preview={false} />;
+  return (
+    <Tooltip title={getText(dice)}>
+      <div>
+        <Image src={getImage(dice)} alt={valueText(dice)} preview={false} />
+      </div>
+    </Tooltip>
+  );
 };
 
 export default Dice;
