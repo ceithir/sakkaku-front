@@ -1,6 +1,7 @@
 import React from "react";
 import Dices from "./Dices";
 import { Typography, Card } from "antd";
+import styles from "./DicesBox.module.css";
 
 const { Paragraph, Title } = Typography;
 
@@ -10,7 +11,7 @@ const DicesBox = ({ dices, text, footer, title }) => {
       {title && <Title level={3}>{title}</Title>}
       {text && <Paragraph>{text}</Paragraph>}
       <Dices dices={dices} />
-      {footer}
+      {footer && <div className={styles.footer}>{footer}</div>}
     </Card>
   );
 };

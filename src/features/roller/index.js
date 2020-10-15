@@ -37,7 +37,7 @@ const Roller = ({ user, save }) => {
     dispatch(setPlayer(save.user));
   }, [save, dispatch]);
 
-  const { dices, tn, metadata, modifiers, ring, error } = roll;
+  const { dices, tn, metadata, modifiers, ring, error, id, description } = roll;
 
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =
@@ -145,6 +145,8 @@ const Roller = ({ user, save }) => {
                       New roll
                     </NextButton>
                   }
+                  id={id}
+                  description={description}
                 />
               )}
             </>

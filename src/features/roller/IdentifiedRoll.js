@@ -54,7 +54,7 @@ const IdentifiedRoll = ({ user }) => {
     return null;
   }
 
-  const { roll, user: player, result } = data;
+  const { roll, user: player, result, description } = data;
   const { dices, parameters } = roll;
 
   if (!result && user && player && user.id === player.id) {
@@ -65,7 +65,13 @@ const IdentifiedRoll = ({ user }) => {
     <>
       <Summary player={player} {...data} {...parameters} />
       {result ? (
-        <Complete dices={dices} tn={parameters.tn} footer={<GoBackButton />} />
+        <Complete
+          dices={dices}
+          tn={parameters.tn}
+          footer={<GoBackButton />}
+          id={id}
+          description={description}
+        />
       ) : (
         <DicesBox
           text={`Check in progress. Current dice pool:`}

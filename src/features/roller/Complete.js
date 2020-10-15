@@ -1,8 +1,9 @@
 import React from "react";
 import Result from "./Result";
 import DicesBox from "./DicesBox";
+import BbCode from "./BbCode";
 
-const Complete = ({ dices, tn, footer }) => {
+const Complete = ({ dices, tn, footer, id, description }) => {
   return (
     <DicesBox
       title={`Check Result`}
@@ -18,6 +19,9 @@ const Complete = ({ dices, tn, footer }) => {
       footer={
         <>
           <Result dices={dices} tn={tn} />
+          {id && (
+            <BbCode id={id} dices={dices} tn={tn} description={description} />
+          )}
           {footer}
         </>
       }
