@@ -1,5 +1,6 @@
 import React from "react";
 import { Descriptions, Card } from "antd";
+import { Link } from "react-router-dom";
 
 const Summary = ({
   campaign,
@@ -27,12 +28,18 @@ const Summary = ({
         column={{ md: 3, sm: 1, xs: 1 }}
         bordered
       >
-        <Descriptions.Item label="Campaign">{campaign}</Descriptions.Item>
+        <Descriptions.Item label="Campaign">
+          <Link to={`/rolls?campaign=${campaign}`}>{campaign}</Link>
+        </Descriptions.Item>
         <Descriptions.Item label="Character" span={player ? 1 : 2}>
-          {character}
+          <Link to={`/rolls?campaign=${campaign}&character=${character}`}>
+            {character}
+          </Link>
         </Descriptions.Item>
         {player && (
-          <Descriptions.Item label="Player">{player.name}</Descriptions.Item>
+          <Descriptions.Item label="Player">
+            <Link to={`/rolls?player=${player.id}`}>{player.name}</Link>
+          </Descriptions.Item>
         )}
         <Descriptions.Item label="Description" span={3}>
           {description}
