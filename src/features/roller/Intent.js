@@ -1,5 +1,13 @@
 import React from "react";
-import { Form, Input, InputNumber, Radio, Switch, Divider } from "antd";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Radio,
+  Switch,
+  Divider,
+  AutoComplete,
+} from "antd";
 import styles from "./Intent.module.css";
 import NextButton from "./NextButton";
 
@@ -17,7 +25,19 @@ const tailLayout = {
 
 const defaultRules = [{ required: true, message: "Please fill this field" }];
 
-const Intent = ({ onFinish, values }) => {
+const arrayToAutoCompleteOptions = (values) => {
+  if (!values) {
+    return undefined;
+  }
+
+  return values.map((value) => {
+    return {
+      value,
+    };
+  });
+};
+
+const Intent = ({ onFinish, values, user }) => {
   return (
     <Form
       className={`boxed ${styles.form}`}
@@ -35,10 +55,10 @@ const Intent = ({ onFinish, values }) => {
       }}
     >
       <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
-        <Input />
+        <AutoComplete options={arrayToAutoCompleteOptions(user?.campaigns)} />
       </Form.Item>
       <Form.Item label="Character" name="character" rules={defaultRules}>
-        <Input />
+        <AutoComplete options={arrayToAutoCompleteOptions(user?.characters)} />
       </Form.Item>
       <Form.Item label="TN" name="tn" rules={defaultRules}>
         <InputNumber min={1} />

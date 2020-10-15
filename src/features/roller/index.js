@@ -87,6 +87,7 @@ const Roller = ({ user, save }) => {
         <Intent
           onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
           values={roll}
+          user={user}
         />
       )}
       {dicesRolled && (
