@@ -3,8 +3,10 @@ import { Typography, List } from "antd";
 
 const { Text } = Typography;
 
-const Result = ({ dices, tn }) => {
-  const keptDices = dices.filter(({ status }) => status === "kept");
+const Result = ({ dices, tn, extra }) => {
+  const keptDices = dices.filter(({ status }, index) => {
+    return status === "kept" || (extra && extra.includes(index));
+  });
 
   const data = [
     {

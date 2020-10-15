@@ -124,6 +124,7 @@ const Roller = ({ user, save }) => {
                       onFinish={(data) => dispatch(keep(roll, data))}
                       compromised={compromised}
                       trulyCompromised={trulyCompromised}
+                      tn={tn}
                     />
                   )}
                   {atLeastOneKeptDice && (
@@ -131,6 +132,7 @@ const Roller = ({ user, save }) => {
                       dices={dices}
                       onFinish={(data) => dispatch(keep(roll, data))}
                       compromised={compromised}
+                      tn={tn}
                     />
                   )}
                 </>

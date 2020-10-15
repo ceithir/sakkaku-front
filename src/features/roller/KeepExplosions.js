@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import DicesBox from "./DicesBox";
 import NextButton from "./NextButton";
+import Result from "./Result";
 
-const KeepExplosions = ({ dices, onFinish, compromised }) => {
+const KeepExplosions = ({ dices, onFinish, compromised, tn }) => {
   const [toKeep, setToKeep] = useState([]);
 
   useEffect(() => {
@@ -44,7 +45,12 @@ const KeepExplosions = ({ dices, onFinish, compromised }) => {
         };
       })}
       footer={
-        <NextButton onClick={() => onFinish(toKeep)}>{buttonText()}</NextButton>
+        <>
+          <Result dices={dices} tn={tn} extra={toKeep} />
+          <NextButton onClick={() => onFinish(toKeep)}>
+            {buttonText()}
+          </NextButton>
+        </>
       }
     />
   );

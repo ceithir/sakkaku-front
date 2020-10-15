@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import DicesBox from "./DicesBox";
 import NextButton from "./NextButton";
+import Result from "./Result";
 
-const Keep = ({ dices, max, onFinish, compromised, trulyCompromised }) => {
+const Keep = ({ dices, max, onFinish, compromised, trulyCompromised, tn }) => {
   const [toKeep, setToKeep] = useState([]);
 
   const canKeep = max > toKeep.length;
@@ -59,11 +60,14 @@ const Keep = ({ dices, max, onFinish, compromised, trulyCompromised }) => {
         };
       })}
       footer={
-        (toKeep.length >= 1 || trulyCompromised) && (
-          <NextButton onClick={() => onFinish(toKeep)}>
-            {buttonText()}
-          </NextButton>
-        )
+        <>
+          <Result dices={dices} tn={tn} extra={toKeep} />
+          {(toKeep.length >= 1 || trulyCompromised) && (
+            <NextButton onClick={() => onFinish(toKeep)}>
+              {buttonText()}
+            </NextButton>
+          )}
+        </>
       }
     />
   );
