@@ -24,17 +24,17 @@ const Result = ({ dices, tn, extra }) => {
 
   const data = [
     {
-      type: "Successes",
+      type: "Success",
       count: successCount,
       color: successCount >= tn ? "success" : "warning",
       extra: ` (required: ${tn})`,
     },
     {
-      type: "Opportunities",
+      type: "Opportunity",
       count: opportunityCount,
     },
     {
-      type: "Strifes",
+      type: "Strife",
       count: strifeCount,
       color: strifeCount > 0 && "danger",
     },
