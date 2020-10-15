@@ -8,26 +8,35 @@ const Result = ({ dices, tn, extra }) => {
     return status === "kept" || (extra && extra.includes(index));
   });
 
+  const successCount = keptDices.reduce(
+    (acc, dice) =>
+      acc + (dice.value.explosion || 0) + (dice.value.success || 0),
+    0
+  );
+  const opportunityCount = keptDices.reduce(
+    (acc, dice) => acc + (dice.value.opportunity || 0),
+    0
+  );
+  const strifeCount = keptDices.reduce(
+    (acc, dice) => acc + (dice.value.strife || 0),
+    0
+  );
+
   const data = [
     {
       type: "Successes",
-      count: keptDices.reduce(
-        (acc, dice) =>
-          acc + (dice.value.explosion || 0) + (dice.value.success || 0),
-        0
-      ),
-      target: tn,
-    },
-    {
-      type: "Strifes",
-      count: keptDices.reduce((acc, dice) => acc + (dice.value.strife || 0), 0),
+      count: successCount,
+      color: successCount >= tn ? "success" : "warning",
+      extra: ` (required: ${tn})`,
     },
     {
       type: "Opportunities",
-      count: keptDices.reduce(
-        (acc, dice) => acc + (dice.value.opportunity || 0),
-        0
-      ),
+      count: opportunityCount,
+    },
+    {
+      type: "Strifes",
+      count: strifeCount,
+      color: strifeCount > 0 && "danger",
     },
   ];
 
@@ -35,13 +44,10 @@ const Result = ({ dices, tn, extra }) => {
     <List
       grid={{ gutter: 16, column: 3 }}
       dataSource={data}
-      renderItem={({ type, count, target }) => (
+      renderItem={({ type, count, color, extra }) => (
         <List.Item>
-          <Text
-            strong
-            type={target && (count >= target ? "success" : "warning")}
-          >{`${type}: ${count}`}</Text>
-          {target && <Text>{` (required: ${target})`}</Text>}
+          <Text strong type={color}>{`${type}: ${count}`}</Text>
+          {extra && <Text>{extra}</Text>}
         </List.Item>
       )}
     />
