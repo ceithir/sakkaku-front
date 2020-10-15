@@ -23,7 +23,7 @@ const slice = createSlice({
       state.dices = [];
       state.metadata = {};
       state.id = null;
-      window.history.pushState(null, null, "/rolls");
+      window.history.pushState(null, null, "/");
     },
     setParameters: (state, action) => {
       const {
