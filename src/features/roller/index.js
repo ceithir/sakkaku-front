@@ -113,7 +113,7 @@ const Roller = ({ save }) => {
           <Steps current={currentStep()} className={styles.steps}>
             <Step title={"Declare"} description={"Declare Intention"} />
             <Step title={"Reroll"} description={"Modify Rolled Dice"} />
-            <Step title={"Keep"} description={"Chose Kept Dice"} />
+            <Step title={"Keep"} description={"Choose Kept Dice"} />
             <Step title={"Resolve"} description={"Resolve Symbols"} />
           </Steps>
           <Summary {...roll} />
