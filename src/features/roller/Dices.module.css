@@ -1,6 +1,11 @@
-.dice {
+.dices {
+  margin-bottom: 16px;
+}
+
+.dices .dice {
   padding: 4px !important;
   margin-right: 2px;
+  margin-bottom: 0 !important;
 }
 
 .selectable {
