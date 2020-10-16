@@ -10,8 +10,13 @@ import {
 } from "antd";
 import styles from "./Intent.module.css";
 import NextButton from "./NextButton";
-import { useSelector } from "react-redux";
-import { selectCampaigns, selectCharacters } from "../user/reducer";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectCampaigns,
+  selectCharacters,
+  addCampaign,
+  addCharacter,
+} from "../user/reducer";
 
 const { TextArea } = Input;
 
@@ -42,22 +47,28 @@ const arrayToAutoCompleteOptions = (values) => {
 const Intent = ({ onFinish, values }) => {
   const campaigns = useSelector(selectCampaigns);
   const characters = useSelector(selectCharacters);
+  const dispatch = useDispatch();
+
+  const wrappedOnFinish = (data) => {
+    dispatch(addCampaign(data["campaign"]));
+    dispatch(addCharacter(data["character"]));
+
+    onFinish({
+      ...data,
+      modifiers: [
+        data["modifier"],
+        data["compromised"] && "compromised",
+        data["void"] && "void",
+      ].filter(Boolean),
+    });
+  };
 
   return (
     <Form
       className={`boxed ${styles.form}`}
       {...layout}
       initialValues={values}
-      onFinish={(data) => {
-        onFinish({
-          ...data,
-          modifiers: [
-            data["modifier"],
-            data["compromised"] && "compromised",
-            data["void"] && "void",
-          ].filter(Boolean),
-        });
-      }}
+      onFinish={wrappedOnFinish}
     >
       <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
         <AutoComplete options={arrayToAutoCompleteOptions(campaigns)} />
