@@ -4,7 +4,7 @@ import styles from "./Dices.module.css";
 import classNames from "classnames";
 import Dice from "./Dice";
 
-const Dices = ({ dices }) => {
+const Dices = ({ dices, theme }) => {
   if (!dices?.length) {
     return null;
   }
@@ -38,6 +38,7 @@ const Dices = ({ dices }) => {
               [styles.unselectable]: disabled,
               [styles.rerolled]: rerolled,
               [styles["from-reroll"]]: fromReroll,
+              [styles[`theme-${theme}`]]: !!theme,
             })}
             onClick={selectable ? toggle : undefined}
           >

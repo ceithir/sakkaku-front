@@ -27,3 +27,11 @@
 .from-reroll {
   border: 1px solid #ffbb96 !important;
 }
+
+.theme-reroll.selectable:hover {
+  background-color: #ff7a45;
+}
+
+.theme-reroll.selected {
+  background-color: #ffbb96;
+}
