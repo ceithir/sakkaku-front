@@ -8,7 +8,7 @@ import Distinction from "./Distinction";
 import Adversity from "./Adversity";
 import Summary from "./Summary";
 import Complete from "./Complete";
-import { Alert, Typography } from "antd";
+import { Alert, Typography, Steps } from "antd";
 import styles from "./index.module.css";
 import {
   setId,
@@ -22,6 +22,7 @@ import NextButton from "./NextButton";
 import { selectUser } from "../user/reducer";
 
 const { Paragraph, Link } = Typography;
+const { Step } = Steps;
 
 const Roller = ({ save }) => {
   const roll = useSelector(selectAll);
@@ -64,6 +65,22 @@ const Roller = ({ save }) => {
     return <DefaultErrorMessage />;
   }
 
+  const currentStep = () => {
+    if (dicesRolled && rerollDone && !atLeastOneUnresolvedDice) {
+      return 3;
+    }
+
+    if (dicesRolled && rerollDone) {
+      return 2;
+    }
+
+    if (dicesRolled && hasReroll) {
+      return 1;
+    }
+
+    return 0;
+  };
+
   return (
     <>
       {!user && (
@@ -93,6 +110,12 @@ const Roller = ({ save }) => {
       )}
       {dicesRolled && (
         <>
+          <Steps current={currentStep()} className={styles.steps}>
+            <Step title={"Declare"} description={"Declare Intention"} />
+            <Step title={"Reroll"} description={"Modify Rolled Dice"} />
+            <Step title={"Keep"} description={"Chose Kept Dice"} />
+            <Step title={"Resolve"} description={"Resolve Symbols"} />
+          </Steps>
           <Summary {...roll} />
           {!rerollDone && (
             <>
