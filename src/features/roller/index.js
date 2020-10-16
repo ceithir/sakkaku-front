@@ -46,9 +46,9 @@ const Roller = ({ save }) => {
     dicesRolled && dices.some((dice) => dice.status === "pending");
   const keptDices = dices.filter((dice) => dice.status === "kept");
   const atLeastOneKeptDice = keptDices.length > 0;
-  const rerollDone =
-    metadata?.rerolls?.length ||
-    !(modifiers.includes("adversity") || modifiers.includes("distinction"));
+  const hasReroll =
+    modifiers.includes("adversity") || modifiers.includes("distinction");
+  const rerollDone = metadata?.rerolls?.length || !hasReroll;
   const compromised = modifiers.includes("compromised");
   const trulyCompromised =
     compromised &&
