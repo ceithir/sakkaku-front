@@ -176,6 +176,7 @@ const Roller = ({ save }) => {
                   }
                   id={id}
                   description={description}
+                  text={"You have kept:"}
                 />
               )}
             </>

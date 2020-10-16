@@ -3,11 +3,9 @@ import Result from "./Result";
 import DicesBox from "./DicesBox";
 import BbCode from "./BbCode";
 
-const Complete = ({ dices, tn, footer, id, description }) => {
+const Complete = ({ dices, tn, footer, id, description, text }) => {
   return (
     <DicesBox
-      title={`Check Result`}
-      text={`Dices kept, dropped or rerolled:`}
       dices={dices.map((dice) => {
         const selected = dice.status === "kept";
         return {
@@ -16,6 +14,7 @@ const Complete = ({ dices, tn, footer, id, description }) => {
           selected,
         };
       })}
+      text={text}
       footer={
         <>
           <Result dices={dices} tn={tn} />

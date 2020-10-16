@@ -18,7 +18,6 @@ const Adversity = ({ dices, onFinish }) => {
 
   return (
     <DicesBox
-      title={`Reroll step`}
       text={
         <>
           Due to your <strong>Adversity</strong>, you must select two success

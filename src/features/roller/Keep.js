@@ -44,7 +44,6 @@ const Keep = ({ dices, max, onFinish, compromised, trulyCompromised, tn }) => {
 
   return (
     <DicesBox
-      title={`Keep step`}
       text={text()}
       dices={dices.map((dice, index) => {
         const selected = toKeep.includes(index);

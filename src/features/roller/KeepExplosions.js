@@ -31,7 +31,6 @@ const KeepExplosions = ({ dices, onFinish, compromised, tn }) => {
 
   return (
     <DicesBox
-      title={`Keep step – Explosions`}
       text={`Select which explosions you wish to keep (if any):`}
       dices={dices.map((dice, index) => {
         const available =

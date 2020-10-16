@@ -26,7 +26,6 @@ const Distinction = ({ dices, onFinish }) => {
 
   return (
     <DicesBox
-      title={`Reroll step`}
       text={
         <>
           Thanks to your <strong>Distinction</strong>, you can select up to{" "}

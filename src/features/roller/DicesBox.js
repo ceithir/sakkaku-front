@@ -3,13 +3,12 @@ import Dices from "./Dices";
 import { Typography, Card } from "antd";
 import styles from "./DicesBox.module.css";
 
-const { Paragraph, Title } = Typography;
+const { Paragraph } = Typography;
 
-const DicesBox = ({ dices, text, footer, title, theme }) => {
+const DicesBox = ({ dices, text, footer, theme }) => {
   return (
     <Card>
       <div className="boxed">
-        {title && <Title level={3}>{title}</Title>}
         {text && <Paragraph>{text}</Paragraph>}
         <Dices dices={dices} theme={theme} />
         {footer && <div className={styles.footer}>{footer}</div>}
