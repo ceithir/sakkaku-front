@@ -31,7 +31,7 @@ const slice = createSlice({
 
 export const { setUser, addCampaign, addCharacter } = slice.actions;
 
-export const selectUser = (state) => (state.id ? state.user : undefined);
+export const selectUser = (state) => (state.user.id ? state.user : undefined);
 export const selectCampaigns = (state) => state.user.campaigns;
 export const selectCharacters = (state) => state.user.characters;
 
