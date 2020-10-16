@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Card } from "antd";
 import { getOnServer } from "../../server";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import Complete from "./Complete";
@@ -66,7 +66,9 @@ const IdentifiedRoll = () => {
 
   return (
     <>
-      <Summary player={player} {...data} {...parameters} />
+      <Card>
+        <Summary player={player} {...data} {...parameters} />
+      </Card>
       {result ? (
         <Complete
           dices={dices}

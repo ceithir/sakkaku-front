@@ -8,7 +8,7 @@ import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Summary from "./Summary";
 import Complete from "./Complete";
-import { Alert, Typography, Steps } from "antd";
+import { Alert, Typography, Steps, Collapse } from "antd";
 import styles from "./index.module.css";
 import {
   setId,
@@ -23,6 +23,7 @@ import { selectUser } from "../user/reducer";
 
 const { Paragraph, Link } = Typography;
 const { Step } = Steps;
+const { Panel } = Collapse;
 
 const Roller = ({ save }) => {
   const roll = useSelector(selectAll);
@@ -116,7 +117,11 @@ const Roller = ({ save }) => {
             <Step title={"Keep"} description={"Choose Kept Dice"} />
             <Step title={"Resolve"} description={"Resolve Symbols"} />
           </Steps>
-          <Summary {...roll} />
+          <Collapse>
+            <Panel header="Declared Intention">
+              <Summary {...roll} />
+            </Panel>
+          </Collapse>
           {!rerollDone && (
             <>
               {modifiers.includes("distinction") && (
