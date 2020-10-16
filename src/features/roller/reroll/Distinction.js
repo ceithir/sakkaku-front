@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import DicesBox from "./DicesBox";
-import NextButton from "./NextButton";
+import DicesBox from "../DicesBox";
+import NextButton from "../NextButton";
 
 const Distinction = ({ dices, onFinish }) => {
   const [toReroll, setToReroll] = useState([]);
