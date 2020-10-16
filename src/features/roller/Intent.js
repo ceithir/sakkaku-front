@@ -10,6 +10,8 @@ import {
 } from "antd";
 import styles from "./Intent.module.css";
 import NextButton from "./NextButton";
+import { useSelector } from "react-redux";
+import { selectCampaigns, selectCharacters } from "../user/reducer";
 
 const { TextArea } = Input;
 
@@ -37,7 +39,10 @@ const arrayToAutoCompleteOptions = (values) => {
   });
 };
 
-const Intent = ({ onFinish, values, user }) => {
+const Intent = ({ onFinish, values }) => {
+  const campaigns = useSelector(selectCampaigns);
+  const characters = useSelector(selectCharacters);
+
   return (
     <Form
       className={`boxed ${styles.form}`}
@@ -55,10 +60,10 @@ const Intent = ({ onFinish, values, user }) => {
       }}
     >
       <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
-        <AutoComplete options={arrayToAutoCompleteOptions(user?.campaigns)} />
+        <AutoComplete options={arrayToAutoCompleteOptions(campaigns)} />
       </Form.Item>
       <Form.Item label="Character" name="character" rules={defaultRules}>
-        <AutoComplete options={arrayToAutoCompleteOptions(user?.characters)} />
+        <AutoComplete options={arrayToAutoCompleteOptions(characters)} />
       </Form.Item>
       <Form.Item label="TN" name="tn" rules={defaultRules}>
         <InputNumber min={1} />

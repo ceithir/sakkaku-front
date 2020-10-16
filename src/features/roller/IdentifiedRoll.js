@@ -8,6 +8,8 @@ import Summary from "./Summary";
 import DicesBox from "./DicesBox";
 import Roller from "./index";
 import Loader from "../navigation/Loader";
+import { useSelector } from "react-redux";
+import { selectUser } from "../user/reducer";
 
 const GoBackButton = () => {
   const history = useHistory();
@@ -20,8 +22,9 @@ const GoBackButton = () => {
   );
 };
 
-const IdentifiedRoll = ({ user }) => {
+const IdentifiedRoll = () => {
   const { id } = useParams();
+  const user = useSelector(selectUser);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -58,7 +61,7 @@ const IdentifiedRoll = ({ user }) => {
   const { dices, parameters } = roll;
 
   if (!result && user && player && user.id === player.id) {
-    return <Roller user={user} save={data} />;
+    return <Roller save={data} />;
   }
 
   return (

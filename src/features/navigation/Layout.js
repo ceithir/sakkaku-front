@@ -3,10 +3,14 @@ import { Layout, Menu } from "antd";
 import logo from "./logo.png";
 import styles from "./Layout.module.css";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../user/reducer";
 
 const { Header, Content, Footer } = Layout;
 
-const CustomLayout = ({ user, children }) => {
+const CustomLayout = ({ children }) => {
+  const user = useSelector(selectUser);
+
   return (
     <Layout className={styles.layout}>
       <Header>

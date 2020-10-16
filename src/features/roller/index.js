@@ -19,11 +19,13 @@ import {
 } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import NextButton from "./NextButton";
+import { selectUser } from "../user/reducer";
 
 const { Paragraph, Link } = Typography;
 
-const Roller = ({ user, save }) => {
+const Roller = ({ save }) => {
   const roll = useSelector(selectAll);
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -87,7 +89,6 @@ const Roller = ({ user, save }) => {
         <Intent
           onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
           values={roll}
-          user={user}
         />
       )}
       {dicesRolled && (

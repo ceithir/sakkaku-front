@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Roller from "./features/roller";
 import Layout from "./features/navigation/Layout";
@@ -6,31 +6,33 @@ import { getOnServer } from "./server";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import List from "./features/browse/List";
 import IdentifiedRoll from "./features/roller/IdentifiedRoll";
+import { useDispatch } from "react-redux";
+import { setUser } from "./features/user/reducer";
 
 const App = () => {
-  const [user, setUser] = useState();
+  const dispatch = useDispatch();
   useEffect(() => {
     getOnServer({
       uri: "/user",
       success: (data) => {
-        setUser(data);
+        dispatch(setUser(data));
       },
       error: (_) => {},
     });
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>
-      <Layout user={user}>
+      <Layout>
         <Switch>
           <Route path="/rolls/:id">
-            <IdentifiedRoll user={user} />
+            <IdentifiedRoll />
           </Route>
           <Route path="/rolls">
             <List />
           </Route>
           <Route path="/">
-            <Roller user={user} />
+            <Roller />
           </Route>
         </Switch>
       </Layout>
