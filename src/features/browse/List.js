@@ -18,7 +18,7 @@ const columns = [
     render: (date) => {
       return (
         <Text>
-          <span>{new Date(date).toLocaleDateString(undefined, {})}</span>
+          <span>{new Date(date).toLocaleDateString()}</span>
           <span className={styles.time}>
             {" "}
             {new Date(date).toLocaleTimeString(undefined, {
