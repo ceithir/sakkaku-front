@@ -11,13 +11,14 @@ import Loader from "../navigation/Loader";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 
-const GoBackButton = () => {
+const GoBackButton = (props) => {
   const history = useHistory();
   return (
     <Button
       onClick={() => {
         history.length > 2 ? history.goBack() : history.push("/rolls");
       }}
+      {...props}
     >{`Go back`}</Button>
   );
 };
@@ -89,7 +90,7 @@ const IdentifiedRoll = () => {
               selected,
             };
           })}
-          footer={<GoBackButton />}
+          footer={<GoBackButton style={{ float: "right" }} />}
         />
       )}
     </>
