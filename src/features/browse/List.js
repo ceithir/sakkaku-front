@@ -14,7 +14,7 @@ const columns = [
   {
     title: "Date",
     dataIndex: "date",
-    key: "campaign",
+    key: "date",
     render: (date) => {
       return (
         <Text>
