@@ -42,7 +42,7 @@ const Adversity = ({ dices, onFinish }) => {
           <NextButton onClick={() => onFinish(toReroll)}>Continue</NextButton>
         )
       }
-      theme="reroll"
+      theme="orange"
     />
   );
 };

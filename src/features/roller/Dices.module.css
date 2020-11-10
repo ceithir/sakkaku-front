@@ -26,17 +26,21 @@
 }
 
 .rerolled {
-  background-color: #ffbb96;
+  background-color: #bfbfbf;
 }
 
-.from-reroll {
-  border: 1px solid #ffbb96 !important;
-}
-
-.theme-reroll.selectable:hover {
+.theme-orange.selectable:hover {
   background-color: #ff7a45;
 }
 
-.theme-reroll.selected {
+.theme-orange.selected {
   background-color: #ffbb96;
+}
+
+.theme-green.selectable:hover {
+  background-color: #52c41a;
+}
+
+.theme-green.selected {
+  background-color: #95de64;
 }
