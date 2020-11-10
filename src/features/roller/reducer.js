@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer, authentifiedPostOnServer } from "../../server";
+import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 
 const initialState = {
   campaign: "Test campaign",
@@ -219,5 +220,29 @@ export const keep = (roll, positions) => (dispatch) => {
 
 export const selectAll = (state) => state.roll;
 export const selectLoading = (state) => state.roll.loading;
+export const selectStep = (state) => {
+  const { dices, metadata, modifiers } = state.roll;
+
+  const dicesRolled = dices.length > 0;
+  const atLeastOneUnresolvedDice =
+    dicesRolled && dices.some((dice) => dice.status === "pending");
+  const hasReroll =
+    modifiers.includes("adversity") || modifiers.includes("distinction");
+  const rerollDone = metadata?.rerolls?.length || !hasReroll;
+
+  if (dicesRolled && rerollDone && !atLeastOneUnresolvedDice) {
+    return RESOLVE;
+  }
+
+  if (dicesRolled && rerollDone) {
+    return KEEP;
+  }
+
+  if (dicesRolled && hasReroll) {
+    return REROLL;
+  }
+
+  return DECLARE;
+};
 
 export default slice.reducer;

@@ -3,8 +3,14 @@ import DicesBox from "./DicesBox";
 import NextButton from "./NextButton";
 import Result from "./Result";
 
-const Keep = ({ dices, max, onFinish, compromised, trulyCompromised, tn }) => {
+const Keep = ({ dices, max, onFinish, compromised, tn }) => {
   const [toKeep, setToKeep] = useState([]);
+
+  const trulyCompromised =
+    compromised &&
+    dices
+      .filter((dice) => dice.status === "pending")
+      .every((dice) => dice.value.strife);
 
   const canKeep = max > toKeep.length;
   const toggle = (index) => {
