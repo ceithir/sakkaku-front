@@ -45,6 +45,10 @@ const Keep = ({ dices, max, onFinish, compromised, tn }) => {
       return "Keep that dice";
     }
 
+    if (toKeep.length === 0) {
+      return "Must select at least one dice";
+    }
+
     return "Keep these dices";
   };
 
@@ -67,11 +71,12 @@ const Keep = ({ dices, max, onFinish, compromised, tn }) => {
       footer={
         <>
           <Result dices={dices} tn={tn} extra={toKeep} />
-          {(toKeep.length >= 1 || trulyCompromised) && (
-            <NextButton onClick={() => onFinish(toKeep)}>
-              {buttonText()}
-            </NextButton>
-          )}
+          <NextButton
+            onClick={() => onFinish(toKeep)}
+            disabled={toKeep.length === 0 && !trulyCompromised}
+          >
+            {buttonText()}
+          </NextButton>
         </>
       }
     />

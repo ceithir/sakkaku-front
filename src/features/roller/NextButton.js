@@ -4,14 +4,14 @@ import styles from "./NextButton.module.css";
 import { useSelector } from "react-redux";
 import { selectLoading } from "./reducer";
 
-const NextButton = ({ children, ...props }) => {
+const NextButton = ({ children, disabled, ...props }) => {
   const loading = useSelector(selectLoading);
 
   return (
     <Button
       type="primary"
       className={styles.button}
-      disabled={loading}
+      disabled={disabled || loading}
       {...props}
     >
       {children}

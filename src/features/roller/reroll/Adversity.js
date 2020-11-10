@@ -38,9 +38,12 @@ const Adversity = ({ dices, onFinish }) => {
         };
       })}
       footer={
-        toReroll.length >= min && (
-          <NextButton onClick={() => onFinish(toReroll)}>Continue</NextButton>
-        )
+        <NextButton
+          disabled={toReroll.length < min}
+          onClick={() => onFinish(toReroll)}
+        >
+          Continue
+        </NextButton>
       }
       theme="orange"
     />
