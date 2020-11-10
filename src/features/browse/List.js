@@ -18,16 +18,19 @@ const columns = [
     render: (date) => {
       return (
         <Text>
-          {new Date(date).toLocaleDateString(undefined, {
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            timeZoneName: "short",
-          })}
+          <span>{new Date(date).toLocaleDateString(undefined, {})}</span>
+          <span className={styles.time}>
+            {" "}
+            {new Date(date).toLocaleTimeString(undefined, {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              timeZoneName: "short",
+            })}
+          </span>
         </Text>
       );
     },
-    responsive: ["md"],
   },
   {
     title: "Campaign",
@@ -40,7 +43,6 @@ const columns = [
         </Link>
       );
     },
-    responsive: ["md"],
   },
   {
     title: "Character",
@@ -75,34 +77,25 @@ const columns = [
     title: "Description",
     dataIndex: "description",
     key: "description",
-    responsive: ["md"],
-  },
-  {
-    title: "TN",
-    dataIndex: "tn",
-    key: "tn",
-    align: "center",
-    responsive: ["md"],
+    responsive: ["lg"],
   },
   {
     title: "Result",
     dataIndex: "result",
     key: "result",
     width: 200,
-    render: ({ result, id }) => {
+    render: (result) => {
       return (
-        <div className={styles["see-more"]}>
+        <>
           {result ? (
             <Result {...result} />
           ) : (
             <Text type="secondary">Ongoing…</Text>
           )}
-          <Link title="See more" to={`/rolls/${id}`}>
-            {"➥"}
-          </Link>
-        </div>
+        </>
       );
     },
+    responsive: ["md"],
   },
   {
     title: "Success?",
@@ -111,7 +104,7 @@ const columns = [
     align: "center",
     render: ({ result, tn }) => {
       if (!result) {
-        return <Text type="secondary">{"/"}</Text>;
+        return <Text type="secondary">{"TBD"}</Text>;
       }
 
       return result.success >= tn ? (
@@ -120,7 +113,23 @@ const columns = [
         <Text type="danger">{"No"}</Text>
       );
     },
-    responsive: ["sm"],
+    responsive: ["md"],
+  },
+  {
+    title: "",
+    dataIndex: "see_more",
+    key: "see_more",
+    render: ({ id }) => {
+      return (
+        <Link
+          title="See more"
+          to={`/rolls/${id}`}
+          className={styles["see-more"]}
+        >
+          {"➥"}
+        </Link>
+      );
+    },
   },
 ];
 
@@ -185,9 +194,9 @@ const List = () => {
         character: { campaign, character },
         player: user,
         description,
-        tn,
-        result: { result, id },
+        result,
         success: { result, tn },
+        see_more: { id },
       };
     }
   );

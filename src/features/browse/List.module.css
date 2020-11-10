@@ -4,12 +4,12 @@
   margin-bottom: 12px;
 }
 
-.see-more {
-  display: flex;
-  align-items: center;
+a.see-more {
+  font-size: 20px;
 }
 
-.see-more a {
-  font-size: 20px;
-  margin-left: 6px;
+@media (max-width: 992px) {
+  .time {
+    display: none;
+  }
 }
