@@ -103,6 +103,19 @@ const Roller = ({ save }) => {
           type="warning"
         />
       )}
+      {dicesRolled && (
+        <Collapse>
+          <Panel header="Declared Intention">
+            <Summary {...roll} />
+          </Panel>
+        </Collapse>
+      )}
+      <Steps current={currentStep()} className={styles.steps}>
+        <Step title={"Declare"} description={"Declare Intention"} />
+        <Step title={"Reroll"} description={"Modify Rolled Dice"} />
+        <Step title={"Keep"} description={"Choose Kept Dice"} />
+        <Step title={"Resolve"} description={"Resolve Symbols"} />
+      </Steps>
       {!dicesRolled && (
         <Intent
           onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
@@ -111,17 +124,6 @@ const Roller = ({ save }) => {
       )}
       {dicesRolled && (
         <>
-          <Steps current={currentStep()} className={styles.steps}>
-            <Step title={"Declare"} description={"Declare Intention"} />
-            <Step title={"Reroll"} description={"Modify Rolled Dice"} />
-            <Step title={"Keep"} description={"Choose Kept Dice"} />
-            <Step title={"Resolve"} description={"Resolve Symbols"} />
-          </Steps>
-          <Collapse>
-            <Panel header="Declared Intention">
-              <Summary {...roll} />
-            </Panel>
-          </Collapse>
           {!rerollDone && (
             <>
               {modifiers.includes("distinction") && (
