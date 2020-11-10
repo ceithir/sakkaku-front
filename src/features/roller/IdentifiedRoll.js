@@ -66,7 +66,7 @@ const IdentifiedRoll = () => {
 
   return (
     <>
-      <Card>
+      <Card bordered={false}>
         <Summary player={player} {...data} {...parameters} />
       </Card>
       {result ? (

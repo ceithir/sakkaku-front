@@ -6,7 +6,7 @@ const { Paragraph } = Typography;
 
 const DicesBox = ({ dices, text, footer, theme }) => {
   return (
-    <Card>
+    <Card bordered={false}>
       <div className="boxed">
         {text && <Paragraph>{text}</Paragraph>}
         <Dices dices={dices} theme={theme} />
