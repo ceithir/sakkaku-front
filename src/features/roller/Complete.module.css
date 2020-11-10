@@ -1,0 +1,12 @@
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttons button {
+  margin-left: 24px;
+}
+
+.buttons button:first-of-type {
+  margin-left: 0;
+}

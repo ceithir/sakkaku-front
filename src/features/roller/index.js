@@ -171,7 +171,7 @@ const Roller = ({ save }) => {
                 <Complete
                   dices={dices}
                   tn={tn}
-                  footer={
+                  button={
                     <NextButton onClick={() => dispatch(softReset())}>
                       New roll
                     </NextButton>

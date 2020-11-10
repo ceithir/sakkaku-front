@@ -73,7 +73,7 @@ const IdentifiedRoll = () => {
         <Complete
           dices={dices}
           tn={parameters.tn}
-          footer={<GoBackButton />}
+          button={<GoBackButton />}
           id={id}
           description={description}
         />
