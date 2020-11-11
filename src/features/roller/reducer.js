@@ -275,5 +275,7 @@ export const selectIntent = (state) => {
     player,
   };
 };
+export const selectHidden = (state) =>
+  state.roll.loading && !state.roll.animatedStep;
 
 export default slice.reducer;

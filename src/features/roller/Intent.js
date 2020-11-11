@@ -18,7 +18,7 @@ import {
   addCampaign,
   addCharacter,
 } from "../user/reducer";
-import { setAnimatedStep } from "../roller/reducer";
+import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
 
@@ -51,6 +51,7 @@ const arrayToAutoCompleteOptions = (values) => {
 const AnimatedIntent = ({ onFinish, values }) => {
   const [completed, setCompleted] = useState(false);
   const dispatch = useDispatch();
+  const hidden = useSelector(selectHidden);
 
   useEffect(() => {
     if (completed) {
@@ -62,6 +63,10 @@ const AnimatedIntent = ({ onFinish, values }) => {
     setCompleted(true);
     dispatch(setAnimatedStep(DECLARE));
   };
+
+  if (hidden) {
+    return null;
+  }
 
   return (
     <Animate
