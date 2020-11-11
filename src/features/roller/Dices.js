@@ -40,6 +40,7 @@ const Dices = ({ dices, theme }) => {
               [styles.rerolled]: rerolled,
               [styles["from-reroll"]]: fromReroll,
               [styles[`theme-${theme}`]]: !!theme,
+              [styles.explosion]: dice?.value?.explosion,
             })}
             onClick={selectable ? toggle : undefined}
           >

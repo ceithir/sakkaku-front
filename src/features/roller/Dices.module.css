@@ -44,3 +44,7 @@
 .theme-gray.selected {
   background-color: #bfbfbf;
 }
+
+.theme-shiny.selected.explosion {
+  border: 2px solid #0050b3;
+}

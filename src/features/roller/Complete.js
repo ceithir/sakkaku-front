@@ -112,6 +112,7 @@ const Complete = ({
                     selected,
                   };
                 })}
+                theme="shiny"
               />
             );
           })}
