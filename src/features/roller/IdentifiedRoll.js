@@ -73,7 +73,7 @@ const IdentifiedRoll = () => {
       {result ? (
         <Complete
           dices={dices}
-          tn={parameters.tn}
+          intent={parameters}
           button={<GoBackButton />}
           id={id}
           description={description}

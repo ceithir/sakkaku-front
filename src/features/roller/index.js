@@ -86,6 +86,7 @@ const Roller = ({ save }) => {
     dispatch(setPlayer(save.user));
   }, [save, dispatch]);
   const currentStep = useSelector(selectStep);
+  const intent = useSelector(selectIntent);
 
   const { dices, tn, modifiers, ring, error, id, description } = roll;
 
@@ -150,7 +151,7 @@ const Roller = ({ save }) => {
       {currentStep === RESOLVE && (
         <Complete
           dices={dices}
-          tn={tn}
+          intent={intent}
           button={
             <NextButton onClick={() => dispatch(softReset())}>
               New roll
@@ -158,7 +159,6 @@ const Roller = ({ save }) => {
           }
           id={id}
           description={description}
-          text={"You have kept:"}
         />
       )}
     </Layout>

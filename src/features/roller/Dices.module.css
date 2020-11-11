@@ -25,10 +25,6 @@
   background-color: #bfbfbf;
 }
 
-.rerolled {
-  background-color: #bfbfbf;
-}
-
 .theme-orange.selectable:hover {
   background-color: #ff7a45;
 }
@@ -43,4 +39,8 @@
 
 .theme-green.selected {
   background-color: #95de64;
+}
+
+.theme-gray.selected {
+  background-color: #bfbfbf;
 }

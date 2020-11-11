@@ -10,3 +10,15 @@
 .buttons button:first-of-type {
   margin-left: 0;
 }
+
+.results {
+  margin-top: 48px;
+}
+
+.container > div > div {
+  padding-top: 0;
+}
+
+.container > div:first-of-type > div {
+  padding-top: 24px;
+}
