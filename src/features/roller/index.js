@@ -8,6 +8,7 @@ import {
   keep,
   reroll,
   selectStep,
+  selectIntent,
 } from "./reducer";
 import Keep from "./Keep";
 import KeepExplosions from "./KeepExplosions";
@@ -31,6 +32,43 @@ import Steps, { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 
 const { Paragraph, Link } = Typography;
 const { Panel } = Collapse;
+
+const Layout = ({ anonymous, currentStep, children }) => {
+  const intent = useSelector(selectIntent);
+
+  return (
+    <>
+      {anonymous && (
+        <Alert
+          className={`boxed ${styles.alert}`}
+          message={
+            <>
+              <Paragraph>You are not logged in.</Paragraph>
+              <Paragraph>
+                Rolls made as guest are not saved in the database and cannot be
+                linked to.
+              </Paragraph>
+              <Paragraph>
+                Please <Link href="/login">log in</Link> first if you wish to
+                post your results elsewhere.
+              </Paragraph>
+            </>
+          }
+          type="warning"
+        />
+      )}
+      <Steps current={currentStep} />
+      {currentStep !== DECLARE && (
+        <Collapse>
+          <Panel header="Declared Intention">
+            <Summary {...intent} />
+          </Panel>
+        </Collapse>
+      )}
+      <>{children}</>
+    </>
+  );
+};
 
 const Roller = ({ save }) => {
   const roll = useSelector(selectAll);
@@ -61,38 +99,12 @@ const Roller = ({ save }) => {
   }
 
   return (
-    <>
-      {!user && (
-        <Alert
-          className={`boxed ${styles.alert}`}
-          message={
-            <>
-              <Paragraph>You are not logged in.</Paragraph>
-              <Paragraph>
-                Rolls made as guest are not saved in the database and cannot be
-                linked to.
-              </Paragraph>
-              <Paragraph>
-                Please <Link href="/login">log in</Link> first if you wish to
-                post your results elsewhere.
-              </Paragraph>
-            </>
-          }
-          type="warning"
-        />
-      )}
-      <Steps current={currentStep} />
-      {currentStep === DECLARE ? (
+    <Layout anonymous={!user} currentStep={currentStep}>
+      {currentStep === DECLARE && (
         <Intent
           onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
           values={roll}
         />
-      ) : (
-        <Collapse>
-          <Panel header="Declared Intention">
-            <Summary {...roll} />
-          </Panel>
-        </Collapse>
       )}
       {currentStep === REROLL && (
         <>
@@ -149,7 +161,7 @@ const Roller = ({ save }) => {
           text={"You have kept:"}
         />
       )}
-    </>
+    </Layout>
   );
 };
 

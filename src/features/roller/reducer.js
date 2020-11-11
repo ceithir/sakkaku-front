@@ -244,5 +244,28 @@ export const selectStep = (state) => {
 
   return DECLARE;
 };
+export const selectIntent = (state) => {
+  const {
+    campaign,
+    character,
+    description,
+    tn,
+    ring,
+    skill,
+    modifiers,
+    player,
+  } = state.roll;
+
+  return {
+    campaign,
+    character,
+    description,
+    tn,
+    ring,
+    skill,
+    modifiers,
+    player,
+  };
+};
 
 export default slice.reducer;
