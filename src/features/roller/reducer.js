@@ -64,6 +64,9 @@ const slice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    setAnimatedStep: (state, action) => {
+      state.animatedStep = action.payload;
+    },
   },
 });
 
@@ -75,6 +78,7 @@ export const {
   setId,
   setPlayer,
   softReset,
+  setAnimatedStep,
 } = slice.actions;
 
 const { setError } = slice.actions;
@@ -221,7 +225,11 @@ export const keep = (roll, positions) => (dispatch) => {
 export const selectAll = (state) => state.roll;
 export const selectLoading = (state) => state.roll.loading;
 export const selectStep = (state) => {
-  const { dices, metadata, modifiers } = state.roll;
+  const { dices, metadata, modifiers, animatedStep } = state.roll;
+
+  if (animatedStep) {
+    return animatedStep;
+  }
 
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =

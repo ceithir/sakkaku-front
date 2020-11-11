@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -18,6 +18,9 @@ import {
   addCampaign,
   addCharacter,
 } from "../user/reducer";
+import { setAnimatedStep } from "../roller/reducer";
+import Animate from "rc-animate";
+import { DECLARE } from "./Steps";
 
 const { TextArea } = Input;
 
@@ -45,12 +48,44 @@ const arrayToAutoCompleteOptions = (values) => {
   });
 };
 
-const Intent = ({ onFinish, values }) => {
+const AnimatedIntent = ({ onFinish, values }) => {
+  const [completed, setCompleted] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (completed) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [completed]);
+
+  const onComplete = () => {
+    setCompleted(true);
+    dispatch(setAnimatedStep(DECLARE));
+  };
+
+  return (
+    <Animate
+      transitionName="fade"
+      transitionEnter={false}
+      transitionLeave={true}
+      showProp="visible"
+      onEnd={() => dispatch(setAnimatedStep(null))}
+    >
+      <div visible={!completed}>
+        <Intent onComplete={onComplete} onFinish={onFinish} values={values} />
+      </div>
+    </Animate>
+  );
+};
+
+const Intent = ({ onFinish, values, onComplete }) => {
   const campaigns = useSelector(selectCampaigns);
   const characters = useSelector(selectCharacters);
   const dispatch = useDispatch();
 
   const wrappedOnFinish = (data) => {
+    onComplete();
+
     dispatch(addCampaign(data["campaign"]));
     dispatch(addCharacter(data["character"]));
 
@@ -118,4 +153,4 @@ const Intent = ({ onFinish, values }) => {
   );
 };
 
-export default Intent;
+export default AnimatedIntent;
