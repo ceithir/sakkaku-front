@@ -14,6 +14,15 @@ const splitExplosions = ({ dices, baseSize }) => {
   let size = baseSize;
   while (remainingDices.length > 0) {
     const currentDices = remainingDices.slice(0, size);
+    currentDices.sort((a, b) => {
+      if (a.type === "ring" && b.type === "skill") {
+        return -1;
+      }
+      if (b.type === "ring" && a.type === "skill") {
+        return 1;
+      }
+      return 0;
+    });
     remainingDices = remainingDices.slice(size, remainingDices.length);
     size = currentDices.filter(
       ({ status, value: { explosion } }) => status === "kept" && explosion > 0
