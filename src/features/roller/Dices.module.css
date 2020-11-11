@@ -5,7 +5,7 @@
 .dices .dice {
   padding: 4px !important;
   margin-right: 2px;
-  margin-bottom: 0 !important;
+  margin-bottom: 8px !important;
 }
 
 .selectable {
