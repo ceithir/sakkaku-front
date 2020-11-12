@@ -1,0 +1,25 @@
+.layout {
+  background-color: white;
+  padding: 48px;
+}
+
+.container {
+  max-width: 576px;
+  margin: 0 auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttons button {
+  margin-left: 24px;
+}
+
+.buttons button:first-of-type {
+  margin-left: 0;
+}

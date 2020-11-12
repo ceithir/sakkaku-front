@@ -1,20 +1,3 @@
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.buttons button {
-  margin-left: 24px;
-}
-
-.buttons button:first-of-type {
-  margin-left: 0;
-}
-
-.results {
-  margin-top: 48px;
-}
-
 .container > div > div {
   padding-top: 0;
 }
