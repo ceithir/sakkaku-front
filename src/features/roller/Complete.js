@@ -33,7 +33,7 @@ const Complete = ({ dices, button, intent, context, player }) => {
       <Panel header="Keep" key="keep">
         <Keep dices={dices} basePool={basePool} />
       </Panel>
-      <Panel header="Resolve" key="resolve" disabled>
+      <Panel header="Resolve" key="resolve">
         <Resolve
           dices={dices}
           tn={tn}
