@@ -1,7 +1,7 @@
 import React from "react";
 import Dices from "../Dices";
-import { Card } from "antd";
 import { hideRerolls } from "../utils";
+import styles from "./Keep.module.css";
 
 const splitExplosions = ({ dices, baseSize }) => {
   let split = [];
@@ -29,29 +29,27 @@ const splitExplosions = ({ dices, baseSize }) => {
 
 const Keep = ({ dices, basePool }) => {
   return (
-    <Card bordered={false}>
-      <div className="boxed">
-        {splitExplosions({
-          dices: hideRerolls(dices),
-          baseSize: basePool,
-        }).map((dices, index) => {
-          return (
-            <Dices
-              key={index.toString()}
-              dices={dices.map((dice) => {
-                const selected = dice.status === "kept";
-                return {
-                  ...dice,
-                  disabled: !selected,
-                  selected,
-                };
-              })}
-              theme="shiny"
-            />
-          );
-        })}
-      </div>
-    </Card>
+    <div className={styles.layout}>
+      {splitExplosions({
+        dices: hideRerolls(dices),
+        baseSize: basePool,
+      }).map((dices, index) => {
+        return (
+          <Dices
+            key={index.toString()}
+            dices={dices.map((dice) => {
+              const selected = dice.status === "kept";
+              return {
+                ...dice,
+                disabled: !selected,
+                selected,
+              };
+            })}
+            theme="shiny"
+          />
+        );
+      })}
+    </div>
   );
 };
 
