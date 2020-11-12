@@ -58,7 +58,7 @@ const IdentifiedRoll = () => {
     return null;
   }
 
-  const { roll, user: player, result, description } = data;
+  const { roll, user: player, result } = data;
   const { dices, parameters } = roll;
 
   if (!result && user && player && user.id === player.id) {
@@ -67,31 +67,33 @@ const IdentifiedRoll = () => {
 
   return (
     <>
-      <Card bordered={false}>
-        <Summary player={player} {...data} {...parameters} />
-      </Card>
       {result ? (
         <Complete
           dices={dices}
-          intent={parameters}
           button={<GoBackButton />}
-          id={id}
-          description={description}
+          intent={parameters}
+          context={data}
+          player={player}
         />
       ) : (
-        <DicesBox
-          text={`Check in progress. Current dice pool:`}
-          dices={dices.map((dice) => {
-            const selected = dice.status === "kept";
-            const disabled = !["kept", "pending"].includes(dice.status);
-            return {
-              ...dice,
-              disabled,
-              selected,
-            };
-          })}
-          footer={<GoBackButton style={{ float: "right" }} />}
-        />
+        <>
+          <Card bordered={false}>
+            <Summary player={player} {...data} {...parameters} />
+          </Card>
+          <DicesBox
+            text={`Check in progress. Current dice pool:`}
+            dices={dices.map((dice) => {
+              const selected = dice.status === "kept";
+              const disabled = !["kept", "pending"].includes(dice.status);
+              return {
+                ...dice,
+                disabled,
+                selected,
+              };
+            })}
+            footer={<GoBackButton style={{ float: "right" }} />}
+          />
+        </>
       )}
     </>
   );

@@ -1,16 +1,16 @@
 import React from "react";
-import styles from "./Complete.module.css";
 import Reroll from "./result/Reroll";
 import Keep from "./result/Keep";
 import Resolve from "./result/Resolve";
+import { Collapse } from "antd";
+import Summary from "./Summary";
 
-const Complete = ({
-  dices,
-  intent: { tn, ring, skill, modifiers },
-  button,
-  id,
-  description,
-}) => {
+const { Panel } = Collapse;
+
+const Complete = ({ dices, button, intent, context, player }) => {
+  const { tn, ring, skill, modifiers } = intent;
+  const { id, description } = context;
+
   const voided = modifiers.includes("void");
   const basePool = ring + skill + (voided ? 1 : 0);
   const hasReroll = dices.some(({ status }) => status === "rerolled");
@@ -19,19 +19,30 @@ const Complete = ({
     dices.find(({ status }) => status === "rerolled").metadata.modifier;
 
   return (
-    <div className={styles.container}>
-      {hasReroll && (
-        <Reroll dices={dices} basePool={basePool} rerollType={rerollType} />
-      )}
-      <Keep dices={dices} basePool={basePool} />
-      <Resolve
-        dices={dices}
-        tn={tn}
-        button={button}
-        id={id}
-        description={description}
-      />
-    </div>
+    <Collapse defaultActiveKey={["declare", "resolve"]}>
+      <Panel header="Declare" key="declare">
+        <Summary {...context} {...intent} player={player} />
+      </Panel>
+
+      <Panel header="Modify" key="modify" disabled={!hasReroll}>
+        {hasReroll && (
+          <Reroll dices={dices} basePool={basePool} rerollType={rerollType} />
+        )}
+      </Panel>
+
+      <Panel header="Keep" key="keep">
+        <Keep dices={dices} basePool={basePool} />
+      </Panel>
+      <Panel header="Resolve" key="resolve" disabled>
+        <Resolve
+          dices={dices}
+          tn={tn}
+          button={button}
+          id={id}
+          description={description}
+        />
+      </Panel>
+    </Collapse>
   );
 };
 

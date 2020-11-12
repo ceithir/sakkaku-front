@@ -15,7 +15,6 @@ import KeepExplosions from "./KeepExplosions";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Summary from "./Summary";
-import Complete from "./Complete";
 import { Alert, Typography, Collapse } from "antd";
 import styles from "./index.module.css";
 import {
@@ -29,6 +28,7 @@ import DefaultErrorMessage from "../../DefaultErrorMessage";
 import NextButton from "./NextButton";
 import { selectUser } from "../user/reducer";
 import Steps, { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
+import Resolve from "./result/Resolve";
 
 const { Paragraph, Link } = Typography;
 const { Panel } = Collapse;
@@ -86,7 +86,6 @@ const Roller = ({ save }) => {
     dispatch(setPlayer(save.user));
   }, [save, dispatch]);
   const currentStep = useSelector(selectStep);
-  const intent = useSelector(selectIntent);
 
   const { dices, tn, modifiers, ring, error, id, description } = roll;
 
@@ -149,9 +148,9 @@ const Roller = ({ save }) => {
         </>
       )}
       {currentStep === RESOLVE && (
-        <Complete
+        <Resolve
           dices={dices}
-          intent={intent}
+          tn={tn}
           button={
             <NextButton onClick={() => dispatch(softReset())}>
               New roll
