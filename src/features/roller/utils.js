@@ -15,3 +15,31 @@ export const countDices = (keptDices) => {
     ),
   };
 };
+
+export const hideRerolls = (dices) => {
+  const isAReroll = ({ status }) => status === "rerolled";
+  const isFromReroll = ({ status, metadata }) =>
+    metadata?.modifier && status !== "rerolled";
+
+  const indexedDices = dices.map((dice, index) => {
+    return { ...dice, originalIndex: index };
+  });
+  const rerollDices = indexedDices.filter(isFromReroll);
+
+  let i = 0;
+  let reorder = [];
+  indexedDices.forEach((dice) => {
+    if (isFromReroll(dice)) {
+      return;
+    }
+
+    if (isAReroll(dice)) {
+      reorder.push(rerollDices[i]);
+      i++;
+      return;
+    }
+
+    reorder.push(dice);
+  });
+  return reorder;
+};
