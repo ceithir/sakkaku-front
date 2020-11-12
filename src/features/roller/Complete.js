@@ -43,10 +43,15 @@ const Complete = ({
   const voided = modifiers.includes("void");
   const basePool = ring + skill + (voided ? 1 : 0);
   const hasReroll = dices.some(({ status }) => status === "rerolled");
+  const rerollType =
+    hasReroll &&
+    dices.find(({ status }) => status === "rerolled").metadata.modifier;
 
   return (
     <div className={styles.container}>
-      {hasReroll && <Reroll dices={dices} basePool={basePool} />}
+      {hasReroll && (
+        <Reroll dices={dices} basePool={basePool} rerollType={rerollType} />
+      )}
       <Card bordered={false}>
         <div className="boxed">
           {hasReroll && <Paragraph>{"Result"}</Paragraph>}
