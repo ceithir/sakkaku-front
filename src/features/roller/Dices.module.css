@@ -1,11 +1,16 @@
 .dices {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   margin-bottom: 16px;
+  max-width: 518px;
 }
 
-.dices .dice {
+.dices > .dice {
   padding: 4px !important;
   margin-right: 2px;
   margin-bottom: 8px !important;
+  width: 72px;
 }
 
 .selectable {

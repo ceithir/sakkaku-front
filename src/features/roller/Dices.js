@@ -1,5 +1,4 @@
 import React from "react";
-import { List } from "antd";
 import styles from "./Dices.module.css";
 import classNames from "classnames";
 import Dice from "./Dice";
@@ -8,31 +7,25 @@ const Dices = ({ dices, theme }) => {
   if (!dices?.length) {
     return null;
   }
-
-  const listData = dices.map((dice, index) => {
-    return {
-      key: index.toString(),
-      dice,
-      selectable: dice.selectable,
-      selected: dice.selected,
-      toggle: dice.toggle,
-      disabled: dice.disabled,
-    };
-  });
-
   return (
-    <List
-      className={styles.dices}
-      grid={{ gutter: 0, column: 7, xs: 4 }}
-      dataSource={listData}
-      renderItem={({ key, dice, selectable, selected, toggle, disabled }) => {
-        const modifier = dice?.metadata?.modifier;
-        const rerolled = dice.status === "rerolled";
-        const fromReroll = modifier && dice.status !== "rerolled";
+    <div className={styles.dices}>
+      {dices.map((dice, index) => {
+        const {
+          selectable,
+          selected,
+          disabled,
+          toggle,
+          status,
+          metadata,
+          value,
+        } = dice;
+        const modifier = metadata?.modifier;
+        const rerolled = status === "rerolled";
+        const fromReroll = modifier && status !== "rerolled";
 
         return (
-          <List.Item
-            key={key}
+          <div
+            key={index.toString()}
             className={classNames(styles.dice, {
               [styles.selectable]: selectable,
               [styles.selected]: selected,
@@ -40,15 +33,15 @@ const Dices = ({ dices, theme }) => {
               [styles.rerolled]: rerolled,
               [styles["from-reroll"]]: fromReroll,
               [styles[`theme-${theme}`]]: !!theme,
-              [styles.explosion]: dice?.value?.explosion,
+              [styles.explosion]: value?.explosion,
             })}
             onClick={selectable ? toggle : undefined}
           >
             <Dice dice={dice} />
-          </List.Item>
+          </div>
         );
-      }}
-    />
+      })}
+    </div>
   );
 };
 
