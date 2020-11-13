@@ -11,7 +11,6 @@ import {
   selectIntent,
 } from "./reducer";
 import Keep from "./Keep";
-import KeepExplosions from "./KeepExplosions";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Summary from "./Summary";
@@ -96,8 +95,6 @@ const Roller = ({ save }) => {
 
   const { dices, tn, modifiers, ring, skill, error, id, description } = roll;
 
-  const atLeastOneKeptDice =
-    dices.filter((dice) => dice.status === "kept").length > 0;
   const compromised = modifiers.includes("compromised");
   const voided = modifiers.includes("void");
   const basePool = ring + skill + (voided ? 1 : 0);
@@ -160,25 +157,13 @@ const Roller = ({ save }) => {
           disabled={![KEEP, RESOLVE].includes(currentStep)}
         >
           {currentStep === KEEP ? (
-            <>
-              {!atLeastOneKeptDice && (
-                <Keep
-                  dices={dices}
-                  max={voided ? ring + 1 : ring}
-                  onFinish={(data) => dispatch(keep(roll, data))}
-                  compromised={compromised}
-                  tn={tn}
-                />
-              )}
-              {atLeastOneKeptDice && (
-                <KeepExplosions
-                  dices={dices}
-                  onFinish={(data) => dispatch(keep(roll, data))}
-                  compromised={compromised}
-                  tn={tn}
-                />
-              )}
-            </>
+            <Keep
+              dices={dices}
+              max={voided ? ring + 1 : ring}
+              onFinish={(data) => dispatch(keep(roll, data))}
+              compromised={compromised}
+              tn={tn}
+            />
           ) : (
             <KeepResult dices={dices} basePool={basePool} />
           )}
