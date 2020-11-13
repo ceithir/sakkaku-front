@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, message } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { countDices } from "./utils";
+import { countDices } from "../utils";
 
 const BbCode = ({ id, description, tn, dices }) => {
   const keptDices = dices.filter(({ status }) => {
@@ -19,7 +19,7 @@ const BbCode = ({ id, description, tn, dices }) => {
       text={text}
       onCopy={() => message.success("Copied to clipboard!")}
     >
-      <Button>{`Copy as BBCode.`}</Button>
+      <Button>{`Copy as BBCode`}</Button>
     </CopyToClipboard>
   );
 };

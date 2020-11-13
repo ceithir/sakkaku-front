@@ -1,9 +1,10 @@
 import React from "react";
 import Result from "../Result";
-import BbCode from "../BbCode";
+import BbCode from "../button/BbCode";
 import styles from "./Resolve.module.css";
 import Dices from "../Dices";
 import { hideRerolls } from "../utils";
+import DirectLink from "../button/DirectLink";
 
 const Resolve = ({ dices, tn, description, id, button }) => {
   return (
@@ -16,7 +17,10 @@ const Resolve = ({ dices, tn, description, id, button }) => {
         <Result dices={dices} tn={tn} />
         <div className={styles.buttons}>
           {id && (
-            <BbCode id={id} dices={dices} tn={tn} description={description} />
+            <>
+              <DirectLink id={id} />
+              <BbCode id={id} dices={dices} tn={tn} description={description} />
+            </>
           )}
           {button}
         </div>
