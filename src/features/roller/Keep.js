@@ -110,7 +110,7 @@ const Keep = ({ dices, ring, skill, voided, onFinish, compromised, tn }) => {
         basePool={basePool}
       />
       <Paragraph>{text()}</Paragraph>
-      <Result dices={dices} tn={tn} extra={toKeep} />
+      <Result dices={dices} tn={tn} extra={toKeep} className={styles.figures} />
       <NextButton
         onClick={() => onFinish(toKeep)}
         disabled={

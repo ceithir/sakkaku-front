@@ -1,10 +1,12 @@
 import React from "react";
 import { Typography, List } from "antd";
 import { countDices } from "./utils";
+import styles from "./Result.module.css";
+import classNames from "classnames";
 
 const { Text } = Typography;
 
-const Result = ({ dices, tn, extra }) => {
+const Result = ({ dices, tn, extra, className }) => {
   const keptDices = dices.filter(({ status }, index) => {
     return status === "kept" || (extra && extra.includes(index));
   });
@@ -31,6 +33,7 @@ const Result = ({ dices, tn, extra }) => {
 
   return (
     <List
+      className={classNames(styles.layout, { [className]: !!className })}
       grid={{ gutter: 16, column: 3 }}
       dataSource={data}
       renderItem={({ type, count, color, extra }) => (

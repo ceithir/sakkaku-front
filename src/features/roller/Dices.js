@@ -3,12 +3,12 @@ import styles from "./Dices.module.css";
 import classNames from "classnames";
 import Dice from "./Dice";
 
-const Dices = ({ dices, theme }) => {
+const Dices = ({ dices, theme, className }) => {
   if (!dices?.length) {
     return null;
   }
   return (
-    <div className={styles.dices}>
+    <div className={classNames(styles.dices, { [className]: !!className })}>
       {dices.map((dice, index) => {
         const {
           selectable,

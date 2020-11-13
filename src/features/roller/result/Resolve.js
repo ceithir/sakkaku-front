@@ -11,6 +11,7 @@ const Resolve = ({ dices, tn, description, id, button }) => {
       <div className={styles.container}>
         <Dices
           dices={hideRerolls(dices).filter(({ status }) => status === "kept")}
+          className={styles.dices}
         />
         <Result dices={dices} tn={tn} />
         <div className={styles.buttons}>

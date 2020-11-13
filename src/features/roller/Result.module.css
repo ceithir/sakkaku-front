@@ -1,0 +1,11 @@
+.layout > div > div > div > div {
+  text-align: center;
+}
+
+.layout > div > div > div > div:first-of-type {
+  text-align: left;
+}
+
+.layout > div > div > div > div:last-of-type {
+  text-align: right;
+}

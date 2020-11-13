@@ -13,6 +13,7 @@
 .buttons {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 16px;
 }
 
 .buttons button {
@@ -21,4 +22,9 @@
 
 .buttons button:first-of-type {
   margin-left: 0;
+}
+
+.dices {
+  justify-content: center;
+  margin: 16px auto 24px auto;
 }
