@@ -34,19 +34,20 @@ const Keep = ({ dices, ring, skill, voided, onFinish, compromised, tn }) => {
 
   const text = () => {
     if (trulyCompromised) {
-      return "Being compromised, you cannot keep any dice with strife… Which, in this very specific case, means you cannot keep any dice at all.";
+      return "Being compromised, you cannot keep any die with strife… Which, in this very specific case, means you cannot keep any die at all.";
     }
 
     if (keepingExplosions) {
       return "Select which explosions you wish to keep (if any).";
     }
 
-    const defaultText = `You can keep up to ${max} dice${
-      max > 1 ? "s" : ""
-    } (min 1).`;
+    const defaultText =
+      max > 1
+        ? `You can keep up to ${max} dice (min 1).`
+        : "You must choose one die to keep.";
 
     if (compromised) {
-      return `${defaultText} However, due to being compromised, you cannot keep any dice with strife.`;
+      return `${defaultText} However, due to being compromised, you cannot keep any die with strife.`;
     }
 
     return defaultText;
@@ -63,21 +64,21 @@ const Keep = ({ dices, ring, skill, voided, onFinish, compromised, tn }) => {
       }
 
       if (toKeep.length === 1) {
-        return "Also keep that dice";
+        return "Also keep that die";
       }
 
-      return "Also keep these dices";
+      return "Also keep these dice";
     }
 
     if (toKeep.length === 1) {
-      return "Keep that dice";
+      return "Keep that die";
     }
 
     if (toKeep.length === 0) {
-      return "Must select at least one dice";
+      return "Must select at least one die";
     }
 
-    return "Keep these dices";
+    return "Keep these dice";
   };
 
   return (

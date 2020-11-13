@@ -21,7 +21,7 @@ const Adversity = ({ dices, onFinish }) => {
       text={
         <>
           Due to your <strong>Adversity</strong>, you must select two success
-          dices (or as much as possible if you don't have two) that will be
+          dice (or as much as possible if you don't have two) that will be
           rerolled.
         </>
       }
@@ -42,7 +42,7 @@ const Adversity = ({ dices, onFinish }) => {
           disabled={toReroll.length < min}
           onClick={() => onFinish(toReroll)}
         >
-          Continue
+          {"Continue"}
         </NextButton>
       }
       theme="orange"

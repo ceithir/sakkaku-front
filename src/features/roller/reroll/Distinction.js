@@ -18,18 +18,18 @@ const Distinction = ({ dices, onFinish }) => {
     }
 
     if (toReroll.length === 1) {
-      return "Reroll that dice";
+      return "Reroll that die";
     }
 
-    return "Reroll these dices";
+    return "Reroll these dice";
   };
 
   return (
     <DicesBox
       text={
         <>
-          Thanks to your <strong>Distinction</strong>, you can select up to{" "}
-          {max} dices to be rerolled:
+          Thanks to your <strong>Distinction</strong>, you can select up to
+          {` ${max}`} dice to be rerolled:
         </>
       }
       dices={dices.map((dice, index) => {
