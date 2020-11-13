@@ -119,7 +119,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
       <Form.Item label="Character" name="character" rules={defaultRules}>
         <AutoComplete options={arrayToAutoCompleteOptions(characters)} />
       </Form.Item>
-      <Form.Item label="TN" name="tn" rules={defaultRules}>
+      <Form.Item label="TN" name="tn">
         <InputNumber min={1} />
       </Form.Item>
       <Form.Item label="Description" name="description" rules={defaultRules}>

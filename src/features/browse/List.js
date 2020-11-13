@@ -107,6 +107,10 @@ const columns = [
         return <Text type="secondary">{"TBD"}</Text>;
       }
 
+      if (!tn) {
+        return <Text>{"?"}</Text>;
+      }
+
       return result.success >= tn ? (
         <Text type="success">{"Yes"}</Text>
       ) : (

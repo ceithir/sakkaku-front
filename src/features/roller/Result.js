@@ -17,8 +17,8 @@ const Result = ({ dices, tn, extra, className }) => {
     {
       type: "Success",
       count: successCount,
-      color: successCount >= tn ? "success" : "warning",
-      extra: ` (required: ${tn})`,
+      color: tn ? (successCount >= tn ? "success" : "warning") : null,
+      extra: tn ? ` (required: ${tn})` : " (unknown TN)",
     },
     {
       type: "Opportunity",

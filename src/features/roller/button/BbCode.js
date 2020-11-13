@@ -12,7 +12,9 @@ const BbCode = ({ id, description, tn, dices }) => {
 
   const shortResult = `Success: [b]${successCount}[/b] / Opportunity: [b]${opportunityCount}[/b] / Strife:[b]${strifeCount}[/b] `;
 
-  const text = `[url="${window.location.origin}/rolls/${id}"]${description}[/url] | TN: ${tn} | ${shortResult}`;
+  const text = `[url="${
+    window.location.origin
+  }/rolls/${id}"]${description}[/url] | TN: ${tn || "?"} | ${shortResult}`;
 
   return (
     <CopyToClipboard

@@ -39,7 +39,7 @@ const Summary = ({
       <Descriptions.Item label="Description" span={3}>
         {description}
       </Descriptions.Item>
-      <Descriptions.Item label="TN">{tn}</Descriptions.Item>
+      <Descriptions.Item label="TN">{tn || "?"}</Descriptions.Item>
       <Descriptions.Item label="Ring">{ring}</Descriptions.Item>
       <Descriptions.Item label="Skill">{skill}</Descriptions.Item>
       {special && (
