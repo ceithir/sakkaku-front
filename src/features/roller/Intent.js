@@ -76,9 +76,12 @@ const AnimatedIntent = ({ onFinish, values }) => {
       showProp="visible"
       onEnd={() => dispatch(setAnimatedStep(null))}
     >
-      <div visible={!completed}>
-        <Intent onComplete={onComplete} onFinish={onFinish} values={values} />
-      </div>
+      <Intent
+        visible={!completed}
+        onComplete={onComplete}
+        onFinish={onFinish}
+        values={values}
+      />
     </Animate>
   );
 };
