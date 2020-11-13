@@ -82,7 +82,6 @@ const Keep = ({ dices, ring, skill, voided, onFinish, compromised, tn }) => {
 
   return (
     <div className={styles.layout}>
-      <Paragraph>{text()}</Paragraph>
       <ExplosionDices
         dices={dices.map((dice, index) => {
           const { status, value } = dice;
@@ -110,6 +109,7 @@ const Keep = ({ dices, ring, skill, voided, onFinish, compromised, tn }) => {
         })}
         basePool={basePool}
       />
+      <Paragraph>{text()}</Paragraph>
       <Result dices={dices} tn={tn} extra={toKeep} />
       <NextButton
         onClick={() => onFinish(toKeep)}
