@@ -1,0 +1,8 @@
+.layout {
+  max-width: 576px;
+  margin: 0 auto;
+}
+
+.layout > button {
+  margin-bottom: 24px;
+}

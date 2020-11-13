@@ -106,6 +106,95 @@ const Roller = ({ save }) => {
     return <DefaultErrorMessage />;
   }
 
+  const disabled = (panel) => {
+    if (panel === RESOLVE) {
+      return currentStep !== RESOLVE;
+    }
+
+    if (panel === KEEP) {
+      return ![KEEP, RESOLVE].includes(currentStep);
+    }
+
+    if (panel === REROLL) {
+      return !rerollType || currentStep === DECLARE;
+    }
+
+    return false;
+  };
+
+  const PanelContent = ({ name }) => {
+    if (disabled(name)) {
+      return null;
+    }
+
+    if (name === RESOLVE) {
+      return (
+        <ResolveResult
+          dices={dices}
+          tn={tn}
+          button={
+            <NextButton onClick={() => dispatch(softReset())}>
+              New roll
+            </NextButton>
+          }
+          id={id}
+          description={description}
+        />
+      );
+    }
+
+    if (name === KEEP) {
+      if (currentStep === KEEP) {
+        return (
+          <Keep
+            dices={dices}
+            onFinish={(data) => dispatch(keep(roll, data))}
+            compromised={compromised}
+            tn={tn}
+            ring={ring}
+            skill={skill}
+            voided={voided}
+          />
+        );
+      }
+      return <KeepResult dices={dices} basePool={basePool} />;
+    }
+
+    if (name === REROLL) {
+      if (currentStep === REROLL) {
+        return (
+          <>
+            {modifiers.includes("distinction") && (
+              <Distinction
+                dices={dices}
+                onFinish={(positions) =>
+                  dispatch(reroll(roll, positions, "distinction"))
+                }
+              />
+            )}
+            {modifiers.includes("adversity") && (
+              <Adversity
+                dices={dices}
+                onFinish={(positions) =>
+                  dispatch(reroll(roll, positions, "adversity"))
+                }
+              />
+            )}
+          </>
+        );
+      }
+      return (
+        <RerollResult
+          dices={dices}
+          basePool={basePool}
+          rerollType={rerollType}
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <Layout>
       <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
@@ -119,71 +208,14 @@ const Roller = ({ save }) => {
             <Summary {...intent} />
           )}
         </Panel>
-        <Panel
-          header="Modify"
-          key="modify"
-          disabled={!rerollType || currentStep === DECLARE}
-        >
-          {currentStep === REROLL ? (
-            <>
-              {modifiers.includes("distinction") && (
-                <Distinction
-                  dices={dices}
-                  onFinish={(positions) =>
-                    dispatch(reroll(roll, positions, "distinction"))
-                  }
-                />
-              )}
-              {modifiers.includes("adversity") && (
-                <Adversity
-                  dices={dices}
-                  onFinish={(positions) =>
-                    dispatch(reroll(roll, positions, "adversity"))
-                  }
-                />
-              )}
-            </>
-          ) : (
-            <RerollResult
-              dices={dices}
-              basePool={basePool}
-              rerollType={rerollType}
-            />
-          )}
+        <Panel header="Modify" key="modify" disabled={disabled(REROLL)}>
+          <PanelContent name={REROLL} />
         </Panel>
-        <Panel
-          header="Keep"
-          key="keep"
-          disabled={![KEEP, RESOLVE].includes(currentStep)}
-        >
-          {currentStep === KEEP ? (
-            <Keep
-              dices={dices}
-              max={voided ? ring + 1 : ring}
-              onFinish={(data) => dispatch(keep(roll, data))}
-              compromised={compromised}
-              tn={tn}
-            />
-          ) : (
-            <KeepResult dices={dices} basePool={basePool} />
-          )}
+        <Panel header="Keep" key="keep" disabled={disabled(KEEP)}>
+          <PanelContent name={KEEP} />
         </Panel>
-        <Panel
-          header="Resolve"
-          key="resolve"
-          disabled={currentStep !== RESOLVE}
-        >
-          <ResolveResult
-            dices={dices}
-            tn={tn}
-            button={
-              <NextButton onClick={() => dispatch(softReset())}>
-                New roll
-              </NextButton>
-            }
-            id={id}
-            description={description}
-          />
+        <Panel header="Resolve" key="resolve" disabled={disabled(RESOLVE)}>
+          <PanelContent name={RESOLVE} />
         </Panel>
       </Collapse>
     </Layout>

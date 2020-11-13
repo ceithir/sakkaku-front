@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
-import DicesBox from "./DicesBox";
 import NextButton from "./NextButton";
 import Result from "./Result";
+import { Typography } from "antd";
+import ExplosionDices from "./ExplosionDices";
+import styles from "./Keep.module.css";
 
-const Keep = ({ dices, max, onFinish, compromised, tn }) => {
+const { Paragraph } = Typography;
+
+const Keep = ({ dices, ring, skill, voided, onFinish, compromised, tn }) => {
   const [toKeep, setToKeep] = useState([]);
-
   useEffect(() => {
     setToKeep([]);
   }, [dices.length]);
+
+  const max = voided ? ring + 1 : ring;
+  const basePool = max + skill;
 
   const keepingExplosions =
     dices.filter((dice) => dice.status === "kept").length > 0;
@@ -75,45 +81,45 @@ const Keep = ({ dices, max, onFinish, compromised, tn }) => {
   };
 
   return (
-    <DicesBox
-      text={text()}
-      dices={dices.map((dice, index) => {
-        const selected = dice.status === "kept" || toKeep.includes(index);
-        const available =
-          dice.status === "pending" && (!compromised || !dice.value.strife);
-        const selectable =
-          available && (selected || keepingExplosions || max > toKeep.length);
-        const disabled = (() => {
-          if (dice.status === "kept") {
-            return false;
-          }
-          if (dice.status !== "pending") {
-            return true;
-          }
-          return !selectable;
-        })();
-        return {
-          ...dice,
-          selectable,
-          selected,
-          disabled,
-          toggle: () => toggle(index),
-        };
-      })}
-      footer={
-        <>
-          <Result dices={dices} tn={tn} extra={toKeep} />
-          <NextButton
-            onClick={() => onFinish(toKeep)}
-            disabled={
-              !(keepingExplosions || trulyCompromised) && toKeep.length === 0
+    <div className={styles.layout}>
+      <Paragraph>{text()}</Paragraph>
+      <ExplosionDices
+        dices={dices.map((dice, index) => {
+          const { status, value } = dice;
+          const selected = status === "kept" || toKeep.includes(index);
+          const available =
+            status === "pending" && (!compromised || !value.strife);
+          const selectable =
+            available && (selected || keepingExplosions || max > toKeep.length);
+          const disabled = (() => {
+            if (status === "kept") {
+              return false;
             }
-          >
-            {buttonText()}
-          </NextButton>
-        </>
-      }
-    />
+            if (status !== "pending") {
+              return true;
+            }
+            return !selectable;
+          })();
+          return {
+            ...dice,
+            selectable,
+            selected,
+            disabled,
+            toggle: () => toggle(index),
+          };
+        })}
+        basePool={basePool}
+      />
+      <Result dices={dices} tn={tn} extra={toKeep} />
+      <NextButton
+        onClick={() => onFinish(toKeep)}
+        disabled={
+          !(keepingExplosions || trulyCompromised) && toKeep.length === 0
+        }
+      >
+        {buttonText()}
+      </NextButton>
+    </div>
   );
 };
 

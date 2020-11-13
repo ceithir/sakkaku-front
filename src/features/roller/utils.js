@@ -21,14 +21,11 @@ export const hideRerolls = (dices) => {
   const isFromReroll = ({ status, metadata }) =>
     metadata?.modifier && status !== "rerolled";
 
-  const indexedDices = dices.map((dice, index) => {
-    return { ...dice, originalIndex: index };
-  });
-  const rerollDices = indexedDices.filter(isFromReroll);
+  const rerollDices = dices.filter(isFromReroll);
 
   let i = 0;
   let reorder = [];
-  indexedDices.forEach((dice) => {
+  dices.forEach((dice) => {
     if (isFromReroll(dice)) {
       return;
     }

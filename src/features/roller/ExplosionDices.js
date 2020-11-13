@@ -28,14 +28,18 @@ const splitExplosions = ({ dices, basePool }) => {
 };
 
 const ExplosionDices = ({ dices, basePool, className }) => {
+  if (!basePool || basePool > dices.length) {
+    throw new Error("Better than infite loop");
+  }
+
   return (
     <div className={className}>
       {splitExplosions({ dices, basePool }).map((dices, index) => {
         return (
-          <>
+          <React.Fragment key={index.toString()}>
             {index > 0 && <Divider />}
-            <Dices key={index.toString()} dices={dices} theme="shiny" />
-          </>
+            <Dices dices={dices} theme="shiny" />
+          </React.Fragment>
         );
       })}
     </div>
