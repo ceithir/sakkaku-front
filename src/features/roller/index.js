@@ -29,7 +29,8 @@ import NextButton from "./NextButton";
 import { selectUser } from "../user/reducer";
 import Steps, { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 import RerollResult from "./result/Reroll";
-import Complete from "./Complete";
+import KeepResult from "./result/Keep";
+import ResolveResult from "./result/Resolve";
 
 const { Paragraph, Link } = Typography;
 const { Panel } = Collapse;
@@ -83,7 +84,7 @@ const Roller = ({ save }) => {
     dispatch(setPlayer(save.user));
   }, [save, dispatch]);
 
-  const [activeKeys, setActiveKeys] = useState([]);
+  const [activeKeys, setActiveKeys] = useState([DECLARE]);
   useEffect(() => {
     // FIXME: Naming inconsistency
     if (currentStep === REROLL) {
@@ -93,7 +94,7 @@ const Roller = ({ save }) => {
     setActiveKeys([currentStep]);
   }, [currentStep]);
 
-  const { dices, tn, modifiers, ring, skill, error } = roll;
+  const { dices, tn, modifiers, ring, skill, error, id, description } = roll;
 
   const atLeastOneKeptDice =
     dices.filter((dice) => dice.status === "kept").length > 0;
@@ -108,79 +109,25 @@ const Roller = ({ save }) => {
     return <DefaultErrorMessage />;
   }
 
-  if (currentStep === RESOLVE) {
-    return (
-      <Layout>
-        <Complete
-          dices={dices}
-          button={
-            <NextButton onClick={() => dispatch(softReset())}>
-              New roll
-            </NextButton>
-          }
-          intent={intent}
-          context={intent}
-          player={intent.player}
-          activeKey={activeKeys}
-          onChange={setActiveKeys}
-        />
-      </Layout>
-    );
-  }
-
-  if (currentStep === KEEP) {
-    return (
-      <Layout>
-        <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
-          <Panel header="Declare" key="declare">
+  return (
+    <Layout>
+      <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
+        <Panel header="Declare" key="declare">
+          {currentStep === DECLARE ? (
+            <Intent
+              onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
+              values={roll}
+            />
+          ) : (
             <Summary {...intent} />
-          </Panel>
-          <Panel header="Modify" key="modify" disabled={!rerollType}>
-            {rerollType && (
-              <RerollResult
-                dices={dices}
-                basePool={basePool}
-                rerollType={rerollType}
-              />
-            )}
-          </Panel>
-          <Panel header="Keep" key="keep">
-            {currentStep === KEEP && (
-              <>
-                {!atLeastOneKeptDice && (
-                  <Keep
-                    dices={dices}
-                    max={voided ? ring + 1 : ring}
-                    onFinish={(data) => dispatch(keep(roll, data))}
-                    compromised={compromised}
-                    tn={tn}
-                  />
-                )}
-                {atLeastOneKeptDice && (
-                  <KeepExplosions
-                    dices={dices}
-                    onFinish={(data) => dispatch(keep(roll, data))}
-                    compromised={compromised}
-                    tn={tn}
-                  />
-                )}
-              </>
-            )}
-          </Panel>
-          <Panel header="Resolve" key="resolve" disabled />
-        </Collapse>
-      </Layout>
-    );
-  }
-
-  if (currentStep === REROLL) {
-    return (
-      <Layout>
-        <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
-          <Panel header="Declare" key="declare">
-            <Summary {...intent} />
-          </Panel>
-          <Panel header="Modify" key="modify">
+          )}
+        </Panel>
+        <Panel
+          header="Modify"
+          key="modify"
+          disabled={!rerollType || currentStep === DECLARE}
+        >
+          {currentStep === REROLL ? (
             <>
               {modifiers.includes("distinction") && (
                 <Distinction
@@ -199,26 +146,60 @@ const Roller = ({ save }) => {
                 />
               )}
             </>
-          </Panel>
-          <Panel header="Keep" key="keep" disabled />
-          <Panel header="Resolve" key="resolve" disabled />
-        </Collapse>
-      </Layout>
-    );
-  }
-
-  return (
-    <Layout>
-      <Collapse defaultActiveKey={DECLARE}>
-        <Panel header="Declare" key="declare">
-          <Intent
-            onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
-            values={roll}
+          ) : (
+            <RerollResult
+              dices={dices}
+              basePool={basePool}
+              rerollType={rerollType}
+            />
+          )}
+        </Panel>
+        <Panel
+          header="Keep"
+          key="keep"
+          disabled={![KEEP, RESOLVE].includes(currentStep)}
+        >
+          {currentStep === KEEP ? (
+            <>
+              {!atLeastOneKeptDice && (
+                <Keep
+                  dices={dices}
+                  max={voided ? ring + 1 : ring}
+                  onFinish={(data) => dispatch(keep(roll, data))}
+                  compromised={compromised}
+                  tn={tn}
+                />
+              )}
+              {atLeastOneKeptDice && (
+                <KeepExplosions
+                  dices={dices}
+                  onFinish={(data) => dispatch(keep(roll, data))}
+                  compromised={compromised}
+                  tn={tn}
+                />
+              )}
+            </>
+          ) : (
+            <KeepResult dices={dices} basePool={basePool} />
+          )}
+        </Panel>
+        <Panel
+          header="Resolve"
+          key="resolve"
+          disabled={currentStep !== RESOLVE}
+        >
+          <ResolveResult
+            dices={dices}
+            tn={tn}
+            button={
+              <NextButton onClick={() => dispatch(softReset())}>
+                New roll
+              </NextButton>
+            }
+            id={id}
+            description={description}
           />
         </Panel>
-        <Panel header="Modify" key="modify" disabled />
-        <Panel header="Keep" key="keep" disabled />
-        <Panel header="Resolve" key="resolve" disabled />
       </Collapse>
     </Layout>
   );

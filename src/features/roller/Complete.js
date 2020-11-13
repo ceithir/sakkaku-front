@@ -7,7 +7,7 @@ import Summary from "./Summary";
 
 const { Panel } = Collapse;
 
-const Complete = ({ dices, button, intent, context, player, ...props }) => {
+const Complete = ({ dices, button, intent, context, player }) => {
   const { tn, ring, skill, modifiers } = intent;
   const { id, description } = context;
 
@@ -18,7 +18,7 @@ const Complete = ({ dices, button, intent, context, player, ...props }) => {
     (modifiers.includes("adversity") && "adversity");
 
   return (
-    <Collapse defaultActiveKey={["declare", "resolve"]} {...props}>
+    <Collapse defaultActiveKey={["declare", "resolve"]}>
       <Panel header="Declare" key="declare">
         <Summary {...context} {...intent} player={player} />
       </Panel>
