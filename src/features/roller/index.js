@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Intent from "./Intent";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -28,17 +28,19 @@ import DefaultErrorMessage from "../../DefaultErrorMessage";
 import NextButton from "./NextButton";
 import { selectUser } from "../user/reducer";
 import Steps, { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
-import Resolve from "./result/Resolve";
+import RerollResult from "./result/Reroll";
+import Complete from "./Complete";
 
 const { Paragraph, Link } = Typography;
 const { Panel } = Collapse;
 
-const Layout = ({ anonymous, currentStep, children }) => {
-  const intent = useSelector(selectIntent);
+const Layout = ({ children }) => {
+  const user = useSelector(selectUser);
+  const currentStep = useSelector(selectStep);
 
   return (
     <>
-      {anonymous && (
+      {!user && (
         <Alert
           className={`boxed ${styles.alert}`}
           message={
@@ -58,13 +60,6 @@ const Layout = ({ anonymous, currentStep, children }) => {
         />
       )}
       <Steps current={currentStep} />
-      {currentStep !== DECLARE && (
-        <Collapse>
-          <Panel header="Declared Intention">
-            <Summary {...intent} />
-          </Panel>
-        </Collapse>
-      )}
       <>{children}</>
     </>
   );
@@ -73,9 +68,11 @@ const Layout = ({ anonymous, currentStep, children }) => {
 const Roller = ({ save }) => {
   const roll = useSelector(selectAll);
   const user = useSelector(selectUser);
+  const currentStep = useSelector(selectStep);
+  const intent = useSelector(selectIntent);
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!save || !dispatch) {
       return;
     }
@@ -85,81 +82,144 @@ const Roller = ({ save }) => {
     dispatch(setMetadata(save.roll.metadata));
     dispatch(setPlayer(save.user));
   }, [save, dispatch]);
-  const currentStep = useSelector(selectStep);
 
-  const { dices, tn, modifiers, ring, error, id, description } = roll;
+  const [activeKeys, setActiveKeys] = useState([]);
+  useEffect(() => {
+    // FIXME: Naming inconsistency
+    if (currentStep === REROLL) {
+      setActiveKeys(["modify"]);
+      return;
+    }
+    setActiveKeys([currentStep]);
+  }, [currentStep]);
+
+  const { dices, tn, modifiers, ring, skill, error } = roll;
 
   const atLeastOneKeptDice =
     dices.filter((dice) => dice.status === "kept").length > 0;
   const compromised = modifiers.includes("compromised");
   const voided = modifiers.includes("void");
+  const basePool = ring + skill + (voided ? 1 : 0);
+  const rerollType =
+    (modifiers.includes("distinction") && "distinction") ||
+    (modifiers.includes("adversity") && "adversity");
 
   if (error) {
     return <DefaultErrorMessage />;
   }
 
-  return (
-    <Layout anonymous={!user} currentStep={currentStep}>
-      {currentStep === DECLARE && (
-        <Intent
-          onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
-          values={roll}
-        />
-      )}
-      {currentStep === REROLL && (
-        <>
-          {modifiers.includes("distinction") && (
-            <Distinction
-              dices={dices}
-              onFinish={(positions) =>
-                dispatch(reroll(roll, positions, "distinction"))
-              }
-            />
-          )}
-          {modifiers.includes("adversity") && (
-            <Adversity
-              dices={dices}
-              onFinish={(positions) =>
-                dispatch(reroll(roll, positions, "adversity"))
-              }
-            />
-          )}
-        </>
-      )}
-      {currentStep === KEEP && (
-        <>
-          {!atLeastOneKeptDice && (
-            <Keep
-              dices={dices}
-              max={voided ? ring + 1 : ring}
-              onFinish={(data) => dispatch(keep(roll, data))}
-              compromised={compromised}
-              tn={tn}
-            />
-          )}
-          {atLeastOneKeptDice && (
-            <KeepExplosions
-              dices={dices}
-              onFinish={(data) => dispatch(keep(roll, data))}
-              compromised={compromised}
-              tn={tn}
-            />
-          )}
-        </>
-      )}
-      {currentStep === RESOLVE && (
-        <Resolve
+  if (currentStep === RESOLVE) {
+    return (
+      <Layout>
+        <Complete
           dices={dices}
-          tn={tn}
           button={
             <NextButton onClick={() => dispatch(softReset())}>
               New roll
             </NextButton>
           }
-          id={id}
-          description={description}
+          intent={intent}
+          context={intent}
+          player={intent.player}
+          activeKey={activeKeys}
+          onChange={setActiveKeys}
         />
-      )}
+      </Layout>
+    );
+  }
+
+  if (currentStep === KEEP) {
+    return (
+      <Layout>
+        <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
+          <Panel header="Declare" key="declare">
+            <Summary {...intent} />
+          </Panel>
+          <Panel header="Modify" key="modify" disabled={!rerollType}>
+            {rerollType && (
+              <RerollResult
+                dices={dices}
+                basePool={basePool}
+                rerollType={rerollType}
+              />
+            )}
+          </Panel>
+          <Panel header="Keep" key="keep">
+            {currentStep === KEEP && (
+              <>
+                {!atLeastOneKeptDice && (
+                  <Keep
+                    dices={dices}
+                    max={voided ? ring + 1 : ring}
+                    onFinish={(data) => dispatch(keep(roll, data))}
+                    compromised={compromised}
+                    tn={tn}
+                  />
+                )}
+                {atLeastOneKeptDice && (
+                  <KeepExplosions
+                    dices={dices}
+                    onFinish={(data) => dispatch(keep(roll, data))}
+                    compromised={compromised}
+                    tn={tn}
+                  />
+                )}
+              </>
+            )}
+          </Panel>
+          <Panel header="Resolve" key="resolve" disabled />
+        </Collapse>
+      </Layout>
+    );
+  }
+
+  if (currentStep === REROLL) {
+    return (
+      <Layout>
+        <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
+          <Panel header="Declare" key="declare">
+            <Summary {...intent} />
+          </Panel>
+          <Panel header="Modify" key="modify">
+            <>
+              {modifiers.includes("distinction") && (
+                <Distinction
+                  dices={dices}
+                  onFinish={(positions) =>
+                    dispatch(reroll(roll, positions, "distinction"))
+                  }
+                />
+              )}
+              {modifiers.includes("adversity") && (
+                <Adversity
+                  dices={dices}
+                  onFinish={(positions) =>
+                    dispatch(reroll(roll, positions, "adversity"))
+                  }
+                />
+              )}
+            </>
+          </Panel>
+          <Panel header="Keep" key="keep" disabled />
+          <Panel header="Resolve" key="resolve" disabled />
+        </Collapse>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <Collapse defaultActiveKey={DECLARE}>
+        <Panel header="Declare" key="declare">
+          <Intent
+            onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
+            values={roll}
+          />
+        </Panel>
+        <Panel header="Modify" key="modify" disabled />
+        <Panel header="Keep" key="keep" disabled />
+        <Panel header="Resolve" key="resolve" disabled />
+      </Collapse>
     </Layout>
   );
 };

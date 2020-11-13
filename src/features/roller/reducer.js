@@ -23,6 +23,7 @@ const slice = createSlice({
     softReset: (state) => {
       state.dices = [];
       state.metadata = {};
+      state.modifiers = [];
       state.id = null;
       window.history.pushState(null, null, "/");
     },

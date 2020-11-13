@@ -7,7 +7,7 @@ import Summary from "./Summary";
 
 const { Panel } = Collapse;
 
-const Complete = ({ dices, button, intent, context, player }) => {
+const Complete = ({ dices, button, intent, context, player, ...props }) => {
   const { tn, ring, skill, modifiers } = intent;
   const { id, description } = context;
 
@@ -19,7 +19,7 @@ const Complete = ({ dices, button, intent, context, player }) => {
     dices.find(({ status }) => status === "rerolled").metadata.modifier;
 
   return (
-    <Collapse defaultActiveKey={["declare", "resolve"]}>
+    <Collapse defaultActiveKey={["declare", "resolve"]} {...props}>
       <Panel header="Declare" key="declare">
         <Summary {...context} {...intent} player={player} />
       </Panel>
