@@ -1,4 +1,11 @@
 .alert {
   margin-top: 24px;
-  margin-bottom: 24px;
+}
+
+@media (max-width: 576px) {
+  .steps {
+    visibility: hidden;
+    height: 0;
+    padding: 16px;
+  }
 }

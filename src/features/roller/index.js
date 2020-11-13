@@ -31,7 +31,7 @@ import RerollResult from "./result/Reroll";
 import KeepResult from "./result/Keep";
 import ResolveResult from "./result/Resolve";
 
-const { Paragraph, Link } = Typography;
+const { Text, Link } = Typography;
 const { Panel } = Collapse;
 
 const Layout = ({ children }) => {
@@ -44,22 +44,15 @@ const Layout = ({ children }) => {
         <Alert
           className={`boxed ${styles.alert}`}
           message={
-            <>
-              <Paragraph>You are not logged in.</Paragraph>
-              <Paragraph>
-                Rolls made as guest are not saved in the database and cannot be
-                linked to.
-              </Paragraph>
-              <Paragraph>
-                Please <Link href="/login">log in</Link> first if you wish to
-                post your results elsewhere.
-              </Paragraph>
-            </>
+            <Text>
+              You are not <Link href="/login">logged in</Link>. Your rolls won't
+              be saved and you won't be able to share them.
+            </Text>
           }
           type="warning"
         />
       )}
-      <Steps current={currentStep} />
+      <Steps current={currentStep} className={styles.steps} />
       <>{children}</>
     </>
   );
