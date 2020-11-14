@@ -3,6 +3,12 @@ import { Button, message } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const DirectLink = ({ id }) => {
+  const buttonText = `Copy link`;
+
+  if (!id) {
+    return <Button disabled>{buttonText}</Button>;
+  }
+
   const text = `${window.location.origin}/rolls/${id}`;
 
   return (
@@ -10,7 +16,7 @@ const DirectLink = ({ id }) => {
       text={text}
       onCopy={() => message.success("Copied to clipboard!")}
     >
-      <Button>{`Copy link`}</Button>
+      <Button>{buttonText}</Button>
     </CopyToClipboard>
   );
 };

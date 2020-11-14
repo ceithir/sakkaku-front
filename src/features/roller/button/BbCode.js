@@ -4,6 +4,12 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { countDices } from "../utils";
 
 const BbCode = ({ id, description, tn, dices }) => {
+  const buttonText = `Copy as BBCode`;
+
+  if (!id) {
+    return <Button disabled>{buttonText}</Button>;
+  }
+
   const keptDices = dices.filter(({ status }) => {
     return status === "kept";
   });
@@ -21,7 +27,7 @@ const BbCode = ({ id, description, tn, dices }) => {
       text={text}
       onCopy={() => message.success("Copied to clipboard!")}
     >
-      <Button>{`Copy as BBCode`}</Button>
+      <Button>{buttonText}</Button>
     </CopyToClipboard>
   );
 };

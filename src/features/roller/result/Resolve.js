@@ -16,12 +16,8 @@ const Resolve = ({ dices, tn, description, id, button }) => {
         />
         <Result dices={dices} tn={tn} />
         <div className={styles.buttons}>
-          {id && (
-            <>
-              <DirectLink id={id} />
-              <BbCode id={id} dices={dices} tn={tn} description={description} />
-            </>
-          )}
+          <DirectLink id={id} />
+          <BbCode id={id} dices={dices} tn={tn} description={description} />
           {button}
         </div>
       </div>
