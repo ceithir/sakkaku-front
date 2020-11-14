@@ -28,3 +28,9 @@
   justify-content: center;
   margin: 16px auto 24px auto;
 }
+
+@media (max-width: 576px) {
+  .buttons button {
+    margin-left: 8px;
+  }
+}
