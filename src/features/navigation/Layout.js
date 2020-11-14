@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu } from "antd";
 import logo from "./logo.png";
 import styles from "./Layout.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 
@@ -10,24 +10,51 @@ const { Header, Content, Footer } = Layout;
 
 const CustomLayout = ({ children }) => {
   const user = useSelector(selectUser);
+  const location = useLocation();
+  const [selectedKey, setSelectedKey] = useState();
+
+  useEffect(() => {
+    const getMenuKey = ({ pathname, search }) => {
+      if (pathname === "/") {
+        return "new_roll";
+      }
+
+      if (pathname === "/rolls" && !search) {
+        return "all_rolls";
+      }
+
+      if (pathname === "/rolls" && !!user && search === `?player=${user.id}`) {
+        return "my_rolls";
+      }
+
+      return null;
+    };
+
+    setSelectedKey(getMenuKey(location));
+  }, [location, user]);
 
   return (
     <Layout className={styles.layout}>
       <Header>
-        <Menu theme="dark" mode="horizontal">
-          <Menu.Item className={styles.logo}>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          selectedKeys={[selectedKey]}
+          onSelect={({ key }) => setSelectedKey(key)}
+        >
+          <Menu.Item className={styles.logo} key="home">
             <Link to="/">
               <img alt="Logo" src={logo} />
             </Link>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item key="new_roll">
             <Link to="/">Roll</Link>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item key="all_rolls">
             <Link to="/rolls">All rolls</Link>
           </Menu.Item>
           {user && (
-            <Menu.Item>
+            <Menu.Item key="my_rolls">
               <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
             </Menu.Item>
           )}
