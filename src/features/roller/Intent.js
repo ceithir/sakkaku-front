@@ -112,18 +112,27 @@ const Intent = ({ onFinish, values, onComplete }) => {
       {...layout}
       initialValues={values}
       onFinish={wrappedOnFinish}
+      scrollToFirstError
     >
       <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
-        <AutoComplete options={arrayToAutoCompleteOptions(campaigns)} />
+        <AutoComplete
+          options={arrayToAutoCompleteOptions(campaigns)}
+          placeholder={"The Dead of Winter"}
+        />
       </Form.Item>
       <Form.Item label="Character" name="character" rules={defaultRules}>
-        <AutoComplete options={arrayToAutoCompleteOptions(characters)} />
+        <AutoComplete
+          options={arrayToAutoCompleteOptions(characters)}
+          placeholder={"Doji Sakura"}
+        />
       </Form.Item>
       <Form.Item label="TN" name="tn">
         <InputNumber min={1} />
       </Form.Item>
       <Form.Item label="Description" name="description" rules={defaultRules}>
-        <TextArea />
+        <TextArea
+          placeholder={"Running at the foe! Fire, Fitness, Keen Balance"}
+        />
       </Form.Item>
       <Divider />
       <Form.Item label="Ring" name="ring" rules={defaultRules}>

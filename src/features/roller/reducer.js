@@ -3,12 +3,9 @@ import { postOnServer, authentifiedPostOnServer } from "../../server";
 import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 
 const initialState = {
-  campaign: "Test campaign",
-  character: "Test character",
-  description: "Test roll",
-  tn: 2,
-  ring: 2,
-  skill: 2,
+  tn: 3,
+  ring: 3,
+  skill: 1,
   modifiers: [],
   dices: [],
   metadata: {},
