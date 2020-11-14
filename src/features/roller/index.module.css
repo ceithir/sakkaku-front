@@ -4,8 +4,6 @@
 
 @media (max-width: 576px) {
   .steps {
-    visibility: hidden;
-    height: 0;
-    padding: 16px;
+    display: none;
   }
 }

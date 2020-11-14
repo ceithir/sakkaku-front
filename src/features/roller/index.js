@@ -14,7 +14,7 @@ import Keep from "./Keep";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Summary from "./Summary";
-import { Alert, Typography, Collapse } from "antd";
+import { Collapse } from "antd";
 import styles from "./index.module.css";
 import {
   setId,
@@ -30,8 +30,8 @@ import Steps, { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 import RerollResult from "./result/Reroll";
 import KeepResult from "./result/Keep";
 import ResolveResult from "./result/Resolve";
+import AnonymousAlert from "./AnonymousAlert";
 
-const { Text, Link } = Typography;
 const { Panel } = Collapse;
 
 const Layout = ({ children }) => {
@@ -40,18 +40,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      {!user && (
-        <Alert
-          className={`boxed ${styles.alert}`}
-          message={
-            <Text>
-              You are not <Link href="/login">logged in</Link>. Your rolls won't
-              be saved and you won't be able to share them.
-            </Text>
-          }
-          type="warning"
-        />
-      )}
+      {!user && <AnonymousAlert className={styles.alert} />}
       <Steps current={currentStep} className={styles.steps} />
       <>{children}</>
     </>
