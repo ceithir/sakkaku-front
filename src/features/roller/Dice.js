@@ -63,7 +63,7 @@ const getImage = ({
   return blankRing;
 };
 
-const valueText = ({ value: { opportunity, strife, success, explosion } }) => {
+const getText = ({ value: { opportunity, strife, success, explosion } }) => {
   return (
     [
       opportunity && `Opportunity: ${opportunity}`,
@@ -76,39 +76,11 @@ const valueText = ({ value: { opportunity, strife, success, explosion } }) => {
   );
 };
 
-const statusText = ({ status, metadata }) => {
-  const modifier = metadata?.modifier;
-  const rerolled = status === "rerolled";
-  const fromReroll = modifier && status !== "rerolled";
-
-  if (rerolled) {
-    if (modifier === "adversity") {
-      return "Rerolled due to Adversity";
-    }
-    if (modifier === "distinction") {
-      return "Rerolled thanks to Distinction";
-    }
-  }
-
-  return [
-    fromReroll && modifier === "adversity" && "Adversity reroll",
-    fromReroll && modifier === "distinction" && "Distinction reroll",
-    status === "dropped" && "Dropped",
-    status === "kept" && "Kept",
-  ]
-    .filter(Boolean)
-    .join(" – ");
-};
-
-const getText = (dice) => {
-  return [valueText(dice), statusText(dice)].filter(Boolean).join(" – ");
-};
-
 const Dice = ({ dice }) => {
   return (
     <Tooltip title={getText(dice)}>
       <div>
-        <Image src={getImage(dice)} alt={valueText(dice)} preview={false} />
+        <Image src={getImage(dice)} alt={getText(dice)} preview={false} />
       </div>
     </Tooltip>
   );
