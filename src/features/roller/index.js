@@ -152,6 +152,7 @@ const Roller = ({ save }) => {
                 onFinish={(positions) =>
                   dispatch(reroll(roll, positions, "distinction"))
                 }
+                modifiers={modifiers}
               />
             )}
             {modifiers.includes("adversity") && (

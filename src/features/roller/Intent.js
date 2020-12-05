@@ -7,6 +7,7 @@ import {
   Switch,
   Divider,
   AutoComplete,
+  Select,
 } from "antd";
 import styles from "./Intent.module.css";
 import NextButton from "./NextButton";
@@ -22,6 +23,7 @@ import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const layout = {
   labelCol: { span: 8 },
@@ -96,12 +98,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
     dispatch(addCampaign(data["campaign"]));
     dispatch(addCharacter(data["character"]));
 
+    const techniques = data["techniques"] || [];
+
     onFinish({
       ...data,
       modifiers: [
         data["modifier"],
         data["compromised"] && "compromised",
         data["void"] && "void",
+        ...techniques,
       ].filter(Boolean),
     });
   };
@@ -158,6 +163,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
         valuePropName="checked"
       >
         <Switch />
+      </Form.Item>
+      <Form.Item label="Techniques" name="techniques">
+        <Select mode="multiple" placeholder="Relevant shūji, kata etc.">
+          <Option value="stirring">{"Stirring the Embers"}</Option>
+        </Select>
       </Form.Item>
       <Divider />
       <Form.Item {...tailLayout}>

@@ -16,7 +16,10 @@ const Summary = ({
     modifiers.includes("void") && "Void Point spent",
     modifiers.includes("compromised") && "Compromised",
     modifiers.includes("adversity") && "Adversity applies",
-    modifiers.includes("distinction") && "Distinction applies",
+    modifiers.includes("distinction") &&
+      (modifiers.includes("stirring")
+        ? "Distinction (fostered by Stirring the Embers) applies"
+        : "Distinction applies"),
   ]
     .filter(Boolean)
     .join(" – ");

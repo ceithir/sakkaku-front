@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 
-const Distinction = ({ dices, onFinish }) => {
+const Distinction = ({ dices, onFinish, modifiers }) => {
   const [toReroll, setToReroll] = useState([]);
-  const max = 2;
+  const max = modifiers.includes("stirring") ? 3 : 2;
   const toggle = (index) => {
     if (toReroll.includes(index)) {
       return setToReroll(toReroll.filter((i) => i !== index));
