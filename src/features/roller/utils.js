@@ -21,7 +21,7 @@ export const hideRerolls = (dices) => {
   const isFromReroll = ({ status, metadata }) =>
     metadata?.modifier && status !== "rerolled";
 
-  const rerollDices = dices.filter(isFromReroll);
+  const rerollDices = orderDices(dices.filter(isFromReroll));
 
   let i = 0;
   let reorder = [];
@@ -38,5 +38,21 @@ export const hideRerolls = (dices) => {
 
     reorder.push(dice);
   });
+  return reorder;
+};
+
+export const orderDices = (dices) => {
+  const reorder = [...dices];
+
+  reorder.sort((a, b) => {
+    if (a.type === "ring" && b.type === "skill") {
+      return -1;
+    }
+    if (b.type === "ring" && a.type === "skill") {
+      return 1;
+    }
+    return 0;
+  });
+
   return reorder;
 };

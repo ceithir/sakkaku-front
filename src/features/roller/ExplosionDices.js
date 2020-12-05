@@ -1,6 +1,6 @@
 import React from "react";
 import Dices from "./Dices";
-import { hideRerolls } from "./utils";
+import { hideRerolls, orderDices } from "./utils";
 import { Divider } from "antd";
 
 const splitExplosions = ({ dices, basePool }) => {
@@ -8,16 +8,7 @@ const splitExplosions = ({ dices, basePool }) => {
   let remainingDices = hideRerolls(dices);
   let size = basePool;
   while (remainingDices.length > 0) {
-    const currentDices = remainingDices.slice(0, size);
-    currentDices.sort((a, b) => {
-      if (a.type === "ring" && b.type === "skill") {
-        return -1;
-      }
-      if (b.type === "ring" && a.type === "skill") {
-        return 1;
-      }
-      return 0;
-    });
+    const currentDices = orderDices(remainingDices.slice(0, size));
     remainingDices = remainingDices.slice(size, remainingDices.length);
     size = currentDices.filter(
       ({ status, value: { explosion } }) => status === "kept" && explosion > 0
