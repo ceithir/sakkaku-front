@@ -13,9 +13,7 @@ const Complete = ({ dices, button, intent, context, player }) => {
 
   const voided = modifiers.includes("void");
   const basePool = ring + skill + (voided ? 1 : 0);
-  const rerollType =
-    (modifiers.includes("distinction") && "distinction") ||
-    (modifiers.includes("adversity") && "adversity");
+  const rerollTypes = context?.roll?.metadata?.rerolls || [];
 
   return (
     <Collapse defaultActiveKey={["declare", "resolve"]}>
@@ -23,10 +21,8 @@ const Complete = ({ dices, button, intent, context, player }) => {
         <Summary {...context} {...intent} player={player} />
       </Panel>
 
-      <Panel header="Modify" key="modify" disabled={!rerollType}>
-        {rerollType && (
-          <Reroll dices={dices} basePool={basePool} rerollType={rerollType} />
-        )}
+      <Panel header="Modify" key="modify" disabled={rerollTypes.length === 0}>
+        <Reroll dices={dices} basePool={basePool} rerollTypes={rerollTypes} />
       </Panel>
 
       <Panel header="Keep" key="keep">

@@ -13,13 +13,14 @@ const Summary = ({
   player,
 }) => {
   const special = [
-    modifiers.includes("void") && "Void Point spent",
+    modifiers.includes("void") && "Void Point",
     modifiers.includes("compromised") && "Compromised",
-    modifiers.includes("adversity") && "Adversity applies",
+    modifiers.includes("adversity") && "Adversity",
     modifiers.includes("distinction") &&
       (modifiers.includes("stirring")
-        ? "Distinction (fostered by Stirring the Embers) applies"
-        : "Distinction applies"),
+        ? "Distinction (fostered by Stirring the Embers)"
+        : "Distinction"),
+    modifiers.includes("shadow") && "Victory before Honor",
   ]
     .filter(Boolean)
     .join(" – ");

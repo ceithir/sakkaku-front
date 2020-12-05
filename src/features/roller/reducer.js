@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer, authentifiedPostOnServer } from "../../server";
 import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
+import { REROLL_TYPES } from "./utils";
 
 const initialState = {
   tn: 3,
@@ -164,13 +165,14 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
     return;
   }
 
-  const { tn, ring, skill, modifiers, dices } = roll;
+  const { tn, ring, skill, modifiers, dices, metadata } = roll;
   postOnServer({
     uri: "/public/ffg/l5r/rolls/reroll",
     body: {
       roll: {
         parameters: { tn, ring, skill, modifiers },
         dices,
+        metadata,
       },
       positions,
       modifier,
@@ -232,9 +234,13 @@ export const selectStep = (state) => {
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =
     dicesRolled && dices.some((dice) => dice.status === "pending");
-  const hasReroll =
-    modifiers.includes("adversity") || modifiers.includes("distinction");
-  const rerollDone = metadata?.rerolls?.length || !hasReroll;
+
+  const currentRerollModifiers = modifiers.filter((mod) =>
+    REROLL_TYPES.includes(mod)
+  );
+  const hasReroll = currentRerollModifiers.length > 0;
+  const rerollDone =
+    !hasReroll || metadata?.rerolls?.length === currentRerollModifiers.length;
 
   if (dicesRolled && rerollDone && !atLeastOneUnresolvedDice) {
     return RESOLVE;

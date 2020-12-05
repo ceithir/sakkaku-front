@@ -166,7 +166,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
       </Form.Item>
       <Form.Item label="Techniques" name="techniques">
         <Select mode="multiple" placeholder="Relevant shūji, kata etc.">
-          <Option value="stirring">{"Stirring the Embers"}</Option>
+          <Option value="stirring">{"Shūji — Stirring the Embers"}</Option>
+          <Option value="shadow">
+            {"Ikoma Shadow School — Victory before Honor"}
+          </Option>
         </Select>
       </Form.Item>
       <Divider />

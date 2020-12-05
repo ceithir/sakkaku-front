@@ -13,6 +13,7 @@ import {
 import Keep from "./Keep";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
+import Ability from "./reroll/Ability";
 import Summary from "./Summary";
 import { Collapse } from "antd";
 import styles from "./index.module.css";
@@ -31,6 +32,7 @@ import RerollResult from "./result/Reroll";
 import KeepResult from "./result/Keep";
 import ResolveResult from "./result/Resolve";
 import AnonymousAlert from "./AnonymousAlert";
+import { REROLL_TYPES } from "./utils";
 
 const { Panel } = Collapse;
 
@@ -75,14 +77,21 @@ const Roller = ({ save }) => {
     setActiveKeys([currentStep]);
   }, [currentStep]);
 
-  const { dices, tn, modifiers, ring, skill, error, id, description } = roll;
+  const {
+    dices,
+    tn,
+    modifiers,
+    ring,
+    skill,
+    error,
+    id,
+    description,
+    metadata,
+  } = roll;
 
   const compromised = modifiers.includes("compromised");
   const voided = modifiers.includes("void");
   const basePool = ring + skill + (voided ? 1 : 0);
-  const rerollType =
-    (modifiers.includes("distinction") && "distinction") ||
-    (modifiers.includes("adversity") && "adversity");
 
   if (error) {
     return <DefaultErrorMessage />;
@@ -98,7 +107,11 @@ const Roller = ({ save }) => {
     }
 
     if (panel === REROLL) {
-      return !rerollType || currentStep === DECLARE;
+      if (currentStep === DECLARE) {
+        return true;
+      }
+
+      return !modifiers.some((mod) => REROLL_TYPES.includes(mod));
     }
 
     return false;
@@ -143,34 +156,53 @@ const Roller = ({ save }) => {
     }
 
     if (name === REROLL) {
+      const shouldShow = (modifier) =>
+        modifiers.includes(modifier) && !metadata?.rerolls?.includes(modifier);
+
       if (currentStep === REROLL) {
-        return (
-          <>
-            {modifiers.includes("distinction") && (
-              <Distinction
-                dices={dices}
-                onFinish={(positions) =>
-                  dispatch(reroll(roll, positions, "distinction"))
-                }
-                modifiers={modifiers}
-              />
-            )}
-            {modifiers.includes("adversity") && (
-              <Adversity
-                dices={dices}
-                onFinish={(positions) =>
-                  dispatch(reroll(roll, positions, "adversity"))
-                }
-              />
-            )}
-          </>
-        );
+        if (shouldShow("distinction")) {
+          return (
+            <Distinction
+              dices={dices}
+              onFinish={(positions) =>
+                dispatch(reroll(roll, positions, "distinction"))
+              }
+              modifiers={modifiers}
+            />
+          );
+        }
+
+        if (shouldShow("adversity")) {
+          return (
+            <Adversity
+              dices={dices}
+              onFinish={(positions) =>
+                dispatch(reroll(roll, positions, "adversity"))
+              }
+            />
+          );
+        }
+
+        if (shouldShow("shadow")) {
+          return (
+            <Ability
+              dices={dices}
+              onFinish={(positions) =>
+                dispatch(reroll(roll, positions, "shadow"))
+              }
+              text={`Thanks to your School Ability, you can stake honor up to your school rank to re-roll a number of dice equal to twice the amount of honor staked.`}
+            />
+          );
+        }
+
+        return null;
       }
+
       return (
         <RerollResult
           dices={dices}
           basePool={basePool}
-          rerollType={rerollType}
+          rerollTypes={metadata?.rerolls || []}
         />
       );
     }
