@@ -195,6 +195,18 @@ const Roller = ({ save }) => {
           );
         }
 
+        if (shouldShow("deathdealer")) {
+          return (
+            <Ability
+              dices={dices}
+              onFinish={(positions) =>
+                dispatch(reroll(roll, positions, "deathdealer"))
+              }
+              text={`Thanks to your School Ability, you can may reroll dice up to your school rank.`}
+            />
+          );
+        }
+
         return null;
       }
 

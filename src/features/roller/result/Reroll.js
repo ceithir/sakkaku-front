@@ -19,6 +19,7 @@ const TITLES = {
   distinction: "Distinction Reroll",
   adversity: "Adversity Reroll",
   shadow: "Victory before Honor Reroll",
+  deathdealer: "Way of the Scorpion Reroll",
 };
 
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
