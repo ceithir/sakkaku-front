@@ -1,3 +1,11 @@
+// TODO: Move this somehwere more logical
+export const REROLL_TYPES = [
+  "adversity",
+  "distinction",
+  "shadow",
+  "deathdealer",
+];
+
 export const countDices = (keptDices) => {
   return {
     successCount: keptDices.reduce(
@@ -56,8 +64,6 @@ export const orderDices = (dices) => {
 
   return reorder;
 };
-
-export const REROLL_TYPES = ["adversity", "distinction", "shadow"];
 
 export const isRerollOfType = ({ status, metadata }, rerollType) => {
   if (status !== "rerolled") {

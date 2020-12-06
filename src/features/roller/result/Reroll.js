@@ -22,6 +22,11 @@ const TITLES = {
 };
 
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
+  // Deathdealer can be either a modifier to distinction or a distinct reroll
+  if (rerollType === "deathdealer" && rerollTypes.includes("distinction")) {
+    return null;
+  }
+
   const theme = THEMES[rerollType] || "magenta";
   const title = TITLES[rerollType];
 

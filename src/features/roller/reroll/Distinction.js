@@ -5,6 +5,7 @@ import NextButton from "../NextButton";
 const Distinction = ({ dices, onFinish, modifiers }) => {
   const [toReroll, setToReroll] = useState([]);
   const max = modifiers.includes("stirring") ? 3 : 2;
+  const bypassMax = modifiers.includes("deathdealer");
   const toggle = (index) => {
     if (toReroll.includes(index)) {
       return setToReroll(toReroll.filter((i) => i !== index));
@@ -24,17 +25,20 @@ const Distinction = ({ dices, onFinish, modifiers }) => {
     return "Reroll these dice";
   };
 
+  const text = () => {
+    if (modifiers.includes("deathdealer")) {
+      return `Thanks to your Distinction and your School Ability, you can select up to ${max}+Rank dice to be rerolled.`;
+    }
+
+    return `Thanks to your Distinction, you can select up to ${max} dice to be rerolled.`;
+  };
+
   return (
     <DicesBox
-      text={
-        <>
-          Thanks to your <strong>Distinction</strong>, you can select up to
-          {` ${max}`} dice to be rerolled:
-        </>
-      }
+      text={text()}
       dices={dices.map((dice, index) => {
         const selected = toReroll.includes(index);
-        const selectable = selected || toReroll.length < max;
+        const selectable = selected || toReroll.length < max || bypassMax;
         return {
           ...dice,
           selectable,

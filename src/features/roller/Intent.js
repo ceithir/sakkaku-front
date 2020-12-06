@@ -164,13 +164,45 @@ const Intent = ({ onFinish, values, onComplete }) => {
       >
         <Switch />
       </Form.Item>
-      <Form.Item label="Techniques" name="techniques">
-        <Select mode="multiple" placeholder="Relevant shūji, kata etc.">
-          <Option value="stirring">{"Shūji — Stirring the Embers"}</Option>
-          <Option value="shadow">
-            {"Ikoma Shadow School — Victory before Honor"}
-          </Option>
-        </Select>
+      <Form.Item
+        noStyle
+        shouldUpdate={(prevValues, currentValues) =>
+          prevValues.techniques !== currentValues.techniques
+        }
+      >
+        {({ getFieldValue }) => {
+          const mutuallyExclusive = ["shadow", "deathdealer"];
+          const currentValue = getFieldValue("techniques") || [];
+          const disabled = (name) => {
+            if (!mutuallyExclusive.includes(name)) {
+              return false;
+            }
+            return currentValue.some((technique) =>
+              mutuallyExclusive
+                .filter((tech) => tech !== name)
+                .includes(technique)
+            );
+          };
+
+          return (
+            <Form.Item label="Techniques" name="techniques">
+              <Select
+                mode="multiple"
+                placeholder="Relevant school ability, shūji, kata, etc."
+              >
+                <Option value="stirring">
+                  {"Shūji — Stirring the Embers"}
+                </Option>
+                <Option value="shadow" disabled={disabled("shadow")}>
+                  {"Ikoma Shadow School — Victory before Honor"}
+                </Option>
+                <Option value="deathdealer" disabled={disabled("deathdealer")}>
+                  {"Bayushi Deathdealer School — Way of the Scorpion"}
+                </Option>
+              </Select>
+            </Form.Item>
+          );
+        }}
       </Form.Item>
       <Divider />
       <Form.Item {...tailLayout}>

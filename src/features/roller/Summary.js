@@ -16,11 +16,10 @@ const Summary = ({
     modifiers.includes("void") && "Void Point",
     modifiers.includes("compromised") && "Compromised",
     modifiers.includes("adversity") && "Adversity",
-    modifiers.includes("distinction") &&
-      (modifiers.includes("stirring")
-        ? "Distinction (fostered by Stirring the Embers)"
-        : "Distinction"),
+    modifiers.includes("distinction") && "Distinction",
+    modifiers.includes("stirring") && "Stirring the Embers",
     modifiers.includes("shadow") && "Victory before Honor",
+    modifiers.includes("deathdealer") && "Way of the Scorpion",
   ]
     .filter(Boolean)
     .join(" – ");
