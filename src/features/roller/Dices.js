@@ -10,18 +10,7 @@ const Dices = ({ dices, theme, className }) => {
   return (
     <div className={classNames(styles.dices, { [className]: !!className })}>
       {dices.map((dice, index) => {
-        const {
-          selectable,
-          selected,
-          disabled,
-          toggle,
-          status,
-          metadata,
-          value,
-        } = dice;
-        const modifier = metadata?.modifier;
-        const rerolled = status === "rerolled";
-        const fromReroll = modifier && status !== "rerolled";
+        const { selectable, selected, disabled, toggle, value } = dice;
 
         return (
           <div
@@ -30,8 +19,6 @@ const Dices = ({ dices, theme, className }) => {
               [styles.selectable]: selectable,
               [styles.selected]: selected,
               [styles.unselectable]: disabled,
-              [styles.rerolled]: rerolled,
-              [styles["from-reroll"]]: fromReroll,
               [styles[`theme-${theme}`]]: !!theme,
               [styles.explosion]: value?.explosion,
             })}
