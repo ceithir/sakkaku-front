@@ -1,4 +1,4 @@
-import { replaceRerollsOfType } from "./utils";
+import { replaceRerollsOfType, replaceRerolls } from "./utils";
 
 describe("replaceRerollsOfType", () => {
   describe("current", () => {
@@ -279,5 +279,249 @@ describe("replaceRerollsOfType", () => {
         },
       ]);
     });
+  });
+});
+
+describe("replaceRerolls", () => {
+  test("order is consistent", () => {
+    const roll = {
+      dices: [
+        {
+          type: "ring",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+          status: "kept",
+          metadata: [],
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "distinction" },
+        },
+        {
+          type: "ring",
+          value: { strife: 1, success: 0, explosion: 1, opportunity: 0 },
+          status: "dropped",
+          metadata: [],
+        },
+        {
+          type: "ring",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "shadow" },
+        },
+        {
+          type: "ring",
+          value: { strife: 1, success: 0, explosion: 0, opportunity: 1 },
+          status: "rerolled",
+          metadata: { end: "distinction" },
+        },
+        {
+          type: "ring",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "shadow" },
+        },
+        {
+          type: "skill",
+          value: { strife: 1, success: 0, explosion: 1, opportunity: 0 },
+          status: "kept",
+          metadata: [],
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 0, explosion: 1, opportunity: 0 },
+          status: "kept",
+          metadata: [],
+        },
+        {
+          type: "skill",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "distinction" },
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+          status: "kept",
+          metadata: [],
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+          status: "rerolled",
+          metadata: { end: "shadow" },
+        },
+        {
+          type: "ring",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: {
+            end: "shadow",
+            source: "distinction",
+          },
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+          status: "kept",
+          metadata: { source: "distinction" },
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+          status: "kept",
+          metadata: { source: "distinction" },
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 0 },
+          status: "dropped",
+          metadata: { source: "shadow" },
+        },
+        {
+          type: "ring",
+          value: { strife: 1, success: 0, explosion: 0, opportunity: 1 },
+          status: "dropped",
+          metadata: { source: "shadow" },
+        },
+        {
+          type: "skill",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "dropped",
+          metadata: { source: "shadow" },
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 0 },
+          status: "dropped",
+          metadata: { source: "shadow" },
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 0, explosion: 1, opportunity: 0 },
+          status: "kept",
+          metadata: [],
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+          status: "kept",
+          metadata: [],
+        },
+        {
+          type: "skill",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "dropped",
+          metadata: [],
+        },
+      ],
+      metadata: { rerolls: ["distinction", "shadow"] },
+      parameters: {
+        tn: 5,
+        ring: 5,
+        skill: 5,
+        modifiers: ["distinction", "void", "stirring", "shadow"],
+      },
+    };
+    const {
+      dices,
+      metadata: { rerolls },
+      parameters: { ring, skill },
+    } = roll;
+    const basePool = ring + skill + 1;
+
+    expect(
+      replaceRerolls({
+        dices,
+        rerollTypes: rerolls,
+        basePool,
+      })
+    ).toStrictEqual([
+      {
+        type: "ring",
+        value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+        status: "kept",
+        metadata: [],
+      },
+      {
+        type: "ring",
+        value: { strife: 0, success: 0, explosion: 0, opportunity: 0 },
+        status: "dropped",
+        metadata: { source: "shadow" },
+      },
+      {
+        type: "ring",
+        value: { strife: 1, success: 0, explosion: 1, opportunity: 0 },
+        status: "dropped",
+        metadata: [],
+      },
+      {
+        type: "ring",
+        value: { strife: 1, success: 0, explosion: 0, opportunity: 1 },
+        status: "dropped",
+        metadata: { source: "shadow" },
+      },
+      {
+        type: "ring",
+        value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+        status: "kept",
+        metadata: { source: "distinction" },
+      },
+      {
+        type: "ring",
+        value: { strife: 0, success: 0, explosion: 0, opportunity: 0 },
+        status: "dropped",
+        metadata: { source: "shadow" },
+      },
+      {
+        type: "skill",
+        value: { strife: 1, success: 0, explosion: 1, opportunity: 0 },
+        status: "kept",
+        metadata: [],
+      },
+      {
+        type: "skill",
+        value: { strife: 0, success: 0, explosion: 1, opportunity: 0 },
+        status: "kept",
+        metadata: [],
+      },
+      {
+        type: "skill",
+        value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+        status: "kept",
+        metadata: { source: "distinction" },
+      },
+      {
+        type: "skill",
+        value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+        status: "kept",
+        metadata: [],
+      },
+      {
+        type: "skill",
+        value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+        status: "dropped",
+        metadata: { source: "shadow" },
+      },
+      {
+        type: "skill",
+        value: { strife: 0, success: 0, explosion: 1, opportunity: 0 },
+        status: "kept",
+        metadata: [],
+      },
+      {
+        type: "skill",
+        value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+        status: "kept",
+        metadata: [],
+      },
+      {
+        type: "skill",
+        value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+        status: "dropped",
+        metadata: [],
+      },
+    ]);
   });
 });

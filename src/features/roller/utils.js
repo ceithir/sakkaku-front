@@ -124,3 +124,24 @@ export const replaceRerollsOfType = ({
     return dice;
   });
 };
+
+export const replaceRerolls = ({ dices, rerollTypes, basePool }) => {
+  const rerollCount = dices.filter(({ status }) => status === "rerolled")
+    .length;
+  if (rerollCount === 0) {
+    return dices;
+  }
+
+  const previousRerollTypes = [...rerollTypes];
+  const rerollType = previousRerollTypes.pop();
+
+  return [
+    ...replaceRerollsOfType({
+      dices,
+      rerollType,
+      previousRerollTypes,
+      basePool,
+    }),
+    ...dices.slice(basePool + rerollCount), // Explosions
+  ];
+};
