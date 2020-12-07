@@ -20,12 +20,15 @@ const TITLES = {
   adversity: "Adversity Reroll",
   shadow: "Victory before Honor Reroll",
   deathdealer: "Way of the Scorpion Reroll",
+  manipulator: "Weakness Is My Strength Reroll",
   ishiken: "Way of the Void Alteration",
 };
 
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
-  // Deathdealer can be either a modifier to distinction or a distinct reroll
-  if (rerollType === "deathdealer" && rerollTypes.includes("distinction")) {
+  if (
+    (rerollType === "deathdealer" || rerollType === "manipulator") &&
+    rerollTypes.includes("distinction")
+  ) {
     return null;
   }
 

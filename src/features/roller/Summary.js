@@ -20,6 +20,7 @@ const Summary = ({
     modifiers.includes("stirring") && "Stirring the Embers",
     modifiers.includes("shadow") && "Victory before Honor",
     modifiers.includes("deathdealer") && "Way of the Scorpion",
+    modifiers.includes("manipulator") && "Weakness Is My Strength",
     modifiers.includes("ishiken") && "Way of the Void",
   ]
     .filter(Boolean)

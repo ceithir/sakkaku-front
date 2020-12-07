@@ -5,7 +5,8 @@ import NextButton from "../NextButton";
 const Distinction = ({ dices, onFinish, modifiers }) => {
   const [toReroll, setToReroll] = useState([]);
   const max = modifiers.includes("stirring") ? 3 : 2;
-  const bypassMax = modifiers.includes("deathdealer");
+  const bypassMax =
+    modifiers.includes("deathdealer") || modifiers.includes("manipulator");
   const toggle = (index) => {
     if (toReroll.includes(index)) {
       return setToReroll(toReroll.filter((i) => i !== index));
@@ -26,7 +27,7 @@ const Distinction = ({ dices, onFinish, modifiers }) => {
   };
 
   const text = () => {
-    if (modifiers.includes("deathdealer")) {
+    if (bypassMax) {
       return `Thanks to your Distinction and your School Ability, you can select up to ${max}+Rank dice to be rerolled.`;
     }
 

@@ -170,7 +170,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
         }
       >
         {({ getFieldValue }) => {
-          const mutuallyExclusive = ["shadow", "deathdealer", "ishiken"];
+          const mutuallyExclusive = [
+            "shadow",
+            "deathdealer",
+            "ishiken",
+            "manipulator",
+          ];
           const currentValue = getFieldValue("techniques") || [];
           const disabled = (name) => {
             if (!mutuallyExclusive.includes(name)) {
@@ -192,6 +197,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   {
                     value: "deathdealer",
                     label: "School — Bayushi Deathdealer — Way of the Scorpion",
+                  },
+                  {
+                    value: "manipulator",
+                    label:
+                      "School — Bayushi Manipulator — Weakness Is My Strength",
                   },
                   {
                     value: "shadow",

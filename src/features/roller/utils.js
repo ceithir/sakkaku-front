@@ -4,6 +4,7 @@ export const REROLL_TYPES = [
   "distinction",
   "shadow",
   "deathdealer",
+  "manipulator",
   "ishiken",
 ];
 

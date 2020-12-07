@@ -225,6 +225,15 @@ const Roller = ({ save }) => {
           );
         }
 
+        if (shouldShow("manipulator")) {
+          return (
+            <AbilityReroll
+              name={"manipulator"}
+              text={`Thanks to your School Ability, you can may reroll dice up to your school rank.`}
+            />
+          );
+        }
+
         if (shouldShow("ishiken")) {
           return (
             <Ishiken
