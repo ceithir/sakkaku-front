@@ -208,6 +208,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                 ].map((data) => {
                   return { ...data, disabled: disabled(data.value) };
                 })}
+                optionFilterProp="label"
               />
             </Form.Item>
           );
