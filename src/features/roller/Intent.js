@@ -171,7 +171,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
         }
       >
         {({ getFieldValue }) => {
-          const mutuallyExclusive = ["shadow", "deathdealer"];
+          const mutuallyExclusive = ["shadow", "deathdealer", "ishiken"];
           const currentValue = getFieldValue("techniques") || [];
           const disabled = (name) => {
             if (!mutuallyExclusive.includes(name)) {
@@ -195,6 +195,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
                 </Option>
                 <Option value="shadow" disabled={disabled("shadow")}>
                   {"School — Ikoma Shadow — Victory before Honor"}
+                </Option>
+                <Option value="ishiken">
+                  {"School — Ishiken Initiate — Way of the Void"}
                 </Option>
                 <Option value="stirring">
                   {"Shūji — Stirring the Embers"}

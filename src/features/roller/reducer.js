@@ -182,6 +182,49 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
   });
 };
 
+export const alter = (roll, alterations, modifier) => (dispatch) => {
+  dispatch(setLoading(true));
+
+  const success = (data) => {
+    dispatch(setDices(data["dices"]));
+    dispatch(setMetadata(data["metadata"]));
+    dispatch(setLoading(false));
+  };
+  const error = () => {
+    dispatch(setError(true));
+  };
+
+  const { id } = roll;
+  if (id) {
+    authentifiedPostOnServer({
+      uri: `/ffg/l5r/rolls/${id}/alter`,
+      body: {
+        alterations,
+        modifier,
+      },
+      success,
+      error,
+    });
+    return;
+  }
+
+  const { tn, ring, skill, modifiers, dices, metadata } = roll;
+  postOnServer({
+    uri: "/public/ffg/l5r/rolls/alter",
+    body: {
+      roll: {
+        parameters: { tn, ring, skill, modifiers },
+        dices,
+        metadata,
+      },
+      alterations,
+      modifier,
+    },
+    success,
+    error,
+  });
+};
+
 export const keep = (roll, positions) => (dispatch) => {
   dispatch(setLoading(true));
 

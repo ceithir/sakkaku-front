@@ -1,0 +1,18 @@
+.alterators {
+  padding: 12px;
+}
+
+.alterator {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.alterator > label {
+  height: 100%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.alterator img {
+  height: 48px;
+}

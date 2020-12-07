@@ -9,11 +9,13 @@ import {
   reroll,
   selectStep,
   selectIntent,
+  alter,
 } from "./reducer";
 import Keep from "./Keep";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Ability from "./reroll/Ability";
+import Ishiken from "./reroll/Ishiken";
 import Summary from "./Summary";
 import { Collapse } from "antd";
 import styles from "./index.module.css";
@@ -219,6 +221,19 @@ const Roller = ({ save }) => {
             <AbilityReroll
               name={"deathdealer"}
               text={`Thanks to your School Ability, you can may reroll dice up to your school rank.`}
+            />
+          );
+        }
+
+        if (shouldShow("ishiken")) {
+          return (
+            <Ishiken
+              dices={dices}
+              onFinish={(alterations) =>
+                dispatch(alter(roll, alterations, "ishiken"))
+              }
+              basePool={basePool}
+              rerollTypes={rerollTypes}
             />
           );
         }

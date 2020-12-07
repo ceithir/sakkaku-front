@@ -20,6 +20,7 @@ const TITLES = {
   adversity: "Adversity Reroll",
   shadow: "Victory before Honor Reroll",
   deathdealer: "Way of the Scorpion Reroll",
+  ishiken: "Way of the Void Alteration",
 };
 
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
