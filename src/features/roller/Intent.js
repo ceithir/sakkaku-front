@@ -23,7 +23,6 @@ import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
 
 const { TextArea } = Input;
-const { Option } = Select;
 
 const layout = {
   labelCol: { span: 8 },
@@ -189,20 +188,27 @@ const Intent = ({ onFinish, values, onComplete }) => {
               <Select
                 mode="multiple"
                 placeholder="Relevant school ability, shūji, kata, etc."
-              >
-                <Option value="deathdealer" disabled={disabled("deathdealer")}>
-                  {"School — Bayushi Deathdealer — Way of the Scorpion"}
-                </Option>
-                <Option value="shadow" disabled={disabled("shadow")}>
-                  {"School — Ikoma Shadow — Victory before Honor"}
-                </Option>
-                <Option value="ishiken">
-                  {"School — Ishiken Initiate — Way of the Void"}
-                </Option>
-                <Option value="stirring">
-                  {"Shūji — Stirring the Embers"}
-                </Option>
-              </Select>
+                options={[
+                  {
+                    value: "deathdealer",
+                    label: "School — Bayushi Deathdealer — Way of the Scorpion",
+                  },
+                  {
+                    value: "shadow",
+                    label: "School — Ikoma Shadow — Victory before Honor",
+                  },
+                  {
+                    value: "ishiken",
+                    label: "School — Ishiken Initiate — Way of the Void",
+                  },
+                  {
+                    value: "stirring",
+                    label: "Shūji — Stirring the Embers",
+                  },
+                ].map((data) => {
+                  return { ...data, disabled: disabled(data.value) };
+                })}
+              />
             </Form.Item>
           );
         }}
