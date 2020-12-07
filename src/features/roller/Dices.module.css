@@ -47,11 +47,11 @@
 }
 
 .theme-magenta.selectable:hover {
-  background-color: #ff85c0;
+  background-color: #eb2f96;
 }
 
 .theme-magenta.selected {
-  background-color: #eb2f96;
+  background-color: #ff85c0;
 }
 
 .theme-gray.selected {
