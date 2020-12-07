@@ -7,7 +7,16 @@ import styles from "./Keep.module.css";
 
 const { Paragraph } = Typography;
 
-const Keep = ({ dices, ring, skill, voided, onFinish, compromised, tn }) => {
+const Keep = ({
+  dices,
+  ring,
+  skill,
+  voided,
+  onFinish,
+  compromised,
+  tn,
+  rerollTypes,
+}) => {
   const [toKeep, setToKeep] = useState([]);
   useEffect(() => {
     setToKeep([]);
@@ -109,6 +118,7 @@ const Keep = ({ dices, ring, skill, voided, onFinish, compromised, tn }) => {
           };
         })}
         basePool={basePool}
+        rerollTypes={rerollTypes}
       />
       <Paragraph>{text()}</Paragraph>
       <Result dices={dices} tn={tn} extra={toKeep} className={styles.figures} />

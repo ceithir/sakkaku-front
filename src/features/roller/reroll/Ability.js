@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
-import { hideRerolls } from "../utils";
+import { replaceRerolls } from "../utils";
 
-const Ability = ({ dices, onFinish, text }) => {
+const Ability = ({ dices, onFinish, text, basePool, rerollTypes }) => {
   const [toReroll, setToReroll] = useState([]);
   const toggle = (index) => {
     if (toReroll.includes(index)) {
@@ -27,8 +27,8 @@ const Ability = ({ dices, onFinish, text }) => {
   return (
     <DicesBox
       text={text}
-      dices={hideRerolls(
-        dices.map((dice, index) => {
+      dices={replaceRerolls({
+        dices: dices.map((dice, index) => {
           const selected = toReroll.includes(index);
           return {
             ...dice,
@@ -37,8 +37,10 @@ const Ability = ({ dices, onFinish, text }) => {
             disabled: false,
             toggle: () => toggle(index),
           };
-        })
-      )}
+        }),
+        basePool,
+        rerollTypes,
+      })}
       footer={
         <NextButton onClick={() => onFinish(toReroll)}>
           {buttonText()}

@@ -92,6 +92,7 @@ const Roller = ({ save }) => {
   const compromised = modifiers.includes("compromised");
   const voided = modifiers.includes("void");
   const basePool = ring + skill + (voided ? 1 : 0);
+  const rerollTypes = metadata?.rerolls || [];
 
   if (error) {
     return <DefaultErrorMessage />;
@@ -134,6 +135,8 @@ const Roller = ({ save }) => {
           }
           id={id}
           description={description}
+          basePool={basePool}
+          rerollTypes={rerollTypes}
         />
       );
     }
@@ -149,15 +152,22 @@ const Roller = ({ save }) => {
             ring={ring}
             skill={skill}
             voided={voided}
+            rerollTypes={rerollTypes}
           />
         );
       }
-      return <KeepResult dices={dices} basePool={basePool} />;
+      return (
+        <KeepResult
+          dices={dices}
+          basePool={basePool}
+          rerollTypes={rerollTypes}
+        />
+      );
     }
 
     if (name === REROLL) {
       const shouldShow = (modifier) =>
-        modifiers.includes(modifier) && !metadata?.rerolls?.includes(modifier);
+        modifiers.includes(modifier) && !rerollTypes.includes(modifier);
 
       if (currentStep === REROLL) {
         if (shouldShow("distinction")) {
@@ -183,13 +193,22 @@ const Roller = ({ save }) => {
           );
         }
 
-        if (shouldShow("shadow")) {
+        const AbilityReroll = ({ name, text }) => {
           return (
             <Ability
               dices={dices}
-              onFinish={(positions) =>
-                dispatch(reroll(roll, positions, "shadow"))
-              }
+              onFinish={(positions) => dispatch(reroll(roll, positions, name))}
+              text={text}
+              basePool={basePool}
+              rerollTypes={rerollTypes}
+            />
+          );
+        };
+
+        if (shouldShow("shadow")) {
+          return (
+            <AbilityReroll
+              name={"shadow"}
               text={`Thanks to your School Ability, you can stake honor up to your school rank to re-roll a number of dice equal to twice the amount of honor staked.`}
             />
           );
@@ -197,11 +216,8 @@ const Roller = ({ save }) => {
 
         if (shouldShow("deathdealer")) {
           return (
-            <Ability
-              dices={dices}
-              onFinish={(positions) =>
-                dispatch(reroll(roll, positions, "deathdealer"))
-              }
+            <AbilityReroll
+              name={"deathdealer"}
               text={`Thanks to your School Ability, you can may reroll dice up to your school rank.`}
             />
           );

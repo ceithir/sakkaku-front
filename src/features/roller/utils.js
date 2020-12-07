@@ -24,31 +24,6 @@ export const countDices = (keptDices) => {
   };
 };
 
-export const hideRerolls = (dices) => {
-  const isAReroll = ({ status }) => status === "rerolled";
-  const isFromReroll = ({ status, metadata }) =>
-    metadata?.modifier && status !== "rerolled";
-
-  const rerollDices = orderDices(dices.filter(isFromReroll));
-
-  let i = 0;
-  let reorder = [];
-  dices.forEach((dice) => {
-    if (isFromReroll(dice)) {
-      return;
-    }
-
-    if (isAReroll(dice)) {
-      rerollDices[i] && reorder.push(rerollDices[i]);
-      i++;
-      return;
-    }
-
-    reorder.push(dice);
-  });
-  return reorder;
-};
-
 export const orderDices = (dices) => {
   const reorder = [...dices];
 

@@ -1,11 +1,11 @@
 import React from "react";
 import Dices from "./Dices";
-import { hideRerolls, orderDices } from "./utils";
+import { orderDices, replaceRerolls } from "./utils";
 import { Divider } from "antd";
 
-const splitExplosions = ({ dices, basePool }) => {
+const splitExplosions = ({ dices, basePool, rerollTypes }) => {
   let split = [];
-  let remainingDices = hideRerolls(dices);
+  let remainingDices = replaceRerolls({ dices, basePool, rerollTypes });
   let size = basePool;
   while (remainingDices.length > 0) {
     const currentDices = orderDices(remainingDices.slice(0, size));
@@ -18,14 +18,14 @@ const splitExplosions = ({ dices, basePool }) => {
   return split;
 };
 
-const ExplosionDices = ({ dices, basePool, className }) => {
+const ExplosionDices = ({ dices, basePool, className, rerollTypes }) => {
   if (!basePool || basePool > dices.length) {
     throw new Error("Better than infite loop");
   }
 
   return (
     <div className={className}>
-      {splitExplosions({ dices, basePool }).map((dices, index) => {
+      {splitExplosions({ dices, basePool, rerollTypes }).map((dices, index) => {
         return (
           <React.Fragment key={index.toString()}>
             {index > 0 && <Divider />}
