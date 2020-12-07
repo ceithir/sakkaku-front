@@ -146,7 +146,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
         <InputNumber min={0} max={5} />
       </Form.Item>
       <Divider />
-      <Form.Item label="Void?" name="void" valuePropName="checked">
+      <Form.Item
+        label={"Void for +1 Ring die?"}
+        name="void"
+        valuePropName="checked"
+      >
         <Switch />
       </Form.Item>
       <Form.Item label="Advantage / Disadvantage" name="modifier">
