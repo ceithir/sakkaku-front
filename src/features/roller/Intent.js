@@ -190,14 +190,14 @@ const Intent = ({ onFinish, values, onComplete }) => {
                 mode="multiple"
                 placeholder="Relevant school ability, shūji, kata, etc."
               >
-                <Option value="stirring">
-                  {"Shūji — Stirring the Embers"}
+                <Option value="deathdealer" disabled={disabled("deathdealer")}>
+                  {"School — Bayushi Deathdealer — Way of the Scorpion"}
                 </Option>
                 <Option value="shadow" disabled={disabled("shadow")}>
-                  {"Ikoma Shadow School — Victory before Honor"}
+                  {"School — Ikoma Shadow — Victory before Honor"}
                 </Option>
-                <Option value="deathdealer" disabled={disabled("deathdealer")}>
-                  {"Bayushi Deathdealer School — Way of the Scorpion"}
+                <Option value="stirring">
+                  {"Shūji — Stirring the Embers"}
                 </Option>
               </Select>
             </Form.Item>
