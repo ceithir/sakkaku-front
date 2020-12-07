@@ -3,7 +3,7 @@ import Result from "../Result";
 import BbCode from "../button/BbCode";
 import styles from "./Resolve.module.css";
 import Dices from "../Dices";
-import { replaceRerolls } from "../utils";
+import { replaceRerolls, orderDices } from "../utils";
 import DirectLink from "../button/DirectLink";
 
 const Resolve = ({
@@ -19,8 +19,10 @@ const Resolve = ({
     <div className={styles.layout}>
       <div className={styles.container}>
         <Dices
-          dices={replaceRerolls({ dices, basePool, rerollTypes }).filter(
-            ({ status }) => status === "kept"
+          dices={orderDices(
+            replaceRerolls({ dices, basePool, rerollTypes }).filter(
+              ({ status }) => status === "kept"
+            )
           )}
           className={styles.dices}
         />
