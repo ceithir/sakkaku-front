@@ -121,7 +121,13 @@ const Keep = ({
         rerollTypes={rerollTypes}
       />
       <Paragraph>{text()}</Paragraph>
-      <Result dices={dices} tn={tn} extra={toKeep} className={styles.figures} />
+      <Result
+        dices={dices}
+        tn={tn}
+        extra={toKeep}
+        className={styles.figures}
+        modifiers={rerollTypes}
+      />
       <NextButton
         onClick={() => onFinish(toKeep)}
         disabled={

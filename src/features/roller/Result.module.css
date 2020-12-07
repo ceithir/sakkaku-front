@@ -1,11 +1,7 @@
-.layout > div > div > div > div {
+.layout > div > div > div > div:nth-of-type(2) {
   text-align: center;
 }
 
-.layout > div > div > div > div:first-of-type {
-  text-align: left;
-}
-
-.layout > div > div > div > div:last-of-type {
+.layout > div > div > div > div:nth-of-type(3) {
   text-align: right;
 }

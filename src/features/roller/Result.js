@@ -6,12 +6,17 @@ import classNames from "classnames";
 
 const { Text } = Typography;
 
-const Result = ({ dices, tn, extra, className }) => {
+const Result = ({ dices, tn, extra, className, modifiers = [] }) => {
   const keptDices = dices.filter(({ status }, index) => {
     return status === "kept" || (extra && extra.includes(index));
   });
 
-  const { successCount, opportunityCount, strifeCount } = countDices(keptDices);
+  const {
+    successCount,
+    opportunityCount,
+    strifeCount,
+    blankCount,
+  } = countDices(keptDices);
 
   const data = [
     {
@@ -30,6 +35,13 @@ const Result = ({ dices, tn, extra, className }) => {
       color: strifeCount > 0 && "danger",
     },
   ];
+
+  if (modifiers.includes("ishiken")) {
+    data.push({
+      type: "Magnitude",
+      count: blankCount,
+    });
+  }
 
   return (
     <List

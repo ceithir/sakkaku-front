@@ -26,10 +26,16 @@ const Resolve = ({
           )}
           className={styles.dices}
         />
-        <Result dices={dices} tn={tn} />
+        <Result dices={dices} tn={tn} modifiers={rerollTypes} />
         <div className={styles.buttons}>
           <DirectLink id={id} />
-          <BbCode id={id} dices={dices} tn={tn} description={description} />
+          <BbCode
+            id={id}
+            dices={dices}
+            tn={tn}
+            description={description}
+            modifiers={rerollTypes}
+          />
           {button}
         </div>
       </div>

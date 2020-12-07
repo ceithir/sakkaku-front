@@ -3,7 +3,7 @@ import { Button, message } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { countDices } from "../utils";
 
-const BbCode = ({ id, description, tn, dices }) => {
+const BbCode = ({ id, description, tn, dices, modifiers = [] }) => {
   const buttonText = `Copy as BBCode`;
 
   if (!id) {
@@ -14,9 +14,17 @@ const BbCode = ({ id, description, tn, dices }) => {
     return status === "kept";
   });
 
-  const { successCount, opportunityCount, strifeCount } = countDices(keptDices);
+  const {
+    successCount,
+    opportunityCount,
+    strifeCount,
+    blankCount,
+  } = countDices(keptDices);
 
-  const shortResult = `Success: [b]${successCount}[/b] / Opportunity: [b]${opportunityCount}[/b] / Strife:[b]${strifeCount}[/b]`;
+  let shortResult = `Success: [b]${successCount}[/b] / Opportunity: [b]${opportunityCount}[/b] / Strife: [b]${strifeCount}[/b]`;
+  if (modifiers.includes("ishiken")) {
+    shortResult += ` / Magnitude: [b]${blankCount}[/b]`;
+  }
 
   const text = `[url="${
     window.location.origin

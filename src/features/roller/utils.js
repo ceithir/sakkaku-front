@@ -23,6 +23,10 @@ export const countDices = (keptDices) => {
       (acc, dice) => acc + (dice.value.strife || 0),
       0
     ),
+    blankCount: keptDices.filter(
+      ({ value: { strife, opportunity, success, explosion } }) =>
+        strife === 0 && opportunity === 0 && success === 0 && explosion === 0
+    ).length,
   };
 };
 
