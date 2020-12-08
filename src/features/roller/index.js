@@ -263,7 +263,11 @@ const Roller = ({ save }) => {
   return (
     <Layout>
       <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
-        <Panel header="Declare" key="declare">
+        <Panel
+          header="Declare"
+          key="declare"
+          disabled={currentStep === DECLARE}
+        >
           {currentStep === DECLARE ? (
             <Intent
               onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
@@ -273,13 +277,25 @@ const Roller = ({ save }) => {
             <Summary {...intent} />
           )}
         </Panel>
-        <Panel header="Modify" key="modify" disabled={disabled(REROLL)}>
+        <Panel
+          header="Modify"
+          key="modify"
+          disabled={disabled(REROLL) || currentStep === REROLL}
+        >
           <PanelContent name={REROLL} />
         </Panel>
-        <Panel header="Keep" key="keep" disabled={disabled(KEEP)}>
+        <Panel
+          header="Keep"
+          key="keep"
+          disabled={disabled(KEEP) || currentStep === KEEP}
+        >
           <PanelContent name={KEEP} />
         </Panel>
-        <Panel header="Resolve" key="resolve" disabled={disabled(RESOLVE)}>
+        <Panel
+          header="Resolve"
+          key="resolve"
+          disabled={disabled(RESOLVE) || currentStep === RESOLVE}
+        >
           <PanelContent name={RESOLVE} />
         </Panel>
       </Collapse>
