@@ -193,6 +193,35 @@ const Roller = ({ save }) => {
             />
           );
         }
+        const AbilityReroll = ({ name, text }) => {
+          return (
+            <Ability
+              dices={dices}
+              onFinish={(positions) => dispatch(reroll(roll, positions, name))}
+              text={text}
+              basePool={basePool}
+              rerollTypes={rerollTypes}
+            />
+          );
+        };
+
+        if (shouldShow("deathdealer")) {
+          return (
+            <AbilityReroll
+              name={"deathdealer"}
+              text={`Thanks to your School Ability, you may reroll dice up to your school rank.`}
+            />
+          );
+        }
+
+        if (shouldShow("manipulator")) {
+          return (
+            <AbilityReroll
+              name={"manipulator"}
+              text={`Thanks to your School Ability, you may reroll dice up to your school rank.`}
+            />
+          );
+        }
 
         if (shouldShow("2heavens")) {
           return (
@@ -207,41 +236,11 @@ const Roller = ({ save }) => {
           );
         }
 
-        const AbilityReroll = ({ name, text }) => {
-          return (
-            <Ability
-              dices={dices}
-              onFinish={(positions) => dispatch(reroll(roll, positions, name))}
-              text={text}
-              basePool={basePool}
-              rerollTypes={rerollTypes}
-            />
-          );
-        };
-
         if (shouldShow("shadow")) {
           return (
             <AbilityReroll
               name={"shadow"}
               text={`Thanks to your School Ability, you can stake honor up to your school rank to re-roll a number of dice equal to twice the amount of honor staked.`}
-            />
-          );
-        }
-
-        if (shouldShow("deathdealer")) {
-          return (
-            <AbilityReroll
-              name={"deathdealer"}
-              text={`Thanks to your School Ability, you can may reroll dice up to your school rank.`}
-            />
-          );
-        }
-
-        if (shouldShow("manipulator")) {
-          return (
-            <AbilityReroll
-              name={"manipulator"}
-              text={`Thanks to your School Ability, you can may reroll dice up to your school rank.`}
             />
           );
         }
