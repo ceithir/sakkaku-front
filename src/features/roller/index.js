@@ -258,6 +258,15 @@ const Roller = ({ save }) => {
           );
         }
 
+        if (shouldShow("ruleless")) {
+          return (
+            <AbilityReroll
+              name={"ruleless"}
+              text={`Select the dice you want/have to reroll.`}
+            />
+          );
+        }
+
         return null;
       }
 

@@ -217,6 +217,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
               value: "2heavens",
               label: "Attacking a warding Mirumoto Two-Heavens Adept",
             },
+            {
+              value: "ruleless",
+              label: "Manual reroll",
+            },
           ]}
           optionFilterProp="label"
         />

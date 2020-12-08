@@ -24,6 +24,7 @@ const TITLES = {
   manipulator: "Weakness Is My Strength Reroll",
   ishiken: "Way of the Void Alteration",
   "2heavens": "Way of the Dragon Ward Reroll",
+  ruleless: "Manual Reroll",
 };
 
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {

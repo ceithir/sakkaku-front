@@ -24,6 +24,7 @@ const Summary = ({
     modifiers.includes("deathdealer") && "Way of the Scorpion",
     modifiers.includes("manipulator") && "Weakness Is My Strength",
     modifiers.includes("ishiken") && "Way of the Void",
+    modifiers.includes("ruleless") && "Manual reroll",
   ]
     .filter(Boolean)
     .join(" – ");
