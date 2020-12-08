@@ -12,6 +12,7 @@ const initialState = {
   metadata: {},
   loading: false,
   error: false,
+  toKeep: [],
 };
 
 const slice = createSlice({
@@ -24,6 +25,7 @@ const slice = createSlice({
       state.modifiers = [];
       state.id = null;
       window.history.pushState(null, null, "/");
+      state.toKeep = [];
     },
     setParameters: (state, action) => {
       const {
@@ -61,6 +63,7 @@ const slice = createSlice({
 
       state.loading = false;
       window.history.pushState(null, null, `/rolls/${id}`);
+      state.toKeep = [];
     },
     update: (state, action) => {
       const { dices, metadata } = action.payload;
@@ -68,6 +71,10 @@ const slice = createSlice({
       state.metadata = metadata;
 
       state.loading = false;
+      state.toKeep = [];
+    },
+    setToKeep: (state, action) => {
+      state.toKeep = action.payload;
     },
   },
 });
@@ -78,6 +85,7 @@ export const {
   softReset,
   setAnimatedStep,
   load,
+  setToKeep,
 } = slice.actions;
 
 const { update, setError } = slice.actions;
@@ -315,5 +323,7 @@ export const selectIntent = (state) => {
 };
 export const selectHidden = (state) =>
   state.roll.loading && !state.roll.animatedStep;
+
+export const selectToKeep = (state) => state.roll.toKeep;
 
 export default slice.reducer;

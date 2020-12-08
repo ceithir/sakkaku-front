@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import NextButton from "./NextButton";
 import Result from "./Result";
 import { Typography } from "antd";
 import ExplosionDices from "./ExplosionDices";
 import styles from "./Keep.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { selectToKeep, setToKeep } from "./reducer";
 
 const { Paragraph } = Typography;
 
@@ -17,10 +19,8 @@ const Keep = ({
   tn,
   rerollTypes,
 }) => {
-  const [toKeep, setToKeep] = useState([]);
-  useEffect(() => {
-    setToKeep([]);
-  }, [dices.length]);
+  const toKeep = useSelector(selectToKeep);
+  const dispatch = useDispatch();
 
   const max = voided ? ring + 1 : ring;
   const basePool = max + skill;
@@ -36,9 +36,9 @@ const Keep = ({
 
   const toggle = (index) => {
     if (toKeep.includes(index)) {
-      return setToKeep(toKeep.filter((i) => i !== index));
+      return dispatch(setToKeep(toKeep.filter((i) => i !== index)));
     }
-    return setToKeep([...toKeep, index]);
+    return dispatch(setToKeep([...toKeep, index]));
   };
 
   const text = () => {
