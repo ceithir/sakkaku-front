@@ -11,6 +11,7 @@ import Loader from "../navigation/Loader";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 import Breadcrumb from "./Breadcrumb";
+import { orderDices } from "./utils";
 
 const GoBackButton = (props) => {
   const history = useHistory();
@@ -89,15 +90,9 @@ const IdentifiedRoll = () => {
           </Card>
           <DicesBox
             text={`Check in progress. Current dice pool:`}
-            dices={dices.map((dice) => {
-              const selected = dice.status === "kept";
-              const disabled = !["kept", "pending"].includes(dice.status);
-              return {
-                ...dice,
-                disabled,
-                selected,
-              };
-            })}
+            dices={orderDices(
+              dices.filter(({ status }) => ["pending", "kept"].includes(status))
+            )}
             footer={<GoBackButton style={{ float: "right" }} />}
           />
         </>
