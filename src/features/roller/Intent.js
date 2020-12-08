@@ -105,6 +105,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
         data["modifier"],
         data["compromised"] && "compromised",
         data["void"] && "void",
+        data["school"],
         ...techniques,
       ].filter(Boolean),
     });
@@ -167,70 +168,47 @@ const Intent = ({ onFinish, values, onComplete }) => {
       >
         <Switch />
       </Form.Item>
-      <Form.Item
-        noStyle
-        shouldUpdate={(prevValues, currentValues) =>
-          prevValues.techniques !== currentValues.techniques
-        }
-      >
-        {({ getFieldValue }) => {
-          const mutuallyExclusive = [
-            "shadow",
-            "deathdealer",
-            "ishiken",
-            "manipulator",
-          ];
-          const currentValue = getFieldValue("techniques") || [];
-          const disabled = (name) => {
-            if (!mutuallyExclusive.includes(name)) {
-              return false;
-            }
-            return currentValue.some((technique) =>
-              mutuallyExclusive
-                .filter((tech) => tech !== name)
-                .includes(technique)
-            );
-          };
-
-          return (
-            <Form.Item label="Techniques" name="techniques">
-              <Select
-                mode="multiple"
-                placeholder="Relevant school ability, shūji, kata, etc."
-                options={[
-                  {
-                    value: "deathdealer",
-                    label: "School — Bayushi Deathdealer — Way of the Scorpion",
-                  },
-                  {
-                    value: "manipulator",
-                    label:
-                      "School — Bayushi Manipulator — Weakness Is My Strength",
-                  },
-                  {
-                    value: "shadow",
-                    label: "School — Ikoma Shadow — Victory before Honor",
-                  },
-                  {
-                    value: "ishiken",
-                    label: "School — Ishiken Initiate — Way of the Void",
-                  },
-                  {
-                    value: "2heavens",
-                    label: "Special — Warded by a Mirumoto Two-Heavens Adept",
-                  },
-                  {
-                    value: "stirring",
-                    label: "Shūji — Stirring the Embers",
-                  },
-                ].map((data) => {
-                  return { ...data, disabled: disabled(data.value) };
-                })}
-                optionFilterProp="label"
-              />
-            </Form.Item>
-          );
-        }}
+      <Form.Item label="School Ability" name="school">
+        <Select
+          showSearch
+          allowClear
+          options={[
+            {
+              value: "deathdealer",
+              label: "Bayushi Deathdealer — Way of the Scorpion",
+            },
+            {
+              value: "manipulator",
+              label: "Bayushi Manipulator — Weakness Is My Strength",
+            },
+            {
+              value: "shadow",
+              label: "Ikoma Shadow — Victory before Honor",
+            },
+            {
+              value: "ishiken",
+              label: "Ishiken Initiate — Way of the Void",
+            },
+          ]}
+          optionFilterProp="label"
+        />
+      </Form.Item>
+      <Form.Item label="Techniques" name="techniques">
+        <Select
+          mode="multiple"
+          placeholder="Relevant shūji, kata, etc."
+          options={[
+            {
+              value: "2heavens",
+              label: "Special — Warded by a Mirumoto Two-Heavens Adept",
+            },
+            {
+              value: "stirring",
+              label: "Shūji — Stirring the Embers",
+            },
+          ]}
+          optionFilterProp="label"
+        />
       </Form.Item>
       <Divider />
       <Form.Item {...tailLayout}>
