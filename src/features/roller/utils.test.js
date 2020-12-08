@@ -280,6 +280,150 @@ describe("replaceRerollsOfType", () => {
       ]);
     });
   });
+
+  test("three levels of depth", () => {
+    const roll = {
+      dices: [
+        {
+          type: "ring",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "adversity" },
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+          status: "dropped",
+          metadata: [],
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+          status: "dropped",
+          metadata: [],
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+          status: "rerolled",
+          metadata: { end: "shadow" },
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 1, explosion: 0, opportunity: 1 },
+          status: "kept",
+          metadata: [],
+        },
+        {
+          type: "skill",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "adversity" },
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "shadow" },
+        },
+        {
+          type: "ring",
+          value: { strife: 1, success: 1, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "2heavens", source: "adversity" },
+        },
+        {
+          type: "skill",
+          value: { strife: 1, success: 0, explosion: 1, opportunity: 0 },
+          status: "kept",
+          metadata: { source: "adversity" },
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+          status: "dropped",
+          metadata: { source: "2heavens" },
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+          status: "kept",
+          metadata: { source: "shadow" },
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+          status: "kept",
+          metadata: { source: "shadow" },
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+          status: "kept",
+          metadata: { source: "explosion" },
+        },
+      ],
+      metadata: { rerolls: ["adversity", "2heavens", "shadow"] },
+      parameters: {
+        tn: 3,
+        ring: 3,
+        skill: 3,
+        modifiers: ["adversity", "void", "2heavens", "shadow"],
+      },
+    };
+    const { dices } = roll;
+    expect(
+      replaceRerollsOfType({
+        dices,
+        rerollType: "shadow",
+        basePool: 7,
+        previousRerollTypes: ["adversity", "2heavens"],
+      })
+    ).toStrictEqual([
+      {
+        type: "ring",
+        value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+        status: "dropped",
+        metadata: { source: "2heavens" },
+      },
+      {
+        type: "ring",
+        value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+        status: "dropped",
+        metadata: [],
+      },
+      {
+        type: "ring",
+        value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+        status: "dropped",
+        metadata: [],
+      },
+      {
+        type: "ring",
+        value: { strife: 0, success: 1, explosion: 0, opportunity: 0 },
+        status: "kept",
+        metadata: { source: "shadow" },
+      },
+      {
+        type: "skill",
+        value: { strife: 0, success: 1, explosion: 0, opportunity: 1 },
+        status: "kept",
+        metadata: [],
+      },
+      {
+        type: "skill",
+        value: { strife: 1, success: 0, explosion: 1, opportunity: 0 },
+        status: "kept",
+        metadata: { source: "adversity" },
+      },
+      {
+        type: "skill",
+        value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+        status: "kept",
+        metadata: { source: "shadow" },
+      },
+    ]);
+  });
 });
 
 describe("replaceRerolls", () => {

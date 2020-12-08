@@ -83,7 +83,7 @@ export const replaceRerollsOfType = ({
     }
 
     const previousTypesMinusOne = [...previousRerollTypes];
-    const previousType = previousTypesMinusOne.shift();
+    const previousType = previousTypesMinusOne.pop();
 
     return replaceRerollsOfType({
       dices,
