@@ -14,7 +14,7 @@ const Ability = ({ dices, onFinish, text, basePool, rerollTypes }) => {
 
   const buttonText = () => {
     if (toReroll.length === 0) {
-      return "Don't reroll anything";
+      return "Skip";
     }
 
     if (toReroll.length === 1) {

@@ -28,7 +28,7 @@ const Distinction = ({ dices, onFinish, modifiers }) => {
 
   const text = () => {
     if (bypassMax) {
-      return `Thanks to your Distinction and your School Ability, you can select up to ${max}+Rank dice to be rerolled.`;
+      return `Thanks to your Distinction and your School Ability, you can select up to ${max} plus your school rank dice to be rerolled.`;
     }
 
     return `Thanks to your Distinction, you can select up to ${max} dice to be rerolled.`;

@@ -15,16 +15,11 @@ const Adversity = ({ dices, onFinish }) => {
     }
     return setToReroll([...toReroll, index]);
   };
+  const text = `Due to your Adversity, you must select two success dice (or as much as possible if you don't have two) that will be rerolled.`;
 
   return (
     <DicesBox
-      text={
-        <>
-          Due to your <strong>Adversity</strong>, you must select two success
-          dice (or as much as possible if you don't have two) that will be
-          rerolled.
-        </>
-      }
+      text={text}
       dices={dices.map((dice, index) => {
         const selected = toReroll.includes(index);
         const isSuccess = dice.value.success || dice.value.explosion;
