@@ -92,7 +92,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const dispatch = useDispatch();
 
   const wrappedOnFinish = (data) => {
-    onComplete();
+    onComplete && onComplete();
 
     dispatch(addCampaign(data["campaign"]));
     dispatch(addCharacter(data["character"]));
