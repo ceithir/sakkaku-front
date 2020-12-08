@@ -17,14 +17,14 @@ const THEMES = {
 };
 
 const TITLES = {
-  distinction: "Distinction Reroll",
-  adversity: "Adversity Reroll",
-  shadow: "Victory before Honor Reroll",
-  deathdealer: "Way of the Scorpion Reroll",
-  manipulator: "Weakness Is My Strength Reroll",
-  ishiken: "Way of the Void Alteration",
-  "2heavens": "Way of the Dragon Ward Reroll",
-  ruleless: "Manual Reroll",
+  distinction: "Distinction",
+  adversity: "Adversity",
+  shadow: "Ikoma Shadow School Ability",
+  deathdealer: "Bayushi Deathdealer School Ability",
+  manipulator: "Bayushi Manipulator School Ability",
+  ishiken: "Ishiken Initiate School Ability",
+  "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
+  ruleless: "Manual reroll",
 };
 
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
@@ -57,7 +57,7 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
 
   return (
     <div className={styles.layout}>
-      <Title level={3} className={styles.title}>
+      <Title level={4} className={styles.title}>
         {title}
       </Title>
       <div className={styles.container}>
