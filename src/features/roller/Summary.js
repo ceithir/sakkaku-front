@@ -18,6 +18,8 @@ const Summary = ({
     modifiers.includes("adversity") && "Adversity",
     modifiers.includes("distinction") && "Distinction",
     modifiers.includes("stirring") && "Stirring the Embers",
+    modifiers.includes("2heavens") &&
+      "Facing a warding Mirumoto Two-Heavens Adept",
     modifiers.includes("shadow") && "Victory before Honor",
     modifiers.includes("deathdealer") && "Way of the Scorpion",
     modifiers.includes("manipulator") && "Weakness Is My Strength",

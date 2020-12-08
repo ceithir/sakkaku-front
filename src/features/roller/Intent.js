@@ -216,6 +216,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
                     label: "School — Ishiken Initiate — Way of the Void",
                   },
                   {
+                    value: "2heavens",
+                    label: "Special — Warded by a Mirumoto Two-Heavens Adept",
+                  },
+                  {
                     value: "stirring",
                     label: "Shūji — Stirring the Embers",
                   },

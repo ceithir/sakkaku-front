@@ -6,6 +6,7 @@ export const REROLL_TYPES = [
   "deathdealer",
   "manipulator",
   "ishiken",
+  "2heavens",
 ];
 
 export const countDices = (keptDices) => {

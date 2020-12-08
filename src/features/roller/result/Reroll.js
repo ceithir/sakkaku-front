@@ -13,6 +13,7 @@ const { Title } = Typography;
 const THEMES = {
   distinction: "green",
   adversity: "orange",
+  "2heavens": "orange",
 };
 
 const TITLES = {
@@ -22,6 +23,7 @@ const TITLES = {
   deathdealer: "Way of the Scorpion Reroll",
   manipulator: "Weakness Is My Strength Reroll",
   ishiken: "Way of the Void Alteration",
+  "2heavens": "Way of the Dragon Ward Reroll",
 };
 
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
