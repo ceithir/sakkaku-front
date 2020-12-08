@@ -19,13 +19,7 @@ import Ishiken from "./reroll/Ishiken";
 import Summary from "./Summary";
 import { Collapse } from "antd";
 import styles from "./index.module.css";
-import {
-  setId,
-  setParameters,
-  setDices,
-  setMetadata,
-  setPlayer,
-} from "./reducer";
+import { setParameters, load } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import NextButton from "./NextButton";
 import { selectUser } from "../user/reducer";
@@ -62,11 +56,15 @@ const Roller = ({ save }) => {
     if (!save || !dispatch) {
       return;
     }
-    dispatch(setId(save.id));
     dispatch(setParameters({ ...save, ...save.roll.parameters }));
-    dispatch(setDices(save.roll.dices));
-    dispatch(setMetadata(save.roll.metadata));
-    dispatch(setPlayer(save.user));
+    dispatch(
+      load({
+        id: save.id,
+        dices: save.roll.dices,
+        metadata: save.roll.metadata,
+        player: save.user,
+      })
+    );
   }, [save, dispatch]);
 
   const [activeKeys, setActiveKeys] = useState([DECLARE]);

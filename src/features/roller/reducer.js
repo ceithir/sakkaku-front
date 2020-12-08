@@ -43,22 +43,8 @@ const slice = createSlice({
       state.skill = skill;
       state.modifiers = modifiers;
     },
-    setDices: (state, action) => {
-      state.dices = action.payload;
-    },
-    setMetadata: (state, action) => {
-      state.metadata = action.payload;
-    },
     setLoading: (state, action) => {
       state.loading = action.payload;
-    },
-    setId: (state, action) => {
-      const id = action.payload;
-      state.id = id;
-      window.history.pushState(null, null, `/rolls/${id}`);
-    },
-    setPlayer: (state, action) => {
-      state.player = action.payload;
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -66,21 +52,35 @@ const slice = createSlice({
     setAnimatedStep: (state, action) => {
       state.animatedStep = action.payload;
     },
+    load: (state, action) => {
+      const { id, player, dices, metadata } = action.payload;
+      state.id = id;
+      state.player = player;
+      state.dices = dices;
+      state.metadata = metadata;
+
+      state.loading = false;
+      window.history.pushState(null, null, `/rolls/${id}`);
+    },
+    update: (state, action) => {
+      const { dices, metadata } = action.payload;
+      state.dices = dices;
+      state.metadata = metadata;
+
+      state.loading = false;
+    },
   },
 });
 
 export const {
   setParameters,
-  setDices,
-  setMetadata,
   setLoading,
-  setId,
-  setPlayer,
   softReset,
   setAnimatedStep,
+  load,
 } = slice.actions;
 
-const { setError } = slice.actions;
+const { update, setError } = slice.actions;
 
 export const create = (request, user) => (dispatch) => {
   dispatch(setLoading(true));
@@ -113,10 +113,7 @@ export const create = (request, user) => (dispatch) => {
         description,
       },
       success: (data) => {
-        dispatch(setDices(data["dices"]));
-        dispatch(setId(data["id"]));
-        dispatch(setPlayer(user));
-        dispatch(setLoading(false));
+        dispatch(load({ ...data, player: user }));
       },
       error,
     });
@@ -132,8 +129,7 @@ export const create = (request, user) => (dispatch) => {
       modifiers,
     },
     success: (data) => {
-      dispatch(setDices(data["dices"]));
-      dispatch(setLoading(false));
+      dispatch(update(data));
     },
     error,
   });
@@ -143,9 +139,7 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
   dispatch(setLoading(true));
 
   const success = (data) => {
-    dispatch(setDices(data["dices"]));
-    dispatch(setMetadata(data["metadata"]));
-    dispatch(setLoading(false));
+    dispatch(update(data));
   };
   const error = () => {
     dispatch(setError(true));
@@ -186,9 +180,7 @@ export const alter = (roll, alterations, modifier) => (dispatch) => {
   dispatch(setLoading(true));
 
   const success = (data) => {
-    dispatch(setDices(data["dices"]));
-    dispatch(setMetadata(data["metadata"]));
-    dispatch(setLoading(false));
+    dispatch(update(data));
   };
   const error = () => {
     dispatch(setError(true));
@@ -229,8 +221,7 @@ export const keep = (roll, positions) => (dispatch) => {
   dispatch(setLoading(true));
 
   const success = (data) => {
-    dispatch(setDices(data["dices"]));
-    dispatch(setLoading(false));
+    dispatch(update(data));
   };
   const error = () => {
     dispatch(setError(true));
