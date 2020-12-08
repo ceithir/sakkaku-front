@@ -8,6 +8,8 @@ import {
   Divider,
   AutoComplete,
   Select,
+  Collapse,
+  Typography,
 } from "antd";
 import styles from "./Intent.module.css";
 import NextButton from "./NextButton";
@@ -23,6 +25,8 @@ import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
 
 const { TextArea } = Input;
+const { Panel } = Collapse;
+const { Paragraph } = Typography;
 
 const layout = {
   labelCol: { span: 8 },
@@ -170,61 +174,69 @@ const Intent = ({ onFinish, values, onComplete }) => {
       >
         <Switch />
       </Form.Item>
-      <Form.Item label="School Ability" name="school">
-        <Select
-          showSearch
-          allowClear
-          options={[
-            {
-              value: "deathdealer",
-              label: "Bayushi Deathdealer — Way of the Scorpion",
-            },
-            {
-              value: "manipulator",
-              label: "Bayushi Manipulator — Weakness Is My Strength",
-            },
-            {
-              value: "shadow",
-              label: "Ikoma Shadow — Victory before Honor",
-            },
-            {
-              value: "ishiken",
-              label: "Ishiken Initiate — Way of the Void",
-            },
-          ]}
-          optionFilterProp="label"
-        />
-      </Form.Item>
-      <Form.Item label="Techniques" name="techniques">
-        <Select
-          mode="multiple"
-          placeholder="Relevant shūji, kata, etc."
-          options={[
-            {
-              value: "stirring",
-              label: "Shūji — Stirring the Embers",
-            },
-          ]}
-          optionFilterProp="label"
-        />
-      </Form.Item>
-      <Form.Item label={"Misc."} name="misc">
-        <Select
-          mode="multiple"
-          placeholder={"Plain weird things"}
-          options={[
-            {
-              value: "2heavens",
-              label: "Attacking a warding Mirumoto Two-Heavens Adept",
-            },
-            {
-              value: "ruleless",
-              label: "Manual reroll",
-            },
-          ]}
-          optionFilterProp="label"
-        />
-      </Form.Item>
+      <Divider />
+      <Collapse ghost>
+        <Panel header={"Schools, techniques, magic…"}>
+          <Paragraph>
+            {`If your character has a quirk that is relevant to this specific roll, you can select it here. That will give you the option to use it later, at the appropriate step.`}
+          </Paragraph>
+          <Form.Item label="School Ability" name="school">
+            <Select
+              showSearch
+              allowClear
+              options={[
+                {
+                  value: "deathdealer",
+                  label: "Bayushi Deathdealer — Way of the Scorpion",
+                },
+                {
+                  value: "manipulator",
+                  label: "Bayushi Manipulator — Weakness Is My Strength",
+                },
+                {
+                  value: "shadow",
+                  label: "Ikoma Shadow — Victory before Honor",
+                },
+                {
+                  value: "ishiken",
+                  label: "Ishiken Initiate — Way of the Void",
+                },
+              ]}
+              optionFilterProp="label"
+            />
+          </Form.Item>
+          <Form.Item label="Techniques" name="techniques">
+            <Select
+              mode="multiple"
+              placeholder="Relevant shūji, kata, etc."
+              options={[
+                {
+                  value: "stirring",
+                  label: "Shūji — Stirring the Embers",
+                },
+              ]}
+              optionFilterProp="label"
+            />
+          </Form.Item>
+          <Form.Item label={"Misc."} name="misc">
+            <Select
+              mode="multiple"
+              placeholder={"Plain weird things"}
+              options={[
+                {
+                  value: "2heavens",
+                  label: "Attacking a warding Mirumoto Two-Heavens Adept",
+                },
+                {
+                  value: "ruleless",
+                  label: "Manual reroll",
+                },
+              ]}
+              optionFilterProp="label"
+            />
+          </Form.Item>
+        </Panel>
+      </Collapse>
       <Divider />
       <Form.Item {...tailLayout}>
         <NextButton htmlType="submit">Roll</NextButton>
