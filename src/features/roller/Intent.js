@@ -98,6 +98,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
     dispatch(addCharacter(data["character"]));
 
     const techniques = data["techniques"] || [];
+    const misc = data["misc"] || [];
 
     onFinish({
       ...data,
@@ -107,6 +108,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
         data["void"] && "void",
         data["school"],
         ...techniques,
+        ...misc,
       ].filter(Boolean),
     });
   };
@@ -199,12 +201,21 @@ const Intent = ({ onFinish, values, onComplete }) => {
           placeholder="Relevant shūji, kata, etc."
           options={[
             {
-              value: "2heavens",
-              label: "Special — Warded by a Mirumoto Two-Heavens Adept",
-            },
-            {
               value: "stirring",
               label: "Shūji — Stirring the Embers",
+            },
+          ]}
+          optionFilterProp="label"
+        />
+      </Form.Item>
+      <Form.Item label={"Misc."} name="misc">
+        <Select
+          mode="multiple"
+          placeholder={"Plain weird things"}
+          options={[
+            {
+              value: "2heavens",
+              label: "Attacking a warding Mirumoto Two-Heavens Adept",
             },
           ]}
           optionFilterProp="label"
