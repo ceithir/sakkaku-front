@@ -13,21 +13,20 @@ const Summary = ({
   player,
 }) => {
   const special = [
-    modifiers.includes("void") && "Void Point",
     modifiers.includes("compromised") && "Compromised",
     modifiers.includes("adversity") && "Adversity",
     modifiers.includes("distinction") && "Distinction",
-    modifiers.includes("stirring") && "Stirring the Embers",
+    modifiers.includes("stirring") && "Shūji — Stirring the Embers",
+    modifiers.includes("deathdealer") && "Bayushi Deathdealer School Ability",
+    modifiers.includes("manipulator") && "Bayushi Manipulator School Ability",
     modifiers.includes("2heavens") &&
-      "Facing a warding Mirumoto Two-Heavens Adept",
-    modifiers.includes("shadow") && "Victory before Honor",
-    modifiers.includes("deathdealer") && "Way of the Scorpion",
-    modifiers.includes("manipulator") && "Weakness Is My Strength",
-    modifiers.includes("ishiken") && "Way of the Void",
+      "Attacking a warding Mirumoto Two-Heavens Adept",
+    modifiers.includes("shadow") && "Ikoma Shadow School Ability",
+    modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
     modifiers.includes("ruleless") && "Manual reroll",
   ]
     .filter(Boolean)
-    .join(" – ");
+    .join(" / ");
 
   return (
     <Descriptions column={{ md: 3, sm: 1, xs: 1 }} bordered>
@@ -44,14 +43,17 @@ const Summary = ({
           <Link to={`/rolls?player=${player.id}`}>{player.name}</Link>
         </Descriptions.Item>
       )}
-      <Descriptions.Item label="Description" span={3}>
+      <Descriptions.Item label="Description" span={2}>
         {description}
       </Descriptions.Item>
       <Descriptions.Item label="TN">{tn || "?"}</Descriptions.Item>
       <Descriptions.Item label="Ring">{ring}</Descriptions.Item>
       <Descriptions.Item label="Skill">{skill}</Descriptions.Item>
+      <Descriptions.Item label="Voided?">
+        {modifiers.includes("void") ? "Yes" : "No"}
+      </Descriptions.Item>
       {special && (
-        <Descriptions.Item label="Special" span={3}>
+        <Descriptions.Item label={"Additional Modifiers"} span={3}>
           {special}
         </Descriptions.Item>
       )}
