@@ -28,7 +28,7 @@ const Complete = ({ dices, button, intent, context, player }) => {
       <Panel header="Keep" key="keep">
         <Keep dices={dices} basePool={basePool} rerollTypes={rerollTypes} />
       </Panel>
-      <Panel header="Resolve" key="resolve" disabled={true}>
+      <Panel header="Resolve" key="resolve" collapsible="disabled">
         <Resolve
           dices={dices}
           tn={tn}

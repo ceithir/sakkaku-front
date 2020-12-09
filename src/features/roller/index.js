@@ -288,7 +288,7 @@ const Roller = ({ save }) => {
         <Panel
           header="Declare"
           key="declare"
-          disabled={currentStep === DECLARE}
+          collapsible={currentStep === DECLARE ? "disabled" : "header"}
         >
           {currentStep === DECLARE ? (
             <Intent
@@ -302,21 +302,27 @@ const Roller = ({ save }) => {
         <Panel
           header="Modify"
           key="modify"
-          disabled={disabled(REROLL) || currentStep === REROLL}
+          collapsible={
+            disabled(REROLL) || currentStep === REROLL ? "disabled" : "header"
+          }
         >
           <PanelContent name={REROLL} />
         </Panel>
         <Panel
           header="Keep"
           key="keep"
-          disabled={disabled(KEEP) || currentStep === KEEP}
+          collapsible={
+            disabled(KEEP) || currentStep === KEEP ? "disabled" : "header"
+          }
         >
           <PanelContent name={KEEP} />
         </Panel>
         <Panel
           header="Resolve"
           key="resolve"
-          disabled={disabled(RESOLVE) || currentStep === RESOLVE}
+          collapsible={
+            disabled(RESOLVE) || currentStep === RESOLVE ? "disabled" : "header"
+          }
         >
           <PanelContent name={RESOLVE} />
         </Panel>
