@@ -1,3 +1,4 @@
-.button {
-  float: right;
+.layout {
+  display: flex;
+  justify-content: flex-end;
 }

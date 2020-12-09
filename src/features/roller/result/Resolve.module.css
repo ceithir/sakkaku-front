@@ -16,11 +16,11 @@
   margin-bottom: 16px;
 }
 
-.buttons button {
+.buttons > * {
   margin-left: 24px;
 }
 
-.buttons button:first-of-type {
+.buttons > *:first-child {
   margin-left: 0;
 }
 
@@ -30,7 +30,7 @@
 }
 
 @media (max-width: 576px) {
-  .buttons button {
+  .buttons > * {
     margin-left: 8px;
   }
 }
