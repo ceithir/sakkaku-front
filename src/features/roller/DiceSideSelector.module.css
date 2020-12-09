@@ -1,0 +1,14 @@
+.group {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.group > label {
+  height: 100%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.group img {
+  height: 48px;
+}

@@ -2,52 +2,14 @@ import React, { useState } from "react";
 import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 import { replaceRerolls } from "../utils";
-import { Typography, Radio } from "antd";
-import Dice from "../Dice";
+import { Typography } from "antd";
 import styles from "./Ishiken.module.css";
+import DiceSideSelector from "../DiceSideSelector";
 
 const { Text, Paragraph } = Typography;
 
 const blank = ({ value: { opportunity, strife, success, explosion } }) =>
   opportunity === 0 && strife === 0 && success === 0 && explosion === 0;
-
-const Alterator = ({ type, value, onChange }) => {
-  const ring = [
-    { opportunity: 1, strife: 1 },
-    { opportunity: 1 },
-    { success: 1, strife: 1 },
-    { success: 1 },
-    { explosion: 1, strife: 1 },
-  ];
-
-  const skill = [
-    { opportunity: 1 },
-    { success: 1, strife: 1 },
-    { success: 1 },
-    { explosion: 1, strife: 1 },
-    { success: 1, opportunity: 1 },
-    { explosion: 1 },
-  ];
-
-  const facets = type === "skill" ? skill : ring;
-
-  return (
-    <Radio.Group
-      onChange={({ target: { value } }) => onChange(JSON.parse(value))}
-      className={styles.alterator}
-      value={JSON.stringify(value)}
-    >
-      {facets.map((value) => {
-        const key = JSON.stringify(value);
-        return (
-          <Radio.Button key={key} value={key}>
-            <Dice dice={{ type, value }} />
-          </Radio.Button>
-        );
-      })}
-    </Radio.Group>
-  );
-};
 
 const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
   const [alterations, setAlterations] = useState([]);
@@ -130,11 +92,11 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
                 const type = dices[position]["type"];
 
                 return (
-                  <Alterator
+                  <DiceSideSelector
                     key={position.toString()}
                     type={type}
                     value={value}
-                    onChange={(value) => {
+                    onChange={({ value }) => {
                       const alt = [...alterations];
                       const index = alt.findIndex(
                         ({ position: pos }) => pos === position
