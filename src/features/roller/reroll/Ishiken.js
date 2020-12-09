@@ -112,8 +112,7 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
                 return (
                   <DiceSideSelector
                     key={position.toString()}
-                    type={type}
-                    value={value}
+                    value={{ type, value }}
                     onChange={({ value }) => {
                       const alt = [...alterations];
                       const index = alt.findIndex(
@@ -122,7 +121,9 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
                       alt[index]["value"] = value;
                       setAlterations(alt);
                     }}
-                    facets={AVAILABLE_FACETS}
+                    facets={AVAILABLE_FACETS[type].map((value) => {
+                      return { type, value };
+                    })}
                   />
                 );
               })}

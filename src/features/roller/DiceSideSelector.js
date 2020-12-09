@@ -33,34 +33,25 @@ const toObject = (string) => {
   };
 };
 
-const FACETS = {
-  ring: [
-    {},
-    { opportunity: 1, strife: 1 },
-    { opportunity: 1 },
-    { success: 1, strife: 1 },
-    { success: 1 },
-    { explosion: 1, strife: 1 },
-  ],
-  skill: [
-    {},
-    { opportunity: 1 },
-    { success: 1, strife: 1 },
-    { success: 1 },
-    { explosion: 1, strife: 1 },
-    { success: 1, opportunity: 1 },
-    { explosion: 1 },
-  ],
-};
+const FACETS = [
+  { type: "ring", value: {} },
+  { type: "ring", value: { opportunity: 1, strife: 1 } },
+  { type: "ring", value: { opportunity: 1 } },
+  { type: "ring", value: { success: 1, strife: 1 } },
+  { type: "ring", value: { explosion: 1, strife: 1 } },
+  { type: "skill", value: {} },
+  { type: "skill", value: { opportunity: 1 } },
+  { type: "skill", value: { success: 1, strife: 1 } },
+  { type: "skill", value: { success: 1 } },
+  { type: "skill", value: { explosion: 1, strife: 1 } },
+  { type: "skill", value: { success: 1, opportunity: 1 } },
+  { type: "skill", value: { explosion: 1 } },
+];
 
-const DiceSideSelector = ({ type, value, onChange, facets = FACETS }) => {
+const Loop = ({ facets }) => {
   return (
-    <Radio.Group
-      onChange={({ target: { value } }) => onChange(toObject(value))}
-      className={styles.group}
-      value={toString({ type, value })}
-    >
-      {facets[type].map((value) => {
+    <>
+      {facets.map(({ type, value }) => {
         const key = toString({ type, value });
         return (
           <Radio.Button key={key} value={key}>
@@ -68,6 +59,34 @@ const DiceSideSelector = ({ type, value, onChange, facets = FACETS }) => {
           </Radio.Button>
         );
       })}
+    </>
+  );
+};
+
+const DiceSideSelector = ({ value, onChange, facets = FACETS }) => {
+  return (
+    <Radio.Group
+      onChange={({ target: { value } }) => onChange(toObject(value))}
+      className={styles.group}
+      value={toString(value)}
+    >
+      <Loop facets={facets} />
+    </Radio.Group>
+  );
+};
+
+export const UncontrolledDiceSideSelector = ({
+  initialValue,
+  onChange,
+  facets = FACETS,
+}) => {
+  return (
+    <Radio.Group
+      onChange={({ target: { value } }) => onChange(toObject(value))}
+      className={styles.group}
+      defaultValue={toString(initialValue)}
+    >
+      <Loop facets={facets} />
     </Radio.Group>
   );
 };

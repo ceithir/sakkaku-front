@@ -10,6 +10,7 @@ import {
   Select,
   Collapse,
   Typography,
+  Button,
 } from "antd";
 import styles from "./Intent.module.css";
 import NextButton from "./NextButton";
@@ -23,6 +24,8 @@ import {
 import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { UncontrolledDiceSideSelector } from "./DiceSideSelector";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -94,6 +97,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const campaigns = useSelector(selectCampaigns);
   const characters = useSelector(selectCharacters);
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -124,6 +128,16 @@ const Intent = ({ onFinish, values, onComplete }) => {
       initialValues={values}
       onFinish={wrappedOnFinish}
       scrollToFirstError
+      form={form}
+      onValuesChange={(changedValues) => {
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["ring", "skill", "void", "channeled"].includes(name)
+          )
+        ) {
+          form.validateFields(["channeled"]);
+        }
+      }}
     >
       <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
         <AutoComplete
@@ -218,6 +232,75 @@ const Intent = ({ onFinish, values, onComplete }) => {
               optionFilterProp="label"
             />
           </Form.Item>
+          <Form.List
+            name="channeled"
+            rules={[
+              {
+                validator: async (_, dices) => {
+                  if (!dices?.length) {
+                    return;
+                  }
+
+                  const ring = form.getFieldValue("ring");
+                  const skill = form.getFieldValue("skill");
+                  const voided = form.getFieldValue("void");
+
+                  if (
+                    dices.filter(({ type }) => type === "ring").length >
+                    ring + (voided ? 1 : 0)
+                  ) {
+                    return Promise.reject(
+                      new Error(
+                        "More channeled ring dice than rolled ring dice"
+                      )
+                    );
+                  }
+
+                  if (
+                    dices.filter(({ type }) => type === "skill").length > skill
+                  ) {
+                    return Promise.reject(
+                      new Error(
+                        "More channeled skill dice than rolled skill dice"
+                      )
+                    );
+                  }
+                },
+              },
+            ]}
+          >
+            {(fields, { add, remove }, { errors }) => {
+              const defaultValue = { type: "skill", value: { success: 1 } };
+
+              return (
+                <>
+                  {fields.map((field) => (
+                    <Form.Item required={false} key={field.key}>
+                      <Form.Item {...field} noStyle>
+                        <UncontrolledDiceSideSelector
+                          initialValue={defaultValue}
+                        />
+                      </Form.Item>
+                      <MinusCircleOutlined
+                        className="dynamic-delete-button"
+                        onClick={() => remove(field.name)}
+                      />
+                    </Form.Item>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add(defaultValue)}
+                      icon={<PlusOutlined />}
+                    >
+                      {"Use Channeled Die"}
+                    </Button>
+                    <Form.ErrorList errors={errors} />
+                  </Form.Item>
+                </>
+              );
+            }}
+          </Form.List>
           <Form.Item label={"Misc."} name="misc">
             <Select
               mode="multiple"
