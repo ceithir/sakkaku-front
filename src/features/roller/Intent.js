@@ -221,15 +221,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
           <Form.Item label={"Misc."} name="misc">
             <Select
               mode="multiple"
-              placeholder={"Plain weird things"}
+              placeholder={"Extra options for unusual cases"}
               options={[
-                {
-                  value: "2heavens",
-                  label: "Attacking a warding Mirumoto Two-Heavens Adept",
-                },
                 {
                   value: "ruleless",
                   label: "Manual reroll",
+                },
+                {
+                  value: "2heavens",
+                  label: "Attacking a warding Mirumoto Two-Heavens Adept",
                 },
               ]}
               optionFilterProp="label"
