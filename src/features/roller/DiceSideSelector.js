@@ -33,33 +33,34 @@ const toObject = (string) => {
   };
 };
 
-const DiceSideSelector = ({ type, value, onChange }) => {
-  const ring = [
+const FACETS = {
+  ring: [
+    {},
     { opportunity: 1, strife: 1 },
     { opportunity: 1 },
     { success: 1, strife: 1 },
     { success: 1 },
     { explosion: 1, strife: 1 },
-  ];
-
-  const skill = [
+  ],
+  skill: [
+    {},
     { opportunity: 1 },
     { success: 1, strife: 1 },
     { success: 1 },
     { explosion: 1, strife: 1 },
     { success: 1, opportunity: 1 },
     { explosion: 1 },
-  ];
+  ],
+};
 
-  const facets = type === "skill" ? skill : ring;
-
+const DiceSideSelector = ({ type, value, onChange, facets = FACETS }) => {
   return (
     <Radio.Group
       onChange={({ target: { value } }) => onChange(toObject(value))}
       className={styles.group}
       value={toString({ type, value })}
     >
-      {facets.map((value) => {
+      {facets[type].map((value) => {
         const key = toString({ type, value });
         return (
           <Radio.Button key={key} value={key}>

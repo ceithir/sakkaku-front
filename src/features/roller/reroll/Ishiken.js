@@ -11,6 +11,24 @@ const { Text, Paragraph } = Typography;
 const blank = ({ value: { opportunity, strife, success, explosion } }) =>
   opportunity === 0 && strife === 0 && success === 0 && explosion === 0;
 
+const AVAILABLE_FACETS = {
+  ring: [
+    { opportunity: 1, strife: 1 },
+    { opportunity: 1 },
+    { success: 1, strife: 1 },
+    { success: 1 },
+    { explosion: 1, strife: 1 },
+  ],
+  skill: [
+    { opportunity: 1 },
+    { success: 1, strife: 1 },
+    { success: 1 },
+    { explosion: 1, strife: 1 },
+    { success: 1, opportunity: 1 },
+    { explosion: 1 },
+  ],
+};
+
 const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
   const [alterations, setAlterations] = useState([]);
   const positions = alterations.map(({ position }) => position);
@@ -104,6 +122,7 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
                       alt[index]["value"] = value;
                       setAlterations(alt);
                     }}
+                    facets={AVAILABLE_FACETS}
                   />
                 );
               })}
