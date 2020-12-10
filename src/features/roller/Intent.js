@@ -275,7 +275,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
               return (
                 <>
                   {fields.map((field) => (
-                    <Form.Item required={false} key={field.key}>
+                    <Form.Item
+                      required={false}
+                      key={field.key}
+                      label={"Channeled Die"}
+                    >
                       <Form.Item {...field} noStyle>
                         <UncontrolledDiceSideSelector
                           initialValue={defaultValue}
