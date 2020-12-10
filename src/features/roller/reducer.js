@@ -27,6 +27,7 @@ const slice = createSlice({
       state.id = null;
       window.history.pushState(null, null, "/");
       state.toKeep = [];
+      state.channeled = [];
     },
     setParameters: (state, action) => {
       const {
