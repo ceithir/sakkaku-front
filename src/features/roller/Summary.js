@@ -15,6 +15,7 @@ const Summary = ({
   modifiers,
   player,
   channeled,
+  addkept,
 }) => {
   const special = [
     modifiers.includes("compromised") && "Compromised",
@@ -60,6 +61,15 @@ const Summary = ({
         <Descriptions.Item label={"Channeled Dice Used"} span={3}>
           <div className={styles.dices}>
             {orderDices(channeled).map((dice, index) => {
+              return <Dice key={index.toString()} dice={dice} />;
+            })}
+          </div>
+        </Descriptions.Item>
+      )}
+      {addkept?.length && (
+        <Descriptions.Item label={"Kept Dice Added"} span={3}>
+          <div className={styles.dices}>
+            {orderDices(addkept).map((dice, index) => {
               return <Dice key={index.toString()} dice={dice} />;
             })}
           </div>

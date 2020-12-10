@@ -6,7 +6,9 @@ import { Divider } from "antd";
 const splitExplosions = ({ dices, basePool, rerollTypes }) => {
   let split = [];
   let remainingDices = replaceRerolls({ dices, basePool, rerollTypes });
-  let size = basePool;
+  let size =
+    basePool +
+    dices.filter(({ metadata }) => metadata.source === "addkept").length;
   while (remainingDices.length > 0) {
     const currentDices = orderDices(remainingDices.slice(0, size));
     remainingDices = remainingDices.slice(size, remainingDices.length);

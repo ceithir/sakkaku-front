@@ -138,6 +138,13 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           form.validateFields(["channeled"]);
         }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["compromised", "addkept"].includes(name)
+          )
+        ) {
+          form.validateFields(["addkept"]);
+        }
       }}
     >
       <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
@@ -308,6 +315,72 @@ const Intent = ({ onFinish, values, onComplete }) => {
                       icon={<PlusOutlined />}
                     >
                       {"Use Channeled Die"}
+                    </Button>
+                    <Form.ErrorList errors={errors} />
+                  </Form.Item>
+                </>
+              );
+            }}
+          </Form.List>
+          <Form.List
+            name="addkept"
+            rules={[
+              {
+                validator: async (_, dices) => {
+                  if (!dices?.length) {
+                    return;
+                  }
+
+                  const compromised = form.getFieldValue("compromised");
+                  if (compromised && dices.some(({ value }) => value?.strife)) {
+                    return Promise.reject(
+                      new Error(
+                        "Cannot have kept dice with strife if compromised"
+                      )
+                    );
+                  }
+                },
+              },
+            ]}
+          >
+            {(fields, { add, remove }, { errors }) => {
+              const defaultValue = { type: "ring", value: { opportunity: 1 } };
+              const buttonLayout = {
+                labelCol: { span: 0 },
+                wrapperCol: { span: 16, offset: 8 },
+              };
+
+              return (
+                <>
+                  {fields.map((field) => (
+                    <Form.Item
+                      required={false}
+                      key={field.key}
+                      label={"Kept Die"}
+                    >
+                      <Form.Item {...field} noStyle>
+                        <UncontrolledDiceSideSelector
+                          initialValue={defaultValue}
+                          button={
+                            <MinusCircleOutlined
+                              className={
+                                (classNames("dynamic-delete-button"),
+                                styles["pseudo-radio"])
+                              }
+                              onClick={() => remove(field.name)}
+                            />
+                          }
+                        />
+                      </Form.Item>
+                    </Form.Item>
+                  ))}
+                  <Form.Item {...buttonLayout}>
+                    <Button
+                      type="dashed"
+                      onClick={() => add(defaultValue)}
+                      icon={<PlusOutlined />}
+                    >
+                      {"Add Kept Die"}
                     </Button>
                     <Form.ErrorList errors={errors} />
                   </Form.Item>

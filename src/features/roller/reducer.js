@@ -14,6 +14,7 @@ const initialState = {
   error: false,
   toKeep: [],
   channeled: [],
+  addkept: [],
 };
 
 const slice = createSlice({
@@ -30,6 +31,7 @@ const slice = createSlice({
       state.modifiers = [];
       state.toKeep = [];
       state.channeled = [];
+      state.addkept = [];
 
       state.id = null;
       window.history.pushState(null, null, "/");
@@ -44,6 +46,7 @@ const slice = createSlice({
         skill,
         modifiers,
         channeled,
+        addkept,
       } = action.payload;
       state.campaign = campaign;
       state.character = character;
@@ -53,6 +56,7 @@ const slice = createSlice({
       state.skill = skill;
       state.modifiers = modifiers;
       state.channeled = channeled;
+      state.addkept = addkept;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -116,6 +120,7 @@ export const create = (request, user) => (dispatch) => {
     character,
     description,
     channeled,
+    addkept,
   } = request;
 
   if (user) {
@@ -130,6 +135,7 @@ export const create = (request, user) => (dispatch) => {
         character,
         description,
         channeled,
+        addkept,
       },
       success: (data) => {
         dispatch(load({ ...data, player: user }));
@@ -147,6 +153,7 @@ export const create = (request, user) => (dispatch) => {
       skill,
       modifiers,
       channeled,
+      addkept,
     },
     success: (data) => {
       dispatch(update(data));
@@ -260,12 +267,12 @@ export const keep = (roll, positions) => (dispatch) => {
     return;
   }
 
-  const { tn, ring, skill, modifiers, dices, metadata } = roll;
+  const { tn, ring, skill, modifiers, dices, metadata, addkept } = roll;
   postOnServer({
     uri: "/public/ffg/l5r/rolls/keep",
     body: {
       roll: {
-        parameters: { tn, ring, skill, modifiers },
+        parameters: { tn, ring, skill, modifiers, addkept },
         dices,
         metadata,
       },
@@ -321,6 +328,7 @@ export const selectIntent = (state) => {
     modifiers,
     player,
     channeled,
+    addkept,
   } = state.roll;
 
   return {
@@ -333,6 +341,7 @@ export const selectIntent = (state) => {
     modifiers,
     player,
     channeled,
+    addkept,
   };
 };
 export const selectHidden = (state) =>
