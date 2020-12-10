@@ -21,13 +21,18 @@ const slice = createSlice({
   initialState,
   reducers: {
     softReset: (state) => {
+      state.tn = initialState.tn;
+      state.ring = initialState.ring;
+      state.skill = initialState.skill;
+      state.description = null;
       state.dices = [];
       state.metadata = {};
       state.modifiers = [];
-      state.id = null;
-      window.history.pushState(null, null, "/");
       state.toKeep = [];
       state.channeled = [];
+
+      state.id = null;
+      window.history.pushState(null, null, "/");
     },
     setParameters: (state, action) => {
       const {
