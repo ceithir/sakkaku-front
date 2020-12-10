@@ -56,6 +56,54 @@ const arrayToAutoCompleteOptions = (values) => {
   });
 };
 
+const DynamicDiceSelector = ({
+  fields,
+  labelText,
+  defaultValue,
+  buttonText,
+  errors,
+  add,
+  remove,
+}) => {
+  const buttonLayout = {
+    labelCol: { span: 0 },
+    wrapperCol: { span: 16, offset: 8 },
+  };
+
+  return (
+    <>
+      {fields.map((field) => (
+        <Form.Item required={false} key={field.key} label={labelText}>
+          <Form.Item {...field} noStyle>
+            <UncontrolledDiceSideSelector
+              initialValue={defaultValue}
+              button={
+                <MinusCircleOutlined
+                  className={
+                    (classNames("dynamic-delete-button"),
+                    styles["pseudo-radio"])
+                  }
+                  onClick={() => remove(field.name)}
+                />
+              }
+            />
+          </Form.Item>
+        </Form.Item>
+      ))}
+      <Form.Item {...buttonLayout}>
+        <Button
+          type="dashed"
+          onClick={() => add(defaultValue)}
+          icon={<PlusOutlined />}
+        >
+          {buttonText}
+        </Button>
+        <Form.ErrorList errors={errors} />
+      </Form.Item>
+    </>
+  );
+};
+
 const AnimatedIntent = ({ onFinish, values }) => {
   const [completed, setCompleted] = useState(false);
   const dispatch = useDispatch();
@@ -262,47 +310,16 @@ const Intent = ({ onFinish, values, onComplete }) => {
             ]}
           >
             {(fields, { add, remove }, { errors }) => {
-              const defaultValue = { type: "ring", value: { opportunity: 1 } };
-              const buttonLayout = {
-                labelCol: { span: 0 },
-                wrapperCol: { span: 16, offset: 8 },
-              };
-
               return (
-                <>
-                  {fields.map((field) => (
-                    <Form.Item
-                      required={false}
-                      key={field.key}
-                      label={"Kept Die"}
-                    >
-                      <Form.Item {...field} noStyle>
-                        <UncontrolledDiceSideSelector
-                          initialValue={defaultValue}
-                          button={
-                            <MinusCircleOutlined
-                              className={
-                                (classNames("dynamic-delete-button"),
-                                styles["pseudo-radio"])
-                              }
-                              onClick={() => remove(field.name)}
-                            />
-                          }
-                        />
-                      </Form.Item>
-                    </Form.Item>
-                  ))}
-                  <Form.Item {...buttonLayout}>
-                    <Button
-                      type="dashed"
-                      onClick={() => add(defaultValue)}
-                      icon={<PlusOutlined />}
-                    >
-                      {"Add Kept Die"}
-                    </Button>
-                    <Form.ErrorList errors={errors} />
-                  </Form.Item>
-                </>
+                <DynamicDiceSelector
+                  fields={fields}
+                  defaultValue={{ type: "ring", value: { opportunity: 1 } }}
+                  errors={errors}
+                  labelText={"Kept Die"}
+                  buttonText={"Add Kept Die"}
+                  add={add}
+                  remove={remove}
+                />
               );
             }}
           </Form.List>
@@ -344,47 +361,16 @@ const Intent = ({ onFinish, values, onComplete }) => {
             ]}
           >
             {(fields, { add, remove }, { errors }) => {
-              const defaultValue = { type: "skill", value: { success: 1 } };
-              const buttonLayout = {
-                labelCol: { span: 0 },
-                wrapperCol: { span: 16, offset: 8 },
-              };
-
               return (
-                <>
-                  {fields.map((field) => (
-                    <Form.Item
-                      required={false}
-                      key={field.key}
-                      label={"Channeled Die"}
-                    >
-                      <Form.Item {...field} noStyle>
-                        <UncontrolledDiceSideSelector
-                          initialValue={defaultValue}
-                          button={
-                            <MinusCircleOutlined
-                              className={
-                                (classNames("dynamic-delete-button"),
-                                styles["pseudo-radio"])
-                              }
-                              onClick={() => remove(field.name)}
-                            />
-                          }
-                        />
-                      </Form.Item>
-                    </Form.Item>
-                  ))}
-                  <Form.Item {...buttonLayout}>
-                    <Button
-                      type="dashed"
-                      onClick={() => add(defaultValue)}
-                      icon={<PlusOutlined />}
-                    >
-                      {"Use Channeled Die"}
-                    </Button>
-                    <Form.ErrorList errors={errors} />
-                  </Form.Item>
-                </>
+                <DynamicDiceSelector
+                  fields={fields}
+                  defaultValue={{ type: "skill", value: { success: 1 } }}
+                  errors={errors}
+                  labelText={"Channeled Die"}
+                  buttonText={"Use Channeled Die"}
+                  add={add}
+                  remove={remove}
+                />
               );
             }}
           </Form.List>
