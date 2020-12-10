@@ -2,6 +2,7 @@ import React from "react";
 import { Radio } from "antd";
 import Dice from "./Dice";
 import styles from "./DiceSideSelector.module.css";
+import classNames from "classnames";
 
 const SEPARATOR = "-";
 
@@ -49,7 +50,7 @@ const FACETS = [
   { type: "skill", value: { explosion: 1 } },
 ];
 
-const Loop = ({ facets }) => {
+const Loop = ({ facets, button }) => {
   return (
     <>
       {facets.map(({ type, value }) => {
@@ -60,6 +61,11 @@ const Loop = ({ facets }) => {
           </Radio.Button>
         );
       })}
+      {button && (
+        <div className={classNames("ant-radio-button-wrapper", styles.extra)}>
+          {button}
+        </div>
+      )}
     </>
   );
 };
@@ -80,6 +86,7 @@ export const UncontrolledDiceSideSelector = ({
   initialValue,
   onChange,
   facets = FACETS,
+  button,
 }) => {
   return (
     <Radio.Group
@@ -87,7 +94,7 @@ export const UncontrolledDiceSideSelector = ({
       className={styles.group}
       defaultValue={toString(initialValue)}
     >
-      <Loop facets={facets} />
+      <Loop facets={facets} button={button} />
     </Radio.Group>
   );
 };

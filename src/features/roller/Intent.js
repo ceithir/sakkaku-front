@@ -26,6 +26,7 @@ import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { UncontrolledDiceSideSelector } from "./DiceSideSelector";
+import classNames from "classnames";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -283,12 +284,17 @@ const Intent = ({ onFinish, values, onComplete }) => {
                       <Form.Item {...field} noStyle>
                         <UncontrolledDiceSideSelector
                           initialValue={defaultValue}
+                          button={
+                            <MinusCircleOutlined
+                              className={
+                                (classNames("dynamic-delete-button"),
+                                styles["pseudo-radio"])
+                              }
+                              onClick={() => remove(field.name)}
+                            />
+                          }
                         />
                       </Form.Item>
-                      <MinusCircleOutlined
-                        className="dynamic-delete-button"
-                        onClick={() => remove(field.name)}
-                      />
                     </Form.Item>
                   ))}
                   <Form.Item>
