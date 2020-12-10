@@ -26,11 +26,11 @@ const Summary = ({
     modifiers.includes("manipulator") && "Bayushi Manipulator School Ability",
     modifiers.includes("2heavens") &&
       "Attacking a warding Mirumoto Two-Heavens Adept",
+    modifiers.includes("ruthless") &&
+      "Manual reroll (from NPCs' or other PCs' effects)",
     modifiers.includes("shadow") && "Ikoma Shadow School Ability",
     modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
     modifiers.includes("ruleless") && "Manual reroll",
-    modifiers.includes("ruthless") &&
-      "Manual reroll (from NPCs' or other PCs' effects)",
   ]
     .filter(Boolean)
     .join(" / ");
