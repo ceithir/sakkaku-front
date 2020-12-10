@@ -272,6 +272,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
           >
             {(fields, { add, remove }, { errors }) => {
               const defaultValue = { type: "skill", value: { success: 1 } };
+              const buttonLayout = {
+                labelCol: { span: 0 },
+                wrapperCol: { span: 16, offset: 8 },
+              };
 
               return (
                 <>
@@ -297,7 +301,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                       </Form.Item>
                     </Form.Item>
                   ))}
-                  <Form.Item>
+                  <Form.Item {...buttonLayout}>
                     <Button
                       type="dashed"
                       onClick={() => add(defaultValue)}
