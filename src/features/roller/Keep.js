@@ -35,6 +35,9 @@ const Keep = ({
       .filter((dice) => dice.status === "pending")
       .every((dice) => dice.value.strife);
 
+  const showAddKept =
+    addkept?.length && !dices.some(({ status }) => status === "kept");
+
   const toggle = (index) => {
     if (toKeep.includes(index)) {
       return dispatch(setToKeep(toKeep.filter((i) => i !== index)));
@@ -122,7 +125,7 @@ const Keep = ({
       };
     });
 
-    if (addkept?.length && !dices.some(({ status }) => status === "kept")) {
+    if (showAddKept) {
       return [
         ...baseDices,
         ...addkept.map((dice) => {
@@ -139,6 +142,21 @@ const Keep = ({
 
     return baseDices;
   };
+  const resultDices = () => {
+    if (showAddKept) {
+      return [
+        ...dices,
+        ...addkept.map((dice) => {
+          return {
+            ...dice,
+            status: "kept",
+          };
+        }),
+      ];
+    }
+
+    return dices;
+  };
 
   return (
     <div className={styles.layout}>
@@ -149,7 +167,7 @@ const Keep = ({
       />
       <Paragraph>{text()}</Paragraph>
       <Result
-        dices={dices}
+        dices={resultDices()}
         tn={tn}
         extra={toKeep}
         className={styles.figures}
