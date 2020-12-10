@@ -9,7 +9,6 @@ import {
   AutoComplete,
   Select,
   Collapse,
-  Typography,
   Button,
 } from "antd";
 import styles from "./Intent.module.css";
@@ -30,7 +29,6 @@ import classNames from "classnames";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
-const { Paragraph } = Typography;
 
 const layout = {
   labelCol: { span: 8 },
@@ -247,9 +245,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
       <Divider />
       <Collapse ghost>
         <Panel header={"Schools, techniques, magic…"}>
-          <Paragraph>
-            {`If your character has a quirk that is relevant to this specific roll, you can select it here. That will give you the option to use it later, at the appropriate step.`}
-          </Paragraph>
           <Form.Item label="School Ability" name="school">
             <Select
               showSearch
