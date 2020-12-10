@@ -1,0 +1,11 @@
+.dices {
+  display: flex;
+}
+
+.dices > * {
+  margin-right: 16px;
+}
+
+.dices img {
+  height: 48px;
+}

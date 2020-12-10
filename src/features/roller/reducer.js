@@ -13,6 +13,7 @@ const initialState = {
   loading: false,
   error: false,
   toKeep: [],
+  channeled: [],
 };
 
 const slice = createSlice({
@@ -36,6 +37,7 @@ const slice = createSlice({
         ring,
         skill,
         modifiers,
+        channeled,
       } = action.payload;
       state.campaign = campaign;
       state.character = character;
@@ -44,6 +46,7 @@ const slice = createSlice({
       state.ring = ring;
       state.skill = skill;
       state.modifiers = modifiers;
+      state.channeled = channeled;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -106,6 +109,7 @@ export const create = (request, user) => (dispatch) => {
     campaign,
     character,
     description,
+    channeled,
   } = request;
 
   if (user) {
@@ -119,6 +123,7 @@ export const create = (request, user) => (dispatch) => {
         campaign,
         character,
         description,
+        channeled,
       },
       success: (data) => {
         dispatch(load({ ...data, player: user }));
@@ -135,6 +140,7 @@ export const create = (request, user) => (dispatch) => {
       ring,
       skill,
       modifiers,
+      channeled,
     },
     success: (data) => {
       dispatch(update(data));
@@ -308,6 +314,7 @@ export const selectIntent = (state) => {
     skill,
     modifiers,
     player,
+    channeled,
   } = state.roll;
 
   return {
@@ -319,6 +326,7 @@ export const selectIntent = (state) => {
     skill,
     modifiers,
     player,
+    channeled,
   };
 };
 export const selectHidden = (state) =>

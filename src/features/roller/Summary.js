@@ -1,6 +1,9 @@
 import React from "react";
 import { Descriptions } from "antd";
 import { Link } from "react-router-dom";
+import Dice from "./Dice";
+import styles from "./Summary.module.css";
+import { orderDices } from "./utils";
 
 const Summary = ({
   campaign,
@@ -11,6 +14,7 @@ const Summary = ({
   skill,
   modifiers,
   player,
+  channeled,
 }) => {
   const special = [
     modifiers.includes("compromised") && "Compromised",
@@ -52,6 +56,15 @@ const Summary = ({
       <Descriptions.Item label="Voided?">
         {modifiers.includes("void") ? "Yes" : "No"}
       </Descriptions.Item>
+      {channeled?.length && (
+        <Descriptions.Item label={"Channeled Dice Used"} span={3}>
+          <div className={styles.dices}>
+            {orderDices(channeled).map((dice, index) => {
+              return <Dice key={index.toString()} dice={dice} />;
+            })}
+          </div>
+        </Descriptions.Item>
+      )}
       {special && (
         <Descriptions.Item label={"Additional Modifiers"} span={3}>
           {special}
