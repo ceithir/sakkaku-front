@@ -8,7 +8,7 @@ import {
   isFromRerollOfType,
 } from "../utils";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
 const THEMES = {
   distinction: "green",
@@ -27,6 +27,12 @@ const TITLES = {
   ruleless: "Manual reroll",
 };
 
+const EMPTY = {
+  distinction: "No dice were rerolled",
+  adversity: "No dice with a success or an explosion",
+  "2heavens": "No dice with a success or an explosion",
+};
+
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
   if (
     (rerollType === "deathdealer" || rerollType === "manipulator") &&
@@ -37,6 +43,19 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
 
   const theme = THEMES[rerollType] || "magenta";
   const title = TITLES[rerollType];
+
+  if (!dices.some((dice) => isRerollOfType(dice, rerollType))) {
+    return (
+      <div className={styles.layout}>
+        <Title level={4} className={styles.title}>
+          {title}
+        </Title>
+        <Paragraph className={styles.empty}>
+          {EMPTY[rerollType] || `Ability not used`}
+        </Paragraph>
+      </div>
+    );
+  }
 
   const indexOfType = rerollTypes.indexOf(rerollType);
   const previousRerollTypes = rerollTypes.filter(
