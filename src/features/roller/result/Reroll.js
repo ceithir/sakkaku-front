@@ -25,6 +25,7 @@ const TITLES = {
   ishiken: "Ishiken Initiate School Ability",
   "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
   ruleless: "Manual reroll",
+  ruthless: "Manual reroll (from NPCs' or other PCs' effects)",
 };
 
 const EMPTY = {

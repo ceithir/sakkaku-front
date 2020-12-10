@@ -29,6 +29,8 @@ const Summary = ({
     modifiers.includes("shadow") && "Ikoma Shadow School Ability",
     modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
     modifiers.includes("ruleless") && "Manual reroll",
+    modifiers.includes("ruthless") &&
+      "Manual reroll (from NPCs' or other PCs' effects)",
   ]
     .filter(Boolean)
     .join(" / ");

@@ -384,6 +384,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   label: "Manual reroll",
                 },
                 {
+                  value: "ruthless",
+                  label: "Manual reroll (from NPCs' or other PCs' effects)",
+                },
+                {
                   value: "2heavens",
                   label: "Attacking a warding Mirumoto Two-Heavens Adept",
                 },

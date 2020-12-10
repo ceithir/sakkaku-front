@@ -238,6 +238,15 @@ const Roller = ({ save }) => {
           );
         }
 
+        if (shouldShow("ruthless")) {
+          return (
+            <AbilityReroll
+              name={"ruthless"}
+              text={`Manual reroll: Select the dice you have to reroll.`}
+            />
+          );
+        }
+
         if (shouldShow("shadow")) {
           return (
             <AbilityReroll
@@ -264,7 +273,7 @@ const Roller = ({ save }) => {
           return (
             <AbilityReroll
               name={"ruleless"}
-              text={`Select the dice you want/have to reroll.`}
+              text={`Manual reroll: Select the dice you want/have to reroll.`}
             />
           );
         }
