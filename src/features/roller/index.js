@@ -88,6 +88,7 @@ const Roller = ({ save }) => {
     id,
     description,
     metadata,
+    addkept,
   } = roll;
 
   const compromised = modifiers.includes("compromised");
@@ -154,6 +155,7 @@ const Roller = ({ save }) => {
             skill={skill}
             voided={voided}
             rerollTypes={rerollTypes}
+            addkept={addkept}
           />
         );
       }

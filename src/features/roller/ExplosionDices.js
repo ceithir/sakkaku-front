@@ -1,24 +1,7 @@
 import React from "react";
 import Dices from "./Dices";
-import { orderDices, replaceRerolls } from "./utils";
 import { Divider } from "antd";
-
-const splitExplosions = ({ dices, basePool, rerollTypes }) => {
-  let split = [];
-  let remainingDices = replaceRerolls({ dices, basePool, rerollTypes });
-  let size =
-    basePool +
-    dices.filter(({ metadata }) => metadata.source === "addkept").length;
-  while (remainingDices.length > 0) {
-    const currentDices = orderDices(remainingDices.slice(0, size));
-    remainingDices = remainingDices.slice(size, remainingDices.length);
-    size = currentDices.filter(
-      ({ status, value: { explosion } }) => status === "kept" && explosion > 0
-    ).length;
-    split.push(currentDices);
-  }
-  return split;
-};
+import { splitExplosions } from "./utils";
 
 const ExplosionDices = ({ dices, basePool, className, rerollTypes }) => {
   if (!basePool || basePool > dices.length) {

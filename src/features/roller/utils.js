@@ -128,3 +128,20 @@ export const replaceRerolls = ({ dices, rerollTypes, basePool }) => {
     ...dices.slice(basePool + rerollCount), // Explosions
   ];
 };
+
+export const splitExplosions = ({ dices, basePool, rerollTypes }) => {
+  let split = [];
+  let remainingDices = replaceRerolls({ dices, basePool, rerollTypes });
+  let size =
+    basePool +
+    dices.filter(({ metadata }) => metadata?.source === "addkept").length;
+  while (remainingDices.length > 0) {
+    const currentDices = orderDices(remainingDices.slice(0, size));
+    remainingDices = remainingDices.slice(size, remainingDices.length);
+    size = currentDices.filter(
+      ({ status, value: { explosion } }) => status === "kept" && explosion > 0
+    ).length;
+    split.push(currentDices);
+  }
+  return split;
+};

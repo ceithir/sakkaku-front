@@ -18,6 +18,7 @@ const Keep = ({
   compromised,
   tn,
   rerollTypes,
+  addkept,
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
@@ -50,10 +51,16 @@ const Keep = ({
       return "Select which explosions you wish to keep (if any).";
     }
 
-    const defaultText =
+    let defaultText =
       max > 1
-        ? `You can keep up to ${max} dice (min 1).`
-        : "You must choose one die to keep.";
+        ? `You can keep up to ${max} dice (min 1)`
+        : "You must choose one die to keep";
+
+    if (addkept?.length) {
+      defaultText += " in top of your added dice";
+    }
+
+    defaultText += ".";
 
     if (compromised) {
       return `${defaultText} However, due to being compromised, you cannot keep any die with strife.`;
@@ -90,33 +97,53 @@ const Keep = ({
     return "Keep these dice";
   };
 
+  const wrapDices = () => {
+    const baseDices = dices.map((dice, index) => {
+      const { status, value } = dice;
+      const selected = status === "kept" || toKeep.includes(index);
+      const available = status === "pending" && (!compromised || !value.strife);
+      const selectable =
+        available && (selected || keepingExplosions || max > toKeep.length);
+      const disabled = (() => {
+        if (status === "kept") {
+          return false;
+        }
+        if (status !== "pending") {
+          return true;
+        }
+        return !selectable;
+      })();
+      return {
+        ...dice,
+        selectable,
+        selected,
+        disabled,
+        toggle: () => toggle(index),
+      };
+    });
+
+    if (addkept?.length && !dices.some(({ status }) => status === "kept")) {
+      return [
+        ...baseDices,
+        ...addkept.map((dice) => {
+          return {
+            ...dice,
+            status: "pending",
+            metadata: { source: "addkept" },
+            selected: true,
+            selectable: false,
+          };
+        }),
+      ];
+    }
+
+    return baseDices;
+  };
+
   return (
     <div className={styles.layout}>
       <ExplosionDices
-        dices={dices.map((dice, index) => {
-          const { status, value } = dice;
-          const selected = status === "kept" || toKeep.includes(index);
-          const available =
-            status === "pending" && (!compromised || !value.strife);
-          const selectable =
-            available && (selected || keepingExplosions || max > toKeep.length);
-          const disabled = (() => {
-            if (status === "kept") {
-              return false;
-            }
-            if (status !== "pending") {
-              return true;
-            }
-            return !selectable;
-          })();
-          return {
-            ...dice,
-            selectable,
-            selected,
-            disabled,
-            toggle: () => toggle(index),
-          };
-        })}
+        dices={wrapDices()}
         basePool={basePool}
         rerollTypes={rerollTypes}
       />
