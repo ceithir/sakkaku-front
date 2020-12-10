@@ -37,6 +37,7 @@ const FACETS = [
   { type: "ring", value: {} },
   { type: "ring", value: { opportunity: 1, strife: 1 } },
   { type: "ring", value: { opportunity: 1 } },
+  { type: "ring", value: { success: 1 } },
   { type: "ring", value: { success: 1, strife: 1 } },
   { type: "ring", value: { explosion: 1, strife: 1 } },
   { type: "skill", value: {} },
