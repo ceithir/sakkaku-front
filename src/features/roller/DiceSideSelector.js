@@ -2,8 +2,6 @@ import React from "react";
 import { Radio } from "antd";
 import Dice from "./Dice";
 import styles from "./DiceSideSelector.module.css";
-import classNames from "classnames";
-
 const SEPARATOR = "-";
 
 const toString = ({
@@ -61,11 +59,7 @@ const Loop = ({ facets, button }) => {
           </Radio.Button>
         );
       })}
-      {button && (
-        <div className={classNames("ant-radio-button-wrapper", styles.extra)}>
-          {button}
-        </div>
-      )}
+      {button}
     </>
   );
 };

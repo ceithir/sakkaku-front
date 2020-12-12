@@ -76,13 +76,15 @@ const DynamicDiceSelector = ({
             <UncontrolledDiceSideSelector
               initialValue={defaultValue}
               button={
-                <MinusCircleOutlined
-                  className={
-                    (classNames("dynamic-delete-button"),
-                    styles["pseudo-radio"])
-                  }
+                <div
+                  className={classNames(
+                    "ant-radio-button-wrapper",
+                    styles["pseudo-radio"]
+                  )}
                   onClick={() => remove(field.name)}
-                />
+                >
+                  <MinusCircleOutlined className={"dynamic-delete-button"} />
+                </div>
               }
             />
           </Form.Item>
