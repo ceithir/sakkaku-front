@@ -26,6 +26,7 @@ const TITLES = {
   "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
   ruleless: "Manual reroll",
   ruthless: "Manual reroll (from NPCs' or other PCs' effects)",
+  sailor: "Storm Fleet Sailor School Ability",
 };
 
 const EMPTY = {

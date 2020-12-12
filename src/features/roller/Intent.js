@@ -268,6 +268,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   value: "ishiken",
                   label: "Ishiken Initiate — Way of the Void",
                 },
+                {
+                  value: "sailor",
+                  label: "Storm Fleet Sailor — Sailor’s Fortune",
+                },
               ]}
               optionFilterProp="label"
             />

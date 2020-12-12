@@ -17,6 +17,7 @@ import Adversity from "./reroll/Adversity";
 import Ability from "./reroll/Ability";
 import Ishiken from "./reroll/Ishiken";
 import DragonWard from "./reroll/DragonWard";
+import Sailor from "./reroll/Sailor";
 import Summary from "./Summary";
 import { Collapse } from "antd";
 import styles from "./index.module.css";
@@ -252,6 +253,20 @@ const Roller = ({ save }) => {
             <AbilityReroll
               name={"shadow"}
               text={`Thanks to your School Ability, you can stake honor up to your school rank to re-roll a number of dice equal to twice the amount of honor staked.`}
+            />
+          );
+        }
+
+        if (shouldShow("sailor")) {
+          return (
+            <Sailor
+              dices={dices}
+              onFinish={(positions) =>
+                dispatch(reroll(roll, positions, "sailor"))
+              }
+              basePool={basePool}
+              rerollTypes={rerollTypes}
+              compromised={compromised}
             />
           );
         }
