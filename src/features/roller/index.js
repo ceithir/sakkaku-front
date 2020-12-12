@@ -271,6 +271,15 @@ const Roller = ({ save }) => {
           );
         }
 
+        if (shouldShow("ruleless")) {
+          return (
+            <AbilityReroll
+              name={"ruleless"}
+              text={`Manual reroll: Select the dice you want/have to reroll.`}
+            />
+          );
+        }
+
         if (shouldShow("ishiken")) {
           return (
             <Ishiken
@@ -280,15 +289,6 @@ const Roller = ({ save }) => {
               }
               basePool={basePool}
               rerollTypes={rerollTypes}
-            />
-          );
-        }
-
-        if (shouldShow("ruleless")) {
-          return (
-            <AbilityReroll
-              name={"ruleless"}
-              text={`Manual reroll: Select the dice you want/have to reroll.`}
             />
           );
         }
