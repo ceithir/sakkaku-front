@@ -27,6 +27,7 @@ const TITLES = {
   ruleless: "Manual reroll",
   ruthless: "Manual reroll (from NPCs' or other PCs' effects)",
   sailor: "Storm Fleet Sailor School Ability",
+  reasonless: "Manual alteration",
 };
 
 const EMPTY = {

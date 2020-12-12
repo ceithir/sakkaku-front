@@ -30,8 +30,9 @@ const Summary = ({
       "Manual reroll (from NPCs' or other PCs' effects)",
     modifiers.includes("shadow") && "Ikoma Shadow School Ability",
     modifiers.includes("sailor") && "Storm Fleet Sailor School Ability",
-    modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
     modifiers.includes("ruleless") && "Manual reroll",
+    modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
+    modifiers.includes("reasonless") && "Manual alteration",
   ]
     .filter(Boolean)
     .join(" / ");

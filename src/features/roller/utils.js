@@ -10,6 +10,7 @@ export const REROLL_TYPES = [
   "ruleless",
   "ruthless",
   "sailor",
+  "reasonless",
 ];
 
 export const countDices = (keptDices) => {

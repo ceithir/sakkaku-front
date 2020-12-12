@@ -385,6 +385,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   label: "Manual reroll",
                 },
                 {
+                  value: "reasonless",
+                  label: "Manual alteration",
+                },
+                {
                   value: "ruthless",
                   label: "Manual reroll (from NPCs' or other PCs' effects)",
                 },

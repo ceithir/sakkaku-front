@@ -18,6 +18,7 @@ import Ability from "./reroll/Ability";
 import Ishiken from "./reroll/Ishiken";
 import DragonWard from "./reroll/DragonWard";
 import Sailor from "./reroll/Sailor";
+import Alter from "./reroll/Alter";
 import Summary from "./Summary";
 import { Collapse } from "antd";
 import styles from "./index.module.css";
@@ -289,6 +290,20 @@ const Roller = ({ save }) => {
               }
               basePool={basePool}
               rerollTypes={rerollTypes}
+            />
+          );
+        }
+
+        if (shouldShow("reasonless")) {
+          return (
+            <Alter
+              dices={dices}
+              onFinish={(alterations) =>
+                dispatch(alter(roll, alterations, "reasonless"))
+              }
+              basePool={basePool}
+              rerollTypes={rerollTypes}
+              text={`Manual alteration: Change the result as you want/have to.`}
             />
           );
         }
