@@ -19,6 +19,7 @@ import {
   selectCharacters,
   addCampaign,
   addCharacter,
+  selectUser,
 } from "../user/reducer";
 import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
@@ -147,6 +148,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const characters = useSelector(selectCharacters);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  const user = useSelector(selectUser);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -195,25 +197,33 @@ const Intent = ({ onFinish, values, onComplete }) => {
         }
       }}
     >
-      <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
-        <AutoComplete
-          options={arrayToAutoCompleteOptions(campaigns)}
-          placeholder={"The Dead of Winter"}
-        />
-      </Form.Item>
-      <Form.Item label="Character" name="character" rules={defaultRules}>
-        <AutoComplete
-          options={arrayToAutoCompleteOptions(characters)}
-          placeholder={"Doji Sakura"}
-        />
-      </Form.Item>
+      {!!user && (
+        <>
+          <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
+            <AutoComplete
+              options={arrayToAutoCompleteOptions(campaigns)}
+              placeholder={"The Dead of Winter"}
+            />
+          </Form.Item>
+          <Form.Item label="Character" name="character" rules={defaultRules}>
+            <AutoComplete
+              options={arrayToAutoCompleteOptions(characters)}
+              placeholder={"Doji Sakura"}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={defaultRules}
+          >
+            <TextArea
+              placeholder={"Running at the foe! Fire, Fitness, Keen Balance"}
+            />
+          </Form.Item>
+        </>
+      )}
       <Form.Item label="TN" name="tn">
         <InputNumber min={1} />
-      </Form.Item>
-      <Form.Item label="Description" name="description" rules={defaultRules}>
-        <TextArea
-          placeholder={"Running at the foe! Fire, Fitness, Keen Balance"}
-        />
       </Form.Item>
       <Divider />
       <Form.Item label="Ring" name="ring" rules={defaultRules}>

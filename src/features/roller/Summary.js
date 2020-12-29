@@ -39,28 +39,37 @@ const Summary = ({
 
   return (
     <Descriptions column={{ md: 3, sm: 1, xs: 1 }} bordered>
-      <Descriptions.Item label="Campaign">
-        <Link to={`/rolls?campaign=${campaign}`}>{campaign}</Link>
-      </Descriptions.Item>
-      <Descriptions.Item label="Character" span={player ? 1 : 2}>
-        <Link to={`/rolls?campaign=${campaign}&character=${character}`}>
-          {character}
-        </Link>
-      </Descriptions.Item>
       {player && (
-        <Descriptions.Item label="Player">
-          <Link to={`/rolls?player=${player.id}`}>{player.name}</Link>
-        </Descriptions.Item>
+        <>
+          <Descriptions.Item label="Campaign">
+            <Link to={`/rolls?campaign=${campaign}`}>{campaign}</Link>
+          </Descriptions.Item>
+          <Descriptions.Item label="Character">
+            <Link to={`/rolls?campaign=${campaign}&character=${character}`}>
+              {character}
+            </Link>
+          </Descriptions.Item>
+          <Descriptions.Item label="Player">
+            <Link to={`/rolls?player=${player.id}`}>{player.name}</Link>
+          </Descriptions.Item>
+        </>
       )}
-      <Descriptions.Item label="Description" span={2}>
-        {description}
-      </Descriptions.Item>
-      <Descriptions.Item label="TN">{tn || "?"}</Descriptions.Item>
+
+      {description && (
+        <>
+          <Descriptions.Item label="Description" span={2}>
+            {description}
+          </Descriptions.Item>
+          <Descriptions.Item label="TN">{tn || "?"}</Descriptions.Item>
+        </>
+      )}
+
       <Descriptions.Item label="Ring">{ring}</Descriptions.Item>
       <Descriptions.Item label="Skill">{skill}</Descriptions.Item>
       <Descriptions.Item label="Voided?">
         {modifiers.includes("void") ? "Yes" : "No"}
       </Descriptions.Item>
+
       {channeled?.length && (
         <Descriptions.Item label={"Channeled Dice Used"} span={3}>
           <div className={styles.dices}>
