@@ -10,6 +10,7 @@ import {
   selectStep,
   selectIntent,
   alter,
+  setAddKept,
 } from "./reducer";
 import Keep from "./Keep";
 import Distinction from "./reroll/Distinction";
@@ -158,6 +159,7 @@ const Roller = ({ save }) => {
             voided={voided}
             rerollTypes={rerollTypes}
             addkept={addkept}
+            setAddKept={(data) => dispatch(setAddKept(data))}
           />
         );
       }

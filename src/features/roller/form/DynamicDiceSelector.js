@@ -13,6 +13,7 @@ const DynamicDiceSelector = ({
   errors,
   add,
   remove,
+  values = [],
 }) => {
   const buttonLayout = {
     labelCol: { span: 0 },
@@ -21,11 +22,11 @@ const DynamicDiceSelector = ({
 
   return (
     <>
-      {fields.map((field) => (
+      {fields.map((field, index) => (
         <Form.Item required={false} key={field.key} label={labelText}>
           <Form.Item {...field} noStyle>
             <UncontrolledDiceSideSelector
-              initialValue={defaultValue}
+              initialValue={values[index] || defaultValue}
               button={
                 <div
                   className={classNames(

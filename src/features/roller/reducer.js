@@ -89,6 +89,9 @@ const slice = createSlice({
     setToKeep: (state, action) => {
       state.toKeep = action.payload;
     },
+    setAddKept: (state, action) => {
+      state.addkept = action.payload;
+    },
   },
 });
 
@@ -99,6 +102,7 @@ export const {
   setAnimatedStep,
   load,
   setToKeep,
+  setAddKept,
 } = slice.actions;
 
 const { update, setError } = slice.actions;

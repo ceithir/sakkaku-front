@@ -1,13 +1,41 @@
 import React from "react";
 import NextButton from "./NextButton";
 import Result from "./Result";
-import { Typography } from "antd";
+import { Typography, Form } from "antd";
 import ExplosionDices from "./ExplosionDices";
 import styles from "./Keep.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectToKeep, setToKeep } from "./reducer";
+import DynamicDiceSelector from "./form/DynamicDiceSelector";
 
 const { Paragraph } = Typography;
+
+const AddKeptDiceForm = ({ dices, onChange }) => {
+  return (
+    <Form
+      onValuesChange={(_, allValues) => {
+        onChange(allValues["dices"]);
+      }}
+      initialValues={{ dices }}
+    >
+      <Form.List name="dices">
+        {(fields, { add, remove }, { errors }) => {
+          return (
+            <DynamicDiceSelector
+              fields={fields}
+              defaultValue={{ type: "ring", value: { opportunity: 1 } }}
+              errors={errors}
+              buttonText={"Add Kept Die"}
+              add={add}
+              remove={remove}
+              values={dices}
+            />
+          );
+        }}
+      </Form.List>
+    </Form>
+  );
+};
 
 const Keep = ({
   dices,
@@ -19,6 +47,7 @@ const Keep = ({
   tn,
   rerollTypes,
   addkept,
+  setAddKept,
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
@@ -26,8 +55,7 @@ const Keep = ({
   const max = voided ? ring + 1 : ring;
   const basePool = max + skill;
 
-  const keepingExplosions =
-    dices.filter((dice) => dice.status === "kept").length > 0;
+  const keepingExplosions = dices.some((dice) => dice.status === "kept");
 
   const trulyCompromised =
     compromised &&
@@ -35,8 +63,7 @@ const Keep = ({
       .filter((dice) => dice.status === "pending")
       .every((dice) => dice.value.strife);
 
-  const showAddKept =
-    addkept?.length && !dices.some(({ status }) => status === "kept");
+  const showAddKept = addkept?.length && !keepingExplosions;
 
   const toggle = (index) => {
     if (toKeep.includes(index)) {
@@ -173,6 +200,9 @@ const Keep = ({
         className={styles.figures}
         modifiers={rerollTypes}
       />
+      {!keepingExplosions && (
+        <AddKeptDiceForm dices={addkept} onChange={setAddKept} />
+      )}
       <NextButton
         onClick={() => onFinish(toKeep)}
         disabled={
