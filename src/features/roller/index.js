@@ -151,7 +151,7 @@ const Roller = ({ save }) => {
         return (
           <Keep
             dices={dices}
-            onFinish={(data) => dispatch(keep(roll, data))}
+            onFinish={(toKeep, toAdd) => dispatch(keep(roll, toKeep, toAdd))}
             tn={tn}
             ring={ring}
             skill={skill}

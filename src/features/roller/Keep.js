@@ -7,7 +7,6 @@ import styles from "./Keep.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
-import { selectUser } from "../user/reducer";
 import { FACETS } from "./DiceSideSelector";
 
 const { Paragraph } = Typography;
@@ -62,7 +61,6 @@ const Keep = ({
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
 
   const compromised = modifiers.includes("compromised");
   const voided = modifiers.includes("void");
@@ -215,7 +213,7 @@ const Keep = ({
         className={styles.figures}
         modifiers={rerollTypes}
       />
-      {!user && !keepingExplosions && (
+      {!keepingExplosions && (
         <AddKeptDiceForm
           dices={addkept}
           onChange={setAddKept}
@@ -223,7 +221,14 @@ const Keep = ({
         />
       )}
       <NextButton
-        onClick={() => onFinish(toKeep)}
+        onClick={() => {
+          if (!keepingExplosions && addkept?.length) {
+            onFinish(toKeep, addkept);
+            return;
+          }
+
+          onFinish(toKeep);
+        }}
         disabled={
           !(keepingExplosions || trulyCompromised) && toKeep.length === 0
         }

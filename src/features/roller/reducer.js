@@ -248,7 +248,7 @@ export const alter = (roll, alterations, modifier) => (dispatch) => {
   });
 };
 
-export const keep = (roll, positions) => (dispatch) => {
+export const keep = (roll, positions, toAdd) => (dispatch) => {
   dispatch(setLoading(true));
 
   const success = (data) => {
@@ -260,14 +260,29 @@ export const keep = (roll, positions) => (dispatch) => {
 
   const { id } = roll;
   if (id) {
-    authentifiedPostOnServer({
-      uri: `/ffg/l5r/rolls/${id}/keep`,
-      body: {
-        positions,
-      },
-      success,
-      error,
-    });
+    const authKeep = () =>
+      authentifiedPostOnServer({
+        uri: `/ffg/l5r/rolls/${id}/keep`,
+        body: {
+          positions,
+        },
+        success,
+        error,
+      });
+
+    if (toAdd?.length) {
+      authentifiedPostOnServer({
+        uri: `/ffg/l5r/rolls/${id}/parameters`,
+        body: {
+          addkept: toAdd,
+        },
+        success: authKeep,
+        error,
+      });
+      return;
+    }
+
+    authKeep();
     return;
   }
 
