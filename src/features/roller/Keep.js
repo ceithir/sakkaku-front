@@ -42,17 +42,19 @@ const Keep = ({
   dices,
   ring,
   skill,
-  voided,
   onFinish,
-  compromised,
   tn,
   rerollTypes,
   addkept,
   setAddKept,
+  modifiers,
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+
+  const compromised = modifiers.includes("compromised");
+  const voided = modifiers.includes("void");
 
   const max = voided ? ring + 1 : ring;
   const basePool = max + skill;

@@ -152,14 +152,13 @@ const Roller = ({ save }) => {
           <Keep
             dices={dices}
             onFinish={(data) => dispatch(keep(roll, data))}
-            compromised={compromised}
             tn={tn}
             ring={ring}
             skill={skill}
-            voided={voided}
             rerollTypes={rerollTypes}
             addkept={addkept}
             setAddKept={(data) => dispatch(setAddKept(data))}
+            modifiers={modifiers}
           />
         );
       }
