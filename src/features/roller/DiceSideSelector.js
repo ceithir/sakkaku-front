@@ -32,7 +32,7 @@ const toObject = (string) => {
   };
 };
 
-const FACETS = [
+export const FACETS = [
   { type: "ring", value: {} },
   { type: "ring", value: { opportunity: 1, strife: 1 } },
   { type: "ring", value: { opportunity: 1 } },
@@ -51,10 +51,10 @@ const FACETS = [
 const Loop = ({ facets, button }) => {
   return (
     <>
-      {facets.map(({ type, value }) => {
+      {facets.map(({ type, value, disabled }) => {
         const key = toString({ type, value });
         return (
-          <Radio.Button key={key} value={key}>
+          <Radio.Button key={key} value={key} disabled={disabled}>
             <Dice dice={{ type, value }} />
           </Radio.Button>
         );

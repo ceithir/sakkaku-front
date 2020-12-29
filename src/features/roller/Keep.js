@@ -8,10 +8,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import { selectUser } from "../user/reducer";
+import { FACETS } from "./DiceSideSelector";
 
 const { Paragraph } = Typography;
 
-const AddKeptDiceForm = ({ dices, onChange }) => {
+const AddKeptDiceForm = ({ dices, onChange, compromised }) => {
   return (
     <Form
       onValuesChange={(_, allValues) => {
@@ -30,6 +31,16 @@ const AddKeptDiceForm = ({ dices, onChange }) => {
               add={add}
               remove={remove}
               values={dices}
+              facets={
+                compromised
+                  ? FACETS.map((facet) => {
+                      if (facet.value.strife > 0) {
+                        return { ...facet, disabled: true };
+                      }
+                      return facet;
+                    })
+                  : FACETS
+              }
             />
           );
         }}
@@ -205,7 +216,11 @@ const Keep = ({
         modifiers={rerollTypes}
       />
       {!user && !keepingExplosions && (
-        <AddKeptDiceForm dices={addkept} onChange={setAddKept} />
+        <AddKeptDiceForm
+          dices={addkept}
+          onChange={setAddKept}
+          compromised={compromised}
+        />
       )}
       <NextButton
         onClick={() => onFinish(toKeep)}

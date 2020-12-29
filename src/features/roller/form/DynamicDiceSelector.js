@@ -14,6 +14,7 @@ const DynamicDiceSelector = ({
   add,
   remove,
   values = [],
+  facets,
 }) => {
   const buttonLayout = {
     labelCol: { span: 0 },
@@ -38,6 +39,7 @@ const DynamicDiceSelector = ({
                   <MinusCircleOutlined className={"dynamic-delete-button"} />
                 </div>
               }
+              facets={facets}
             />
           </Form.Item>
         </Form.Item>
