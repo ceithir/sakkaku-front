@@ -135,13 +135,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           form.validateFields(["channeled"]);
         }
-        if (
-          Object.keys(changedValues).some((name) =>
-            ["compromised", "addkept"].includes(name)
-          )
-        ) {
-          form.validateFields(["addkept"]);
-        }
       }}
     >
       {!!user && (
@@ -246,41 +239,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
               optionFilterProp="label"
             />
           </Form.Item>
-          <Form.List
-            name="addkept"
-            rules={[
-              {
-                validator: async (_, dices) => {
-                  if (!dices?.length) {
-                    return;
-                  }
-
-                  const compromised = form.getFieldValue("compromised");
-                  if (compromised && dices.some(({ value }) => value?.strife)) {
-                    return Promise.reject(
-                      new Error(
-                        "Cannot have kept dice with strife if compromised"
-                      )
-                    );
-                  }
-                },
-              },
-            ]}
-          >
-            {(fields, { add, remove }, { errors }) => {
-              return (
-                <DynamicDiceSelector
-                  fields={fields}
-                  defaultValue={{ type: "ring", value: { opportunity: 1 } }}
-                  errors={errors}
-                  labelText={"Kept Die"}
-                  buttonText={"Add Kept Die"}
-                  add={add}
-                  remove={remove}
-                />
-              );
-            }}
-          </Form.List>
           <Form.List
             name="channeled"
             rules={[
