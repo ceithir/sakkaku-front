@@ -7,6 +7,7 @@ import styles from "./Keep.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
+import { selectUser } from "../user/reducer";
 
 const { Paragraph } = Typography;
 
@@ -51,6 +52,7 @@ const Keep = ({
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const max = voided ? ring + 1 : ring;
   const basePool = max + skill;
@@ -200,7 +202,7 @@ const Keep = ({
         className={styles.figures}
         modifiers={rerollTypes}
       />
-      {!keepingExplosions && (
+      {!user && !keepingExplosions && (
         <AddKeptDiceForm dices={addkept} onChange={setAddKept} />
       )}
       <NextButton
