@@ -21,7 +21,8 @@ const requestOnServer = async ({ uri, method, body, success, error }) => {
     const data = await response.json();
     success(data);
   } catch (e) {
-    error ? error(e) : console.error(e);
+    console.error(e);
+    error && error(e);
   }
 };
 
@@ -62,6 +63,7 @@ export const authentifiedPostOnServer = async ({
     const data = await response.json();
     success(data);
   } catch (e) {
-    error ? error(e) : console.error(e);
+    console.error(e);
+    error && error(e);
   }
 };
