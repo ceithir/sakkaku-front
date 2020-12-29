@@ -9,7 +9,6 @@ import {
   AutoComplete,
   Select,
   Collapse,
-  Button,
 } from "antd";
 import styles from "./Intent.module.css";
 import NextButton from "./NextButton";
@@ -24,9 +23,7 @@ import {
 import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { UncontrolledDiceSideSelector } from "./DiceSideSelector";
-import classNames from "classnames";
+import DynamicDiceSelector from "./form/DynamicDiceSelector";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -53,56 +50,6 @@ const arrayToAutoCompleteOptions = (values) => {
       value,
     };
   });
-};
-
-const DynamicDiceSelector = ({
-  fields,
-  labelText,
-  defaultValue,
-  buttonText,
-  errors,
-  add,
-  remove,
-}) => {
-  const buttonLayout = {
-    labelCol: { span: 0 },
-    wrapperCol: { span: 16, offset: 8 },
-  };
-
-  return (
-    <>
-      {fields.map((field) => (
-        <Form.Item required={false} key={field.key} label={labelText}>
-          <Form.Item {...field} noStyle>
-            <UncontrolledDiceSideSelector
-              initialValue={defaultValue}
-              button={
-                <div
-                  className={classNames(
-                    "ant-radio-button-wrapper",
-                    styles["pseudo-radio"]
-                  )}
-                  onClick={() => remove(field.name)}
-                >
-                  <MinusCircleOutlined className={"dynamic-delete-button"} />
-                </div>
-              }
-            />
-          </Form.Item>
-        </Form.Item>
-      ))}
-      <Form.Item {...buttonLayout}>
-        <Button
-          type="dashed"
-          onClick={() => add(defaultValue)}
-          icon={<PlusOutlined />}
-        >
-          {buttonText}
-        </Button>
-        <Form.ErrorList errors={errors} />
-      </Form.Item>
-    </>
-  );
 };
 
 const AnimatedIntent = ({ onFinish, values }) => {
