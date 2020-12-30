@@ -315,18 +315,27 @@ export const addModifiers = (roll, newModifiers) => (dispatch) => {
   dispatch(setLoading(true));
 
   const { id, modifiers } = roll;
-
-  const updateModifiers = () => {
-    dispatch(setModifiers([...modifiers, ...newModifiers]));
-    dispatch(setLoading(false));
-  };
+  const allModifiers = [...modifiers, ...newModifiers];
 
   if (id) {
-    // TODO
+    authentifiedPostOnServer({
+      uri: `/ffg/l5r/rolls/${id}/parameters`,
+      body: {
+        modifiers: allModifiers,
+      },
+      success: ({ parameters: { modifiers } }) => {
+        dispatch(setModifiers(modifiers));
+        dispatch(setLoading(false));
+      },
+      error: () => {
+        dispatch(setError(true));
+      },
+    });
     return;
   }
 
-  updateModifiers();
+  dispatch(setModifiers(allModifiers));
+  dispatch(setLoading(false));
 };
 
 export const selectAll = (state) => state.roll;
