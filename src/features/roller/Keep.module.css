@@ -10,3 +10,14 @@
 .figures {
   margin-top: 24px;
 }
+
+.add-kept-form > div:last-child {
+  text-align: right;
+}
+
+@media (min-width: 576px) {
+  .add-kept-form > div:last-child {
+    text-align: left;
+    float: left;
+  }
+}

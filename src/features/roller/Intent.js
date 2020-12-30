@@ -286,6 +286,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   buttonText={"Use Channeled Die"}
                   add={add}
                   remove={remove}
+                  buttonLayout={{
+                    labelCol: { span: 0 },
+                    wrapperCol: { span: 16, offset: 8 },
+                  }}
                 />
               );
             }}

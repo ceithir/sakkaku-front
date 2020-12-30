@@ -18,6 +18,7 @@ const AddKeptDiceForm = ({ dices, onChange, compromised }) => {
         onChange(allValues["dices"]);
       }}
       initialValues={{ dices }}
+      className={styles["add-kept-form"]}
     >
       <Form.List name="dices">
         {(fields, { add, remove }, { errors }) => {

@@ -15,12 +15,8 @@ const DynamicDiceSelector = ({
   remove,
   values = [],
   facets,
+  buttonLayout,
 }) => {
-  const buttonLayout = {
-    labelCol: { span: 0 },
-    wrapperCol: { span: 16, offset: 8 },
-  };
-
   return (
     <>
       {fields.map((field, index) => (
