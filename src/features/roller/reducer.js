@@ -15,6 +15,7 @@ const initialState = {
   toKeep: [],
   channeled: [],
   addkept: [],
+  explicitGoToKeep: false,
 };
 
 const slice = createSlice({
@@ -32,6 +33,7 @@ const slice = createSlice({
       state.toKeep = [];
       state.channeled = [];
       state.addkept = [];
+      state.explicitGoToKeep = false;
 
       state.id = null;
       window.history.pushState(null, null, "/");
@@ -92,6 +94,9 @@ const slice = createSlice({
     setAddKept: (state, action) => {
       state.addkept = action.payload;
     },
+    goToKeepStep: (state) => {
+      state.explicitGoToKeep = true;
+    },
   },
 });
 
@@ -103,6 +108,7 @@ export const {
   load,
   setToKeep,
   setAddKept,
+  goToKeepStep,
 } = slice.actions;
 
 const { update, setError } = slice.actions;
@@ -305,7 +311,13 @@ export const keep = (roll, positions, toAdd) => (dispatch) => {
 export const selectAll = (state) => state.roll;
 export const selectLoading = (state) => state.roll.loading;
 export const selectStep = (state) => {
-  const { dices, metadata, modifiers, animatedStep } = state.roll;
+  const {
+    dices,
+    metadata,
+    modifiers,
+    animatedStep,
+    explicitGoToKeep,
+  } = state.roll;
 
   if (animatedStep) {
     return animatedStep;
@@ -327,6 +339,10 @@ export const selectStep = (state) => {
   }
 
   if (dicesRolled && rerollDone) {
+    if (!explicitGoToKeep) {
+      return REROLL;
+    }
+
     return KEEP;
   }
 

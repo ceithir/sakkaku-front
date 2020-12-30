@@ -11,6 +11,7 @@ import {
   selectIntent,
   alter,
   setAddKept,
+  goToKeepStep,
 } from "./reducer";
 import Keep from "./Keep";
 import Distinction from "./reroll/Distinction";
@@ -20,6 +21,7 @@ import Ishiken from "./reroll/Ishiken";
 import DragonWard from "./reroll/DragonWard";
 import Sailor from "./reroll/Sailor";
 import Alter from "./reroll/Alter";
+import Confirm from "./reroll/Confirm";
 import Summary from "./Summary";
 import { Collapse } from "antd";
 import styles from "./index.module.css";
@@ -104,6 +106,10 @@ const Roller = ({ save }) => {
   }
 
   const disabled = (panel) => {
+    if (currentStep === panel) {
+      return false;
+    }
+
     if (panel === RESOLVE) {
       return currentStep !== RESOLVE;
     }
@@ -309,7 +315,14 @@ const Roller = ({ save }) => {
           );
         }
 
-        return null;
+        return (
+          <Confirm
+            dices={dices}
+            onFinish={() => dispatch(goToKeepStep())}
+            basePool={basePool}
+            rerollTypes={rerollTypes}
+          />
+        );
       }
 
       return (
