@@ -12,6 +12,7 @@ import {
   alter,
   setAddKept,
   goToKeepStep,
+  addModifiers,
 } from "./reducer";
 import Keep from "./Keep";
 import Distinction from "./reroll/Distinction";
@@ -315,12 +316,15 @@ const Roller = ({ save }) => {
           );
         }
 
+        const addReroll = () => dispatch(addModifiers(roll, ["ruleless"]));
+
         return (
           <Confirm
             dices={dices}
             onFinish={() => dispatch(goToKeepStep())}
             basePool={basePool}
             rerollTypes={rerollTypes}
+            addReroll={!modifiers.includes("ruleless") && addReroll}
           />
         );
       }

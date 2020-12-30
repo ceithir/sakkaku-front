@@ -97,6 +97,9 @@ const slice = createSlice({
     goToKeepStep: (state) => {
       state.explicitGoToKeep = true;
     },
+    setModifiers: (state, action) => {
+      state.modifiers = action.payload;
+    },
   },
 });
 
@@ -111,7 +114,7 @@ export const {
   goToKeepStep,
 } = slice.actions;
 
-const { update, setError } = slice.actions;
+const { update, setError, setModifiers } = slice.actions;
 
 export const create = (request, user) => (dispatch) => {
   dispatch(setLoading(true));
@@ -306,6 +309,24 @@ export const keep = (roll, positions, toAdd) => (dispatch) => {
     success,
     error,
   });
+};
+
+export const addModifiers = (roll, newModifiers) => (dispatch) => {
+  dispatch(setLoading(true));
+
+  const { id, modifiers } = roll;
+
+  const updateModifiers = () => {
+    dispatch(setModifiers([...modifiers, ...newModifiers]));
+    dispatch(setLoading(false));
+  };
+
+  if (id) {
+    // TODO
+    return;
+  }
+
+  updateModifiers();
 };
 
 export const selectAll = (state) => state.roll;

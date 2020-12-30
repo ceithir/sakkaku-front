@@ -1,0 +1,19 @@
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.buttons > * {
+  margin-left: 24px;
+}
+
+.buttons > *:first-child {
+  margin-left: 0;
+}
+
+@media (max-width: 576px) {
+  .buttons > * {
+    margin-left: 8px;
+  }
+}

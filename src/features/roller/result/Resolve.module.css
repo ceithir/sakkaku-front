@@ -10,27 +10,7 @@
   flex-direction: column;
 }
 
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
-}
-
-.buttons > * {
-  margin-left: 24px;
-}
-
-.buttons > *:first-child {
-  margin-left: 0;
-}
-
 .dices {
   justify-content: center;
   margin: 16px auto 24px auto;
-}
-
-@media (max-width: 576px) {
-  .buttons > * {
-    margin-left: 8px;
-  }
 }

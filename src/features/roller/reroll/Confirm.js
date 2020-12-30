@@ -2,8 +2,10 @@ import React from "react";
 import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 import { replaceRerolls } from "../utils";
+import { Button } from "antd";
+import LineContainer from "../button/LineContainer";
 
-const Confirm = ({ dices, onFinish, basePool, rerollTypes }) => {
+const Confirm = ({ dices, onFinish, basePool, rerollTypes, addReroll }) => {
   const text = `Your rolled dice at the moment are as follow.`;
 
   return (
@@ -14,7 +16,12 @@ const Confirm = ({ dices, onFinish, basePool, rerollTypes }) => {
         basePool,
         rerollTypes,
       })}
-      footer={<NextButton onClick={() => onFinish()}>{`Continue`}</NextButton>}
+      footer={
+        <LineContainer>
+          {addReroll && <Button onClick={addReroll}>{`Add reroll`}</Button>}
+          <NextButton onClick={onFinish}>{`Continue`}</NextButton>
+        </LineContainer>
+      }
     />
   );
 };

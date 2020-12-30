@@ -5,6 +5,7 @@ import styles from "./Resolve.module.css";
 import Dices from "../Dices";
 import { replaceRerolls, orderDices } from "../utils";
 import DirectLink from "../button/DirectLink";
+import LineContainer from "../button/LineContainer";
 
 const Resolve = ({
   dices,
@@ -27,7 +28,7 @@ const Resolve = ({
           className={styles.dices}
         />
         <Result dices={dices} tn={tn} modifiers={rerollTypes} />
-        <div className={styles.buttons}>
+        <LineContainer>
           <DirectLink id={id} />
           <BbCode
             id={id}
@@ -37,7 +38,7 @@ const Resolve = ({
             modifiers={rerollTypes}
           />
           {button}
-        </div>
+        </LineContainer>
       </div>
     </div>
   );
