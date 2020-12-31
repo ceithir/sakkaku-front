@@ -3,7 +3,7 @@ import { Descriptions } from "antd";
 import { Link } from "react-router-dom";
 import Dice from "./Dice";
 import styles from "./Summary.module.css";
-import { orderDices } from "./utils";
+import { orderDices, isSpecialReroll } from "./utils";
 
 const Summary = ({
   campaign,
@@ -30,7 +30,7 @@ const Summary = ({
       "Manual reroll (from NPCs' or other PCs' effects)",
     modifiers.includes("shadow") && "Ikoma Shadow School Ability",
     modifiers.includes("sailor") && "Storm Fleet Sailor School Ability",
-    modifiers.includes("ruleless") && "Manual reroll",
+    modifiers.some(isSpecialReroll) && "Manual reroll",
     modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
     modifiers.includes("reasonless") && "Manual alteration",
   ]

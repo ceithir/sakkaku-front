@@ -35,7 +35,7 @@ import RerollResult from "./result/Reroll";
 import KeepResult from "./result/Keep";
 import ResolveResult from "./result/Resolve";
 import AnonymousAlert from "./AnonymousAlert";
-import { REROLL_TYPES } from "./utils";
+import { isReroll, isSpecialReroll } from "./utils";
 
 const { Panel } = Collapse;
 
@@ -124,7 +124,7 @@ const Roller = ({ save }) => {
         return true;
       }
 
-      return !modifiers.some((mod) => REROLL_TYPES.includes(mod));
+      return !modifiers.some(isReroll);
     }
 
     return false;
@@ -280,10 +280,13 @@ const Roller = ({ save }) => {
           );
         }
 
-        if (shouldShow("ruleless")) {
+        const specialReroll = modifiers.find(
+          (modifier) => isSpecialReroll(modifier) && shouldShow(modifier)
+        );
+        if (specialReroll) {
           return (
             <AbilityReroll
-              name={"ruleless"}
+              name={specialReroll}
               text={`Manual reroll: Select the dice you want/have to reroll.`}
             />
           );
@@ -316,15 +319,19 @@ const Roller = ({ save }) => {
           );
         }
 
-        const addReroll = () => dispatch(addModifiers(roll, ["ruleless"]));
-
+        const addReroll = () =>
+          dispatch(
+            addModifiers(roll, [
+              `ruleless${modifiers.length.toString().padStart(2, "0")}`,
+            ])
+          );
         return (
           <Confirm
             dices={dices}
             onFinish={() => dispatch(goToKeepStep())}
             basePool={basePool}
             rerollTypes={rerollTypes}
-            addReroll={!modifiers.includes("ruleless") && addReroll}
+            addReroll={modifiers.length < 100 && addReroll}
           />
         );
       }

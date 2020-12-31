@@ -18,7 +18,10 @@ const Confirm = ({ dices, onFinish, basePool, rerollTypes, addReroll }) => {
       })}
       footer={
         <LineContainer>
-          {addReroll && <Button onClick={addReroll}>{`Add reroll`}</Button>}
+          <Button
+            disabled={!addReroll}
+            onClick={addReroll}
+          >{`Add reroll`}</Button>
           <NextButton onClick={onFinish}>{`Continue`}</NextButton>
         </LineContainer>
       }

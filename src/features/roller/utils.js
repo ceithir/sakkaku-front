@@ -1,5 +1,4 @@
-// TODO: Move this somehwere more logical
-export const REROLL_TYPES = [
+const REROLL_TYPES = [
   "adversity",
   "distinction",
   "shadow",
@@ -7,11 +6,22 @@ export const REROLL_TYPES = [
   "manipulator",
   "ishiken",
   "2heavens",
-  "ruleless",
   "ruthless",
   "sailor",
   "reasonless",
 ];
+
+export const isReroll = ($modifier) => {
+  if (isSpecialReroll($modifier)) {
+    return true;
+  }
+
+  return REROLL_TYPES.includes($modifier);
+};
+
+export const isSpecialReroll = (modifier) => {
+  return /^ruleless([0-9]{2})?$/.test(modifier);
+};
 
 export const countDices = (keptDices) => {
   return {

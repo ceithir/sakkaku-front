@@ -6,6 +6,7 @@ import {
   replaceRerollsOfType,
   isRerollOfType,
   isFromRerollOfType,
+  isSpecialReroll,
 } from "../utils";
 
 const { Title, Paragraph } = Typography;
@@ -24,7 +25,6 @@ const TITLES = {
   manipulator: "Bayushi Manipulator School Ability",
   ishiken: "Ishiken Initiate School Ability",
   "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
-  ruleless: "Manual reroll",
   ruthless: "Manual reroll (from NPCs' or other PCs' effects)",
   sailor: "Storm Fleet Sailor School Ability",
   reasonless: "Manual alteration",
@@ -36,6 +36,14 @@ const EMPTY = {
   "2heavens": "No dice with a success or an explosion",
 };
 
+const getTitle = (name) => {
+  if (isSpecialReroll(name)) {
+    return "Manual reroll";
+  }
+
+  return TITLES[name];
+};
+
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
   if (
     (rerollType === "deathdealer" || rerollType === "manipulator") &&
@@ -45,7 +53,7 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
   }
 
   const theme = THEMES[rerollType] || "magenta";
-  const title = TITLES[rerollType];
+  const title = getTitle(rerollType);
 
   if (!dices.some((dice) => isRerollOfType(dice, rerollType))) {
     return (

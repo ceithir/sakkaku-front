@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer, authentifiedPostOnServer } from "../../server";
 import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
-import { REROLL_TYPES } from "./utils";
+import { isReroll } from "./utils";
 
 const initialState = {
   tn: 3,
@@ -357,9 +357,7 @@ export const selectStep = (state) => {
   const atLeastOneUnresolvedDice =
     dicesRolled && dices.some((dice) => dice.status === "pending");
 
-  const currentRerollModifiers = modifiers.filter((mod) =>
-    REROLL_TYPES.includes(mod)
-  );
+  const currentRerollModifiers = modifiers.filter(isReroll);
   const hasReroll = currentRerollModifiers.length > 0;
   const rerollDone =
     !hasReroll || metadata?.rerolls?.length === currentRerollModifiers.length;
