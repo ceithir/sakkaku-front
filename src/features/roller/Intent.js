@@ -173,27 +173,31 @@ const Intent = ({ onFinish, values, onComplete }) => {
         <InputNumber min={0} max={10} />
       </Form.Item>
       <Divider />
-      <Form.Item
-        label={"Void for +1 Ring die?"}
-        name="void"
-        valuePropName="checked"
-      >
-        <Switch />
-      </Form.Item>
-      <Form.Item label="Advantage / Disadvantage" name="modifier">
-        <Radio.Group>
-          <Radio.Button value="">None</Radio.Button>
-          <Radio.Button value="distinction">Distinction</Radio.Button>
-          <Radio.Button value="adversity">Adversity</Radio.Button>
-        </Radio.Group>
-      </Form.Item>
-      <Form.Item
-        label="Compromised?"
-        name="compromised"
-        valuePropName="checked"
-      >
-        <Switch />
-      </Form.Item>
+      <Collapse ghost>
+        <Panel header={"Common modifiers"}>
+          <Form.Item
+            label={"Void for +1 Ring die?"}
+            name="void"
+            valuePropName="checked"
+          >
+            <Switch />
+          </Form.Item>
+          <Form.Item label="Advantage / Disadvantage" name="modifier">
+            <Radio.Group>
+              <Radio.Button value="">None</Radio.Button>
+              <Radio.Button value="distinction">Distinction</Radio.Button>
+              <Radio.Button value="adversity">Adversity</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item
+            label="Compromised?"
+            name="compromised"
+            valuePropName="checked"
+          >
+            <Switch />
+          </Form.Item>
+        </Panel>
+      </Collapse>
       <Divider />
       <Collapse ghost>
         <Panel header={"Schools, techniques, magic…"}>
