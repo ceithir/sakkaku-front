@@ -167,10 +167,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
       </Form.Item>
       <Divider />
       <Form.Item label="Ring" name="ring" rules={defaultRules}>
-        <InputNumber min={1} max={5} />
+        <InputNumber min={1} max={10} />
       </Form.Item>
       <Form.Item label="Skill" name="skill" rules={defaultRules}>
-        <InputNumber min={0} max={5} />
+        <InputNumber min={0} max={10} />
       </Form.Item>
       <Divider />
       <Form.Item
