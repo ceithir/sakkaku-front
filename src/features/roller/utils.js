@@ -31,6 +31,10 @@ export const keptDicesCount = ({ ring, modifiers }) => {
   return ring + (modifiers.includes("void") ? 1 : 0);
 };
 
+export const isAlteration = (modifier) => {
+  return ["ishiken", "reasonless"].includes(modifier);
+};
+
 export const countDices = (keptDices) => {
   return {
     successCount: keptDices.reduce(

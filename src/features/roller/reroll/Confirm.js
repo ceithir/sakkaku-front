@@ -1,7 +1,7 @@
 import React from "react";
 import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
-import { replaceRerolls } from "../utils";
+import { replaceRerolls, isAlteration } from "../utils";
 import { Button } from "antd";
 import LineContainer from "../button/LineContainer";
 
@@ -18,10 +18,11 @@ const Confirm = ({ dices, onFinish, basePool, rerollTypes, addReroll }) => {
       })}
       footer={
         <LineContainer>
-          <Button
-            disabled={!addReroll}
-            onClick={addReroll}
-          >{`Add reroll`}</Button>
+          <Button disabled={!addReroll} onClick={addReroll}>{`Apply ${
+            rerollTypes.filter((name) => !isAlteration(name)).length > 0
+              ? "another"
+              : "a"
+          } reroll`}</Button>
           <NextButton onClick={onFinish}>{`Continue`}</NextButton>
         </LineContainer>
       }
