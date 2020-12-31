@@ -3,7 +3,7 @@ import { Descriptions } from "antd";
 import { Link } from "react-router-dom";
 import Dice from "./Dice";
 import styles from "./Summary.module.css";
-import { orderDices, isSpecialReroll } from "./utils";
+import { orderDices, isSpecialReroll, isSpecialAlteration } from "./utils";
 
 const Summary = ({
   campaign,
@@ -32,7 +32,7 @@ const Summary = ({
     modifiers.includes("sailor") && "Storm Fleet Sailor School Ability",
     modifiers.some(isSpecialReroll) && "Custom reroll",
     modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
-    modifiers.includes("reasonless") && "Custom alteration",
+    modifiers.some(isSpecialAlteration) && "Custom alteration",
   ]
     .filter(Boolean)
     .join(" / ");

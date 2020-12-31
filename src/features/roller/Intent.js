@@ -300,10 +300,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
               placeholder={"Extra options for unusual cases"}
               options={[
                 {
-                  value: "reasonless",
-                  label: "Custom alteration",
-                },
-                {
                   value: "2heavens",
                   label: "Attacking a warding Mirumoto Two-Heavens Adept",
                 },

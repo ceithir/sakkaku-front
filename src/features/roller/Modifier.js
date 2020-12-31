@@ -8,7 +8,11 @@ import DragonWard from "./reroll/DragonWard";
 import Sailor from "./reroll/Sailor";
 import Alter from "./reroll/Alter";
 import Confirm from "./reroll/Confirm";
-import { isSpecialReroll, rolledDicesCount } from "./utils";
+import {
+  isSpecialReroll,
+  rolledDicesCount,
+  isSpecialAlteration,
+} from "./utils";
 import Result from "./result/Reroll";
 import { Divider } from "antd";
 
@@ -138,12 +142,15 @@ const Modifier = ({ roll, dispatch }) => {
     );
   }
 
-  if (shouldShow("reasonless")) {
+  const specialAlteration = modifiers.find(
+    (modifier) => isSpecialAlteration(modifier) && shouldShow(modifier)
+  );
+  if (specialAlteration) {
     return (
       <Alter
         dices={dices}
         onFinish={(alterations) =>
-          dispatch(alter(roll, alterations, "reasonless"))
+          dispatch(alter(roll, alterations, specialAlteration))
         }
         basePool={basePool}
         rerollTypes={rerollTypes}
@@ -158,6 +165,12 @@ const Modifier = ({ roll, dispatch }) => {
         `ruleless${modifiers.length.toString().padStart(2, "0")}`,
       ])
     );
+  const addAlteration = () =>
+    dispatch(
+      addModifiers(roll, [
+        `reasonless${modifiers.length.toString().padStart(2, "0")}`,
+      ])
+    );
   return (
     <Confirm
       dices={dices}
@@ -165,6 +178,7 @@ const Modifier = ({ roll, dispatch }) => {
       basePool={basePool}
       rerollTypes={rerollTypes}
       addReroll={modifiers.length < 100 && addReroll}
+      addAlteration={modifiers.length < 100 && addAlteration}
     />
   );
 };

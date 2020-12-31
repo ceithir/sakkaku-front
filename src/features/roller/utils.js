@@ -8,19 +8,22 @@ const REROLL_TYPES = [
   "2heavens",
   "ruthless",
   "sailor",
-  "reasonless",
 ];
 
-export const isReroll = ($modifier) => {
-  if (isSpecialReroll($modifier)) {
+export const isReroll = (modifier) => {
+  if (isSpecialReroll(modifier) || isSpecialAlteration(modifier)) {
     return true;
   }
 
-  return REROLL_TYPES.includes($modifier);
+  return REROLL_TYPES.includes(modifier);
 };
 
 export const isSpecialReroll = (modifier) => {
   return /^ruleless([0-9]{2})?$/.test(modifier);
+};
+
+export const isSpecialAlteration = (modifier) => {
+  return /^reasonless([0-9]{2})?$/.test(modifier);
 };
 
 export const rolledDicesCount = ({ ring, skill, modifiers }) => {
@@ -32,7 +35,7 @@ export const keptDicesCount = ({ ring, modifiers }) => {
 };
 
 export const isAlteration = (modifier) => {
-  return ["ishiken", "reasonless"].includes(modifier);
+  return ["ishiken"].includes(modifier) || isSpecialAlteration(modifier);
 };
 
 export const countDices = (keptDices) => {

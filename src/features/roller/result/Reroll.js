@@ -7,6 +7,7 @@ import {
   isRerollOfType,
   isFromRerollOfType,
   isSpecialReroll,
+  isSpecialAlteration,
 } from "../utils";
 
 const { Title, Paragraph } = Typography;
@@ -27,7 +28,6 @@ const TITLES = {
   "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
   ruthless: "Custom reroll (from NPCs' or other PCs' effects)",
   sailor: "Storm Fleet Sailor School Ability",
-  reasonless: "Custom alteration",
 };
 
 const EMPTY = {
@@ -39,6 +39,10 @@ const EMPTY = {
 const getTitle = (name) => {
   if (isSpecialReroll(name)) {
     return "Custom reroll";
+  }
+
+  if (isSpecialAlteration(name)) {
+    return "Custom alteration";
   }
 
   return TITLES[name];

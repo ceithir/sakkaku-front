@@ -5,7 +5,14 @@ import { replaceRerolls, isAlteration } from "../utils";
 import { Button } from "antd";
 import LineContainer from "../button/LineContainer";
 
-const Confirm = ({ dices, onFinish, basePool, rerollTypes, addReroll }) => {
+const Confirm = ({
+  dices,
+  onFinish,
+  basePool,
+  rerollTypes,
+  addReroll,
+  addAlteration,
+}) => {
   const text = `Your rolled dice at the moment are as follow.`;
 
   return (
@@ -23,6 +30,11 @@ const Confirm = ({ dices, onFinish, basePool, rerollTypes, addReroll }) => {
               ? "another"
               : "a"
           } reroll`}</Button>
+          <Button disabled={!addAlteration} onClick={addAlteration}>{`Apply ${
+            rerollTypes.filter((name) => isAlteration(name)).length > 0
+              ? "another"
+              : "an"
+          } alteration`}</Button>
           <NextButton onClick={onFinish}>{`Continue`}</NextButton>
         </LineContainer>
       }
