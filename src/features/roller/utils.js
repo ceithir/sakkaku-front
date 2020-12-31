@@ -23,6 +23,14 @@ export const isSpecialReroll = (modifier) => {
   return /^ruleless([0-9]{2})?$/.test(modifier);
 };
 
+export const rolledDicesCount = ({ ring, skill, modifiers }) => {
+  return keptDicesCount({ ring, modifiers }) + skill;
+};
+
+export const keptDicesCount = ({ ring, modifiers }) => {
+  return ring + (modifiers.includes("void") ? 1 : 0);
+};
+
 export const countDices = (keptDices) => {
   return {
     successCount: keptDices.reduce(

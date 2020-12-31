@@ -4,15 +4,15 @@ import Keep from "./result/Keep";
 import Resolve from "./result/Resolve";
 import { Collapse } from "antd";
 import Summary from "./Summary";
+import { rolledDicesCount } from "./utils";
 
 const { Panel } = Collapse;
 
 const Complete = ({ dices, button, intent, context, player }) => {
-  const { tn, ring, skill, modifiers } = intent;
+  const { tn } = intent;
   const { id, description } = context;
 
-  const voided = modifiers.includes("void");
-  const basePool = ring + skill + (voided ? 1 : 0);
+  const basePool = rolledDicesCount(intent);
   const rerollTypes = context?.roll?.metadata?.rerolls || [];
 
   return (

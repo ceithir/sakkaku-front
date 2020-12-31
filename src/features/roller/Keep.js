@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import { FACETS } from "./DiceSideSelector";
+import { rolledDicesCount, keptDicesCount } from "./utils";
 
 const { Paragraph } = Typography;
 
@@ -64,10 +65,9 @@ const Keep = ({
   const dispatch = useDispatch();
 
   const compromised = modifiers.includes("compromised");
-  const voided = modifiers.includes("void");
 
-  const max = voided ? ring + 1 : ring;
-  const basePool = max + skill;
+  const max = keptDicesCount({ ring, modifiers });
+  const basePool = rolledDicesCount({ ring, skill, modifiers });
 
   const keepingExplosions = dices.some((dice) => dice.status === "kept");
 
