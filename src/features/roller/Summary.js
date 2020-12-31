@@ -27,12 +27,12 @@ const Summary = ({
     modifiers.includes("2heavens") &&
       "Attacking a warding Mirumoto Two-Heavens Adept",
     modifiers.includes("ruthless") &&
-      "Manual reroll (from NPCs' or other PCs' effects)",
+      "Custom reroll (from NPCs' or other PCs' effects)",
     modifiers.includes("shadow") && "Ikoma Shadow School Ability",
     modifiers.includes("sailor") && "Storm Fleet Sailor School Ability",
-    modifiers.some(isSpecialReroll) && "Manual reroll",
+    modifiers.some(isSpecialReroll) && "Custom reroll",
     modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
-    modifiers.includes("reasonless") && "Manual alteration",
+    modifiers.includes("reasonless") && "Custom alteration",
   ]
     .filter(Boolean)
     .join(" / ");

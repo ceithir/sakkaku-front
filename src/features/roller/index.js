@@ -252,7 +252,7 @@ const Roller = ({ save }) => {
           return (
             <AbilityReroll
               name={"ruthless"}
-              text={`Manual reroll: Select the dice you have to reroll.`}
+              text={`Custom reroll: Select the dice you have to reroll.`}
             />
           );
         }
@@ -287,7 +287,7 @@ const Roller = ({ save }) => {
           return (
             <AbilityReroll
               name={specialReroll}
-              text={`Manual reroll: Select the dice you want/have to reroll.`}
+              text={`Custom reroll: Select the dice you want/have to reroll.`}
             />
           );
         }
@@ -314,7 +314,7 @@ const Roller = ({ save }) => {
               }
               basePool={basePool}
               rerollTypes={rerollTypes}
-              text={`Manual alteration: Change the result as you want/have to.`}
+              text={`Custom alteration: Change the result as you want/have to.`}
             />
           );
         }

@@ -25,9 +25,9 @@ const TITLES = {
   manipulator: "Bayushi Manipulator School Ability",
   ishiken: "Ishiken Initiate School Ability",
   "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
-  ruthless: "Manual reroll (from NPCs' or other PCs' effects)",
+  ruthless: "Custom reroll (from NPCs' or other PCs' effects)",
   sailor: "Storm Fleet Sailor School Ability",
-  reasonless: "Manual alteration",
+  reasonless: "Custom alteration",
 };
 
 const EMPTY = {
@@ -38,7 +38,7 @@ const EMPTY = {
 
 const getTitle = (name) => {
   if (isSpecialReroll(name)) {
-    return "Manual reroll";
+    return "Custom reroll";
   }
 
   return TITLES[name];

@@ -301,15 +301,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
               options={[
                 {
                   value: "ruleless",
-                  label: "Manual reroll",
+                  label: "Custom reroll",
                 },
                 {
                   value: "reasonless",
-                  label: "Manual alteration",
+                  label: "Custom alteration",
                 },
                 {
                   value: "ruthless",
-                  label: "Manual reroll (from NPCs' or other PCs' effects)",
+                  label: "Custom reroll (from NPCs' or other PCs' effects)",
                 },
                 {
                   value: "2heavens",
