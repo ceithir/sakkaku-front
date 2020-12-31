@@ -300,16 +300,8 @@ const Intent = ({ onFinish, values, onComplete }) => {
               placeholder={"Extra options for unusual cases"}
               options={[
                 {
-                  value: "ruleless",
-                  label: "Custom reroll",
-                },
-                {
                   value: "reasonless",
                   label: "Custom alteration",
-                },
-                {
-                  value: "ruthless",
-                  label: "Custom reroll (from NPCs' or other PCs' effects)",
                 },
                 {
                   value: "2heavens",
