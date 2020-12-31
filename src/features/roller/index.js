@@ -174,7 +174,7 @@ const Roller = ({ save }) => {
         <RerollResult
           dices={dices}
           basePool={basePool}
-          rerollTypes={metadata?.rerolls || []}
+          rerollTypes={rerollTypes}
         />
       );
     }

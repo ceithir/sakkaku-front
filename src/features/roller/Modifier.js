@@ -9,6 +9,8 @@ import Sailor from "./reroll/Sailor";
 import Alter from "./reroll/Alter";
 import Confirm from "./reroll/Confirm";
 import { isSpecialReroll, rolledDicesCount } from "./utils";
+import Result from "./result/Reroll";
+import { Divider } from "antd";
 
 const Modifier = ({ roll, dispatch }) => {
   const { dices, modifiers, metadata } = roll;
@@ -167,4 +169,22 @@ const Modifier = ({ roll, dispatch }) => {
   );
 };
 
-export default Modifier;
+const WrappedModifier = ({ roll, dispatch }) => {
+  const { dices, metadata } = roll;
+  const basePool = rolledDicesCount(roll);
+  const rerollTypes = metadata?.rerolls || [];
+
+  return (
+    <>
+      {rerollTypes.length > 0 && (
+        <>
+          <Result dices={dices} basePool={basePool} rerollTypes={rerollTypes} />
+          <Divider />
+        </>
+      )}
+      <Modifier roll={roll} dispatch={dispatch} />
+    </>
+  );
+};
+
+export default WrappedModifier;
