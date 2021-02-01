@@ -24,6 +24,7 @@ import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
+import classNames from "classnames";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -96,6 +97,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const user = useSelector(selectUser);
+  const [voided, setVoided] = useState(false);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -135,6 +137,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           form.validateFields(["channeled"]);
         }
+        if (
+          Object.keys(changedValues).some((name) => ["void"].includes(name))
+        ) {
+          setVoided(form.getFieldValue("void"));
+        }
       }}
     >
       {!!user && (
@@ -166,7 +173,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
         <InputNumber min={1} />
       </Form.Item>
       <Divider />
-      <Form.Item label="Ring" name="ring" rules={defaultRules}>
+      <Form.Item
+        label="Ring"
+        name="ring"
+        rules={defaultRules}
+        className={classNames({ [styles.voided]: voided })}
+      >
         <InputNumber min={1} max={10} />
       </Form.Item>
       <Form.Item label="Skill" name="skill" rules={defaultRules}>
