@@ -194,7 +194,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
           >
             <Switch />
           </Form.Item>
-          <Form.Item label="Advantage / Disadvantage" name="modifier">
+          <Form.Item label="(Dis)Advantage" name="modifier">
             <Radio.Group>
               <Radio.Button value="">None</Radio.Button>
               <Radio.Button value="distinction">Distinction</Radio.Button>
