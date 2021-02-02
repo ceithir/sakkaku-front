@@ -134,7 +134,7 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
           </NextButton>
         </>
       }
-      theme="magenta"
+      theme="reroll"
     />
   );
 };

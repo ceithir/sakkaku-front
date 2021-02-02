@@ -12,12 +12,6 @@ import {
 
 const { Title, Paragraph } = Typography;
 
-const THEMES = {
-  distinction: "green",
-  adversity: "orange",
-  "2heavens": "orange",
-};
-
 const TITLES = {
   distinction: "Distinction",
   adversity: "Adversity",
@@ -31,9 +25,8 @@ const TITLES = {
 };
 
 const EMPTY = {
-  distinction: "No dice were rerolled",
-  adversity: "No dice with a success or an explosion",
-  "2heavens": "No dice with a success or an explosion",
+  adversity: "No die with a success or an explosion",
+  "2heavens": "No die with a success or an explosion",
 };
 
 const getTitle = (name) => {
@@ -56,7 +49,7 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
     return null;
   }
 
-  const theme = THEMES[rerollType] || "magenta";
+  const theme = "reroll";
   const title = getTitle(rerollType);
 
   if (!dices.some((dice) => isRerollOfType(dice, rerollType))) {

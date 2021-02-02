@@ -46,7 +46,7 @@ const Ability = ({ dices, onFinish, text, basePool, rerollTypes }) => {
           {buttonText()}
         </NextButton>
       }
-      theme="magenta"
+      theme="reroll"
     />
   );
 };

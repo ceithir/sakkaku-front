@@ -45,7 +45,7 @@ const DragonWard = ({ dices, onFinish, basePool, rerollTypes }) => {
           {"Continue"}
         </NextButton>
       }
-      theme="orange"
+      theme="reroll"
     />
   );
 };

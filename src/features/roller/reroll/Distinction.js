@@ -53,7 +53,7 @@ const Distinction = ({ dices, onFinish, modifiers }) => {
           {buttonText()}
         </NextButton>
       }
-      theme="green"
+      theme="reroll"
     />
   );
 };

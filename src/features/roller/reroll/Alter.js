@@ -93,7 +93,7 @@ const Alter = ({ text, dices, onFinish, basePool, rerollTypes }) => {
           </NextButton>
         </>
       }
-      theme="magenta"
+      theme="reroll"
     />
   );
 };

@@ -35,28 +35,12 @@
   background-color: #bfbfbf;
 }
 
-.theme-orange.selectable:hover {
-  background-color: #ff7a45;
+.theme-reroll.selectable:hover {
+  background-color: #c9a84a;
 }
 
-.theme-orange.selected {
-  background-color: #ffbb96;
-}
-
-.theme-green.selectable:hover {
-  background-color: #52c41a;
-}
-
-.theme-green.selected {
-  background-color: #95de64;
-}
-
-.theme-magenta.selectable:hover {
-  background-color: #eb2f96;
-}
-
-.theme-magenta.selected {
-  background-color: #ff85c0;
+.theme-reroll.selected {
+  background-color: #bca258;
 }
 
 .theme-gray.selected {
