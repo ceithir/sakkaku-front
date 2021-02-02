@@ -25,7 +25,6 @@ const Resolve = ({
               ({ status }) => status === "kept"
             )
           )}
-          className={styles.dices}
         />
         <Result dices={dices} tn={tn} modifiers={rerollTypes} />
         <LineContainer>

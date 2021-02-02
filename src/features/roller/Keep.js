@@ -206,7 +206,7 @@ const Keep = ({
         basePool={basePool}
         rerollTypes={rerollTypes}
       />
-      <Paragraph>{text()}</Paragraph>
+      <Paragraph className={styles.text}>{text()}</Paragraph>
       <Result
         dices={resultDices()}
         tn={tn}

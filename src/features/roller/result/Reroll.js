@@ -103,6 +103,7 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
             };
           })}
           theme={theme}
+          className={styles.dices}
         />
         <div className={styles["arrow-right"]}>{"⇨"}</div>
         <div className={styles["arrow-down"]}>{"⇩"}</div>
@@ -120,6 +121,7 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
             return dice;
           })}
           theme={theme}
+          className={styles.dices}
         />
       </div>
     </div>
