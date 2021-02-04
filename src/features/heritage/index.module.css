@@ -1,0 +1,9 @@
+.raw-results {
+  max-width: 576px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.raw-results :global(.ant-typography) {
+  margin-right: 12px;
+}
