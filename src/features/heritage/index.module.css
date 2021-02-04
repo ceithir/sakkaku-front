@@ -7,3 +7,11 @@
 .raw-results :global(.ant-typography) {
   margin-right: 12px;
 }
+
+.layout {
+  margin-top: 24px;
+}
+
+.layout h1 {
+  text-align: center;
+}

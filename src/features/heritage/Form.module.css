@@ -1,0 +1,10 @@
+.form {
+  max-width: 576px;
+  margin: 0 auto;
+  padding: 24px;
+  padding-top: 0;
+}
+
+.form button[type="submit"] {
+  float: right;
+}

@@ -7,6 +7,7 @@ const slice = createSlice({
     dices: [],
     loading: false,
     error: null,
+    metadata: {},
   },
   reducers: {
     setLoading: (state, action) => {
@@ -16,19 +17,21 @@ const slice = createSlice({
       state.error = action.payload;
     },
     update: (state, action) => {
-      const { dices } = action.payload;
+      const { dices, metadata } = action.payload;
       state.dices = dices;
+      state.metadata = metadata;
       state.loading = false;
     },
     reset: (state) => {
       state.dices = [];
+      state.metadata = {};
     },
   },
 });
 
 export const { setLoading, setError, update, reset } = slice.actions;
 
-export const create = () => (dispatch) => {
+export const create = (metadata) => (dispatch) => {
   dispatch(setLoading(true));
 
   const error = (e) => {
@@ -37,7 +40,7 @@ export const create = () => (dispatch) => {
 
   postOnServer({
     uri: "/public/ffg/l5r/heritage-rolls/create",
-    body: {},
+    body: { metadata },
     success: (data) => {
       dispatch(update(data));
     },
@@ -65,7 +68,7 @@ export const keep = (roll, position) => (dispatch) => {
 export const selectLoading = (state) => state.heritage.loading;
 export const selectError = (state) => state.heritage.error;
 export const selectRoll = (state) => {
-  return { dices: state.heritage.dices, metadata: [] };
+  return { dices: state.heritage.dices, metadata: state.heritage.metadata };
 };
 
 export default slice.reducer;

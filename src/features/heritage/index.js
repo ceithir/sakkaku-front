@@ -1,22 +1,18 @@
 import React from "react";
 import { Button, Card, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectLoading,
-  selectError,
-  selectRoll,
-  create,
-  keep,
-  reset,
-} from "./reducer";
+import { selectError, selectRoll, keep, reset } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./index.module.css";
 import TABLES from "./tables";
+import Form from "./Form";
 
-const { Text, Paragraph } = Typography;
+const { Text, Paragraph, Title } = Typography;
 
-const Description = ({ first, second }) => {
-  const table = "default";
+const Description = ({ first, second, table }) => {
+  if (!table || !TABLES[table]) {
+    return null;
+  }
 
   const { name, description, modifier, effect } = TABLES[table]["entries"][
     first - 1
@@ -60,12 +56,39 @@ const Description = ({ first, second }) => {
   );
 };
 
+const Layout = ({ children }) => {
+  return (
+    <div className={styles.layout}>
+      <Title>{`Heritage Roll`}</Title>
+      <>{children}</>
+    </div>
+  );
+};
+
+const Dices = ({ dices }) => {
+  return (
+    <Card className={styles["raw-results"]}>
+      <Text>{`Dices:`}</Text>
+      {dices.map(({ value, status }, index) => {
+        return (
+          <Text
+            disabled={status === "dropped"}
+            strong={status === "kept"}
+            key={index.toString()}
+          >
+            {value}
+          </Text>
+        );
+      })}
+    </Card>
+  );
+};
+
 const Heritage = () => {
-  const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
   const dispatch = useDispatch();
   const roll = useSelector(selectRoll);
-  const { dices } = roll;
+  const { dices, metadata } = roll;
 
   if (error) {
     return <DefaultErrorMessage />;
@@ -73,35 +96,18 @@ const Heritage = () => {
 
   if (!dices.length) {
     return (
-      <Button
-        type="primary"
-        onClick={() => {
-          dispatch(create());
-        }}
-        disabled={loading}
-      >
-        {`Roll`}
-      </Button>
+      <Layout>
+        <Form />
+      </Layout>
     );
   }
 
-  const Layout = ({ children }) => {
+  const { table } = metadata;
+
+  const CompleteLayout = ({ children }) => {
     return (
       <>
-        <Card className={styles["raw-results"]}>
-          <Text>{`Dices:`}</Text>
-          {dices.map(({ value, status }, index) => {
-            return (
-              <Text
-                disabled={status === "dropped"}
-                strong={status === "kept"}
-                key={index.toString()}
-              >
-                {value}
-              </Text>
-            );
-          })}
-        </Card>
+        <Dices dices={dices} />
         {children}
       </>
     );
@@ -109,21 +115,20 @@ const Heritage = () => {
 
   if (dices.some(({ status }) => status === "pending")) {
     return (
-      <Layout>
+      <CompleteLayout>
         {dices
           .filter(({ status }) => status === "pending")
           .map(({ value }, index) => {
             return (
-              <Card>
-                <Description first={value} />
+              <Card key={index.toString()}>
+                <Description first={value} table={table} />
                 <Button
-                  key={index.toString()}
                   onClick={() => dispatch(keep(roll, index))}
-                >{`Keep`}</Button>
+                >{`Keep ${value}`}</Button>
               </Card>
             );
           })}
-      </Layout>
+      </CompleteLayout>
     );
   }
 
@@ -132,14 +137,14 @@ const Heritage = () => {
     .map(({ value }) => value);
 
   return (
-    <Layout>
-      <Description first={first} second={second} />
+    <CompleteLayout>
+      <Description first={first} second={second} table={table} />
       <Button
         onClick={() => {
           dispatch(reset());
         }}
       >{`Reroll`}</Button>
-    </Layout>
+    </CompleteLayout>
   );
 };
 

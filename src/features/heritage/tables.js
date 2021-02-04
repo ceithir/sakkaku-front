@@ -1,5 +1,5 @@
 export default {
-  default: {
+  core: {
     name: "Core Book",
     entries: [
       {
