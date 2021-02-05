@@ -8,6 +8,7 @@ const slice = createSlice({
     loading: false,
     error: null,
     metadata: {},
+    previousRolls: [],
   },
   reducers: {
     setLoading: (state, action) => {
@@ -23,6 +24,10 @@ const slice = createSlice({
       state.loading = false;
     },
     reset: (state) => {
+      state.previousRolls = [
+        { dices: state.dices, metadata: state.metadata },
+        ...state.previousRolls,
+      ];
       state.dices = [];
       state.metadata = {};
     },
@@ -70,5 +75,6 @@ export const selectError = (state) => state.heritage.error;
 export const selectRoll = (state) => {
   return { dices: state.heritage.dices, metadata: state.heritage.metadata };
 };
+export const selectPreviousRolls = (state) => state.heritage.previousRolls;
 
 export default slice.reducer;

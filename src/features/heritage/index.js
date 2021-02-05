@@ -1,11 +1,18 @@
 import React from "react";
 import { Button, Card, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { selectError, selectRoll, keep, reset } from "./reducer";
+import {
+  selectError,
+  selectRoll,
+  keep,
+  reset,
+  selectPreviousRolls,
+} from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./index.module.css";
 import Form from "./Form";
 import Summary from "./Summary";
+import List from "./List";
 
 const { Text, Title } = Typography;
 
@@ -15,6 +22,22 @@ const Layout = ({ children }) => {
       <Title>{`Heritage Roll`}</Title>
       <>{children}</>
     </div>
+  );
+};
+
+const LayoutWithPreviousRolls = ({ children }) => {
+  const previousRolls = useSelector(selectPreviousRolls);
+
+  return (
+    <Layout>
+      <>{children}</>
+      {previousRolls.length > 0 && (
+        <>
+          <Title level={2}>{`Previous heritage`}</Title>
+          <List rolls={previousRolls} />
+        </>
+      )}
+    </Layout>
   );
 };
 
@@ -49,9 +72,9 @@ const Heritage = () => {
 
   if (!dices.length) {
     return (
-      <Layout>
+      <LayoutWithPreviousRolls>
         <Form />
-      </Layout>
+      </LayoutWithPreviousRolls>
     );
   }
 
@@ -99,7 +122,7 @@ const Heritage = () => {
             dispatch(reset());
           }}
           type="dashed"
-        >{`Roll another heritage`}</Button>
+        >{`Roll another heritage / See list`}</Button>
       </div>
     </CompleteLayout>
   );
