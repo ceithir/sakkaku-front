@@ -92,13 +92,15 @@ const Heritage = () => {
         rolls={dices
           .filter(({ status }) => status === "kept")
           .map(({ value }) => value)}
-      >
+      />
+      <div className={styles.footer}>
         <Button
           onClick={() => {
             dispatch(reset());
           }}
-        >{`Reroll`}</Button>
-      </Summary>
+          type="dashed"
+        >{`Roll another heritage`}</Button>
+      </div>
     </CompleteLayout>
   );
 };

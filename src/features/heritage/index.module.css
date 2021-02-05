@@ -23,7 +23,18 @@
   margin-right: 12px;
 }
 
-.layout button {
+.layout :global(.ant-card) button {
   margin-top: 24px;
   float: right;
+}
+
+.footer {
+  margin: 24px auto;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.footer button {
+  margin: 0;
 }
