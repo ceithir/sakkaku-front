@@ -5,12 +5,11 @@ import TABLES from "./tables";
 const { Text } = Typography;
 
 const columns = [
-  { title: "Book", dataIndex: "book", key: "book" },
-  { title: "Roll", dataIndex: "roll", key: "roll" },
+  { title: "Book", dataIndex: "book" },
+  { title: "Roll", dataIndex: "roll" },
   {
     title: "Result",
     dataIndex: "result",
-    key: "result",
     render: ({ name, description }) => (
       <>
         <Text strong>{`${name}: `}</Text>
@@ -18,11 +17,10 @@ const columns = [
       </>
     ),
   },
-  { title: "Modifiers", dataIndex: "modifier", key: "modifier" },
+  { title: "Modifiers", dataIndex: "modifier" },
   {
     title: "Other effects",
     dataIndex: "other",
-    key: "other",
     render: ({ effect, roll }) => {
       if (typeof effect === "string") {
         return <>{effect}</>;
@@ -80,7 +78,6 @@ const CustomTable = ({ table, rolls }) => {
         ...columns,
         {
           title: "Action",
-          key: "action",
           dataIndex: "action",
           render: (action) => {
             if (!action) {
