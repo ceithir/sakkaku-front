@@ -1,6 +1,6 @@
 export default {
   core: {
-    name: "Core Book",
+    name: "Core Rulebook (page 96)",
     entries: [
       {
         name: "Famous Deed",

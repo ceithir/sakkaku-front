@@ -5,7 +5,7 @@ import { selectError, selectRoll, keep, reset } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./index.module.css";
 import Form from "./Form";
-import Description from "./Description";
+import Table from "./Table";
 
 const { Text, Title } = Typography;
 
@@ -69,32 +69,35 @@ const Heritage = () => {
   if (dices.some(({ status }) => status === "pending")) {
     return (
       <CompleteLayout>
-        {dices
-          .filter(({ status }) => status === "pending")
-          .map(({ value }, index) => {
-            return (
-              <Card key={index.toString()}>
-                <Description firstRoll={value} table={table} />
-                <Button
-                  onClick={() => dispatch(keep(roll, index))}
-                >{`Keep ${value}`}</Button>
-              </Card>
-            );
-          })}
+        <Table
+          table={table}
+          rolls={dices
+            .filter(({ status }) => status === "pending")
+            .map(({ value }, index) => {
+              return {
+                dices: [value],
+                action: {
+                  text: "Keep",
+                  onClick: () => dispatch(keep(roll, index)),
+                },
+              };
+            })}
+        />
       </CompleteLayout>
     );
   }
 
-  const [firstRoll, secondRoll] = dices
-    .filter(({ status }) => status === "kept")
-    .map(({ value }) => value);
-
   return (
     <CompleteLayout>
-      <Description
-        firstRoll={firstRoll}
-        secondRoll={secondRoll}
+      <Table
         table={table}
+        rolls={[
+          {
+            dices: dices
+              .filter(({ status }) => status === "kept")
+              .map(({ value }) => value),
+          },
+        ]}
       />
       <Button
         onClick={() => {

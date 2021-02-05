@@ -23,7 +23,7 @@ const CustomForm = () => {
       }}
       className={styles.form}
     >
-      <Form.Item name="table" label="Table" rules={[{ required: true }]}>
+      <Form.Item name="table" label="Book" rules={[{ required: true }]}>
         <Select
           options={Object.keys(TABLES).map((value) => {
             return { value, label: TABLES[value]["name"] };
