@@ -30,7 +30,7 @@ const columns = [
 
       return (
         <>
-          <Text>{intro}</Text>
+          <>{intro}</>
           {options.map(({ min, max, text }, index) => {
             return (
               <React.Fragment key={min.toString()}>
@@ -41,7 +41,7 @@ const columns = [
               </React.Fragment>
             );
           })}
-          <Text>{outro}</Text>
+          <>{outro}</>
         </>
       );
     },
