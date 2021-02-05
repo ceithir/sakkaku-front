@@ -269,7 +269,7 @@ export default {
           intro:
             "You know one additional technique. Roll a ten-sided die again to determine the category (",
           outro:
-            "), and then select one technique with a prereq- uisite of school rank 1 and learn that technique. You can perform that technique even if it is not normally allowed by your school.",
+            "), and then select one technique with a prerequisite of school rank 1 and learn that technique. You can perform that technique even if it is not normally allowed by your school.",
           options: [
             {
               min: 1,
