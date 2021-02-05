@@ -4,57 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectError, selectRoll, keep, reset } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./index.module.css";
-import TABLES from "./tables";
 import Form from "./Form";
+import Description from "./Description";
 
-const { Text, Paragraph, Title } = Typography;
-
-const Description = ({ first, second, table }) => {
-  if (!table || !TABLES[table]) {
-    return null;
-  }
-
-  const { name, description, modifier, effect } = TABLES[table]["entries"][
-    first - 1
-  ];
-
-  const buildEffect = () => {
-    if (typeof effect === "string") {
-      return <Text>{effect}</Text>;
-    }
-
-    const { intro, outro, options } = effect;
-
-    return (
-      <>
-        <Text>{intro}</Text>
-        {options.map(({ min, max, text }, index) => {
-          return (
-            <>
-              <Text
-                key={min.toString()}
-                strong={!!second && min <= second && max >= second}
-              >
-                {max !== min ? `${min}–${max}: ${text}` : `${min}: ${text}`}
-              </Text>
-              {index < options.length - 1 && <Text>{`, `}</Text>}
-            </>
-          );
-        })}
-        <Text>{outro}</Text>
-      </>
-    );
-  };
-
-  return (
-    <>
-      <Paragraph>{`${TABLES[table]["name"]} – ${first} – ${name}`}</Paragraph>
-      <Paragraph>{description}</Paragraph>
-      <Paragraph>{modifier}</Paragraph>
-      <Paragraph>{buildEffect()}</Paragraph>
-    </>
-  );
-};
+const { Text, Title } = Typography;
 
 const Layout = ({ children }) => {
   return (
@@ -106,10 +59,10 @@ const Heritage = () => {
 
   const CompleteLayout = ({ children }) => {
     return (
-      <>
+      <Layout>
         <Dices dices={dices} />
         {children}
-      </>
+      </Layout>
     );
   };
 
@@ -121,7 +74,7 @@ const Heritage = () => {
           .map(({ value }, index) => {
             return (
               <Card key={index.toString()}>
-                <Description first={value} table={table} />
+                <Description firstRoll={value} table={table} />
                 <Button
                   onClick={() => dispatch(keep(roll, index))}
                 >{`Keep ${value}`}</Button>
@@ -132,13 +85,17 @@ const Heritage = () => {
     );
   }
 
-  const [first, second] = dices
+  const [firstRoll, secondRoll] = dices
     .filter(({ status }) => status === "kept")
     .map(({ value }) => value);
 
   return (
     <CompleteLayout>
-      <Description first={first} second={second} table={table} />
+      <Description
+        firstRoll={firstRoll}
+        secondRoll={secondRoll}
+        table={table}
+      />
       <Button
         onClick={() => {
           dispatch(reset());
