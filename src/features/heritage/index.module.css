@@ -1,6 +1,21 @@
-.raw-results {
-  max-width: 576px;
+.layout {
+  margin-top: 24px;
+}
+
+.layout > h1,
+.layout > p {
+  text-align: center;
+  padding: 12px;
+}
+
+.layout > * {
+  max-width: 768px;
   margin: 0 auto;
+  margin-bottom: 24px;
+}
+
+.raw-results {
+  max-width: 288px;
   text-align: center;
 }
 
@@ -8,10 +23,7 @@
   margin-right: 12px;
 }
 
-.layout {
+.layout button {
   margin-top: 24px;
-}
-
-.layout h1 {
-  text-align: center;
+  float: right;
 }

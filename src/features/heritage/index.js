@@ -5,7 +5,7 @@ import { selectError, selectRoll, keep, reset } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./index.module.css";
 import Form from "./Form";
-import Table from "./Table";
+import Summary from "./Summary";
 
 const { Text, Title } = Typography;
 
@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
 const Dices = ({ dices }) => {
   return (
     <Card className={styles["raw-results"]}>
-      <Text>{`Dices:`}</Text>
+      <Text>{`You rolled:`}</Text>
       {dices.map(({ value, status }, index) => {
         return (
           <Text
@@ -69,41 +69,36 @@ const Heritage = () => {
   if (dices.some(({ status }) => status === "pending")) {
     return (
       <CompleteLayout>
-        <Table
-          table={table}
-          rolls={dices
-            .filter(({ status }) => status === "pending")
-            .map(({ value }, index) => {
-              return {
-                dices: [value],
-                action: {
-                  text: "Keep",
-                  onClick: () => dispatch(keep(roll, index)),
-                },
-              };
-            })}
-        />
+        <p>{`Choose one of those two options as the relative for whom your character is named.`}</p>
+        {dices
+          .filter(({ status }) => status === "pending")
+          .map(({ value }, index) => {
+            return (
+              <Summary key={index.toString()} table={table} rolls={[value]}>
+                <Button
+                  onClick={() => dispatch(keep(roll, index))}
+                >{`Keep that result`}</Button>
+              </Summary>
+            );
+          })}
       </CompleteLayout>
     );
   }
 
   return (
     <CompleteLayout>
-      <Table
+      <Summary
         table={table}
-        rolls={[
-          {
-            dices: dices
-              .filter(({ status }) => status === "kept")
-              .map(({ value }) => value),
-          },
-        ]}
-      />
-      <Button
-        onClick={() => {
-          dispatch(reset());
-        }}
-      >{`Reroll`}</Button>
+        rolls={dices
+          .filter(({ status }) => status === "kept")
+          .map(({ value }) => value)}
+      >
+        <Button
+          onClick={() => {
+            dispatch(reset());
+          }}
+        >{`Reroll`}</Button>
+      </Summary>
     </CompleteLayout>
   );
 };
