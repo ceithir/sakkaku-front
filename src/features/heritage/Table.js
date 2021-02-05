@@ -35,15 +35,12 @@ const columns = [
           <Text>{intro}</Text>
           {options.map(({ min, max, text }, index) => {
             return (
-              <>
-                <Text
-                  key={min.toString()}
-                  strong={!!roll && min <= roll && max >= roll}
-                >
+              <React.Fragment key={min.toString()}>
+                <Text strong={!!roll && min <= roll && max >= roll}>
                   {max !== min ? `${min}–${max}: ${text}` : `${min}: ${text}`}
                 </Text>
-                {index < options.length - 1 && <Text>{`, `}</Text>}
-              </>
+                {index < options.length - 1 && <>{`, `}</>}
+              </React.Fragment>
             );
           })}
           <Text>{outro}</Text>
