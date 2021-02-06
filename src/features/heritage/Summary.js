@@ -46,17 +46,13 @@ const Summary = ({ table, rolls, children, context }) => {
   return (
     <div>
       <Descriptions title={name} bordered layout="vertical" column={3}>
-        {(character || campaign) && (
+        {character && (
           <>
+            <Descriptions.Item label="Character">{character}</Descriptions.Item>
             <Descriptions.Item label="Campaign">
-              {campaign || "???"}
+              {campaign || "N/A"}
             </Descriptions.Item>
-            <Descriptions.Item label="Character">
-              {character || "???"}
-            </Descriptions.Item>
-            <Descriptions.Item label="Player">
-              <Text type="secondary">{`Guest`}</Text>
-            </Descriptions.Item>
+            <Descriptions.Item label="Player">{`N/A`}</Descriptions.Item>
           </>
         )}
         {desc && (
