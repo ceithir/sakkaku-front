@@ -106,9 +106,11 @@ const Heritage = () => {
                 rolls={[value]}
                 context={context}
               >
-                <Button
-                  onClick={() => dispatch(keep(roll, index))}
-                >{`Keep that result`}</Button>
+                <div className={styles.footer}>
+                  <Button
+                    onClick={() => dispatch(keep(roll, index))}
+                  >{`Keep that result`}</Button>
+                </div>
               </Summary>
             );
           })}
