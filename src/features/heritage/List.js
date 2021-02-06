@@ -54,7 +54,9 @@ const List = ({ rolls }) => {
           };
         }
 
-        const { name, effect } = TABLES[table]["entries"][firstRoll - 1];
+        const { name, effect } = TABLES[table]["entries"].find(
+          ({ min, max }) => min <= firstRoll && max >= firstRoll
+        );
 
         return {
           key,

@@ -35,9 +35,9 @@ const Summary = ({ table, rolls, children }) => {
   }
 
   const [firstRoll, secondRoll] = rolls;
-  const { name, description, modifier, effect } = TABLES[table]["entries"][
-    firstRoll - 1
-  ];
+  const { name, description, modifier, effect } = TABLES[table]["entries"].find(
+    ({ min, max }) => min <= firstRoll && max >= firstRoll
+  );
 
   return (
     <Card>
