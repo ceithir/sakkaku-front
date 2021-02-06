@@ -1,4 +1,4 @@
-export default {
+const TABLES = {
   core: {
     name: "Core Rulebook (page 96)",
     entries: [
@@ -513,4 +513,26 @@ export default {
       },
     ],
   },
+  custom: {
+    name: "Other / Custom",
+  },
 };
+
+export const entry = ({ table, firstRoll, secondRoll }) => {
+  if (!table || table === "custom") {
+    const stringRoll = [firstRoll, secondRoll].filter(Boolean).join(" / ");
+
+    return {
+      name: stringRoll,
+      description: `??? (you rolled: ${stringRoll})`,
+      modifier: `???`,
+      effect: `???`,
+    };
+  }
+
+  return TABLES[table]["entries"].find(
+    ({ min, max }) => min <= firstRoll && max >= firstRoll
+  );
+};
+
+export default TABLES;

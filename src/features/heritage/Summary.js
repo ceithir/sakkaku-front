@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Descriptions, Card } from "antd";
-import TABLES from "./tables";
+import TABLES, { entry } from "./tables";
 
 const { Text } = Typography;
 
@@ -35,9 +35,11 @@ const Summary = ({ table, rolls, children }) => {
   }
 
   const [firstRoll, secondRoll] = rolls;
-  const { name, description, modifier, effect } = TABLES[table]["entries"].find(
-    ({ min, max }) => min <= firstRoll && max >= firstRoll
-  );
+  const { name, description, modifier, effect } = entry({
+    table,
+    firstRoll,
+    secondRoll,
+  });
 
   return (
     <Card>

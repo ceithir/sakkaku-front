@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Table } from "antd";
-import TABLES from "./tables";
+import TABLES, { entry } from "./tables";
 
 const { Text } = Typography;
 
@@ -43,20 +43,7 @@ const List = ({ rolls }) => {
           .filter(({ status }) => status === "kept")
           .map(({ value }) => value);
         const { table } = metadata;
-
-        // TODO: Handle weird cases better
-        if (!firstRoll || !table || !TABLES[table]) {
-          return {
-            key,
-            book: "???",
-            roll: "???",
-            succinct: { name: "???" },
-          };
-        }
-
-        const { name, effect } = TABLES[table]["entries"].find(
-          ({ min, max }) => min <= firstRoll && max >= firstRoll
-        );
+        const { name, effect } = entry({ table, firstRoll, secondRoll });
 
         return {
           key,
