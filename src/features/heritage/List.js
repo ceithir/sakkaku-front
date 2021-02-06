@@ -5,6 +5,7 @@ import TABLES, { entry } from "./tables";
 const { Text } = Typography;
 
 const columns = [
+  { title: "Character", dataIndex: "character" },
   { title: "Roll", dataIndex: "roll" },
   {
     title: "Result",
@@ -30,14 +31,14 @@ const columns = [
       );
     },
   },
-  { title: "Ref.", dataIndex: "book" },
+  { title: "Ref.", dataIndex: "book", responsive: ["sm"] },
 ];
 
 const List = ({ rolls }) => {
   return (
     <Table
       columns={columns}
-      dataSource={rolls.map(({ dices, metadata }, index) => {
+      dataSource={rolls.map(({ dices, metadata, context }, index) => {
         const key = index.toString();
         const [firstRoll, secondRoll] = dices
           .filter(({ status }) => status === "kept")
@@ -50,6 +51,7 @@ const List = ({ rolls }) => {
           book: TABLES[table]["name"],
           roll: [firstRoll, secondRoll].filter(Boolean).join(" / "),
           succinct: { name, effect, secondRoll },
+          character: context.character || `???`,
         };
       })}
       pagination={false}

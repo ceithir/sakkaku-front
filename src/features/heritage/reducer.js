@@ -26,7 +26,11 @@ const slice = createSlice({
     },
     reset: (state) => {
       state.previousRolls = [
-        { dices: state.dices, metadata: state.metadata },
+        {
+          dices: state.dices,
+          metadata: state.metadata,
+          context: state.context,
+        },
         ...state.previousRolls,
       ];
       state.dices = [];
