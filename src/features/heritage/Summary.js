@@ -29,7 +29,7 @@ const Effect = ({ effect, roll }) => {
   );
 };
 
-const Summary = ({ table, rolls, children }) => {
+const Summary = ({ table, rolls, children, context }) => {
   if (!table || !TABLES[table]) {
     return null;
   }
@@ -41,12 +41,34 @@ const Summary = ({ table, rolls, children }) => {
     secondRoll,
   });
 
+  const { campaign, character, description: desc } = context;
+
   return (
     <Card>
-      <Descriptions title={name} bordered layout="vertical" column={2}>
-        <Descriptions.Item label="Result">{description}</Descriptions.Item>
+      <Descriptions title={name} bordered layout="vertical" column={3}>
+        {(character || campaign) && (
+          <>
+            <Descriptions.Item label="Campaign">
+              {campaign || "???"}
+            </Descriptions.Item>
+            <Descriptions.Item label="Character">
+              {character || "???"}
+            </Descriptions.Item>
+            <Descriptions.Item label="Player">
+              <Text type="secondary">{`Guest`}</Text>
+            </Descriptions.Item>
+          </>
+        )}
+        {desc && (
+          <Descriptions.Item label="Description" span={3}>
+            {desc}
+          </Descriptions.Item>
+        )}
+        <Descriptions.Item label="Result" span={2}>
+          {description}
+        </Descriptions.Item>
         <Descriptions.Item label="Modifier">{modifier}</Descriptions.Item>
-        <Descriptions.Item label="Other effects">
+        <Descriptions.Item label="Other effects" span={2}>
           <Effect effect={effect} roll={secondRoll} />
         </Descriptions.Item>
         <Descriptions.Item label="Ref.">

@@ -16,13 +16,13 @@ const slice = createSlice({
     },
     addCampaign: (state, action) => {
       const campaign = action.payload;
-      if (!state.campaigns.includes(campaign)) {
+      if (!!campaign && !state.campaigns.includes(campaign)) {
         state.campaigns.push(campaign);
       }
     },
     addCharacter: (state, action) => {
       const character = action.payload;
-      if (!state.characters.includes(character)) {
+      if (!!character && !state.characters.includes(character)) {
         state.characters.push(character);
       }
     },

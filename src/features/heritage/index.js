@@ -7,6 +7,7 @@ import {
   keep,
   reset,
   selectPreviousRolls,
+  selectContext,
 } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./index.module.css";
@@ -64,6 +65,8 @@ const Heritage = () => {
   const error = useSelector(selectError);
   const dispatch = useDispatch();
   const roll = useSelector(selectRoll);
+  const context = useSelector(selectContext);
+
   const { dices, metadata } = roll;
 
   if (error) {
@@ -97,7 +100,12 @@ const Heritage = () => {
           .filter(({ status }) => status === "pending")
           .map(({ value }, index) => {
             return (
-              <Summary key={index.toString()} table={table} rolls={[value]}>
+              <Summary
+                key={index.toString()}
+                table={table}
+                rolls={[value]}
+                context={context}
+              >
                 <Button
                   onClick={() => dispatch(keep(roll, index))}
                 >{`Keep that result`}</Button>
@@ -115,6 +123,7 @@ const Heritage = () => {
         rolls={dices
           .filter(({ status }) => status === "kept")
           .map(({ value }) => value)}
+        context={context}
       />
       <div className={styles.footer}>
         <Button

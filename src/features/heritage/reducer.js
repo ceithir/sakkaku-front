@@ -9,6 +9,7 @@ const slice = createSlice({
     error: null,
     metadata: {},
     previousRolls: [],
+    context: {},
   },
   reducers: {
     setLoading: (state, action) => {
@@ -30,14 +31,21 @@ const slice = createSlice({
       ];
       state.dices = [];
       state.metadata = {};
+      state.context = {};
+    },
+    setContext: (state, action) => {
+      state.context = action.payload;
     },
   },
 });
 
-export const { setLoading, setError, update, reset } = slice.actions;
+export const { setLoading, setError, reset } = slice.actions;
 
-export const create = (metadata) => (dispatch) => {
+const { update, setContext } = slice.actions;
+
+export const create = ({ context, metadata }) => (dispatch) => {
   dispatch(setLoading(true));
+  dispatch(setContext(context));
 
   const error = (e) => {
     dispatch(setError(e));
@@ -76,5 +84,6 @@ export const selectRoll = (state) => {
   return { dices: state.heritage.dices, metadata: state.heritage.metadata };
 };
 export const selectPreviousRolls = (state) => state.heritage.previousRolls;
+export const selectContext = (state) => state.heritage.context;
 
 export default slice.reducer;
