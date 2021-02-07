@@ -98,6 +98,21 @@ export const keep = (roll, position) => (dispatch) => {
     dispatch(setError(e));
   };
 
+  const { uuid } = roll;
+  if (uuid) {
+    authentifiedPostOnServer({
+      uri: `/ffg/l5r/heritage-rolls/${uuid}/keep`,
+      body: {
+        position,
+      },
+      success: ({ roll }) => {
+        dispatch(update(roll));
+      },
+      error,
+    });
+    return;
+  }
+
   postOnServer({
     uri: "/public/ffg/l5r/heritage-rolls/keep",
     body: { roll, position },
@@ -111,7 +126,11 @@ export const keep = (roll, position) => (dispatch) => {
 export const selectLoading = (state) => state.heritage.loading;
 export const selectError = (state) => state.heritage.error;
 export const selectRoll = (state) => {
-  return { dices: state.heritage.dices, metadata: state.heritage.metadata };
+  return {
+    uuid: state.heritage.uuid,
+    dices: state.heritage.dices,
+    metadata: state.heritage.metadata,
+  };
 };
 export const selectPreviousRolls = (state) => state.heritage.previousRolls;
 export const selectContext = (state) => state.heritage.context;
