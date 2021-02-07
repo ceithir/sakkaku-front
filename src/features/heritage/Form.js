@@ -64,6 +64,7 @@ const CustomForm = () => {
           create({
             metadata: { table },
             context: { campaign, character, description },
+            user,
           })
         );
 

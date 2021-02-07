@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { postOnServer } from "../../server";
+import { postOnServer, authentifiedPostOnServer } from "../../server";
 
 const slice = createSlice({
   name: "heritage",
@@ -47,13 +47,28 @@ export const { setLoading, setError, reset } = slice.actions;
 
 const { update, setContext } = slice.actions;
 
-export const create = ({ context, metadata }) => (dispatch) => {
+export const create = ({ context, metadata, user }) => (dispatch) => {
   dispatch(setLoading(true));
   dispatch(setContext(context));
 
   const error = (e) => {
     dispatch(setError(e));
   };
+
+  if (user) {
+    authentifiedPostOnServer({
+      uri: "/ffg/l5r/heritage-rolls/create",
+      body: {
+        ...context,
+        metadata,
+      },
+      success: ({ roll }) => {
+        dispatch(update(roll));
+      },
+      error,
+    });
+    return;
+  }
 
   postOnServer({
     uri: "/public/ffg/l5r/heritage-rolls/create",
