@@ -39,6 +39,7 @@ const slice = createSlice({
             metadata: state.metadata,
             context: state.context,
             uuid,
+            temporary: !state.uuid,
           },
           ...state.previousRolls,
         ];
@@ -58,10 +59,20 @@ const slice = createSlice({
       state.uuid = uuid;
       window.history.pushState(null, null, `/heritage/${uuid}`);
     },
+    load: (state, action) => {
+      const { uuid, dices, metadata, context, temporary } = action.payload;
+      state.uuid = uuid;
+      state.dices = dices;
+      state.metadata = metadata;
+      state.context = context;
+      if (!temporary) {
+        window.history.pushState(null, null, `/heritage/${uuid}`);
+      }
+    },
   },
 });
 
-export const { setLoading, setError, reset } = slice.actions;
+export const { setLoading, setError, reset, load } = slice.actions;
 
 const { update, setContext, setUuid } = slice.actions;
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Table } from "antd";
+import { Typography, Table, Button } from "antd";
 import TABLES, { entry } from "./tables";
 
 const { Text } = Typography;
@@ -32,13 +32,21 @@ const columns = [
     },
   },
   { title: "Ref.", dataIndex: "book", responsive: ["sm"] },
+  {
+    title: "",
+    dataIndex: "link",
+    render: ({ action }) => {
+      return <Button type="link" onClick={action}>{`➥`}</Button>;
+    },
+  },
 ];
 
-const List = ({ rolls }) => {
+const List = ({ rolls, onClick }) => {
   return (
     <Table
       columns={columns}
-      dataSource={rolls.map(({ dices, metadata, context, uuid }) => {
+      dataSource={rolls.map((roll) => {
+        const { dices, metadata, context, uuid } = roll;
         const key = uuid;
         const [firstRoll, secondRoll] = dices
           .filter(({ status }) => status === "kept")
@@ -52,6 +60,7 @@ const List = ({ rolls }) => {
           roll: [firstRoll, secondRoll].filter(Boolean).join(" / "),
           succinct: { name, effect, secondRoll },
           character: context.character || `???`,
+          link: { action: () => onClick(roll) },
         };
       })}
       pagination={false}

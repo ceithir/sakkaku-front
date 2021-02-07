@@ -8,6 +8,7 @@ import {
   reset,
   selectPreviousRolls,
   selectContext,
+  load,
 } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./index.module.css";
@@ -29,6 +30,7 @@ const Layout = ({ children }) => {
 
 const LayoutWithPreviousRolls = ({ children }) => {
   const previousRolls = useSelector(selectPreviousRolls);
+  const dispatch = useDispatch();
 
   return (
     <Layout>
@@ -36,7 +38,10 @@ const LayoutWithPreviousRolls = ({ children }) => {
       {previousRolls.length > 0 && (
         <>
           <Title level={2}>{`Previous heritage`}</Title>
-          <List rolls={previousRolls} />
+          <List
+            rolls={previousRolls}
+            onClick={(data) => dispatch(load(data))}
+          />
         </>
       )}
     </Layout>
