@@ -37,6 +37,7 @@ const slice = createSlice({
       state.dices = [];
       state.metadata = {};
       state.context = {};
+      window.history.pushState(null, null, `/heritage`);
     },
     setContext: (state, action) => {
       state.context = action.payload;
