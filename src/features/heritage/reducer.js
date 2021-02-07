@@ -10,6 +10,7 @@ const slice = createSlice({
     metadata: {},
     previousRolls: [],
     context: {},
+    uuid: null,
   },
   reducers: {
     setLoading: (state, action) => {
@@ -40,29 +41,39 @@ const slice = createSlice({
     setContext: (state, action) => {
       state.context = action.payload;
     },
+    setUuid: (state, action) => {
+      const uuid = action.payload;
+      state.uuid = uuid;
+      window.history.pushState(null, null, `/heritage/${uuid}`);
+    },
   },
 });
 
 export const { setLoading, setError, reset } = slice.actions;
 
-const { update, setContext } = slice.actions;
+const { update, setContext, setUuid } = slice.actions;
 
 export const create = ({ context, metadata, user }) => (dispatch) => {
   dispatch(setLoading(true));
-  dispatch(setContext(context));
+  dispatch(setContext({ ...context, user }));
 
   const error = (e) => {
     dispatch(setError(e));
   };
 
   if (user) {
+    const { campaign, character, description } = context;
+
     authentifiedPostOnServer({
       uri: "/ffg/l5r/heritage-rolls/create",
       body: {
-        ...context,
+        campaign,
+        character,
+        description,
         metadata,
       },
-      success: ({ roll }) => {
+      success: ({ uuid, roll }) => {
+        dispatch(setUuid(uuid));
         dispatch(update(roll));
       },
       error,

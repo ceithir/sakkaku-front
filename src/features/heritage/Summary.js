@@ -41,7 +41,7 @@ const Summary = ({ table, rolls, children, context }) => {
     secondRoll,
   });
 
-  const { campaign, character, description: desc } = context;
+  const { campaign, character, description: desc, user } = context;
 
   return (
     <div>
@@ -52,7 +52,9 @@ const Summary = ({ table, rolls, children, context }) => {
             <Descriptions.Item label="Campaign">
               {campaign || "N/A"}
             </Descriptions.Item>
-            <Descriptions.Item label="Player">{`N/A`}</Descriptions.Item>
+            <Descriptions.Item label="Player">
+              {user?.name || `N/A`}
+            </Descriptions.Item>
           </>
         )}
         {desc && (
