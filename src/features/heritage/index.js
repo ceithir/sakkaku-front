@@ -100,12 +100,7 @@ const Heritage = () => {
           .filter(({ status }) => status === "pending")
           .map(({ value }, index) => {
             return (
-              <Summary
-                key={index.toString()}
-                table={table}
-                rolls={[value]}
-                context={context}
-              >
+              <Summary key={index.toString()} table={table} rolls={[value]}>
                 <div className={styles.footer}>
                   <Button
                     onClick={() => dispatch(keep(roll, index))}

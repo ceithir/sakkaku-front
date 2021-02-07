@@ -41,26 +41,30 @@ const Summary = ({ table, rolls, children, context }) => {
     secondRoll,
   });
 
-  const { campaign, character, description: desc, user } = context;
-
   return (
     <div>
       <Descriptions title={name} bordered layout="vertical" column={3}>
-        {character && (
+        {context && (
           <>
-            <Descriptions.Item label="Character">{character}</Descriptions.Item>
-            <Descriptions.Item label="Campaign">
-              {campaign || "N/A"}
-            </Descriptions.Item>
-            <Descriptions.Item label="Player">
-              {user?.name || `N/A`}
-            </Descriptions.Item>
+            {context.character && (
+              <>
+                <Descriptions.Item label="Character">
+                  {context.character}
+                </Descriptions.Item>
+                <Descriptions.Item label="Campaign">
+                  {context.campaign || "N/A"}
+                </Descriptions.Item>
+                <Descriptions.Item label="Player">
+                  {context.user?.name || `N/A`}
+                </Descriptions.Item>
+              </>
+            )}
+            {context.description && (
+              <Descriptions.Item label="Description" span={3}>
+                {context.description}
+              </Descriptions.Item>
+            )}
           </>
-        )}
-        {desc && (
-          <Descriptions.Item label="Description" span={3}>
-            {desc}
-          </Descriptions.Item>
         )}
         <Descriptions.Item label="Result" span={2}>
           {description}
