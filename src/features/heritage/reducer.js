@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer, authentifiedPostOnServer } from "../../server";
+import { v4 as uuidv4 } from "uuid";
 
 const slice = createSlice({
   name: "heritage",
@@ -26,17 +27,27 @@ const slice = createSlice({
       state.loading = false;
     },
     reset: (state) => {
-      state.previousRolls = [
-        {
-          dices: state.dices,
-          metadata: state.metadata,
-          context: state.context,
-        },
-        ...state.previousRolls,
-      ];
+      const uuid = state.uuid || uuidv4();
+      if (
+        !state.previousRolls.some(
+          ({ uuid: existingUuid }) => uuid === existingUuid
+        )
+      ) {
+        state.previousRolls = [
+          {
+            dices: state.dices,
+            metadata: state.metadata,
+            context: state.context,
+            uuid,
+          },
+          ...state.previousRolls,
+        ];
+      }
+
       state.dices = [];
       state.metadata = {};
       state.context = {};
+      state.uuid = null;
       window.history.pushState(null, null, `/heritage`);
     },
     setContext: (state, action) => {

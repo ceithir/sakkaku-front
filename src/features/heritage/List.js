@@ -38,8 +38,8 @@ const List = ({ rolls }) => {
   return (
     <Table
       columns={columns}
-      dataSource={rolls.map(({ dices, metadata, context }, index) => {
-        const key = index.toString();
+      dataSource={rolls.map(({ dices, metadata, context, uuid }) => {
+        const key = uuid;
         const [firstRoll, secondRoll] = dices
           .filter(({ status }) => status === "kept")
           .map(({ value }) => value);
