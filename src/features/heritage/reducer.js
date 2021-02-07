@@ -103,15 +103,15 @@ export const create = ({ context, metadata, user }) => (dispatch) => {
   });
 };
 
-export const keep = (roll, position) => (dispatch) => {
+export const keep = ({ roll, position, user }) => (dispatch) => {
   dispatch(setLoading(true));
 
   const error = (e) => {
     dispatch(setError(e));
   };
 
-  const { uuid } = roll;
-  if (uuid) {
+  if (user) {
+    const { uuid } = roll;
     authentifiedPostOnServer({
       uri: `/ffg/l5r/heritage-rolls/${uuid}/keep`,
       body: {

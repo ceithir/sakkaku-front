@@ -14,6 +14,7 @@ import styles from "./index.module.css";
 import Form from "./Form";
 import Summary from "./Summary";
 import List from "./List";
+import { selectUser } from "../user/reducer";
 
 const { Text, Title } = Typography;
 
@@ -66,6 +67,7 @@ const Heritage = () => {
   const dispatch = useDispatch();
   const roll = useSelector(selectRoll);
   const context = useSelector(selectContext);
+  const user = useSelector(selectUser);
 
   const { dices, metadata } = roll;
 
@@ -103,7 +105,9 @@ const Heritage = () => {
               <Summary key={index.toString()} table={table} rolls={[value]}>
                 <div className={styles.footer}>
                   <Button
-                    onClick={() => dispatch(keep(roll, index))}
+                    onClick={() =>
+                      dispatch(keep({ roll, position: index, user }))
+                    }
                   >{`Keep that result`}</Button>
                 </div>
               </Summary>
