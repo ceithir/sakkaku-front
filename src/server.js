@@ -1,18 +1,25 @@
 const serverRoot =
   process.env.NODE_ENV === "production" ? "/api" : "http://127.0.0.1:8000/api";
 
-const requestOnServer = async ({ uri, method, body, success, error }) => {
-  const headers = {
+const requestOnServer = async ({
+  uri,
+  method,
+  body,
+  success,
+  error,
+  extraHeaders = {},
+}) => {
+  const defaultHeaders = {
     Accept: "application/json",
   };
   if (body) {
-    headers["Content-Type"] = "application/json";
+    defaultHeaders["Content-Type"] = "application/json";
   }
 
   try {
     const response = await fetch(`${serverRoot}${uri}`, {
       method,
-      headers,
+      headers: { ...defaultHeaders, ...extraHeaders },
       body: body ? JSON.stringify(body) : undefined,
     });
     if (!response.ok) {
@@ -39,29 +46,37 @@ const getXsrfToken = () =>
     document.cookie.match("(^|;) ?XSRF-TOKEN=([^;]*)(;|$)")[2]
   );
 
+const authentifiedRequestOnServer = async ({
+  uri,
+  method,
+  body,
+  success,
+  error,
+}) => {
+  return requestOnServer({
+    uri,
+    method,
+    body,
+    success,
+    error,
+    extraHeaders: {
+      "X-Requested-With": "XMLHttpRequest",
+      "X-XSRF-TOKEN": getXsrfToken(),
+    },
+  });
+};
+
 export const authentifiedPostOnServer = async ({
   uri,
   body,
   success,
   error,
 }) => {
-  try {
-    const response = await fetch(`${serverRoot}${uri}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-        "X-XSRF-TOKEN": getXsrfToken(),
-      },
-      body: JSON.stringify(body),
-    });
-    if (!response.ok) {
-      throw new Error(`Bad status: ${response.status}`);
-    }
-    const data = await response.json();
-    success(data);
-  } catch (e) {
-    error ? error(e) : console.error(e);
-  }
+  return authentifiedRequestOnServer({
+    uri,
+    method: "POST",
+    body,
+    success,
+    error,
+  });
 };
