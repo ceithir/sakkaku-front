@@ -1,10 +1,14 @@
 .footer {
   margin: 24px auto;
   display: flex;
-  align-items: flex-end;
-  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-.footer button {
-  margin: 0;
+.footer > * {
+  margin-right: 24px;
+}
+
+.footer > *:last-child {
+  margin-right: 0;
 }
