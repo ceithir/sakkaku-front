@@ -1,73 +1,16 @@
 import React from "react";
-import { Button, Card, Typography } from "antd";
+import { Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectError,
-  selectRoll,
-  keep,
-  reset,
-  selectPreviousRolls,
-  selectContext,
-  load,
-} from "./reducer";
+import { selectError, selectRoll, keep, reset, selectContext } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./Roll.module.css";
 import Form from "./Form";
 import Summary from "./Summary";
-import List from "./List";
 import { selectUser } from "../user/reducer";
+import Layout from "./Layout";
+import LayoutWithPreviousRolls from "./LayoutWithPreviousRolls";
 
-const { Text, Title } = Typography;
-
-const Layout = ({ children }) => {
-  return (
-    <div className={styles.layout}>
-      <Title>{`Heritage Roll`}</Title>
-      <>{children}</>
-    </div>
-  );
-};
-
-const LayoutWithPreviousRolls = ({ children }) => {
-  const previousRolls = useSelector(selectPreviousRolls);
-  const dispatch = useDispatch();
-
-  return (
-    <Layout>
-      <>{children}</>
-      {previousRolls.length > 0 && (
-        <>
-          <Title level={2}>{`Previous heritage`}</Title>
-          <List
-            rolls={previousRolls}
-            onClick={(data) => dispatch(load(data))}
-          />
-        </>
-      )}
-    </Layout>
-  );
-};
-
-const Dices = ({ dices }) => {
-  return (
-    <Card className={styles["raw-results"]}>
-      <Text>{`You rolled:`}</Text>
-      {dices.map(({ value, status }, index) => {
-        return (
-          <Text
-            disabled={status === "dropped"}
-            strong={status === "kept"}
-            key={index.toString()}
-          >
-            {value}
-          </Text>
-        );
-      })}
-    </Card>
-  );
-};
-
-const Heritage = () => {
+const Roll = () => {
   const error = useSelector(selectError);
   const dispatch = useDispatch();
   const roll = useSelector(selectRoll);
@@ -90,18 +33,9 @@ const Heritage = () => {
 
   const { table } = metadata;
 
-  const CompleteLayout = ({ children }) => {
-    return (
-      <Layout>
-        <Dices dices={dices} />
-        {children}
-      </Layout>
-    );
-  };
-
   if (dices.some(({ status }) => status === "pending")) {
     return (
-      <CompleteLayout>
+      <Layout dices={dices}>
         <p>{`Choose one of those two options as the relative for whom your character is named.`}</p>
         {dices
           .filter(({ status }) => status === "pending")
@@ -118,12 +52,12 @@ const Heritage = () => {
               </Summary>
             );
           })}
-      </CompleteLayout>
+      </Layout>
     );
   }
 
   return (
-    <CompleteLayout>
+    <Layout dices={dices}>
       <Summary
         table={table}
         rolls={dices
@@ -139,8 +73,8 @@ const Heritage = () => {
           type="dashed"
         >{`Roll another heritage / See list`}</Button>
       </div>
-    </CompleteLayout>
+    </Layout>
   );
 };
 
-export default Heritage;
+export default Roll;

@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, Descriptions } from "antd";
 import TABLES, { entry } from "./tables";
+import styles from "./Summary.module.css";
 
 const { Text } = Typography;
 
@@ -42,7 +43,7 @@ const Summary = ({ table, rolls, children, context }) => {
   });
 
   return (
-    <div>
+    <div className={styles.container}>
       <Descriptions title={name} bordered layout="vertical" column={3}>
         {context && (
           <>
