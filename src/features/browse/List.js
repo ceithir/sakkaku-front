@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Table, Typography, Pagination } from "antd";
+import { Table, Typography } from "antd";
 import { getOnServer } from "../../server";
 import Result from "./Result";
 import queryString from "query-string";
 import styles from "./List.module.css";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Loader from "../navigation/Loader";
+import Pagination from "../../Pagination";
 
 const { Text } = Typography;
 
@@ -142,7 +143,6 @@ const List = () => {
   const [error, setError] = useState(false);
   const [data, setData] = useState();
   const location = useLocation();
-  const history = useHistory();
 
   const query = queryString.parse(location.search);
   const page = parseInt(query["page"]) || 1;
@@ -205,34 +205,13 @@ const List = () => {
     }
   );
 
-  const pageLink = (pageNumber) => {
-    return `/rolls?${queryString.stringify({
-      ...queryString.parse(window.location.search),
-      page: pageNumber,
-    })}`;
-  };
-
   return (
     <>
       <Table columns={columns} dataSource={dataSource} pagination={false} />
       <Pagination
-        className={styles.pagination}
-        simple
         pageSize={data["per_page"]}
         current={page}
         total={data["total"]}
-        itemRender={(_, type, originalElement) => {
-          if (type === "prev") {
-            return <Link to={pageLink(page - 1)}>{"<"}</Link>;
-          }
-          if (type === "next") {
-            return <Link to={pageLink(page + 1)}>{">"}</Link>;
-          }
-          return originalElement;
-        }}
-        onChange={(pageNumber) => {
-          history.push(pageLink(pageNumber));
-        }}
       />
     </>
   );
