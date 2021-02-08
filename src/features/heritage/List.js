@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const { Text } = Typography;
 
 const columns = [
+  { title: "Campaign", dataIndex: "campaign", responsive: ["sm"] },
   { title: "Character", dataIndex: "character" },
   {
     title: "Roll",
@@ -78,13 +79,15 @@ const List = ({ rolls }) => {
           .map(({ value }) => value);
         const { table } = metadata;
         const { name, effect } = entry({ table, firstRoll, secondRoll });
+        const { character, campaign } = context;
 
         return {
           key,
           book: TABLES[table]["name"],
           roll: { dices },
           succinct: { name, effect, secondRoll },
-          character: context.character || `???`,
+          character,
+          campaign,
           link: { uuid },
         };
       })}
