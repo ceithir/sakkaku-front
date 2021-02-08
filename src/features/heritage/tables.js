@@ -509,7 +509,194 @@ const TABLES = {
           "Your ancestor was a truly gifted artisan and produced in their lifetime a masterwork that is still renowned today. You now live in the shadow of this ancestor, and your clan expects your complete focus in bringing glory to your line once again.",
         modifier: "Increase your glory by 5.",
         effect:
-          "You gain the Isolation anxiety (see page 103 of Courts of Stone). Choose one of your character’s rings; you may reduce the value of this ring by 1 to increase the value of your Fire or Air Ring by 1 (this still cannot raise it above 3). ",
+          "You gain the Isolation anxiety (see page 103 of Courts of Stone). Choose one of your character’s rings; you may reduce the value of this ring by 1 to increase the value of your Fire or Air Ring by 1 (this still cannot raise it above 3).",
+      },
+    ],
+  },
+  celestial: {
+    name: "Celestial Realms (page 95)",
+    entries: [
+      {
+        name: "Associated with a Natural Disaster",
+        min: 1,
+        max: 1,
+        description:
+          "An ancestor, through folly or hubris, caused or responded problematically to a natural disaster. They may have abused the power of the kami or taken flawed action such as refusing to allocate funds to repair a dam, leading poorly during a tsunami, or ignoring the severity of a plague outbreak.",
+        modifier: "Decrease your honor by 3.",
+        effect:
+          "You gain the Whispers of Failure (Fire) adversity (see page 130 of the core rulebook). You may reduce the value of one of your character’s rings by 1 to increase the value of a ring associated with the disaster—such as Earth for an earthquake or Water for a tsunami—by 1 (this still cannot raise a ring above 3).",
+      },
+      {
+        name: "Great Treatise",
+        min: 2,
+        max: 2,
+        description:
+          "One of your kin has written a scholarly text, religious treatise, philosophical essay, or collection of poems known through- out the Emerald Empire.",
+        modifier: "Increase your status by 3.",
+        effect: {
+          intro:
+            "Roll a ten-sided die again to determine a skill your family values (",
+          outro: "); gain +1 rank in that skill.",
+          options: [
+            {
+              min: 1,
+              max: 3,
+              text: "Composition",
+            },
+            {
+              min: 4,
+              max: 6,
+              text: "Culture",
+            },
+            {
+              min: 7,
+              max: 8,
+              text: "Government",
+            },
+            {
+              min: 9,
+              max: 10,
+              text: "Theology",
+            },
+          ],
+        },
+      },
+      {
+        name: "Guardian of Forbidden Knowledge",
+        min: 3,
+        max: 4,
+        description:
+          "One of your kin guards or once guarded a reliquary of forbidden knowledge. Either your family still has responsibility for guarding the reliquary, or it has gone missing.",
+        modifier: "Decrease your status by 5.",
+        effect: {
+          intro:
+            "Roll a ten-sided die again to determine the skill your family uses to guard this knowledge (",
+          outro: "); gain +1 rank in that skill.",
+          options: [
+            {
+              min: 1,
+              max: 3,
+              text: "Martial Arts [Melee]",
+            },
+            {
+              min: 4,
+              max: 6,
+              text: "Government",
+            },
+            {
+              min: 7,
+              max: 8,
+              text: "Theology",
+            },
+            {
+              min: 9,
+              max: 10,
+              text: "Skulduggery",
+            },
+          ],
+        },
+      },
+      {
+        name: "Mark of the Elements",
+        min: 5,
+        max: 6,
+        description:
+          "An ancestor had a story—perhaps true, perhaps apocryphal—of having been blessed by an element: i.e., was born of Fire, couldn’t drown or could swim as a baby, fell a great distance and didn’t get hurt, was buried alive but survived, etc.",
+        modifier: "Increase your status by 5.",
+        effect:
+          "Choose one of your character’s rings; you may reduce the value of that ring by 1 to increase the value of the ring associated with the element by 1 (this still cannot raise a ring above 3).",
+      },
+      {
+        name: "Sacrifice",
+        min: 7,
+        max: 8,
+        description:
+          "A forebear sacrificed something for the greater good of their clan or the Empire. The sacrifice doesn’t necessarily mean their life. It could have been as personal as love or family, but it should illustrate giving up an individual want, need, or desire for the good of society.",
+        modifier: "Increase your glory by 5.",
+        effect: {
+          intro:
+            "Roll a ten-sided die again and add the resulting heirloom to your starting items (",
+          outro:
+            "). You choose one item quality and the GM chooses another from the list of item qualities starting on page 240 of the core rulebook; these are applied to the item.",
+          options: [
+            {
+              min: 1,
+              max: 3,
+              text: "a weapon",
+            },
+            {
+              min: 4,
+              max: 6,
+              text: "a set of armor",
+            },
+            {
+              min: 7,
+              max: 8,
+              text: "a valued piece of art",
+            },
+            {
+              min: 9,
+              max: 9,
+              text: "a horse or other animal",
+            },
+            {
+              min: 10,
+              max: 10,
+              text:
+                "the deed to a small piece of land on the border of Phoenix territory",
+            },
+          ],
+        },
+      },
+      {
+        name: "Spirit of the Phoenix",
+        min: 9,
+        max: 9,
+        description:
+          "One of your kin was reborn, either literally from death or figuratively through a public religious conversion, personal Enlightenment, or a famous second career after some debilitating trouble.",
+        modifier: "Increase your glory by 3.",
+        effect: {
+          intro:
+            "You gain an advantage associated with your predecessor’s rebirth (this can be assigned in excess of the normal limitations on advantages at character creation). Roll a ten-sided die again and add the resulting advantage (",
+          outro: ").",
+          options: [
+            {
+              min: 1,
+              max: 2,
+              text: "Famously Kind",
+            },
+            {
+              min: 3,
+              max: 4,
+              text: "Famously Lucky",
+            },
+            {
+              min: 5,
+              max: 6,
+              text: "Famously Reliable",
+            },
+            {
+              min: 7,
+              max: 8,
+              text: "Famously Successful",
+            },
+            {
+              min: 9,
+              max: 10,
+              text: "Famously Wealthy",
+            },
+          ],
+        },
+      },
+      {
+        name: "Touched by the Fortunes",
+        min: 10,
+        max: 10,
+        description:
+          "An ancestor spent too much time with the Fortunes and forgot their humanity, or saw a mystical truth too terrible to bear.",
+        modifier: "Decrease your glory by 5.",
+        effect:
+          "You gain the Sixth Sense distinction (see page 110 of the core rulebook) (this can be assigned in excess of the normal limitations on advantages at character creation).",
       },
     ],
   },
