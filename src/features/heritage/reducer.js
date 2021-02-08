@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer, authentifiedPostOnServer } from "../../server";
-import { v4 as uuidv4 } from "uuid";
 
 const slice = createSlice({
   name: "heritage",
@@ -9,7 +8,6 @@ const slice = createSlice({
     loading: false,
     error: null,
     metadata: {},
-    previousRolls: [],
     context: {},
     uuid: null,
   },
@@ -27,24 +25,6 @@ const slice = createSlice({
       state.loading = false;
     },
     reset: (state) => {
-      const uuid = state.uuid || uuidv4();
-      if (
-        !state.previousRolls.some(
-          ({ uuid: existingUuid }) => uuid === existingUuid
-        )
-      ) {
-        state.previousRolls = [
-          {
-            dices: state.dices,
-            metadata: state.metadata,
-            context: state.context,
-            uuid,
-            temporary: !state.uuid,
-          },
-          ...state.previousRolls,
-        ];
-      }
-
       state.dices = [];
       state.metadata = {};
       state.context = {};
@@ -60,14 +40,12 @@ const slice = createSlice({
       window.history.pushState(null, null, `/heritage/${uuid}`);
     },
     load: (state, action) => {
-      const { uuid, dices, metadata, context, temporary } = action.payload;
+      const { uuid, dices, metadata, context } = action.payload;
       state.uuid = uuid;
       state.dices = dices;
       state.metadata = metadata;
       state.context = context;
-      if (!temporary) {
-        window.history.pushState(null, null, `/heritage/${uuid}`);
-      }
+      window.history.pushState(null, null, `/heritage/${uuid}`);
     },
   },
 });
@@ -155,7 +133,6 @@ export const selectRoll = (state) => {
     metadata: state.heritage.metadata,
   };
 };
-export const selectPreviousRolls = (state) => state.heritage.previousRolls;
 export const selectContext = (state) => state.heritage.context;
 
 export default slice.reducer;

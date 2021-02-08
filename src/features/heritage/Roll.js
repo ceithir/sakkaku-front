@@ -8,7 +8,6 @@ import Form from "./Form";
 import Summary from "./Summary";
 import { selectUser } from "../user/reducer";
 import Layout from "./Layout";
-import LayoutWithPreviousRolls from "./LayoutWithPreviousRolls";
 
 const Roll = () => {
   const error = useSelector(selectError);
@@ -25,9 +24,9 @@ const Roll = () => {
 
   if (!dices.length) {
     return (
-      <LayoutWithPreviousRolls>
+      <Layout>
         <Form />
-      </LayoutWithPreviousRolls>
+      </Layout>
     );
   }
 
@@ -71,7 +70,7 @@ const Roll = () => {
             dispatch(reset());
           }}
           type="dashed"
-        >{`Roll another heritage / See list`}</Button>
+        >{`Roll another heritage`}</Button>
       </div>
     </Layout>
   );

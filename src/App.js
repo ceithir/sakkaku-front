@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "./features/user/reducer";
 import HeritageRoll from "./features/heritage/Roll";
 import HeritageRollLoader from "./features/heritage/RollLoader";
+import HeritageListLoader from "./features/heritage/ListLoader";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ const App = () => {
     <Router>
       <Layout>
         <Switch>
+          <Route path="/heritage/list">
+            <HeritageListLoader />
+          </Route>
           <Route path="/heritage/:uuid">
             <HeritageRollLoader />
           </Route>

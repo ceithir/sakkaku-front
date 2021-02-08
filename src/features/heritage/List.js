@@ -1,12 +1,33 @@
 import React from "react";
-import { Typography, Table, Button } from "antd";
+import { Typography, Table } from "antd";
 import TABLES, { entry } from "./tables";
+import { Link } from "react-router-dom";
 
 const { Text } = Typography;
 
 const columns = [
   { title: "Character", dataIndex: "character" },
-  { title: "Roll", dataIndex: "roll" },
+  {
+    title: "Roll",
+    dataIndex: "roll",
+    render: ({ dices }) => {
+      if (!dices.some(({ status }) => status === "pending")) {
+        return (
+          <>
+            {dices
+              .filter(({ status }) => status === "kept")
+              .map(({ value }) => value)
+              .join(" / ")}
+          </>
+        );
+      }
+      return (
+        <Text type="secondary">
+          {dices.map(({ value }) => value).join(" | ")}
+        </Text>
+      );
+    },
+  },
   {
     title: "Result",
     dataIndex: "succinct",
@@ -35,13 +56,17 @@ const columns = [
   {
     title: "",
     dataIndex: "link",
-    render: ({ action }) => {
-      return <Button type="link" onClick={action}>{`➥`}</Button>;
+    render: ({ uuid }) => {
+      return (
+        <Link title="Details" to={`/heritage/${uuid}`}>
+          {"➥"}
+        </Link>
+      );
     },
   },
 ];
 
-const List = ({ rolls, onClick }) => {
+const List = ({ rolls }) => {
   return (
     <Table
       columns={columns}
@@ -57,10 +82,10 @@ const List = ({ rolls, onClick }) => {
         return {
           key,
           book: TABLES[table]["name"],
-          roll: [firstRoll, secondRoll].filter(Boolean).join(" / "),
+          roll: { dices },
           succinct: { name, effect, secondRoll },
           character: context.character || `???`,
-          link: { action: () => onClick(roll) },
+          link: { uuid },
         };
       })}
       pagination={false}

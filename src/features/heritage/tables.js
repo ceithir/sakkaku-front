@@ -519,14 +519,23 @@ const TABLES = {
 };
 
 export const entry = ({ table, firstRoll, secondRoll }) => {
+  if (!firstRoll) {
+    return {
+      name: `TBD`,
+      description: `TBD`,
+      modifier: `TBD`,
+      effect: `TBD`,
+    };
+  }
+
   if (!table || table === "custom") {
     const stringRoll = [firstRoll, secondRoll].filter(Boolean).join(" / ");
 
     return {
       name: stringRoll,
-      description: `??? (you rolled: ${stringRoll})`,
-      modifier: `???`,
-      effect: `???`,
+      description: `TBD (you rolled: ${stringRoll})`,
+      modifier: `TBD`,
+      effect: `TBD`,
     };
   }
 
