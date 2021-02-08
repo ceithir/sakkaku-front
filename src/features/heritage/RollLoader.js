@@ -29,20 +29,6 @@ const RollLoader = () => {
     getOnServer({
       uri: `/public/ffg/l5r/heritage-rolls/${uuid}`,
       success: (data) => {
-        if (user && data.user && user.id === data.user.id) {
-          const {
-            roll: { dices, metadata },
-          } = data;
-          dispatch(
-            load({
-              uuid,
-              dices: dices,
-              metadata: metadata,
-              context: data,
-            })
-          );
-        }
-
         setData(data);
         dispatch(setLoading(false));
       },
@@ -51,7 +37,28 @@ const RollLoader = () => {
         dispatch(setError(e));
       },
     });
-  }, [uuid, user, dispatch]);
+  }, [uuid, dispatch]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    if (user && data.user && user.id === data.user.id) {
+      const {
+        uuid,
+        roll: { dices, metadata },
+        ...context
+      } = data;
+      dispatch(
+        load({
+          uuid,
+          dices: dices,
+          metadata: metadata,
+          context,
+        })
+      );
+    }
+  }, [data, user, dispatch]);
 
   if (!data) {
     if (loading) {
