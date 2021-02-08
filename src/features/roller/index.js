@@ -22,7 +22,7 @@ import Steps, { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 import RerollResult from "./result/Reroll";
 import KeepResult from "./result/Keep";
 import ResolveResult from "./result/Resolve";
-import AnonymousAlert from "./AnonymousAlert";
+import AnonymousAlert from "../../AnonymousAlert";
 import { isReroll, rolledDicesCount } from "./utils";
 import Modifier from "./Modifier";
 
