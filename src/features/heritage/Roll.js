@@ -11,7 +11,7 @@ import {
   load,
 } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
-import styles from "./index.module.css";
+import styles from "./Roll.module.css";
 import Form from "./Form";
 import Summary from "./Summary";
 import List from "./List";

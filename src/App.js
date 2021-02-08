@@ -8,7 +8,7 @@ import List from "./features/browse/List";
 import IdentifiedRoll from "./features/roller/IdentifiedRoll";
 import { useDispatch } from "react-redux";
 import { setUser } from "./features/user/reducer";
-import Heritage from "./features/heritage";
+import HeritageRoll from "./features/heritage/Roll";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const App = () => {
       <Layout>
         <Switch>
           <Route path="/heritage">
-            <Heritage />
+            <HeritageRoll />
           </Route>
           <Route path="/rolls/:id">
             <IdentifiedRoll />
