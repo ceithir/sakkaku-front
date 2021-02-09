@@ -513,6 +513,167 @@ const TABLES = {
       },
     ],
   },
+  shadowlands: {
+    name: "Shadowlands (page 101)",
+    entries: [
+      {
+        name: "Blood and Mortar",
+        min: 1,
+        max: 1,
+        description:
+          "You can unequivocally trace your lineage back to the earliest days of the Kaiu Wall. It is said that the blood of your family is mixed with the mortar hold- ing together the first stones of the Wall.",
+        modifier: "Increase your status by 3.",
+        effect:
+          "You gain the Blessed Lineage advantage (see page 103 of the core rulebook). This can be assigned in excess of the normal limitations on disadvantages at character creation. While on the Wall, your glory rank is treated a1 higher.",
+      },
+      {
+        name: "Infamous Builder",
+        min: 2,
+        max: 3,
+        description:
+          "One of your distant ancestors designed and built a fortification or weapon that failed at a crucial moment. Many samurai perished as a result, and your ancestor’s name is still cursed to this day.",
+        modifier: "Decrease your glory by 5.",
+        effect: {
+          intro:
+            "Roll a ten-sided die again to determine a skill to aid in restoring your ancestor’s name (",
+          outro: "); gain +1 rank in that skill.",
+          options: [
+            {
+              min: 1,
+              max: 3,
+              text: "Government",
+            },
+            {
+              min: 4,
+              max: 6,
+              text: "Labor",
+            },
+            {
+              min: 7,
+              max: 10,
+              text: "Smithing",
+            },
+          ],
+        },
+      },
+      {
+        name: "Lost in the Darkness",
+        min: 4,
+        max: 5,
+        description:
+          "One of your ancestors vanished in the Shadowlands. Rumors dog your family that your ancestor simply fled out of cowardice... or that they even came to embrace corruption as one of the fallen samurai known as the Lost. One day you vow to learn the truth of the matter.",
+        modifier: "Increase your honor by 5 and decrease your glory by 5.",
+        effect: {
+          intro:
+            "Roll a ten-sided die again to determine a skill to aid in learning of your ancestor’s fate (",
+          outro:
+            "); gain +1 rank in that skill. Additionally, your ancestor might still be alive, in the Shadowlands...waiting.",
+          options: [
+            {
+              min: 1,
+              max: 3,
+              text: "Culture",
+            },
+            {
+              min: 4,
+              max: 6,
+              text: "Survival",
+            },
+            {
+              min: 7,
+              max: 10,
+              text: "Theology",
+            },
+          ],
+        },
+      },
+      {
+        name: "Vengeance for the Fallen",
+        min: 6,
+        max: 7,
+        description:
+          "Your ancestor fought many battles against the Shadowlands, and finally fell while facing an immensely powerful oni. Your ancestor calls to you to find and destroy the vile creature responsible for their death, for only then can they find true peace in the afterlife.",
+        modifier: "Increase your honor by 5.",
+        effect: {
+          intro:
+            "You gain the Haunting (Void) adversity (see page 122 of the core rulebook). This can be assigned in excess of the normal limitations on disadvantages at character creation. Roll a ten-sided die again to determine a Martial skill (",
+          outro: "); gain +1 rank in that skill.",
+          options: [
+            {
+              min: 1,
+              max: 3,
+              text: "Fitness",
+            },
+            {
+              min: 4,
+              max: 5,
+              text: "Martial Arts [Melee]",
+            },
+            {
+              min: 6,
+              max: 7,
+              text: "Martial Arts [Ranged]",
+            },
+            {
+              min: 8,
+              max: 8,
+              text: "Martial Arts [Unarmed]",
+            },
+            {
+              min: 9,
+              max: 9,
+              text: "Tactics",
+            },
+            {
+              min: 10,
+              max: 10,
+              text: "Meditation",
+            },
+          ],
+        },
+      },
+      {
+        name: "Twenty Goblin Thief",
+        min: 8,
+        max: 9,
+        description:
+          "The Crab periodically announce a “Twenty Goblin Winter,” during which rōnin who return with the heads of twenty goblins are accepted as members of the Crab Clan. One of your ancestors is said to have stolen heads from another rōnin and claimed the heads as their own.",
+        modifier: "Decrease your glory by 3.",
+        effect: {
+          intro:
+            "Roll a ten-sided die again to determine a skill to aid in learning of your ancestor’s fate (",
+          outro: "); gain +1 rank in that skill.",
+          options: [
+            {
+              min: 1,
+              max: 3,
+              text: "Culture",
+            },
+            {
+              min: 4,
+              max: 6,
+              text: "Skulduggery",
+            },
+            {
+              min: 7,
+              max: 10,
+              text: "Theology",
+            },
+          ],
+        },
+      },
+      {
+        name: "Tainted Blood",
+        min: 10,
+        max: 10,
+        description:
+          "Your ancestor is rumored to have flouted Imperial law and hidden their Taint. Worse, you worry that perhaps your bloodline is also corrupted, and a foul influence still lurks deep in your being— and that it influences you in subtle and insidious ways.",
+        modifier: "Decrease your status by 3.",
+        effect:
+          "You gain the Fallen Ancestor disadvantage (see page 98 of the Shadowlands book). Choose one of your character’s rings; you may reduce the value of that ring by 1 to increase the value of your Void Ring by 1 (this still cannot raise it above 3).",
+      },
+    ],
+  },
   celestial: {
     name: "Celestial Realms (page 95)",
     entries: [
