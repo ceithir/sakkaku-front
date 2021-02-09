@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      {!user && <AnonymousAlert className={styles.alert} />}
+      {!user && <AnonymousAlert />}
       <Steps current={currentStep} className={styles.steps} />
       <>{children}</>
     </>
