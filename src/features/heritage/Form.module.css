@@ -5,6 +5,16 @@
   padding-top: 0;
 }
 
-.form button[type="submit"] {
-  float: right;
+.footer :global(.ant-form-item-control-input-content) {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.footer :global(.ant-form-item-control-input-content) > * {
+  margin-right: 24px;
+}
+
+.footer :global(.ant-form-item-control-input-content) > *:last-child {
+  margin-right: 0;
 }

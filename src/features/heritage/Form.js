@@ -12,6 +12,7 @@ import {
   addCharacter,
   selectUser,
 } from "../user/reducer";
+import { Link } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -117,7 +118,8 @@ const CustomForm = () => {
           <Input type="email" placeholder={`best-gm@fallenash.com`} />
         </Form.Item>
       )}
-      <Form.Item {...tailLayout}>
+      <Form.Item {...tailLayout} className={styles.footer}>
+        {user && <Link to="/heritage/list">{`See previous rolls`}</Link>}
         <Button type="primary" htmlType="submit" disabled={loading}>
           {`Roll`}
         </Button>
