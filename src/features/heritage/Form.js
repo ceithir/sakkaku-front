@@ -84,39 +84,41 @@ const CustomForm = () => {
         />
       </Form.Item>
       {!!user && (
-        <Form.Item label="Campaign" name="campaign" rules={mandatoryIfLogged}>
-          <AutoComplete
-            options={arrayToAutoCompleteOptions(campaigns)}
-            placeholder={"The Dead of Winter"}
-          />
-        </Form.Item>
-      )}
-      <Form.Item label="Character" name="character" rules={mandatoryIfLogged}>
-        <AutoComplete
-          options={arrayToAutoCompleteOptions(characters)}
-          placeholder={"Doji Sakura"}
-        />
-      </Form.Item>
-      {!!user && (
-        <Form.Item
-          label="Description"
-          name="description"
-          rules={mandatoryIfLogged}
-        >
-          <TextArea
-            placeholder={`Using Celestial Realms Table to emphasize my character's mother was born Phoenix.`}
-          />
-        </Form.Item>
-      )}
-      {!!user && (
-        <Form.Item
-          label={`Gm's email`}
-          name="gm_email"
-          rules={mandatoryIfLogged}
-          tooltip={`This mail will only be used to send a one-time notification to your GM with your roll results and will be forgotten about immediately after.`}
-        >
-          <Input type="email" placeholder={`best-gm@fallenash.com`} />
-        </Form.Item>
+        <>
+          <Form.Item label="Campaign" name="campaign" rules={mandatoryIfLogged}>
+            <AutoComplete
+              options={arrayToAutoCompleteOptions(campaigns)}
+              placeholder={"The Dead of Winter"}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Character"
+            name="character"
+            rules={mandatoryIfLogged}
+          >
+            <AutoComplete
+              options={arrayToAutoCompleteOptions(characters)}
+              placeholder={"Doji Sakura"}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={mandatoryIfLogged}
+          >
+            <TextArea
+              placeholder={`Using Celestial Realms Table to emphasize my character's mother was born Phoenix.`}
+            />
+          </Form.Item>
+          <Form.Item
+            label={`Gm's email`}
+            name="gm_email"
+            rules={mandatoryIfLogged}
+            tooltip={`This mail will only be used to send a one-time notification to your GM with your roll results and will be forgotten about immediately after.`}
+          >
+            <Input type="email" placeholder={`best-gm@fallenash.com`} />
+          </Form.Item>
+        </>
       )}
       <Form.Item {...tailLayout} className={styles.footer}>
         {user && <Link to="/heritage/list">{`See previous rolls`}</Link>}
