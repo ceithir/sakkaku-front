@@ -58,13 +58,14 @@ const CustomForm = () => {
     <Form
       initialValues={{ table: "core" }}
       onFinish={(data) => {
-        const { campaign, character, description, table } = data;
+        const { campaign, character, description, table, gm_email } = data;
 
         dispatch(
           create({
             metadata: { table },
             context: { campaign, character, description },
             user,
+            gm_email,
           })
         );
 
@@ -104,6 +105,16 @@ const CustomForm = () => {
           <TextArea
             placeholder={`Using Celestial Realms Table to emphasize my character's mother was born Phoenix.`}
           />
+        </Form.Item>
+      )}
+      {!!user && (
+        <Form.Item
+          label={`Gm's email`}
+          name="gm_email"
+          rules={mandatoryIfLogged}
+          tooltip={`This mail will only be used to send a one-time notification to your GM with your roll results and will be forgotten about immediately after.`}
+        >
+          <Input type="email" placeholder={`best-gm@fallenash.com`} />
         </Form.Item>
       )}
       <Form.Item {...tailLayout}>

@@ -54,7 +54,7 @@ export const { setLoading, setError, reset, load } = slice.actions;
 
 const { update, setContext, setUuid } = slice.actions;
 
-export const create = ({ context, metadata, user }) => (dispatch) => {
+export const create = ({ context, metadata, user, gm_email }) => (dispatch) => {
   dispatch(setLoading(true));
   dispatch(setContext({ ...context, user }));
 
@@ -72,6 +72,7 @@ export const create = ({ context, metadata, user }) => (dispatch) => {
         character,
         description,
         metadata,
+        gm_email,
       },
       success: ({ uuid, roll }) => {
         dispatch(setUuid(uuid));
