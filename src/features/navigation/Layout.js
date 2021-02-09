@@ -27,7 +27,7 @@ const CustomLayout = ({ children }) => {
         return "my_rolls";
       }
 
-      return null;
+      return pathname.substring(1, pathname.length);
     };
 
     setSelectedKey(getMenuKey(location));
@@ -58,6 +58,9 @@ const CustomLayout = ({ children }) => {
               <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
             </Menu.Item>
           )}
+          <Menu.Item key="heritage">
+            <Link to="/heritage">Heritage</Link>
+          </Menu.Item>
           <Menu.Item className={styles.login}>
             {user ? (
               <a href="/user/profile">{user.name}</a>
