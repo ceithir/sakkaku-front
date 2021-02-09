@@ -26,12 +26,7 @@
     padding-left: 12px !important;
   }
 
-  .layout > header ul > li {
+  .layout > header ul > li.sm-hide {
     display: none !important;
-  }
-
-  .layout > header ul > li.logo,
-  .layout > header ul > li.login {
-    display: inline-block !important;
   }
 }

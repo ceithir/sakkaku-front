@@ -50,11 +50,11 @@ const CustomLayout = ({ children }) => {
           <Menu.Item key="new_roll">
             <Link to="/">Roll</Link>
           </Menu.Item>
-          <Menu.Item key="all_rolls">
+          <Menu.Item key="all_rolls" className={styles["sm-hide"]}>
             <Link to="/rolls">All rolls</Link>
           </Menu.Item>
           {user && (
-            <Menu.Item key="my_rolls">
+            <Menu.Item key="my_rolls" className={styles["sm-hide"]}>
               <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
             </Menu.Item>
           )}
