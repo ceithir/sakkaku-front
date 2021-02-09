@@ -1,3 +1,7 @@
+.container {
+  max-width: 600px;
+}
+
 .container :global(.ant-descriptions-title) {
   text-align: center;
 }

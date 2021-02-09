@@ -9,6 +9,7 @@ import Summary from "./Summary";
 import { selectUser } from "../user/reducer";
 import Layout from "./Layout";
 import { useHistory } from "react-router-dom";
+import SummaryList from "./SummaryList";
 
 const Roll = () => {
   const error = useSelector(selectError);
@@ -38,21 +39,23 @@ const Roll = () => {
     return (
       <Layout dices={dices}>
         <p>{`Choose one of those two options as the relative for whom your character is named.`}</p>
-        {dices
-          .filter(({ status }) => status === "pending")
-          .map(({ value }, index) => {
-            return (
-              <Summary key={index.toString()} table={table} rolls={[value]}>
-                <div className={styles.footer}>
-                  <Button
-                    onClick={() =>
-                      dispatch(keep({ roll, position: index, user }))
-                    }
-                  >{`Keep that result`}</Button>
-                </div>
-              </Summary>
-            );
-          })}
+        <SummaryList>
+          {dices
+            .filter(({ status }) => status === "pending")
+            .map(({ value }, index) => {
+              return (
+                <Summary key={index.toString()} table={table} rolls={[value]}>
+                  <div className={styles.footer}>
+                    <Button
+                      onClick={() =>
+                        dispatch(keep({ roll, position: index, user }))
+                      }
+                    >{`Keep that result`}</Button>
+                  </div>
+                </Summary>
+              );
+            })}
+        </SummaryList>
       </Layout>
     );
   }

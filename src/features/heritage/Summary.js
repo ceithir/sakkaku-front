@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Descriptions } from "antd";
+import { Typography, Descriptions, Card } from "antd";
 import TABLES, { entry } from "./tables";
 import styles from "./Summary.module.css";
 
@@ -43,7 +43,7 @@ const Summary = ({ table, rolls, children, context }) => {
   });
 
   return (
-    <div className={styles.container}>
+    <Card className={styles.container}>
       <Descriptions title={name} bordered layout="vertical" column={3}>
         {context && (
           <>
@@ -79,7 +79,7 @@ const Summary = ({ table, rolls, children, context }) => {
         </Descriptions.Item>
       </Descriptions>
       <>{children}</>
-    </div>
+    </Card>
   );
 };
 
