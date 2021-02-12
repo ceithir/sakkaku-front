@@ -1,19 +1,9 @@
 .buttons {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .buttons > * {
-  margin-left: 24px;
-}
-
-.buttons > *:first-child {
-  margin-left: 0;
-}
-
-@media (max-width: 576px) {
-  .buttons > * {
-    margin-left: 8px;
-  }
+  margin-bottom: 16px;
 }
