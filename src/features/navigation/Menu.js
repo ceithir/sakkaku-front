@@ -6,6 +6,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 
+const { SubMenu } = Menu;
+
 const CustomMenu = () => {
   const user = useSelector(selectUser);
   const location = useLocation();
@@ -55,9 +57,27 @@ const CustomMenu = () => {
           <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
         </Menu.Item>
       )}
-      <Menu.Item key="heritage">
+      <Menu.Item key="heritage" className={styles["sm-hide"]}>
         <Link to="/heritage">Heritage</Link>
       </Menu.Item>
+      <SubMenu
+        key="plus"
+        title={`...`}
+        className={styles["sm-only"]}
+        popupOffset={[0, 0]}
+      >
+        <Menu.Item key="all_rolls">
+          <Link to="/rolls">All rolls</Link>
+        </Menu.Item>
+        {user && (
+          <Menu.Item key="my_rolls">
+            <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
+          </Menu.Item>
+        )}
+        <Menu.Item key="heritage">
+          <Link to="/heritage">Heritage</Link>
+        </Menu.Item>
+      </SubMenu>
       <Menu.Item className={styles.login}>
         {user ? (
           <a href="/user/profile">{user.name}</a>
