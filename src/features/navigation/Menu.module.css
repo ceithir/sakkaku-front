@@ -1,0 +1,18 @@
+.logo img {
+  height: 56px;
+  padding-bottom: 2px;
+}
+
+.login {
+  float: right;
+}
+
+@media (max-width: 576px) {
+  .logo {
+    padding-left: 12px !important;
+  }
+
+  .menu > li.sm-hide {
+    display: none !important;
+  }
+}
