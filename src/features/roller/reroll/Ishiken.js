@@ -58,10 +58,16 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
       {`Your School Ability allows you to receive a number of fatigue up to your school rank to either:`}
       <ul>
         <li>
-          <Text>{`Choose a number of dice with non-blank results equal to the fatigue you received , and alter each to a blank result.`}</Text>
+          <Text
+            strong={onlyNonBlanks}
+            disabled={onlyBlanks}
+          >{`Choose a number of dice with non-blank results equal to the fatigue you received , and alter each to a blank result.`}</Text>
         </li>
         <li>
-          <Text>{`Choose a number of dice with blank results equal to the fatigue you received, and alter each to a non-blank result of your choice.`}</Text>
+          <Text
+            strong={onlyBlanks}
+            disabled={onlyNonBlanks}
+          >{`Choose a number of dice with blank results equal to the fatigue you received, and alter each to a non-blank result of your choice.`}</Text>
         </li>
       </ul>
     </Paragraph>
