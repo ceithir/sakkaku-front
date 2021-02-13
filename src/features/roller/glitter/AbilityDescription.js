@@ -1,12 +1,12 @@
 import React from "react";
 import { Card, Typography } from "antd";
-import manipulatorImage from "../images/abilities/manipulator.png";
 import styles from "./AbilityDescription.module.css";
 import classNames from "classnames";
-import shadowImage from "../images/abilities/shadow.jpg";
-import deathdealerImage from "../images/abilities/deathdealer.jpg";
-import ishikenImage from "../images/abilities/ishiken.jpg";
-import sailorImage from "../images/abilities/sailor.png";
+import manipulatorImage from "./images/abilities/manipulator.png";
+import shadowImage from "./images/abilities/shadow.jpg";
+import deathdealerImage from "./images/abilities/deathdealer.jpg";
+import ishikenImage from "./images/abilities/ishiken.jpg";
+import sailorImage from "./images/abilities/sailor.png";
 
 const ABILITIES = {
   manipulator: {
@@ -59,8 +59,10 @@ const ABILITIES = {
 
 const Description = ({ name, effect, image, className }) => {
   return (
-    <Card className={classNames(styles.card, { [className]: !!className })}>
-      <img src={image} alt="" />
+    <Card
+      className={classNames(styles.card, { [className]: !!className })}
+      cover={<img src={image} alt="" />}
+    >
       <Typography className={styles.text}>
         {typeof effect === "string" ? (
           <p>
