@@ -12,3 +12,10 @@
 .school {
   margin-bottom: 24px;
 }
+
+@media (max-width: 576px) {
+  .school {
+    margin-left: -36px;
+    margin-right: -36px;
+  }
+}
