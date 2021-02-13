@@ -5,6 +5,7 @@ import { replaceRerolls } from "../utils";
 import { Typography } from "antd";
 import styles from "./Ishiken.module.css";
 import DiceSideSelector from "../DiceSideSelector";
+import { longname } from "../data/abilities";
 
 const { Text, Paragraph } = Typography;
 
@@ -80,6 +81,7 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
 
   return (
     <DicesBox
+      title={longname("ishiken")}
       text={text}
       dices={replaceRerolls({
         dices: dices.map((dice, index) => {

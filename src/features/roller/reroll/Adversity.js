@@ -19,6 +19,7 @@ const Adversity = ({ dices, onFinish }) => {
 
   return (
     <DicesBox
+      title={"Adversity"}
       text={text}
       dices={dices.map((dice, index) => {
         const selected = toReroll.includes(index);

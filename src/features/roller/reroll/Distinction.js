@@ -34,8 +34,21 @@ const Distinction = ({ dices, onFinish, modifiers }) => {
     return `Thanks to your Distinction, you can select up to ${max} dice to be rerolled.`;
   };
 
+  const title = () => {
+    if (modifiers.includes("deathdealer")) {
+      return "Distinction + Bayushi Deathdealer";
+    }
+
+    if (modifiers.includes("manipulator")) {
+      return "Distinction + Bayushi Manipulator";
+    }
+
+    return "Distinction";
+  };
+
   return (
     <DicesBox
+      title={title()}
       text={text()}
       dices={dices.map((dice, index) => {
         const selected = toReroll.includes(index);

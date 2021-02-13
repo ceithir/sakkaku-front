@@ -21,6 +21,7 @@ const DragonWard = ({ dices, onFinish, basePool, rerollTypes }) => {
 
   return (
     <DicesBox
+      title={"Enemy Mirumoto Two-Heavens Adept"}
       text={text}
       dices={replaceRerolls({
         dices: dices.map((dice, index) => {
