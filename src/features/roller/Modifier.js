@@ -16,6 +16,7 @@ import {
 import Result from "./result/Reroll";
 import { Divider } from "antd";
 import { longname } from "./data/abilities";
+import Wandering from "./reroll/Wandering";
 
 const Modifier = ({ roll, dispatch }) => {
   const { dices, modifiers, metadata } = roll;
@@ -137,6 +138,19 @@ const Modifier = ({ roll, dispatch }) => {
         dices={dices}
         onFinish={(alterations) =>
           dispatch(alter(roll, alterations, "ishiken"))
+        }
+        basePool={basePool}
+        rerollTypes={rerollTypes}
+      />
+    );
+  }
+
+  if (shouldShow("wandering")) {
+    return (
+      <Wandering
+        dices={dices}
+        onFinish={(alterations) =>
+          dispatch(alter(roll, alterations, "wandering"))
         }
         basePool={basePool}
         rerollTypes={rerollTypes}

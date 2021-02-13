@@ -135,7 +135,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
       onValuesChange={(changedValues) => {
         if (
           Object.keys(changedValues).some((name) =>
-            ["ring", "skill", "void", "channeled"].includes(name)
+            ["ring", "skill", "void", "channeled", "school"].includes(name)
           )
         ) {
           form.validateFields(["channeled"]);
@@ -189,7 +189,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
       >
         <InputNumber min={1} max={10} />
       </Form.Item>
-      <Form.Item label="Skill" name="skill" rules={defaultRules}>
+      <Form.Item
+        label="Skill"
+        name="skill"
+        rules={defaultRules}
+        className={classNames({ [styles.voided]: school === "wandering" })}
+      >
         <InputNumber min={0} max={10} />
       </Form.Item>
       <Divider />
@@ -264,6 +269,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   const ring = form.getFieldValue("ring");
                   const skill = form.getFieldValue("skill");
                   const voided = form.getFieldValue("void");
+                  const school = form.getFieldValue("school");
 
                   if (
                     dices.filter(({ type }) => type === "ring").length >
@@ -277,7 +283,8 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   }
 
                   if (
-                    dices.filter(({ type }) => type === "skill").length > skill
+                    dices.filter(({ type }) => type === "skill").length >
+                    skill + (school === "wandering" ? 1 : 0)
                   ) {
                     return Promise.reject(
                       new Error(

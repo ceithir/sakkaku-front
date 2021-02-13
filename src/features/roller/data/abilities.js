@@ -4,6 +4,7 @@ import shadowImage from "./images/abilities/shadow.jpg";
 import deathdealerImage from "./images/abilities/deathdealer.jpg";
 import ishikenImage from "./images/abilities/ishiken.jpg";
 import sailorImage from "./images/abilities/sailor.png";
+import wanderingImage from "./images/abilities/wandering.jpg";
 
 const ABILITIES = {
   manipulator: {
@@ -56,6 +57,12 @@ const ABILITIES = {
     name: `Sailor’s Fortune`,
     effect: `Once per round when making a Trade skill check, if you are not Compromised, you may receive a number of strife up to your school rank to reroll that many rolled dice.`,
     image: sailorImage,
+  },
+  wandering: {
+    school: "The Wandering Blade",
+    name: "Signature Weapon",
+    effect: `Choose a signature weapon category (or unarmed) with GM approval. When using a weapon from this category for an Attack action or Performance check, roll one additional skill die. Additionally, when making such a check you may suffer fatigue up to your school rank to alter that many results of your kept dice to (Opportunity) results.`,
+    image: wanderingImage,
   },
 };
 
