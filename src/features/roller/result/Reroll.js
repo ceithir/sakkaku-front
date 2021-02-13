@@ -9,19 +9,15 @@ import {
   isSpecialReroll,
   isSpecialAlteration,
 } from "../utils";
+import ABILITIES from "../data/abilities";
 
 const { Title, Paragraph } = Typography;
 
 const TITLES = {
   distinction: "Distinction",
   adversity: "Adversity",
-  shadow: "Ikoma Shadow School Ability",
-  deathdealer: "Bayushi Deathdealer School Ability",
-  manipulator: "Bayushi Manipulator School Ability",
-  ishiken: "Ishiken Initiate School Ability",
   "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
   ruthless: "Custom reroll (from NPCs' or other PCs' effects)",
-  sailor: "Storm Fleet Sailor School Ability",
 };
 
 const EMPTY = {
@@ -36,6 +32,10 @@ const getTitle = (name) => {
 
   if (isSpecialAlteration(name)) {
     return "Custom alteration";
+  }
+
+  if (!!ABILITIES[name]) {
+    return `${ABILITIES[name]["school"]} School Ability`;
   }
 
   return TITLES[name];

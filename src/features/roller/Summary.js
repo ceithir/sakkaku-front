@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Dice from "./Dice";
 import styles from "./Summary.module.css";
 import { orderDices, isSpecialReroll, isSpecialAlteration } from "./utils";
+import ABILITIES from "./data/abilities";
 
 const Summary = ({
   campaign,
@@ -18,21 +19,23 @@ const Summary = ({
   addkept,
 }) => {
   const special = [
-    modifiers.includes("compromised") && "Compromised",
-    modifiers.includes("adversity") && "Adversity",
-    modifiers.includes("distinction") && "Distinction",
-    modifiers.includes("stirring") && "Shūji — Stirring the Embers",
-    modifiers.includes("deathdealer") && "Bayushi Deathdealer School Ability",
-    modifiers.includes("manipulator") && "Bayushi Manipulator School Ability",
-    modifiers.includes("2heavens") &&
-      "Attacking a warding Mirumoto Two-Heavens Adept",
-    modifiers.includes("ruthless") &&
-      "Custom reroll (from NPCs' or other PCs' effects)",
-    modifiers.includes("shadow") && "Ikoma Shadow School Ability",
-    modifiers.includes("sailor") && "Storm Fleet Sailor School Ability",
-    modifiers.some(isSpecialReroll) && "Custom reroll",
-    modifiers.includes("ishiken") && "Ishiken Initiate School Ability",
-    modifiers.some(isSpecialAlteration) && "Custom alteration",
+    ...[
+      modifiers.includes("compromised") && "Compromised",
+      modifiers.includes("adversity") && "Adversity",
+      modifiers.includes("distinction") && "Distinction",
+      modifiers.includes("stirring") && "Shūji — Stirring the Embers",
+    ],
+    ...modifiers
+      .filter((modifier) => !!ABILITIES[modifier])
+      .map((modifier) => `${ABILITIES[modifier]["school"]} School Ability`),
+    ...[
+      modifiers.includes("2heavens") &&
+        "Attacking a warding Mirumoto Two-Heavens Adept",
+      modifiers.includes("ruthless") &&
+        "Custom reroll (from NPCs' or other PCs' effects)",
+      modifiers.some(isSpecialReroll) && "Custom reroll",
+      modifiers.some(isSpecialAlteration) && "Custom alteration",
+    ],
   ]
     .filter(Boolean)
     .join(" / ");

@@ -26,6 +26,7 @@ import { DECLARE } from "./Steps";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import classNames from "classnames";
 import AbilityDescription from "./glitter/AbilityDescription";
+import ABILITIES from "./data/abilities";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -224,28 +225,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
             <Select
               showSearch
               allowClear
-              options={[
-                {
-                  value: "deathdealer",
-                  label: "Bayushi Deathdealer — Way of the Scorpion",
-                },
-                {
-                  value: "manipulator",
-                  label: "Bayushi Manipulator — Weakness Is My Strength",
-                },
-                {
-                  value: "shadow",
-                  label: "Ikoma Shadow — Victory before Honor",
-                },
-                {
-                  value: "ishiken",
-                  label: "Ishiken Initiate — Way of the Void",
-                },
-                {
-                  value: "sailor",
-                  label: "Storm Fleet Sailor — Sailor’s Fortune",
-                },
-              ]}
+              options={Object.keys(ABILITIES)
+                .map((key) => {
+                  const { name, school } = ABILITIES[key];
+                  return {
+                    value: key,
+                    label: `${school} — ${name}`,
+                  };
+                })
+                .sort(({ label: a }, { label: b }) => b < a)}
               optionFilterProp="label"
             />
           </Form.Item>
