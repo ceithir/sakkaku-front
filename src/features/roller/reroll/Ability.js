@@ -3,7 +3,7 @@ import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 import { replaceRerolls } from "../utils";
 
-const Ability = ({ dices, onFinish, text, basePool, rerollTypes }) => {
+const Ability = ({ dices, onFinish, text, basePool, rerollTypes, title }) => {
   const [toReroll, setToReroll] = useState([]);
   const toggle = (index) => {
     if (toReroll.includes(index)) {
@@ -26,6 +26,7 @@ const Ability = ({ dices, onFinish, text, basePool, rerollTypes }) => {
 
   return (
     <DicesBox
+      title={title}
       text={text}
       dices={replaceRerolls({
         dices: dices.map((dice, index) => {

@@ -15,6 +15,7 @@ import {
 } from "./utils";
 import Result from "./result/Reroll";
 import { Divider } from "antd";
+import ABILITIES from "./data/abilities";
 
 const Modifier = ({ roll, dispatch }) => {
   const { dices, modifiers, metadata } = roll;
@@ -46,7 +47,9 @@ const Modifier = ({ roll, dispatch }) => {
       />
     );
   }
-  const AbilityReroll = ({ name, text }) => {
+  const AbilityReroll = ({ name, text, title }) => {
+    const { name: label, school } = ABILITIES[name];
+
     return (
       <Ability
         dices={dices}
@@ -54,6 +57,7 @@ const Modifier = ({ roll, dispatch }) => {
         text={text}
         basePool={basePool}
         rerollTypes={rerollTypes}
+        title={`${school} — ${label}`}
       />
     );
   };
