@@ -1,0 +1,8 @@
+.card img {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.text > p:last-child {
+  margin-bottom: 0;
+}

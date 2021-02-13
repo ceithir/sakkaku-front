@@ -25,6 +25,7 @@ import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import classNames from "classnames";
+import AbilityDescription from "./glitter/AbilityDescription";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -98,6 +99,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [form] = Form.useForm();
   const user = useSelector(selectUser);
   const [voided, setVoided] = useState(false);
+  const [school, setSchool] = useState();
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -141,6 +143,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
           Object.keys(changedValues).some((name) => ["void"].includes(name))
         ) {
           setVoided(form.getFieldValue("void"));
+        }
+        if (
+          Object.keys(changedValues).some((name) => ["school"].includes(name))
+        ) {
+          setSchool(form.getFieldValue("school"));
         }
       }}
     >
@@ -242,6 +249,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
               optionFilterProp="label"
             />
           </Form.Item>
+          {school && (
+            <AbilityDescription ability={school} className={styles.school} />
+          )}
           <Form.Item label="Techniques" name="techniques">
             <Select
               mode="multiple"
