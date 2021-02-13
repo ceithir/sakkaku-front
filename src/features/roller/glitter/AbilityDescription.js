@@ -7,6 +7,7 @@ import shadowImage from "./images/abilities/shadow.jpg";
 import deathdealerImage from "./images/abilities/deathdealer.jpg";
 import ishikenImage from "./images/abilities/ishiken.jpg";
 import sailorImage from "./images/abilities/sailor.png";
+import backgroundImage from "./images/background.jpg";
 
 const ABILITIES = {
   manipulator: {
@@ -62,6 +63,9 @@ const Description = ({ name, effect, image, className }) => {
     <Card
       className={classNames(styles.card, { [className]: !!className })}
       cover={<img src={image} alt="" />}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+      }}
     >
       <Typography className={styles.text}>
         {typeof effect === "string" ? (
