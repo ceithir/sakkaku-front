@@ -26,7 +26,7 @@ import { DECLARE } from "./Steps";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import classNames from "classnames";
 import AbilityDescription from "./glitter/AbilityDescription";
-import ABILITIES from "./data/abilities";
+import ABILITIES, { longname } from "./data/abilities";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -227,10 +227,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
               allowClear
               options={Object.keys(ABILITIES)
                 .map((key) => {
-                  const { name, school } = ABILITIES[key];
                   return {
                     value: key,
-                    label: `${school} — ${name}`,
+                    label: longname(key),
                   };
                 })
                 .sort(({ label: a }, { label: b }) => b < a)}

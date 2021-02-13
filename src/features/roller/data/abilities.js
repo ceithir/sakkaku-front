@@ -59,4 +59,13 @@ const ABILITIES = {
   },
 };
 
+export const longname = (key) => {
+  if (!ABILITIES[key]) {
+    return null;
+  }
+
+  const { name, school } = ABILITIES[key];
+  return `${school} — ${name}`;
+};
+
 export default ABILITIES;
