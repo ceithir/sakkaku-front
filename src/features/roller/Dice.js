@@ -1,18 +1,18 @@
 import React from "react";
 import { Tooltip, Image } from "antd";
-import blankRing from "./images/black.png";
-import strifeOpportunityRing from "./images/blackot.png";
-import strifeSuccessRing from "./images/blackst.png";
-import strifeExplosionRing from "./images/blacket.png";
-import opportunityRing from "./images/blacko.png";
-import successRing from "./images/blacks.png";
-import blankSkill from "./images/white.png";
-import explosionSkill from "./images/whitee.png";
-import explosionStrifeSkill from "./images/whiteet.png";
-import opportunitySkill from "./images/whiteo.png";
-import successSkill from "./images/whites.png";
-import successOpportunitySkill from "./images/whiteso.png";
-import successStrifeSkill from "./images/whitest.png";
+import blankRing from "./images/dice/black.png";
+import strifeOpportunityRing from "./images/dice/blackot.png";
+import strifeSuccessRing from "./images/dice/blackst.png";
+import strifeExplosionRing from "./images/dice/blacket.png";
+import opportunityRing from "./images/dice/blacko.png";
+import successRing from "./images/dice/blacks.png";
+import blankSkill from "./images/dice/white.png";
+import explosionSkill from "./images/dice/whitee.png";
+import explosionStrifeSkill from "./images/dice/whiteet.png";
+import opportunitySkill from "./images/dice/whiteo.png";
+import successSkill from "./images/dice/whites.png";
+import successOpportunitySkill from "./images/dice/whiteso.png";
+import successStrifeSkill from "./images/dice/whitest.png";
 
 const getImage = ({
   type,
