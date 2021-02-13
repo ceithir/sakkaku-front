@@ -8,6 +8,7 @@ import {
   isFromRerollOfType,
   isSpecialReroll,
   isSpecialAlteration,
+  isAlteration,
 } from "../utils";
 import ABILITIES from "../data/abilities";
 
@@ -18,11 +19,6 @@ const TITLES = {
   adversity: "Adversity",
   "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
   ruthless: "Custom reroll (from NPCs' or other PCs' effects)",
-};
-
-const EMPTY = {
-  adversity: "No die with a success or an explosion",
-  "2heavens": "No die with a success or an explosion",
 };
 
 const getTitle = (name) => {
@@ -39,6 +35,18 @@ const getTitle = (name) => {
   }
 
   return TITLES[name];
+};
+
+const getEmptyMessage = (rerollType) => {
+  if (["adversity", "2heavens"].includes(rerollType)) {
+    return `Nothing was rerolled as there isn't a single die with a success or an explosion.`;
+  }
+
+  if (isAlteration(rerollType)) {
+    return "No dice were altered.";
+  }
+
+  return "No dice were rerolled.";
 };
 
 const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
@@ -59,7 +67,7 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
           {title}
         </Title>
         <Paragraph className={styles.empty}>
-          {EMPTY[rerollType] || `Ability not used`}
+          {getEmptyMessage(rerollType)}
         </Paragraph>
       </div>
     );
