@@ -9,6 +9,8 @@ import {
   selectStep,
   selectIntent,
   setAddKept,
+  keepInsteadOfChanneling,
+  channel,
 } from "./reducer";
 import Keep from "./Keep";
 import Summary from "./Summary";
@@ -25,6 +27,7 @@ import ResolveResult from "./result/Resolve";
 import AnonymousAlert from "../../AnonymousAlert";
 import { isReroll, rolledDicesCount } from "./utils";
 import Modifier from "./Modifier";
+import Channel from "./Channel";
 
 const { Panel } = Collapse;
 
@@ -84,6 +87,7 @@ const Roller = ({ save }) => {
     description,
     metadata,
     addkept,
+    channelInsteadOfKeeping,
   } = roll;
 
   const basePool = rolledDicesCount(roll);
@@ -142,6 +146,18 @@ const Roller = ({ save }) => {
 
     if (name === KEEP) {
       if (currentStep === KEEP) {
+        if (channelInsteadOfKeeping) {
+          return (
+            <Channel
+              dices={dices}
+              basePool={basePool}
+              rerollTypes={rerollTypes}
+              onFinish={(toChannel) => dispatch(channel(roll, toChannel))}
+              cancel={() => dispatch(keepInsteadOfChanneling())}
+            />
+          );
+        }
+
         return (
           <Keep
             dices={dices}

@@ -12,6 +12,7 @@ const Confirm = ({
   rerollTypes,
   addReroll,
   addAlteration,
+  channel,
 }) => {
   const description = `If need be you may add ${
     rerollTypes.length > 0 ? "extra" : ""
@@ -26,6 +27,7 @@ const Confirm = ({
       ? "another"
       : "an"
   } alteration`;
+  const channelButtonText = "Channel";
   const nextButtonText = `Skip`;
 
   return (
@@ -44,6 +46,7 @@ const Confirm = ({
           <Button disabled={!addAlteration} onClick={addAlteration}>
             {alterButtonText}
           </Button>
+          <Button onClick={channel}>{channelButtonText}</Button>
           <NextButton onClick={onFinish}>{nextButtonText}</NextButton>
         </LineContainer>
       }

@@ -6,6 +6,9 @@ import Dices from "../Dices";
 import { replaceRerolls, orderDices } from "../utils";
 import DirectLink from "../button/DirectLink";
 import LineContainer from "../button/LineContainer";
+import { Typography } from "antd";
+
+const { Text } = Typography;
 
 const Resolve = ({
   dices,
@@ -16,17 +19,24 @@ const Resolve = ({
   basePool,
   rerollTypes,
 }) => {
+  const isChannel = dices.some(({ status }) => status === "channeled");
+
   return (
     <div className={styles.layout}>
       <div className={styles.container}>
+        {isChannel && (
+          <Text
+            className={styles["channel-text"]}
+          >{`The following dice were channeled (reserved) for a later roll.`}</Text>
+        )}
         <Dices
           dices={orderDices(
             replaceRerolls({ dices, basePool, rerollTypes }).filter(
-              ({ status }) => status === "kept"
+              ({ status }) => status === "kept" || status === "channeled"
             )
           )}
         />
-        <Result dices={dices} tn={tn} modifiers={rerollTypes} />
+        {!isChannel && <Result dices={dices} tn={tn} modifiers={rerollTypes} />}
         <LineContainer>
           <DirectLink id={id} />
           <BbCode

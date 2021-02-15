@@ -1,5 +1,11 @@
 import React from "react";
-import { reroll, alter, goToKeepStep, addModifiers } from "./reducer";
+import {
+  reroll,
+  alter,
+  goToKeepStep,
+  addModifiers,
+  channelInsteadOfKeeping,
+} from "./reducer";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Ability from "./reroll/Ability";
@@ -195,6 +201,7 @@ const Modifier = ({ roll, dispatch }) => {
       rerollTypes={rerollTypes}
       addReroll={modifiers.length < 100 && addReroll}
       addAlteration={modifiers.length < 100 && addAlteration}
+      channel={() => dispatch(channelInsteadOfKeeping())}
     />
   );
 };

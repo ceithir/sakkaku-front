@@ -16,6 +16,7 @@ const initialState = {
   channeled: [],
   addkept: [],
   explicitGoToKeep: false,
+  channelInsteadOfKeeping: false,
 };
 
 const slice = createSlice({
@@ -34,6 +35,7 @@ const slice = createSlice({
       state.channeled = [];
       state.addkept = [];
       state.explicitGoToKeep = false;
+      state.channelInsteadOfKeeping = false;
 
       state.id = null;
       window.history.pushState(null, null, "/");
@@ -100,6 +102,14 @@ const slice = createSlice({
     setModifiers: (state, action) => {
       state.modifiers = action.payload;
     },
+    channelInsteadOfKeeping: (state) => {
+      state.channelInsteadOfKeeping = true;
+      state.explicitGoToKeep = true;
+    },
+    keepInsteadOfChanneling: (state) => {
+      state.channelInsteadOfKeeping = false;
+      state.explicitGoToKeep = false;
+    },
   },
 });
 
@@ -112,6 +122,8 @@ export const {
   setToKeep,
   setAddKept,
   goToKeepStep,
+  channelInsteadOfKeeping,
+  keepInsteadOfChanneling,
 } = slice.actions;
 
 const { update, setError, setModifiers } = slice.actions;
@@ -336,6 +348,45 @@ export const addModifiers = (roll, newModifiers) => (dispatch) => {
 
   dispatch(setModifiers(allModifiers));
   dispatch(setLoading(false));
+};
+
+export const channel = (roll, positions) => (dispatch) => {
+  dispatch(setLoading(true));
+
+  const success = (data) => {
+    dispatch(update(data));
+  };
+  const error = () => {
+    dispatch(setError(true));
+  };
+
+  const { id } = roll;
+  if (id) {
+    authentifiedPostOnServer({
+      uri: `/ffg/l5r/rolls/${id}/channel`,
+      body: {
+        positions,
+      },
+      success,
+      error,
+    });
+    return;
+  }
+
+  const { tn, ring, skill, modifiers, dices, metadata } = roll;
+  postOnServer({
+    uri: "/public/ffg/l5r/rolls/channel",
+    body: {
+      roll: {
+        parameters: { tn, ring, skill, modifiers },
+        dices,
+        metadata,
+      },
+      positions,
+    },
+    success,
+    error,
+  });
 };
 
 export const selectAll = (state) => state.roll;
