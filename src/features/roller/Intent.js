@@ -101,6 +101,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const user = useSelector(selectUser);
   const [voided, setVoided] = useState(false);
   const [school, setSchool] = useState();
+  const [ringless, setRingless] = useState(false);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -109,14 +110,23 @@ const Intent = ({ onFinish, values, onComplete }) => {
     dispatch(addCharacter(data["character"]));
 
     const techniques = data["techniques"] || [];
-    const misc = data["misc"] || [];
+
+    let { ring, tn, void: voided, misc = [] } = data;
+    if (misc.includes("ringless")) {
+      ring = 0;
+      tn = null;
+      voided = false;
+      misc = misc.filter((x) => x !== "ringless");
+    }
 
     onFinish({
       ...data,
+      ring,
+      tn,
       modifiers: [
         data["modifier"],
         data["compromised"] && "compromised",
-        data["void"] && "void",
+        voided && "void",
         data["school"],
         ...techniques,
         ...misc,
@@ -150,6 +160,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           setSchool(form.getFieldValue("school"));
         }
+        if (
+          Object.keys(changedValues).some((name) => ["misc"].includes(name))
+        ) {
+          setRingless(form.getFieldValue("misc").includes("ringless"));
+        }
       }}
     >
       {!!user && (
@@ -177,18 +192,22 @@ const Intent = ({ onFinish, values, onComplete }) => {
           </Form.Item>
         </>
       )}
-      <Form.Item label="TN" name="tn">
-        <InputNumber min={1} />
-      </Form.Item>
+      {!ringless && (
+        <Form.Item label="TN" name="tn">
+          <InputNumber min={1} />
+        </Form.Item>
+      )}
       <Divider />
-      <Form.Item
-        label="Ring"
-        name="ring"
-        rules={defaultRules}
-        className={classNames({ [styles.voided]: voided })}
-      >
-        <InputNumber min={1} max={10} />
-      </Form.Item>
+      {!ringless && (
+        <Form.Item
+          label="Ring"
+          name="ring"
+          rules={defaultRules}
+          className={classNames({ [styles.voided]: voided })}
+        >
+          <InputNumber min={1} max={10} />
+        </Form.Item>
+      )}
       <Form.Item
         label="Skill"
         name="skill"
@@ -200,13 +219,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
       <Divider />
       <Collapse ghost>
         <Panel header={"Common modifiers"}>
-          <Form.Item
-            label={"Void for +1 Ring die?"}
-            name="void"
-            valuePropName="checked"
-          >
-            <Switch />
-          </Form.Item>
+          {!ringless && (
+            <Form.Item
+              label={"Void for +1 Ring die?"}
+              name="void"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          )}
           <Form.Item label="(Dis)Advantage" name="modifier">
             <Radio.Group>
               <Radio.Button value="">None</Radio.Button>
@@ -322,6 +343,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
                 {
                   value: "2heavens",
                   label: "Attacking a warding Mirumoto Two-Heavens Adept",
+                },
+                {
+                  value: "ringless",
+                  label: "Ringless roll (ex: Center Duel Action)",
                 },
               ]}
               optionFilterProp="label"

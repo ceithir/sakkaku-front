@@ -28,7 +28,10 @@ const Confirm = ({
       : "an"
   } alteration`;
   const channelButtonText = "Channel";
-  const nextButtonText = `Skip`;
+  const noRing = !dices.some(({ type }) => type === "ring");
+  const nextButtonText = noRing
+    ? `Ringless, cannot keep, only channel`
+    : `Skip`;
 
   return (
     <DicesBox
@@ -47,7 +50,9 @@ const Confirm = ({
             {alterButtonText}
           </Button>
           <Button onClick={channel}>{channelButtonText}</Button>
-          <NextButton onClick={onFinish}>{nextButtonText}</NextButton>
+          <NextButton onClick={onFinish} disabled={noRing}>
+            {nextButtonText}
+          </NextButton>
         </LineContainer>
       }
     />
