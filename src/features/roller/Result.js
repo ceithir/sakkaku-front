@@ -41,6 +41,16 @@ const Result = ({ dices, tn, extra, className, modifiers = [] }) => {
       type: "Magnitude",
       count: blankCount,
     });
+    const alteredDiceCount = dices.filter(
+      ({ metadata }) => metadata?.source === "ishiken"
+    ).length;
+    if (alteredDiceCount > 0) {
+      data.push({
+        type: "Fatigue from Ability",
+        count: alteredDiceCount,
+        color: "warning",
+      });
+    }
   }
 
   if (
@@ -63,6 +73,32 @@ const Result = ({ dices, tn, extra, className, modifiers = [] }) => {
       count: honorLoss,
       color: honorLoss > 0 && "danger",
     });
+  }
+
+  if (modifiers.includes("sailor")) {
+    const sailorDiceCount = dices.filter(
+      ({ metadata }) => metadata?.source === "sailor"
+    ).length;
+    if (sailorDiceCount > 0) {
+      data.push({
+        type: "Strife from Ability",
+        count: sailorDiceCount,
+        color: "danger",
+      });
+    }
+  }
+
+  if (modifiers.includes("wandering")) {
+    const diceCount = dices.filter(
+      ({ metadata }) => metadata?.source === "wandering"
+    ).length;
+    if (diceCount > 0) {
+      data.push({
+        type: "Fatigue from Ability",
+        count: diceCount,
+        color: "warning",
+      });
+    }
   }
 
   return (

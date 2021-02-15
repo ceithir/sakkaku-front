@@ -21,10 +21,35 @@ const BbCode = ({ id, description, tn, dices, modifiers = [] }) => {
     blankCount,
   } = countDices(keptDices);
 
-  let shortResult = `Success: [b]${successCount}[/b] / Opportunity: [b]${opportunityCount}[/b] / Strife: [b]${strifeCount}[/b]`;
+  let result = [
+    {
+      label: "Success",
+      value: successCount,
+    },
+    {
+      label: "Opportunity",
+      value: opportunityCount,
+    },
+    {
+      label: "Strife",
+      value: dices.some(({ metadata }) => metadata?.source === "sailor")
+        ? `${strifeCount} + ${
+            dices.filter(({ metadata }) => metadata?.source === "sailor").length
+          }`
+        : strifeCount,
+    },
+  ];
+
   if (modifiers.includes("ishiken")) {
-    shortResult += ` / Magnitude: [b]${blankCount}[/b]`;
+    result.push({
+      label: "Magnitude",
+      value: blankCount,
+    });
   }
+
+  const shortResult = result
+    .map(({ label, value }) => `${label}: [b]${value}[/b]`)
+    .join(" / ");
 
   const text = `[url="${
     window.location.origin
