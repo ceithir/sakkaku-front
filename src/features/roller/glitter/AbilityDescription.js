@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Typography } from "antd";
+import { Card, Typography, Image } from "antd";
 import styles from "./AbilityDescription.module.css";
 import classNames from "classnames";
 import backgroundImage from "./background.jpg";
@@ -9,7 +9,7 @@ const Description = ({ name, effect, image, className }) => {
   return (
     <Card
       className={classNames(styles.card, { [className]: !!className })}
-      cover={<img src={image} alt="" />}
+      cover={<Image src={image} alt="" preview={false} />}
       style={{
         backgroundImage: `url(${backgroundImage})`,
       }}
