@@ -521,7 +521,7 @@ const TABLES = {
         min: 1,
         max: 1,
         description:
-          "You can unequivocally trace your lineage back to the earliest days of the Kaiu Wall. It is said that the blood of your family is mixed with the mortar hold- ing together the first stones of the Wall.",
+          "You can unequivocally trace your lineage back to the earliest days of the Kaiu Wall. It is said that the blood of your family is mixed with the mortar holding together the first stones of the Wall.",
         modifier: "Increase your status by 3.",
         effect:
           "You gain the Blessed Lineage advantage (see page 103 of the core rulebook). This can be assigned in excess of the normal limitations on disadvantages at character creation. While on the Wall, your glory rank is treated a1 higher.",
