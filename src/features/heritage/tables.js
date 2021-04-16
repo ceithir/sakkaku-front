@@ -359,7 +359,7 @@ const TABLES = {
             {
               min: 1,
               max: 3,
-              text: "Martial Arts [ChooseOne]",
+              text: "Martial Arts [Choose One]",
             },
             {
               min: 4,
