@@ -861,6 +861,213 @@ const TABLES = {
       },
     ],
   },
+  victory: {
+    name: "Fields of Victory (pages 86-87)",
+    entries: [
+      {
+        name: "Born on the Battlefield",
+        min: 1,
+        max: 1,
+        description:
+          "One of your ancestors was born amid war and bloodshed, even if not literally on the front lines. The omens of your birth reflect an affinity for that ancestor, as such omens have done for others in your family line.",
+        modifier: "Decrease your glory by 3.",
+        effect:
+          "You gain the Guiding Ancestor (Void) distinction (see page 82 of Fields of Victory).",
+      },
+      {
+        name: "Strategic Mastermind",
+        min: 2,
+        max: 2,
+        description:
+          "You are descended from a warrior known for their cunning and wartime acumen.",
+        modifier: "Increase your glory by 5 and decrease your honor by 5.",
+        effect: {
+          intro:
+            "Roll a ten-sided die to determine a skill you learned by studying your ancestor’s deeds (",
+          outro: "); gain +1 rank in that skill.",
+          options: [
+            {
+              min: 1,
+              max: 2,
+              text: "Tactics",
+            },
+            {
+              min: 3,
+              max: 4,
+              text: "Command",
+            },
+            {
+              min: 5,
+              max: 6,
+              text: "Government",
+            },
+            {
+              min: 7,
+              max: 8,
+              text: "Culture",
+            },
+            {
+              min: 9,
+              max: 9,
+              text: "Commerce",
+            },
+            {
+              min: 10,
+              max: 10,
+              text: "Theology",
+            },
+          ],
+        },
+      },
+      {
+        name: "Victory against the Crane",
+        min: 3,
+        max: 3,
+        description:
+          "In your family, one of your ancestors held a decisive victory over the Crane. It may have been a battle, a game of shōgi, a duel, or any number of other things. The circumstances are irrelevant; the Crane were humbled, and your ancestor brought honor to your clan.",
+        modifier: "Increase your glory by 3.",
+        effect: {
+          intro:
+            "Roll a ten-sided die and add the following family heirloom to your starting items (",
+          outro:
+            "). In addition of its other properties, the item is a battlefield heirloom (see page 90 of Fields of Victory).",
+          options: [
+            {
+              min: 1,
+              max: 3,
+              text: "a weapon",
+            },
+            {
+              min: 4,
+              max: 6,
+              text: "a game set of your choice",
+            },
+            {
+              min: 7,
+              max: 8,
+              text: "some other item relevant to your ancestor’s victory",
+            },
+            {
+              min: 9,
+              max: 9,
+              text: "a horse or other animal",
+            },
+            {
+              min: 10,
+              max: 10,
+              text:
+                "the deed to a small piece of land on the border of Crane territory",
+            },
+          ],
+        },
+      },
+      {
+        name: "Victory against Invaders",
+        min: 4,
+        max: 4,
+        description:
+          "The Lion Clan’s foremost duty is to protect the Empire from outside threats, and one of your kin acquitted themselves honorably in this endeavor long ago.",
+        modifier: "Increase your honor by 3.",
+        effect: {
+          intro:
+            "Roll a ten-sided die to determine a skill you learned to honor your ancestor (",
+          outro: "); gain +1 rank in that skill.",
+          options: [
+            {
+              min: 1,
+              max: 2,
+              text: "Command",
+            },
+            {
+              min: 3,
+              max: 4,
+              text: "Government",
+            },
+            {
+              min: 5,
+              max: 6,
+              text: "Tactics",
+            },
+            {
+              min: 7,
+              max: 8,
+              text: "Survival",
+            },
+            {
+              min: 9,
+              max: 9,
+              text: "Theology",
+            },
+            {
+              min: 10,
+              max: 10,
+              text: "Meditation",
+            },
+          ],
+        },
+      },
+      {
+        name: "Shamed by Defeat",
+        min: 5,
+        max: 5,
+        description:
+          "Among your kin is one who failed the clan. Whether they were beaten in battle or a duel, humiliated in court, or something else, the need to redeem your line burns within you and drive you to excel.",
+        modifier: "Decrease your glory by 3.",
+        effect:
+          "Choose of the starting skills for your school in which your character has no ranks; gain +1 rank in that skill.",
+      },
+      {
+        name: "Blade of 10,000 Battles",
+        min: 6,
+        max: 6,
+        description:
+          "You have been entrusted with a storied weapon, with an ancient history and lineage, and you must prove worthy to continue its legacy.",
+        modifier: "Increase your glory by 3.",
+        effect:
+          "Choose a weapon and add it to your starting outfit. At the GM’s discretion, certain weapons may be inappropriate choices and cannot be selected. In addition to being a weapon, this item is a battlefield heirloom (see page 90 of Fields of Victory).",
+      },
+      {
+        name: "Lost Heirloom",
+        min: 7,
+        max: 7,
+        description:
+          "An ancestor of yours was once entrusted with a peerless weapon, but through their own failure, they lost it. It may have been taken by another clan as a trophy in battle after your ancestor’s defeat, stolen by bandits or shinobi, or even dishonorably sold to cover gambling debts. Whatever its fate, it has fallen to you to recover it.",
+        modifier: "Increase your honor by 5 and decrease your glory by 3.",
+        effect:
+          "Choose a weapon to be the lost heirloom, which is now held by some individual or group hostile to you or your clan. At the GM’s discretion, certain weapons may be inappropriate choices and cannot be selected. In addition to being a weapon, this item is a battlefield heirloom (see page 90 of Fields of Victory).",
+      },
+      {
+        name: "Selfless Sentinel",
+        min: 8,
+        max: 8,
+        description:
+          "Your ancestor was not well-known or highly favored, but they served with honor, if not glory, and protected Lion lands from attack for all their life.",
+        modifier: "Increase your honor by 5 and decrease your glory by 3.",
+        effect:
+          "Gain the Traditional Adherent (Earth) distinction (see page 82 of Fields of Victory).",
+      },
+      {
+        name: "Mighty Conqueror",
+        min: 9,
+        max: 9,
+        description:
+          "One of your ancestors once seized a valuable prize for the Lion Clan in a past war, such as a village, castle, or valuable hostage. The benefits of this prize still come to those of their descent.",
+        modifier: "Increase your glory by 3 and decrease your honor by 3.",
+        effect:
+          "Choose one: double your starting koku, add one item of rarity 6 or lower to your starting items that is a battlefield heirloom (see page 90 of Fields of Victory) in addition to its other properties, or gain the Glorious Deeds passion (see page 83 of Fields of Victory).",
+      },
+      {
+        name: "Right Hand of the Emperor",
+        min: 10,
+        max: 10,
+        description:
+          "The crowning glory of your line is the victory one of your ancestors won in the name of a past Emperor. They may have crushed an enemy of the Empire, won great political favor, or even been a close associate or friend of the Emperor in times past. As such, the Imperial families have more respect for you than for most clan samurai—and they expect you to achieve accomplishments as glorious as those of your ancestor.",
+        modifier: "Increase your status by 3.",
+        effect:
+          "Gain the Support of [One Group] distinction. The group chosen must be the Seppun, Otomo, or Miya family, or the Imperial Legions.",
+      },
+    ],
+  },
   custom: {
     name: "Other / Custom",
   },
