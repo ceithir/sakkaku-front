@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Table } from "antd";
-import TABLES, { entry } from "./tables";
+import TABLES, { entry } from "./data/heritage";
 import { Link } from "react-router-dom";
 
 const { Text } = Typography;

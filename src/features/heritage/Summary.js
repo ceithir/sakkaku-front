@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Descriptions, Card } from "antd";
-import TABLES, { entry } from "./tables";
+import TABLES, { entry } from "./data/heritage";
 import styles from "./Summary.module.css";
 
 const { Text } = Typography;
