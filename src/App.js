@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./App.css";
+import "./App.less";
 import Roller from "./features/roller";
 import Layout from "./features/navigation/Layout";
 import { getOnServer } from "./server";
