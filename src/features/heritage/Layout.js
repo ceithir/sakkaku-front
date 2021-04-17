@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography, Card } from "antd";
-import styles from "./Layout.module.css";
+import styles from "./Layout.module.less";
 import AnonymousAlert from "../../AnonymousAlert";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";

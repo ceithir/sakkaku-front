@@ -1,0 +1,32 @@
+@import "../../default.less";
+
+.layout {
+  margin-top: 24px;
+
+  & > h1,
+  & > p {
+    text-align: center;
+    padding: 12px;
+  }
+
+  & > * {
+    max-width: @screen-md;
+    margin: 0 auto;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: @screen-md) {
+  .layout h2 {
+    text-align: center;
+  }
+}
+
+.dice {
+  max-width: 288px;
+  text-align: center;
+
+  :global(.ant-typography) {
+    margin-right: 12px;
+  }
+}
