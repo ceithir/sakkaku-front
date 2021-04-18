@@ -44,7 +44,12 @@ const Summary = ({ table, rolls, children, context }) => {
 
   return (
     <div className={styles.container}>
-      <Descriptions title={name} bordered layout="vertical" column={3}>
+      <Descriptions
+        title={name}
+        bordered
+        layout="vertical"
+        column={{ xs: 1, sm: 1, md: 3 }}
+      >
         {context && (
           <>
             {context.character && (
