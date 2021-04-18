@@ -13,7 +13,7 @@ const CustomLayout = ({ children }) => {
       </Header>
       <Content>{children}</Content>
       <Footer className={styles.footer}>
-        {`Sakkaku Project / 2020 / `}
+        {`Sakkaku Project / 2020-2021 / `}
         <a href="mailto:contact.sakkaku@gmail.com">Issue? Suggestion?</a>
       </Footer>
     </Layout>
