@@ -10,7 +10,7 @@ const { Text, Title } = Typography;
 
 const Dices = ({ dices }) => {
   return (
-    <Card className={styles.dice}>
+    <Card className={styles.dice} size="small">
       <Text>{`Dice:`}</Text>
       {dices.map(({ value, status }, index) => {
         return (
