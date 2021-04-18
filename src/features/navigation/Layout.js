@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout } from "antd";
-import styles from "./Layout.module.css";
+import styles from "./Layout.module.less";
 import Menu from "./Menu";
 
 const { Header, Content, Footer } = Layout;

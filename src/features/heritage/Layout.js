@@ -4,6 +4,7 @@ import styles from "./Layout.module.less";
 import AnonymousAlert from "../../AnonymousAlert";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
+import backgroundImage from "../../background.jpg";
 
 const { Text, Title } = Typography;
 
@@ -32,7 +33,12 @@ const Layout = ({ children, dices }) => {
   return (
     <>
       {!user && <AnonymousAlert />}
-      <div className={styles.layout}>
+      <div
+        className={styles.layout}
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+        }}
+      >
         <Title>{`Heritage Roll`}</Title>
         {dices && <Dices dices={dices} />}
         <>{children}</>

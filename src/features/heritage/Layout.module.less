@@ -1,7 +1,10 @@
 @import (reference) "~antd/dist/antd.less";
 
 .layout {
-  margin-top: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  background-size: cover;
+  flex: 1;
 
   & > h1,
   & > p {
@@ -13,6 +16,10 @@
     max-width: @screen-md;
     margin: 0 auto;
     margin-bottom: 24px;
+  }
+
+  & > *:last-child {
+    margin-bottom: 0;
   }
 }
 

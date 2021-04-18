@@ -1,6 +1,6 @@
 import React from "react";
 import { Steps } from "antd";
-import styles from "./Steps.module.css";
+import styles from "./Steps.module.less";
 import classNames from "classnames";
 
 export const DECLARE = "declare";
