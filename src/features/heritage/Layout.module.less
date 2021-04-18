@@ -1,5 +1,9 @@
 @import (reference) "~antd/dist/antd.less";
 
+@title-color: #942b39;
+@title-font: "Brush Script MT", "Brush Script Std", "Lucida Calligraphy",
+  "Lucida Handwriting", "Apple Chancery", cursive;
+
 .layout {
   padding-top: 24px;
   padding-bottom: 24px;
@@ -10,6 +14,11 @@
   & > p {
     text-align: center;
     padding: 12px;
+  }
+
+  & > h1:global(.ant-typography) {
+    color: @title-color;
+    font-family: @title-font;
   }
 
   & > * {
