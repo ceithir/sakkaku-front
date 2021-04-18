@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Typography, Image } from "antd";
 import styles from "./AbilityDescription.module.css";
 import classNames from "classnames";
-import backgroundImage from "./background.jpg";
+import backgroundImage from "../../../background.jpg";
 import ABILITIES from "../data/abilities";
 
 const Description = ({ name, effect, image, className }) => {
