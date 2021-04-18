@@ -1,0 +1,30 @@
+@import (reference) "~antd/dist/antd.less";
+
+.container {
+  max-width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+
+  & > * {
+    margin-bottom: 24px;
+  }
+
+  @media (min-width: @screen-xl) {
+    flex-direction: row;
+    align-items: flex-start;
+
+    & > * {
+      margin: 0 12px 0 12px;
+    }
+
+    & > *:first-child {
+      margin-left: 24px;
+    }
+
+    & > *:last-child {
+      margin-right: 24px;
+    }
+  }
+}

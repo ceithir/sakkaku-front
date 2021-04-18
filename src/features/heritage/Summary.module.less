@@ -1,0 +1,16 @@
+@import (reference) "~antd/dist/antd.less";
+
+.container {
+  :global(.ant-descriptions-title) {
+    text-align: center;
+  }
+
+  :global(.ant-descriptions-item-content) {
+    word-break: normal;
+  }
+
+  & > :global(.ant-card-body) > :global(.ant-descriptions) {
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+}
