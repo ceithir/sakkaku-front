@@ -1,16 +1,60 @@
 @import (reference) "~antd/dist/antd.less";
 
+@label-background-color: #f0efed;
+@content-background-color: #f8f7f6;
+@label-text-color: #848f77;
+@content-text-color: @text-color;
+@border-color: #8e937f;
+
 .container {
+  :global(.ant-descriptions-header) {
+    margin-bottom: 12px;
+  }
+
   :global(.ant-descriptions-title) {
-    text-align: center;
+    color: @label-text-color;
+    font-variant: small-caps;
+    border-bottom: 1px solid @border-color;
+    padding-left: 8px;
   }
 
   :global(.ant-descriptions-item-content) {
     word-break: normal;
   }
 
-  & > :global(.ant-card-body) > :global(.ant-descriptions) {
-    margin-left: -24px;
-    margin-right: -24px;
+  :global(.ant-descriptions-item-label) {
+    color: @label-text-color;
+  }
+
+  :global(.ant-descriptions-item-content),
+  :global(.ant-descriptions-item-content) :global(.ant-typography) {
+    color: @content-text-color;
+  }
+
+  :global(.ant-descriptions-item-label) {
+    background-color: @label-background-color;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  :global(.ant-descriptions-item-content) {
+    background-color: @content-background-color;
+  }
+
+  :global(.ant-descriptions-item-label),
+  :global(.ant-descriptions-item-content),
+  :global(.ant-descriptions-bordered)
+    :global(.ant-descriptions-item-label:last-child),
+  :global(.ant-descriptions-bordered)
+    :global(.ant-descriptions-item-content:last-child) {
+    border: 1px solid @border-color;
+  }
+
+  :global(.ant-descriptions-view) tbody > tr:first-child {
+    border-top: 4px double @border-color;
+  }
+
+  :global(.ant-descriptions-view) tbody > tr:last-child {
+    border-bottom: 4px double @border-color;
   }
 }
