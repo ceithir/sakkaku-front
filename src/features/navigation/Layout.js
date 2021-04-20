@@ -15,6 +15,11 @@ const CustomLayout = ({ children }) => {
       <Footer className={styles.footer}>
         {`Sakkaku Project / 2020-2021 / `}
         <a href="mailto:contact.sakkaku@gmail.com">Issue? Suggestion?</a>
+        {` / © `}
+        <a href="https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/">
+          FFG
+        </a>
+        {` for all texts and assets`}
       </Footer>
     </Layout>
   );
