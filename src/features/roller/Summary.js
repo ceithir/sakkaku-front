@@ -1,10 +1,12 @@
 import React from "react";
-import { Descriptions } from "antd";
+import { Typography } from "antd";
 import { Link } from "react-router-dom";
 import Dice from "./Dice";
 import styles from "./Summary.module.less";
 import { orderDices, isSpecialReroll, isSpecialAlteration } from "./utils";
 import ABILITIES from "./data/abilities";
+
+const { Text } = Typography;
 
 const Summary = ({
   campaign,
@@ -20,6 +22,7 @@ const Summary = ({
 }) => {
   const special = [
     ...[
+      modifiers.includes("void") && "Void Point",
       modifiers.includes("compromised") && "Compromised",
       modifiers.includes("adversity") && "Adversity",
       modifiers.includes("distinction") && "Distinction",
@@ -40,64 +43,107 @@ const Summary = ({
     .filter(Boolean)
     .join(" / ");
 
-  return (
-    <Descriptions column={{ md: 3, sm: 1, xs: 1 }} bordered>
-      {player && (
-        <>
-          <Descriptions.Item label="Campaign">
-            <Link to={`/rolls?campaign=${campaign}`}>{campaign}</Link>
-          </Descriptions.Item>
-          <Descriptions.Item label="Character">
+  const data = [
+    player && {
+      label: `Identity`,
+      content: [
+        {
+          label: `Campaign`,
+          content: <Link to={`/rolls?campaign=${campaign}`}>{campaign}</Link>,
+        },
+        {
+          label: `Character`,
+          content: (
             <Link to={`/rolls?campaign=${campaign}&character=${character}`}>
               {character}
             </Link>
-          </Descriptions.Item>
-          <Descriptions.Item label="Player">
-            <Link to={`/rolls?player=${player.id}`}>{player.name}</Link>
-          </Descriptions.Item>
-        </>
-      )}
+          ),
+        },
+        {
+          label: `Player`,
+          content: <Link to={`/rolls?player=${player.id}`}>{player.name}</Link>,
+        },
+      ],
+    },
+    description && {
+      label: `Description`,
+      content: description,
+    },
+    tn && {
+      label: `TN`,
+      content: <Text className={styles.center}>{tn}</Text>,
+    },
+    {
+      label: `Dice Pool`,
+      content: [
+        {
+          label: `Ring`,
+          content: modifiers.includes("void") ? (
+            <>
+              <Text>{ring}</Text>
+              <Text type="secondary">{` + 1`}</Text>
+            </>
+          ) : (
+            ring
+          ),
+        },
+        {
+          label: `Skill`,
+          content: modifiers.includes("wandering") ? (
+            <>
+              <Text>{skill}</Text>
+              <Text type="secondary">{` + 1`}</Text>
+            </>
+          ) : (
+            skill
+          ),
+        },
+      ],
+    },
+    special && {
+      label: `Modifiers`,
+      content: special,
+    },
+    channeled?.length && {
+      label: `Channeled Dice Used`,
+      content: (
+        <div className={styles.dices}>
+          {orderDices(channeled).map((dice, index) => {
+            return <Dice key={index.toString()} dice={dice} />;
+          })}
+        </div>
+      ),
+    },
+    addkept?.length && {
+      label: `Kept Dice Added`,
+      content: (
+        <div className={styles.dices}>
+          {orderDices(addkept).map((dice, index) => {
+            return <Dice key={index.toString()} dice={dice} />;
+          })}
+        </div>
+      ),
+    },
+  ].filter(Boolean);
 
-      {description && (
-        <>
-          <Descriptions.Item label="Description" span={2}>
-            {description}
-          </Descriptions.Item>
-          <Descriptions.Item label="TN">{tn || "?"}</Descriptions.Item>
-        </>
-      )}
+  const buildDescription = (data) => {
+    return (
+      <dl>
+        {data.map(({ label, content }) => {
+          return (
+            <div>
+              <dt>{label}</dt>
+              <dd>
+                {Array.isArray(content) ? buildDescription(content) : content}
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+    );
+  };
 
-      <Descriptions.Item label="Ring">{ring}</Descriptions.Item>
-      <Descriptions.Item label="Skill">{skill}</Descriptions.Item>
-      <Descriptions.Item label="Voided?">
-        {modifiers.includes("void") ? "Yes" : "No"}
-      </Descriptions.Item>
-
-      {channeled?.length && (
-        <Descriptions.Item label={"Channeled Dice Used"} span={3}>
-          <div className={styles.dices}>
-            {orderDices(channeled).map((dice, index) => {
-              return <Dice key={index.toString()} dice={dice} />;
-            })}
-          </div>
-        </Descriptions.Item>
-      )}
-      {addkept?.length && (
-        <Descriptions.Item label={"Kept Dice Added"} span={3}>
-          <div className={styles.dices}>
-            {orderDices(addkept).map((dice, index) => {
-              return <Dice key={index.toString()} dice={dice} />;
-            })}
-          </div>
-        </Descriptions.Item>
-      )}
-      {special && (
-        <Descriptions.Item label={"Additional Modifiers"} span={3}>
-          {special}
-        </Descriptions.Item>
-      )}
-    </Descriptions>
-  );
+  return <div className={styles.container}>{buildDescription(data)}</div>;
 };
 
 export default Summary;
