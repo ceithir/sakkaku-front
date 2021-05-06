@@ -2,7 +2,7 @@ import React from "react";
 import { Descriptions } from "antd";
 import { Link } from "react-router-dom";
 import Dice from "./Dice";
-import styles from "./Summary.module.css";
+import styles from "./Summary.module.less";
 import { orderDices, isSpecialReroll, isSpecialAlteration } from "./utils";
 import ABILITIES from "./data/abilities";
 
