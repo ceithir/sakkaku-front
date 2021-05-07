@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { Button, Card } from "antd";
+import { Button } from "antd";
 import { getOnServer } from "../../server";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import Complete from "./Complete";
@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 import Breadcrumb from "./Breadcrumb";
 import { orderDices } from "./utils";
+import styles from "./IdentifiedRoll.module.less";
 
 const GoBackButton = (props) => {
   const history = useHistory();
@@ -84,10 +85,8 @@ const IdentifiedRoll = () => {
           player={player}
         />
       ) : (
-        <>
-          <Card bordered={false}>
-            <Summary player={player} {...data} {...parameters} />
-          </Card>
+        <div className={styles.ongoing}>
+          <Summary player={player} {...data} {...parameters} />
           <DicesBox
             text={`Check in progress. Current dice pool:`}
             dices={orderDices(
@@ -95,7 +94,7 @@ const IdentifiedRoll = () => {
             )}
             footer={<GoBackButton style={{ float: "right" }} />}
           />
-        </>
+        </div>
       )}
     </>
   );

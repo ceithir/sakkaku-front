@@ -1,11 +1,6 @@
-.layout {
-  background-color: white;
-}
-
 .container {
   max-width: 576px;
   margin: 0 auto;
-  background-color: white;
   display: flex;
   flex-direction: column;
 }

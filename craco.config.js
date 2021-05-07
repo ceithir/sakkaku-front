@@ -2,7 +2,9 @@
 
 const CracoLessPlugin = require("craco-less");
 
-const modifiedTheme = {};
+const modifiedTheme = {
+  "collapse-content-bg": "#efefe7",
+};
 
 module.exports = {
   plugins: [
