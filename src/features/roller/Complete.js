@@ -21,7 +21,11 @@ const Complete = ({ dices, button, intent, context, player }) => {
         <Summary {...context} {...intent} player={player} />
       </Panel>
 
-      <Panel header="Modify" key="modify" disabled={rerollTypes.length === 0}>
+      <Panel
+        header="Modify"
+        key="modify"
+        collapsible={rerollTypes.length === 0 ? "disabled" : "header"}
+      >
         <Reroll dices={dices} basePool={basePool} rerollTypes={rerollTypes} />
       </Panel>
 

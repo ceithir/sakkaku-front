@@ -131,7 +131,7 @@ const Summary = ({
       <dl>
         {data.map(({ label, content }) => {
           return (
-            <div>
+            <div key={label}>
               <dt>{label}</dt>
               <dd>
                 {Array.isArray(content) ? buildDescription(content) : content}
