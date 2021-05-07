@@ -1,8 +1,22 @@
+@import (reference) "~antd/dist/antd.less";
+
 @text-green: #848f77;
 @border-green: #8e937f;
+
+@torii-background-color: #f8f7f6;
+@torii-text-color: @text-color;
 
 .block-title {
   color: @text-green;
   font-variant: small-caps;
   border-bottom: 1px solid @border-green;
+}
+
+.torii-box {
+  padding: 24px;
+  color: @torii-text-color;
+  background-color: @torii-background-color;
+  border: 1px solid @border-green;
+  border-top: 4px double @border-green;
+  border-bottom: 4px double @border-green;
 }

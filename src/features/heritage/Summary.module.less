@@ -1,9 +1,6 @@
-@import (reference) "~antd/dist/antd.less";
 @import (reference) "../../common.less";
 
 @label-background-color: #f0efed;
-@content-background-color: #f8f7f6;
-@content-text-color: @text-color;
 
 .container {
   :global(.ant-descriptions-header) {
@@ -25,7 +22,7 @@
 
   :global(.ant-descriptions-item-content),
   :global(.ant-descriptions-item-content) :global(.ant-typography) {
-    color: @content-text-color;
+    color: @torii-text-color;
   }
 
   :global(.ant-descriptions-item-label) {
@@ -35,7 +32,7 @@
   }
 
   :global(.ant-descriptions-item-content) {
-    background-color: @content-background-color;
+    background-color: @torii-background-color;
   }
 
   :global(.ant-descriptions-item-label),

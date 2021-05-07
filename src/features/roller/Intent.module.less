@@ -1,6 +1,10 @@
+@import (reference) "../../common.less";
+
 .form {
-  padding: 0 24px;
-  margin-top: 24px;
+  margin: 0 auto;
+  max-width: @screen-md;
+  .torii-box();
+  padding-bottom: 0;
 }
 
 .voided :global(.ant-form-item-control-input-content):after {
@@ -11,10 +15,8 @@
 
 .school {
   margin-bottom: 24px;
-}
 
-@media (max-width: 576px) {
-  .school {
+  @media (max-width: @screen-sm) {
     margin-left: -36px;
     margin-right: -36px;
   }

@@ -10,7 +10,7 @@ import {
   Select,
   Collapse,
 } from "antd";
-import styles from "./Intent.module.css";
+import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -136,7 +136,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
   return (
     <Form
-      className={`boxed ${styles.form}`}
+      className={styles.form}
       {...layout}
       initialValues={values}
       onFinish={wrappedOnFinish}
