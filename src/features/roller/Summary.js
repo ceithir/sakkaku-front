@@ -69,10 +69,7 @@ const Summary = ({
       label: `Description`,
       content: description,
     },
-    tn && {
-      label: `TN`,
-      content: <Text className={styles.center}>{tn}</Text>,
-    },
+
     {
       label: `Dice Pool`,
       content: [
@@ -99,6 +96,10 @@ const Summary = ({
           ),
         },
       ],
+    },
+    tn && {
+      label: `TN`,
+      content: <Text className={styles.center}>{tn}</Text>,
     },
     special && {
       label: `Modifiers`,
