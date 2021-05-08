@@ -1,0 +1,33 @@
+@import (reference) "../../common.less";
+
+.layout {
+  max-width: @screen-sm;
+  margin: 0 auto;
+
+  & > button {
+    margin-bottom: 24px;
+  }
+}
+
+.content {
+  .torii-box();
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+}
+
+.figures {
+  margin-top: 24px;
+}
+
+.add-kept-form > div:last-child {
+  text-align: right;
+
+  @media (min-width: @screen-sm) {
+    text-align: left;
+    float: left;
+  }
+}
+
+.text {
+  text-align: center;
+}

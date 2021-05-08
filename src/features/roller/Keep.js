@@ -3,7 +3,7 @@ import NextButton from "./NextButton";
 import Result from "./Result";
 import { Typography, Form } from "antd";
 import ExplosionDices from "./ExplosionDices";
-import styles from "./Keep.module.css";
+import styles from "./Keep.module.less";
 import { useSelector, useDispatch } from "react-redux";
 import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
@@ -201,19 +201,21 @@ const Keep = ({
 
   return (
     <div className={styles.layout}>
-      <ExplosionDices
-        dices={wrapDices()}
-        basePool={basePool}
-        rerollTypes={rerollTypes}
-      />
-      <Paragraph className={styles.text}>{text()}</Paragraph>
-      <Result
-        dices={resultDices()}
-        tn={tn}
-        extra={toKeep}
-        className={styles.figures}
-        modifiers={rerollTypes}
-      />
+      <div className={styles.content}>
+        <ExplosionDices
+          dices={wrapDices()}
+          basePool={basePool}
+          rerollTypes={rerollTypes}
+        />
+        <Paragraph className={styles.text}>{text()}</Paragraph>
+        <Result
+          dices={resultDices()}
+          tn={tn}
+          extra={toKeep}
+          className={styles.figures}
+          modifiers={rerollTypes}
+        />
+      </div>
       {!keepingExplosions && (
         <AddKeptDiceForm
           dices={addkept}
