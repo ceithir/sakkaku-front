@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 import { replaceRerolls } from "../utils";
 import { Typography } from "antd";
-import styles from "./Ishiken.module.css";
+import styles from "./Ishiken.module.less";
 import DiceSideSelector from "../DiceSideSelector";
 import { longname } from "../data/abilities";
+import Dices from "../Dices";
 
-const { Text, Paragraph } = Typography;
+const { Text, Paragraph, Title } = Typography;
 
 const blank = ({ value: { opportunity, strife, success, explosion } }) =>
   opportunity === 0 && strife === 0 && success === 0 && explosion === 0;
@@ -86,64 +86,66 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
   };
 
   return (
-    <DicesBox
-      title={longname("ishiken")}
-      text={text}
-      dices={replaceRerolls({
-        dices: dices.map((dice, index) => {
-          const selected = positions.includes(index);
-          const selectable =
-            (!onlyBlanks && !onlyNonBlanks) ||
-            (onlyBlanks && blank(dice)) ||
-            (onlyNonBlanks && !blank(dice));
-          return {
-            ...dice,
-            selectable,
-            selected,
-            disabled: !selectable,
-            toggle: () => toggle(index),
-          };
-        }),
-        basePool,
-        rerollTypes,
-      })}
-      footer={
-        <>
-          {onlyBlanks && (
-            <div className={styles.alterators}>
-              <Text>{`Choose your desired non-blank result${
-                alterations.length > 1 ? "s" : ""
-              }`}</Text>
-              {alterations.map(({ position, value }) => {
-                const type = dices[position]["type"];
+    <div className={styles.container}>
+      <div className={styles.content}>
+        <Title level={3}>{longname("ishiken")}</Title>
+        <Paragraph className={styles.text}>{text}</Paragraph>
+        <Dices
+          dices={replaceRerolls({
+            dices: dices.map((dice, index) => {
+              const selected = positions.includes(index);
+              const selectable =
+                (!onlyBlanks && !onlyNonBlanks) ||
+                (onlyBlanks && blank(dice)) ||
+                (onlyNonBlanks && !blank(dice));
+              return {
+                ...dice,
+                selectable,
+                selected,
+                disabled: !selectable,
+                toggle: () => toggle(index),
+              };
+            }),
+            basePool,
+            rerollTypes,
+          })}
+          theme={"reroll"}
+        />
+      </div>
+      <div className={styles.footer}>
+        {onlyBlanks && (
+          <div className={styles.alterators}>
+            <Text>{`Choose your desired non-blank result${
+              alterations.length > 1 ? "s" : ""
+            }:`}</Text>
+            {alterations.map(({ position, value }) => {
+              const type = dices[position]["type"];
 
-                return (
-                  <DiceSideSelector
-                    key={position.toString()}
-                    value={{ type, value }}
-                    onChange={({ value }) => {
-                      const alt = [...alterations];
-                      const index = alt.findIndex(
-                        ({ position: pos }) => pos === position
-                      );
-                      alt[index]["value"] = value;
-                      setAlterations(alt);
-                    }}
-                    facets={AVAILABLE_FACETS[type].map((value) => {
-                      return { type, value };
-                    })}
-                  />
-                );
-              })}
-            </div>
-          )}
-          <NextButton onClick={() => onFinish(alterations)}>
-            {buttonText()}
-          </NextButton>
-        </>
-      }
-      theme="reroll"
-    />
+              return (
+                <DiceSideSelector
+                  key={position.toString()}
+                  value={{ type, value }}
+                  onChange={({ value }) => {
+                    const alt = [...alterations];
+                    const index = alt.findIndex(
+                      ({ position: pos }) => pos === position
+                    );
+                    alt[index]["value"] = value;
+                    setAlterations(alt);
+                  }}
+                  facets={AVAILABLE_FACETS[type].map((value) => {
+                    return { type, value };
+                  })}
+                />
+              );
+            })}
+          </div>
+        )}
+        <NextButton onClick={() => onFinish(alterations)}>
+          {buttonText()}
+        </NextButton>
+      </div>
+    </div>
   );
 };
 
