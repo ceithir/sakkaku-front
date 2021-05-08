@@ -1,7 +1,7 @@
 import React from "react";
 import Result from "../Result";
 import BbCode from "../button/BbCode";
-import styles from "./Resolve.module.css";
+import styles from "./Resolve.module.less";
 import Dices from "../Dices";
 import { replaceRerolls, orderDices } from "../utils";
 import DirectLink from "../button/DirectLink";
@@ -24,19 +24,23 @@ const Resolve = ({
   return (
     <div className={styles.layout}>
       <div className={styles.container}>
-        {isChannel && (
-          <Text
-            className={styles["channel-text"]}
-          >{`The following dice were channeled (reserved) for a later roll.`}</Text>
-        )}
-        <Dices
-          dices={orderDices(
-            replaceRerolls({ dices, basePool, rerollTypes }).filter(
-              ({ status }) => status === "kept" || status === "channeled"
-            )
+        <div className={styles.content}>
+          {isChannel && (
+            <Text
+              className={styles["channel-text"]}
+            >{`The following dice were channeled (reserved) for a later roll.`}</Text>
           )}
-        />
-        {!isChannel && <Result dices={dices} tn={tn} modifiers={rerollTypes} />}
+          <Dices
+            dices={orderDices(
+              replaceRerolls({ dices, basePool, rerollTypes }).filter(
+                ({ status }) => status === "kept" || status === "channeled"
+              )
+            )}
+          />
+          {!isChannel && (
+            <Result dices={dices} tn={tn} modifiers={rerollTypes} />
+          )}
+        </div>
         <LineContainer>
           <DirectLink id={id} />
           <BbCode
