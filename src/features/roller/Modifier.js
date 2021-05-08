@@ -20,9 +20,9 @@ import {
   isSpecialAlteration,
 } from "./utils";
 import Result from "./result/Reroll";
-import { Divider } from "antd";
 import { longname } from "./data/abilities";
 import Wandering from "./reroll/Wandering";
+import styles from "./Modifier.module.less";
 
 const Modifier = ({ roll, dispatch }) => {
   const { dices, modifiers, metadata } = roll;
@@ -214,10 +214,12 @@ const WrappedModifier = ({ roll, dispatch }) => {
   return (
     <>
       {rerollTypes.length > 0 && (
-        <>
-          <Result dices={dices} basePool={basePool} rerollTypes={rerollTypes} />
-          <Divider />
-        </>
+        <Result
+          dices={dices}
+          basePool={basePool}
+          rerollTypes={rerollTypes}
+          className={styles["previous-rolls"]}
+        />
       )}
       <Modifier roll={roll} dispatch={dispatch} />
     </>

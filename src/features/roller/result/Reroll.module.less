@@ -1,3 +1,5 @@
+@import (reference) "../../../common.less";
+
 .container {
   display: flex;
   flex-direction: column;
@@ -22,7 +24,7 @@
   margin-bottom: 24px;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: @screen-xl) {
   .container {
     flex-direction: row;
   }
@@ -43,4 +45,8 @@
 
 .dices {
   margin: 16px;
+}
+
+.box {
+  .torii-box();
 }

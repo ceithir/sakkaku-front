@@ -1,7 +1,7 @@
 import React from "react";
 import Dices from "../Dices";
-import styles from "./Reroll.module.css";
-import { Typography } from "antd";
+import styles from "./Reroll.module.less";
+import { Typography, Divider } from "antd";
 import {
   replaceRerollsOfType,
   isRerollOfType,
@@ -11,6 +11,7 @@ import {
   isAlteration,
 } from "../utils";
 import ABILITIES from "../data/abilities";
+import classNames from "classnames";
 
 const { Title, Paragraph } = Typography;
 
@@ -129,25 +130,28 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
   );
 };
 
-const Reroll = ({ dices, basePool, rerollTypes }) => {
+const Reroll = ({ dices, basePool, rerollTypes, className }) => {
   if (rerollTypes.length === 0) {
     return null;
   }
 
   return (
-    <>
-      {rerollTypes.map((rerollType) => {
+    <div className={classNames(styles.box, { [className]: !!className })}>
+      {rerollTypes.map((rerollType, i) => {
         return (
-          <SingleReroll
-            key={rerollType}
-            dices={dices}
-            basePool={basePool}
-            rerollType={rerollType}
-            rerollTypes={rerollTypes}
-          />
+          <>
+            <SingleReroll
+              key={rerollType}
+              dices={dices}
+              basePool={basePool}
+              rerollType={rerollType}
+              rerollTypes={rerollTypes}
+            />
+            {i < rerollTypes.length - 1 && <Divider />}
+          </>
         );
       })}
-    </>
+    </div>
   );
 };
 
