@@ -61,7 +61,7 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
           <Text
             strong={onlyNonBlanks}
             disabled={onlyBlanks}
-          >{`Choose a number of dice with non-blank results equal to the fatigue you received , and alter each to a blank result.`}</Text>
+          >{`Choose a number of dice with non-blank results equal to the fatigue you received, and alter each to a blank result.`}</Text>
         </li>
         <li>
           <Text
