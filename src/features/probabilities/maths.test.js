@@ -240,4 +240,45 @@ describe("cumulativeSuccess", () => {
       );
     });
   });
+
+  describe("with skill", () => {
+    test("tn = 1", () => {
+      expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 1 })).toBeCloseTo(
+        0.7917,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 1 })).toBeCloseTo(
+        0.8958,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 1 })).toBeCloseTo(
+        0.9132,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 1 })).toBeCloseTo(
+        0.9566,
+        4
+      );
+    });
+    describe("ring = 1", () => {
+      test("tn = 2", () => {
+        expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 2 })).toBeCloseTo(
+          0.1725,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 2 })).toBeCloseTo(
+          0.2529,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 2 })).toBeCloseTo(
+          0.3255,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 1, skill: 4, tn: 2 })).toBeCloseTo(
+          0.3911,
+          4
+        );
+      });
+    });
+  });
 });

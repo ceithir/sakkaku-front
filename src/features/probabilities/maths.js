@@ -141,27 +141,36 @@ export const sortedCombinations = (n, options = {}) => {
  * Chances to _exactly_ match the TN out of a given roll
  */
 const exactSuccess = ({ ring, skill, tn }) => {
-  if (skill > 0) {
-    throw "TODO";
-  }
-
   if (tn === 0) {
-    return Math.pow(pR(0), ring);
+    return Math.pow(pR(0), ring) * Math.pow(pS(0), skill);
   }
 
-  return sortedCombinations(tn, { maxCardinality: ring }).reduce(
-    (acc, { value, count }) => {
-      const diceCount = value.length;
+  if (skill === 0) {
+    return sortedCombinations(tn, { maxCardinality: ring }).reduce(
+      (acc, { value, count }) => {
+        const diceCount = value.length;
+        return (
+          acc +
+          count *
+            binomial(ring, diceCount) *
+            value.reduce((acc, dieValue) => acc * pR(dieValue), 1) *
+            Math.pow(pR(0), ring - diceCount)
+        );
+      },
+      0
+    );
+  }
+
+  if (tn === 1) {
+    if (ring === 1) {
       return (
-        acc +
-        count *
-          binomial(ring, diceCount) *
-          value.reduce((acc, dieValue) => acc * pR(dieValue), 1) *
-          Math.pow(pR(0), ring - diceCount)
+        (pR(0) + pR(1)) * Math.pow(pS(0) + pS(1), skill) -
+        pR(0) * Math.pow(pS(0), skill)
       );
-    },
-    0
-  );
+    }
+  }
+
+  throw "TODO";
 };
 
 /**
