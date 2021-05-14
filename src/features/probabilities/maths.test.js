@@ -1,4 +1,11 @@
-import { binomial, cumulativeSuccess, pR, pS } from "./maths";
+import {
+  binomial,
+  cumulativeSuccess,
+  pR,
+  pS,
+  combinations,
+  sortedCombinations,
+} from "./maths";
 
 /**
  * Probabilities checked for consistency against empirical results from https://l5r-dice-sim.vercel.app/
@@ -37,6 +44,64 @@ describe("binomial", () => {
     expect(binomial(4, 2)).toStrictEqual(6);
     expect(binomial(4, 3)).toStrictEqual(4);
     expect(binomial(4, 4)).toStrictEqual(1);
+  });
+});
+
+describe("combinations", () => {
+  test("n = 1", () => {
+    expect(combinations(1)).toStrictEqual([[1]]);
+  });
+  test("n = 2", () => {
+    expect(combinations(2)).toStrictEqual([[1, 1], [2]]);
+  });
+  test("n = 3", () => {
+    expect(combinations(3)).toStrictEqual([[1, 1, 1], [1, 2], [2, 1], [3]]);
+  });
+  test("n = 4", () => {
+    expect(combinations(4)).toStrictEqual([
+      [1, 1, 1, 1],
+      [1, 1, 2],
+      [1, 2, 1],
+      [1, 3],
+      [2, 1, 1],
+      [2, 2],
+      [3, 1],
+      [4],
+    ]);
+    expect(combinations(4, { maxCardinality: 2 })).toStrictEqual([
+      [1, 3],
+      [2, 2],
+      [3, 1],
+      [4],
+    ]);
+  });
+});
+
+describe("sortedCombinations", () => {
+  test("n = 1", () => {
+    expect(sortedCombinations(1)).toStrictEqual([{ value: [1], count: 1 }]);
+  });
+  test("n = 2", () => {
+    expect(sortedCombinations(2)).toStrictEqual([
+      { value: [1, 1], count: 1 },
+      { value: [2], count: 1 },
+    ]);
+  });
+  test("n = 3", () => {
+    expect(sortedCombinations(3)).toStrictEqual([
+      { value: [1, 1, 1], count: 1 },
+      { value: [1, 2], count: 2 },
+      { value: [3], count: 1 },
+    ]);
+  });
+  test("n = 4", () => {
+    expect(sortedCombinations(4)).toStrictEqual([
+      { value: [1, 1, 1, 1], count: 1 },
+      { value: [1, 1, 2], count: 3 },
+      { value: [1, 3], count: 2 },
+      { value: [2, 2], count: 1 },
+      { value: [4], count: 1 },
+    ]);
   });
 });
 
@@ -140,6 +205,37 @@ describe("cumulativeSuccess", () => {
       );
       expect(cumulativeSuccess({ ring: 6, skill: 0, tn: 5 })).toBeCloseTo(
         0.2758,
+        4
+      );
+    });
+
+    test("tn = 6", () => {
+      expect(cumulativeSuccess({ ring: 1, skill: 0, tn: 6 })).toBeCloseTo(
+        0.0001,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 2, skill: 0, tn: 6 })).toBeCloseTo(
+        0.0009,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 3, skill: 0, tn: 6 })).toBeCloseTo(
+        0.0057,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 4, skill: 0, tn: 6 })).toBeCloseTo(
+        0.0224,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 5, skill: 0, tn: 6 })).toBeCloseTo(
+        0.0615,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 6, skill: 0, tn: 6 })).toBeCloseTo(
+        0.1296,
+        4
+      );
+      expect(cumulativeSuccess({ ring: 7, skill: 0, tn: 6 })).toBeCloseTo(
+        0.2246,
         4
       );
     });

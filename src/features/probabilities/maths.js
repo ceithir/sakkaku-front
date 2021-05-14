@@ -37,6 +37,107 @@ export const pS = (n) => {
 };
 
 /**
+ * Determine the different sums that can end up with a result of n
+ * Example:
+ * n=4 -> [
+      [1, 1, 1, 1],
+      [1, 1, 2],
+      [1, 2, 1],
+      [1, 3],
+      [2, 1, 1],
+      [2, 2],
+      [3, 1],
+      [4],
+    ]
+ */
+export const combinations = (n, options = {}) => {
+  const { maxCardinality = null } = options;
+
+  // TODO: Check if a smoother algorithm exists
+  const findCombinations = ({ n, candidate, storage, maxCardinality }) => {
+    if (maxCardinality !== null && candidate.length > maxCardinality) {
+      return;
+    }
+
+    const total = candidate.reduce((acc, val) => acc + val, 0);
+    if (total < n) {
+      const newCandidateA = [...candidate, 1];
+      const newCandidateB = [...candidate];
+      newCandidateB[newCandidateB.length - 1] =
+        newCandidateB[newCandidateB.length - 1] + 1;
+      findCombinations({
+        n,
+        candidate: newCandidateA,
+        storage,
+        maxCardinality,
+      });
+      findCombinations({
+        n,
+        candidate: newCandidateB,
+        storage,
+        maxCardinality,
+      });
+    }
+    if (total === n) {
+      storage.push(candidate);
+    }
+  };
+
+  let storage = [];
+  findCombinations({ n, candidate: [1], storage, maxCardinality });
+  return storage;
+};
+
+/**
+ * Same as previous except it groups together combinations identical but for sorting order
+ * Example:
+ * n=4 -> [
+      { value: [1, 1, 1, 1], count: 1 },
+      { value: [1, 1, 2], count: 3 },
+      { value: [1, 3], count: 2 },
+      { value: [2, 2], count: 1 },
+      { value: [4], count: 1 },
+    ]
+ */
+export const sortedCombinations = (n, options = {}) => {
+  const sameArray = (a, b) => {
+    if (a.length !== b.length) {
+      return false;
+    }
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const combs = combinations(n, options);
+  let result = [];
+  let analyzedIndex = [];
+
+  for (let i = 0; i < combs.length; i++) {
+    if (analyzedIndex.includes(i)) {
+      continue;
+    }
+    const value = [...combs[i]].sort();
+    let count = 1;
+
+    for (let j = i + 1; j < combs.length; j++) {
+      if (sameArray(value, [...combs[j]].sort())) {
+        count++;
+        analyzedIndex.push(j);
+      }
+    }
+
+    result.push({ value, count });
+    analyzedIndex.push(i);
+  }
+
+  return result;
+};
+
+/**
  * Chances to _exactly_ match the TN out of a given roll
  */
 const exactSuccess = ({ ring, skill, tn }) => {
@@ -44,70 +145,23 @@ const exactSuccess = ({ ring, skill, tn }) => {
     throw "TODO";
   }
 
-  const n = tn;
-  const maxCardinality = ring;
-
-  if (n === 0) {
+  if (tn === 0) {
     return Math.pow(pR(0), ring);
   }
 
-  if (n === 1) {
-    return binomial(ring, 1) * pR(n) * Math.pow(pR(0), ring - 1);
-  }
-
-  if (n === 2) {
-    let result = binomial(ring, 1) * pR(n) * Math.pow(pR(0), ring - 1);
-
-    if (maxCardinality >= 2) {
-      result +=
-        binomial(ring, 2) * Math.pow(pR(1), 2) * Math.pow(pR(0), ring - 2);
-    }
-
-    return result;
-  }
-
-  if (n === 3) {
-    let result = binomial(ring, 1) * pR(n) * Math.pow(pR(0), ring - 1);
-
-    if (maxCardinality >= 2) {
-      result +=
-        2 * binomial(ring, 2) * pR(2) * pR(1) * Math.pow(pR(0), ring - 2);
-    }
-
-    if (maxCardinality >= 3) {
-      result +=
-        binomial(ring, 3) * Math.pow(pR(1), 3) * Math.pow(pR(0), ring - 3);
-    }
-
-    return result;
-  }
-
-  if (n === 4) {
-    let result = binomial(ring, 1) * pR(n) * Math.pow(pR(0), ring - 1);
-
-    if (maxCardinality >= 2) {
-      result +=
-        2 * binomial(ring, 2) * pR(3) * pR(1) * Math.pow(pR(0), ring - 2);
-      result += binomial(ring, 2) * pR(2) * pR(2) * Math.pow(pR(0), ring - 2);
-    }
-    if (maxCardinality >= 3) {
-      result +=
-        3 *
-        binomial(ring, 3) *
-        pR(2) *
-        pR(1) *
-        pR(1) *
-        Math.pow(pR(0), ring - 3);
-    }
-    if (maxCardinality >= 4) {
-      result +=
-        binomial(ring, 4) * Math.pow(pR(1), 4) * Math.pow(pR(0), ring - 4);
-    }
-
-    return result;
-  }
-
-  throw "TODO";
+  return sortedCombinations(tn, { maxCardinality: ring }).reduce(
+    (acc, { value, count }) => {
+      const diceCount = value.length;
+      return (
+        acc +
+        count *
+          binomial(ring, diceCount) *
+          value.reduce((acc, dieValue) => acc * pR(dieValue), 1) *
+          Math.pow(pR(0), ring - diceCount)
+      );
+    },
+    0
+  );
 };
 
 /**
