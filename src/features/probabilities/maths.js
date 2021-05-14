@@ -138,7 +138,7 @@ export const sortedCombinations = (n, options = {}) => {
 };
 
 /**
- * Chances to _exactly_ match the TN out of a given roll
+ * Chances to _exactly_ match the TN out of a given roll assuming a "always pick highest" strategy
  */
 const exactSuccess = ({ ring, skill, tn }) => {
   if (tn === 0) {
