@@ -5,6 +5,7 @@ import {
   pS,
   combinations,
   sortedCombinations,
+  funcSum,
 } from "./maths";
 
 /**
@@ -44,6 +45,19 @@ describe("binomial", () => {
     expect(binomial(4, 2)).toStrictEqual(6);
     expect(binomial(4, 3)).toStrictEqual(4);
     expect(binomial(4, 4)).toStrictEqual(1);
+  });
+});
+
+describe("funcSum", () => {
+  test("x2", () => {
+    expect(funcSum({ func: (x) => 2 * x, n: 3 })).toStrictEqual(12);
+    expect(funcSum({ func: (x) => 2 * x, n: 1, i: 0 })).toStrictEqual(2);
+  });
+  test("square", () => {
+    expect(funcSum({ func: (x) => Math.pow(x, 2), n: 3 })).toStrictEqual(14);
+    expect(funcSum({ func: (x) => Math.pow(x, 2), n: 3, i: 2 })).toStrictEqual(
+      13
+    );
   });
 });
 
@@ -276,6 +290,34 @@ describe("cumulativeSuccess", () => {
         );
         expect(cumulativeSuccess({ ring: 1, skill: 4, tn: 2 })).toBeCloseTo(
           0.3911,
+          4
+        );
+      });
+      test("tn = 3", () => {
+        expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 3 })).toBeCloseTo(
+          0.0299,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 3 })).toBeCloseTo(
+          0.0456,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 3 })).toBeCloseTo(
+          0.0611,
+          4
+        );
+      });
+      test("tn = 4", () => {
+        expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 4 })).toBeCloseTo(
+          0.005,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 4 })).toBeCloseTo(
+          0.0077,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 4 })).toBeCloseTo(
+          0.0104,
           4
         );
       });

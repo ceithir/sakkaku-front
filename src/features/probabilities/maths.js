@@ -14,6 +14,14 @@ const factorial = (n) => {
   return n * factorial(n - 1);
 };
 
+export const funcSum = ({ func, n, i = 0 }) => {
+  let result = 0;
+  for (let j = i; j <= n; j++) {
+    result += func(j);
+  }
+  return result;
+};
+
 /**
  * Chances to get _exactly_ n success out of a given ring die
  */
@@ -161,13 +169,21 @@ const exactSuccess = ({ ring, skill, tn }) => {
     );
   }
 
-  if (tn === 1) {
-    if (ring === 1) {
-      return (
-        (pR(0) + pR(1)) * Math.pow(pS(0) + pS(1), skill) -
-        pR(0) * Math.pow(pS(0), skill)
-      );
-    }
+  if (ring === 1) {
+    const exactlyXSuccessFromSkillDice = (x) =>
+      binomial(skill, x) *
+      Math.pow(pS(tn), x) *
+      Math.pow(funcSum({ func: pS, n: tn - 1 }), skill - x);
+
+    return (
+      pR(tn) * Math.pow(funcSum({ func: pS, n: tn }), skill) +
+      funcSum({ func: pR, n: tn - 1 }) *
+        funcSum({
+          func: exactlyXSuccessFromSkillDice,
+          n: skill,
+          i: 1,
+        })
+    );
   }
 
   throw "TODO";
