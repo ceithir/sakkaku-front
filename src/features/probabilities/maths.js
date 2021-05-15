@@ -108,31 +108,34 @@ export const combinations = (n, options = {}) => {
     ]
  */
 export const sortedCombinations = (n, options = {}) => {
-  const sameArray = (a, b) => {
-    if (a.length !== b.length) {
+  return grouper(combinations(n, options));
+};
+
+const sameArray = (a, b) => {
+  if (a.length !== b.length) {
+    return false;
+  }
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
       return false;
     }
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] !== b[i]) {
-        return false;
-      }
-    }
-    return true;
-  };
+  }
+  return true;
+};
 
-  const combs = combinations(n, options);
+const grouper = (array) => {
   let result = [];
   let analyzedIndex = [];
 
-  for (let i = 0; i < combs.length; i++) {
+  for (let i = 0; i < array.length; i++) {
     if (analyzedIndex.includes(i)) {
       continue;
     }
-    const value = [...combs[i]].sort();
+    const value = [...array[i]].sort();
     let count = 1;
 
-    for (let j = i + 1; j < combs.length; j++) {
-      if (sameArray(value, [...combs[j]].sort())) {
+    for (let j = i + 1; j < array.length; j++) {
+      if (sameArray(value, [...array[j]].sort())) {
         count++;
         analyzedIndex.push(j);
       }
@@ -170,7 +173,7 @@ const exactSuccess = ({ ring, skill, tn }) => {
   }
 
   if (ring === 1) {
-    const exactlyXSuccessFromSkillDice = (x) =>
+    const exactlyXSkillDiceMatchingTN = (x) =>
       binomial(skill, x) *
       Math.pow(pS(tn), x) *
       Math.pow(funcSum({ func: pS, n: tn - 1 }), skill - x);
@@ -179,11 +182,79 @@ const exactSuccess = ({ ring, skill, tn }) => {
       pR(tn) * Math.pow(funcSum({ func: pS, n: tn }), skill) +
       funcSum({ func: pR, n: tn - 1 }) *
         funcSum({
-          func: exactlyXSuccessFromSkillDice,
+          func: exactlyXSkillDiceMatchingTN,
           n: skill,
           i: 1,
         })
     );
+  }
+
+  const matchTNWithExactlyOneDie =
+    ring * pR(tn) * Math.pow(pR(0), ring - 1) * Math.pow(pS(0), skill) +
+    skill * pS(tn) * Math.pow(pR(0), ring) * Math.pow(pS(0), skill - 1);
+
+  if (tn === 1) {
+    return matchTNWithExactlyOneDie;
+  }
+
+  if (ring === 2) {
+    if (skill === 1) {
+      if (tn === 2) {
+        return (
+          matchTNWithExactlyOneDie +
+          pR(1) * pR(1) * pS(0) +
+          pR(1) * pR(0) * pS(1) +
+          pR(0) * pR(1) * pS(1) +
+          pR(1) * pR(1) * pS(1)
+        );
+      }
+      if (tn === 3) {
+        return (
+          matchTNWithExactlyOneDie +
+          2 * pR(2) * (pR(1) * pS(0) + pR(0) * pS(1) + pR(1) * pS(1)) +
+          2 * pR(1) * pR(0) * pS(2) +
+          pR(1) * pR(1) * pS(2)
+        );
+      }
+      if (tn === 4) {
+        return (
+          matchTNWithExactlyOneDie +
+          // 3+1
+          2 * pR(3) * (pR(0) * pS(1) + pR(1) * (pS(0) + pS(1))) +
+          (2 * pR(1) * pR(0) + pR(1) * pR(1)) * pS(3) +
+          //2+2
+          2 * (pR(0) + pR(1)) * pR(2) * pS(2) +
+          pR(2) * pR(2) * (pS(0) + pS(1)) +
+          pR(2) * pR(2) * pS(2)
+        );
+      }
+    }
+
+    if (skill === 2) {
+      if (tn === 2) {
+        return (
+          matchTNWithExactlyOneDie +
+          pR(1) * pR(1) * (pS(0) + pS(1)) * (pS(0) + pS(1)) +
+          2 * pR(1) * pR(0) * pS(1) * (2 * pS(0) + pS(1)) +
+          pR(0) * pR(0) * pS(1) * pS(1)
+        );
+      }
+
+      if (tn === 3) {
+        return (
+          matchTNWithExactlyOneDie +
+          // Only rings
+          2 * pR(2) * pR(1) * (pS(0) + pS(1)) * (pS(0) + pS(1)) +
+          // Ring + Skill
+          2 * pR(2) * pR(0) * pS(1) * (2 * pS(0) + pS(1)) +
+          (2 * pR(1) * pR(0) + pR(1) * pR(1)) *
+            pS(2) *
+            (2 * pS(0) + 2 * pS(1)) +
+          // Only skills
+          pR(0) * pR(0) * 2 * pS(2) * pS(1)
+        );
+      }
+    }
   }
 
   throw "TODO";

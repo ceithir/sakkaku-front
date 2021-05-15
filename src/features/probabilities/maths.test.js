@@ -322,5 +322,39 @@ describe("cumulativeSuccess", () => {
         );
       });
     });
+    describe("ring = 2", () => {
+      test("skill = 1", () => {
+        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 2 })).toBeCloseTo(
+          0.6007,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 3 })).toBeCloseTo(
+          0.1922,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 4 })).toBeCloseTo(
+          0.0502,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 5 })).toBeCloseTo(
+          0.0115,
+          4
+        );
+      });
+      test("skill = 2", () => {
+        expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 2 })).toBeCloseTo(
+          0.783,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 3 })).toBeCloseTo(
+          0.2862,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 4 })).toBeCloseTo(
+          0.0837,
+          4
+        );
+      });
+    });
   });
 });
