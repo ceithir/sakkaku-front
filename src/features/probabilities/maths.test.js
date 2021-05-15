@@ -53,6 +53,7 @@ describe("funcSum", () => {
   test("x2", () => {
     expect(funcSum({ func: (x) => 2 * x, n: 3 })).toStrictEqual(12);
     expect(funcSum({ func: (x) => 2 * x, n: 1, i: 0 })).toStrictEqual(2);
+    expect(funcSum({ func: (x) => 2 * x, n: 1, i: 2 })).toStrictEqual(0);
   });
   test("square", () => {
     expect(funcSum({ func: (x) => Math.pow(x, 2), n: 3 })).toStrictEqual(14);
@@ -294,102 +295,162 @@ describe("cumulativeSuccess", () => {
   });
 
   describe("with skill", () => {
-    test("tn = 1", () => {
-      expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 1 })).toBeCloseTo(
-        0.7917,
-        4
-      );
-      expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 1 })).toBeCloseTo(
-        0.8958,
-        4
-      );
-      expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 1 })).toBeCloseTo(
-        0.9132,
-        4
-      );
-      expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 1 })).toBeCloseTo(
-        0.9566,
-        4
-      );
+    describe("simple cases", () => {
+      test("tn = 1", () => {
+        expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 1 })).toBeCloseTo(
+          0.7917,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 1 })).toBeCloseTo(
+          0.8958,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 1 })).toBeCloseTo(
+          0.9132,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 1 })).toBeCloseTo(
+          0.9566,
+          4
+        );
+      });
+      describe("ring = 1", () => {
+        test("tn = 2", () => {
+          expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 2 })).toBeCloseTo(
+            0.1725,
+            4
+          );
+          expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 2 })).toBeCloseTo(
+            0.2529,
+            4
+          );
+          expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 2 })).toBeCloseTo(
+            0.3255,
+            4
+          );
+          expect(cumulativeSuccess({ ring: 1, skill: 4, tn: 2 })).toBeCloseTo(
+            0.3911,
+            4
+          );
+        });
+        test("tn = 3", () => {
+          expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 3 })).toBeCloseTo(
+            0.0299,
+            4
+          );
+          expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 3 })).toBeCloseTo(
+            0.0456,
+            4
+          );
+          expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 3 })).toBeCloseTo(
+            0.0611,
+            4
+          );
+        });
+        test("tn = 4", () => {
+          expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 4 })).toBeCloseTo(
+            0.005,
+            4
+          );
+          expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 4 })).toBeCloseTo(
+            0.0077,
+            4
+          );
+          expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 4 })).toBeCloseTo(
+            0.0104,
+            4
+          );
+        });
+        test("tn = 5", () => {
+          expect(cumulativeSuccess({ ring: 1, skill: 6, tn: 5 })).toBeCloseTo(
+            0.0031,
+            4
+          );
+        });
+      });
     });
-    describe("ring = 1", () => {
-      test("tn = 2", () => {
-        expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 2 })).toBeCloseTo(
-          0.1725,
-          4
-        );
-        expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 2 })).toBeCloseTo(
-          0.2529,
-          4
-        );
-        expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 2 })).toBeCloseTo(
-          0.3255,
-          4
-        );
-        expect(cumulativeSuccess({ ring: 1, skill: 4, tn: 2 })).toBeCloseTo(
-          0.3911,
-          4
-        );
-      });
-      test("tn = 3", () => {
-        expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 3 })).toBeCloseTo(
-          0.0299,
-          4
-        );
-        expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 3 })).toBeCloseTo(
-          0.0456,
-          4
-        );
-        expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 3 })).toBeCloseTo(
-          0.0611,
-          4
-        );
-      });
-      test("tn = 4", () => {
-        expect(cumulativeSuccess({ ring: 1, skill: 1, tn: 4 })).toBeCloseTo(
-          0.005,
-          4
-        );
-        expect(cumulativeSuccess({ ring: 1, skill: 2, tn: 4 })).toBeCloseTo(
-          0.0077,
-          4
-        );
-        expect(cumulativeSuccess({ ring: 1, skill: 3, tn: 4 })).toBeCloseTo(
-          0.0104,
-          4
-        );
-      });
-    });
-    describe("ring = 2", () => {
-      test("skill = 1", () => {
+    describe("tn = 2", () => {
+      test("ring = 2", () => {
         expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 2 })).toBeCloseTo(
           0.6007,
           4
         );
-        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 3 })).toBeCloseTo(
-          0.1922,
+        expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 2 })).toBeCloseTo(
+          0.783,
           4
         );
-        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 4 })).toBeCloseTo(
-          0.0502,
-          4
-        );
-        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 5 })).toBeCloseTo(
-          0.0115,
+        expect(cumulativeSuccess({ ring: 2, skill: 3, tn: 2 })).toBeCloseTo(
+          0.8885,
           4
         );
       });
-      test("skill = 2", () => {
-        expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 2 })).toBeCloseTo(
-          0.783,
+      test("ring = 3", () => {
+        expect(cumulativeSuccess({ ring: 3, skill: 1, tn: 2 })).toBeCloseTo(
+          0.7569,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 3, skill: 2, tn: 2 })).toBeCloseTo(
+          0.8734,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 3, skill: 3, tn: 2 })).toBeCloseTo(
+          0.9367,
+          4
+        );
+      });
+    });
+    describe("tn = 3", () => {
+      test("ring = 2", () => {
+        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 3 })).toBeCloseTo(
+          0.1922,
           4
         );
         expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 3 })).toBeCloseTo(
           0.2862,
           4
         );
+        expect(cumulativeSuccess({ ring: 2, skill: 3, tn: 3 })).toBeCloseTo(
+          0.3662,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 4, tn: 3 })).toBeCloseTo(
+          0.4339,
+          4
+        );
+      });
+      test("ring = 3", () => {
+        expect(cumulativeSuccess({ ring: 3, skill: 1, tn: 3 })).toBeCloseTo(
+          0.4647,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 3, skill: 2, tn: 3 })).toBeCloseTo(
+          0.6546,
+          4
+        );
+      });
+      test("ring = 4", () => {
+        expect(cumulativeSuccess({ ring: 4, skill: 3, tn: 3 })).toBeCloseTo(
+          0.8694,
+          4
+        );
+      });
+    });
+    describe("tn = 4", () => {
+      test("ring = 2", () => {
+        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 4 })).toBeCloseTo(
+          0.0502,
+          4
+        );
         expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 4 })).toBeCloseTo(
           0.0837,
+          4
+        );
+      });
+    });
+    describe("tn = 5", () => {
+      test("ring = 2", () => {
+        expect(cumulativeSuccess({ ring: 2, skill: 1, tn: 5 })).toBeCloseTo(
+          0.0115,
           4
         );
       });

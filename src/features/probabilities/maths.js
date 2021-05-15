@@ -208,23 +208,49 @@ const exactSuccess = ({ ring, skill, tn }) => {
     );
   }
 
-  if (ring === 1) {
-    const exactlyXSkillDiceMatchingTN = (x) =>
-      binomial(skill, x) *
-      Math.pow(pS(tn), x) *
-      Math.pow(funcSum({ func: pS, n: tn - 1 }), skill - x);
+  /**
+   * Probability x dice will have a n value
+   * With all other dice's values between 0 and n-1
+   */
+  const exactlyXRingDiceMatchingN = (x, n) => {
+    if (x > ring) {
+      return 0;
+    }
 
+    return (
+      binomial(ring, x) *
+      Math.pow(pR(n), x) *
+      Math.pow(funcSum({ func: pR, n: n - 1 }), ring - x)
+    );
+  };
+
+  const exactlyXSkillDiceMatchingN = (x, n) => {
+    if (x > skill) {
+      return 0;
+    }
+
+    return (
+      binomial(skill, x) *
+      Math.pow(pS(n), x) *
+      Math.pow(funcSum({ func: pS, n: n - 1 }), skill - x)
+    );
+  };
+
+  if (ring === 1) {
     return (
       pR(tn) * Math.pow(funcSum({ func: pS, n: tn }), skill) +
       funcSum({ func: pR, n: tn - 1 }) *
         funcSum({
-          func: exactlyXSkillDiceMatchingTN,
+          func: (x) => exactlyXSkillDiceMatchingN(x, tn),
           n: skill,
           i: 1,
         })
     );
   }
 
+  /**
+   * One die at TN, everything else at zero
+   */
   const matchTNWithExactlyOneDie =
     ring * pR(tn) * Math.pow(pR(0), ring - 1) * Math.pow(pS(0), skill) +
     skill * pS(tn) * Math.pow(pR(0), ring) * Math.pow(pS(0), skill - 1);
@@ -233,18 +259,55 @@ const exactSuccess = ({ ring, skill, tn }) => {
     return matchTNWithExactlyOneDie;
   }
 
-  if (ring === 2) {
-    if (skill === 1) {
-      if (tn === 2) {
-        return (
-          matchTNWithExactlyOneDie +
-          pR(1) * pR(1) * pS(0) +
-          pR(1) * pR(0) * pS(1) +
-          pR(0) * pR(1) * pS(1) +
-          pR(1) * pR(1) * pS(1)
-        );
+  // From this point onwards, ring >=2, skill >=1, tn >=2
+
+  if (tn === 2) {
+    if (ring === 2) {
+      let result = 0;
+      result += matchTNWithExactlyOneDie;
+
+      // Result achieved with rings only
+      result +=
+        funcSum({
+          func: (x) => exactlyXRingDiceMatchingN(x, 1),
+          n: ring,
+          i: 2,
+        }) * Math.pow(funcSum({ func: pS, n: 1 }), skill);
+
+      // Mix ring/skill
+      result +=
+        exactlyXRingDiceMatchingN(1, 1) *
+        funcSum({
+          func: (x) => exactlyXSkillDiceMatchingN(x, 1),
+          n: skill,
+          i: 1,
+        });
+
+      // Skill only
+      if (skill > 1) {
+        result +=
+          Math.pow(pR(0), ring) *
+          funcSum({
+            func: (x) => exactlyXSkillDiceMatchingN(x, 1),
+            n: skill,
+            i: 2,
+          });
       }
-      if (tn === 3) {
+
+      return result;
+    }
+
+    return (
+      matchTNWithExactlyOneDie +
+      exactlyXRingDiceMatchingN(2, 1) * Math.pow(pS(0), skill) +
+      exactlyXRingDiceMatchingN(1, 1) * exactlyXSkillDiceMatchingN(1, 1) +
+      Math.pow(pR(0), ring) * exactlyXSkillDiceMatchingN(2, 1)
+    );
+  }
+
+  if (tn === 3) {
+    if (ring === 2) {
+      if (skill === 1) {
         return (
           matchTNWithExactlyOneDie +
           2 * pR(2) * (pR(1) * pS(0) + pR(0) * pS(1) + pR(1) * pS(1)) +
@@ -252,31 +315,7 @@ const exactSuccess = ({ ring, skill, tn }) => {
           pR(1) * pR(1) * pS(2)
         );
       }
-      if (tn === 4) {
-        return (
-          matchTNWithExactlyOneDie +
-          // 3+1
-          2 * pR(3) * (pR(0) * pS(1) + pR(1) * (pS(0) + pS(1))) +
-          (2 * pR(1) * pR(0) + pR(1) * pR(1)) * pS(3) +
-          //2+2
-          2 * (pR(0) + pR(1)) * pR(2) * pS(2) +
-          pR(2) * pR(2) * (pS(0) + pS(1)) +
-          pR(2) * pR(2) * pS(2)
-        );
-      }
-    }
-
-    if (skill === 2) {
-      if (tn === 2) {
-        return (
-          matchTNWithExactlyOneDie +
-          pR(1) * pR(1) * (pS(0) + pS(1)) * (pS(0) + pS(1)) +
-          2 * pR(1) * pR(0) * pS(1) * (2 * pS(0) + pS(1)) +
-          pR(0) * pR(0) * pS(1) * pS(1)
-        );
-      }
-
-      if (tn === 3) {
+      if (skill === 2) {
         return (
           matchTNWithExactlyOneDie +
           // Only rings
@@ -288,6 +327,23 @@ const exactSuccess = ({ ring, skill, tn }) => {
             (2 * pS(0) + 2 * pS(1)) +
           // Only skills
           pR(0) * pR(0) * 2 * pS(2) * pS(1)
+        );
+      }
+    }
+  }
+
+  if (tn === 4) {
+    if (ring === 2) {
+      if (skill === 1) {
+        return (
+          matchTNWithExactlyOneDie +
+          // 3+1
+          2 * pR(3) * (pR(0) * pS(1) + pR(1) * (pS(0) + pS(1))) +
+          (2 * pR(1) * pR(0) + pR(1) * pR(1)) * pS(3) +
+          //2+2
+          2 * (pR(0) + pR(1)) * pR(2) * pS(2) +
+          pR(2) * pR(2) * (pS(0) + pS(1)) +
+          pR(2) * pR(2) * pS(2)
         );
       }
     }
