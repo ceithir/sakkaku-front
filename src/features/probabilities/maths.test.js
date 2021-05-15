@@ -6,6 +6,7 @@ import {
   combinations,
   sortedCombinations,
   funcSum,
+  subsets,
 } from "./maths";
 
 /**
@@ -87,6 +88,43 @@ describe("combinations", () => {
       [2, 2],
       [3, 1],
       [4],
+    ]);
+  });
+});
+
+describe("subsets", () => {
+  test("size = 1", () => {
+    expect(subsets({ ring: 1, skill: 0, size: 1 })).toStrictEqual([
+      { ring: 1, skill: 0 },
+    ]);
+    expect(subsets({ ring: 3, skill: 0, size: 1 })).toStrictEqual([
+      { ring: 1, skill: 0 },
+    ]);
+    expect(subsets({ ring: 1, skill: 1, size: 1 })).toStrictEqual([
+      { ring: 1, skill: 0 },
+      { ring: 0, skill: 1 },
+    ]);
+    expect(subsets({ ring: 2, skill: 1, size: 1 })).toStrictEqual([
+      { ring: 1, skill: 0 },
+      { ring: 0, skill: 1 },
+    ]);
+    expect(subsets({ ring: 2, skill: 3, size: 1 })).toStrictEqual([
+      { ring: 1, skill: 0 },
+      { ring: 0, skill: 1 },
+    ]);
+  });
+  test("size = 2", () => {
+    expect(subsets({ ring: 2, skill: 2, size: 2 })).toStrictEqual([
+      { ring: 2, skill: 0 },
+      { ring: 1, skill: 1 },
+      { ring: 0, skill: 2 },
+    ]);
+  });
+  test("size = 3", () => {
+    expect(subsets({ ring: 2, skill: 3, size: 3 })).toStrictEqual([
+      { ring: 2, skill: 1 },
+      { ring: 1, skill: 2 },
+      { ring: 0, skill: 3 },
     ]);
   });
 });

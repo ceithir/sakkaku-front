@@ -111,6 +111,42 @@ export const sortedCombinations = (n, options = {}) => {
   return grouper(combinations(n, options));
 };
 
+// FIXME: Removed if unused, document if used
+export const subsets = ({ ring, skill, size }) => {
+  if (size > ring.length + skill.length) {
+    throw "Out of bounds";
+  }
+  if (ring < 1) {
+    throw "Not possible for a standard roll thus not implemented";
+  }
+
+  let storage = [];
+  const rec = (candidate) => {
+    if (candidate.length < size) {
+      if (candidate.filter((x) => x === "r").length < ring) {
+        rec([...candidate, "r"]);
+      }
+      if (candidate.filter((x) => x === "s").length < skill) {
+        rec([...candidate, "s"]);
+      }
+    }
+    if (candidate.length === size) {
+      storage.push(candidate);
+    }
+  };
+  rec([]);
+
+  return grouper(storage).map(({ value }) => {
+    const r = value.filter((x) => x === "r").length;
+    const s = value.filter((x) => x === "s").length;
+
+    return {
+      ring: r,
+      skill: s,
+    };
+  });
+};
+
 const sameArray = (a, b) => {
   if (a.length !== b.length) {
     return false;
