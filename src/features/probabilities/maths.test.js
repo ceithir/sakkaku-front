@@ -10,6 +10,7 @@ import {
   skilledCombinations,
   uniqueSkilledCombinations,
   distinctPermutationsCount,
+  distinctComplementaryCombinations,
 } from "./maths";
 
 /**
@@ -238,6 +239,36 @@ describe("uniqueSkilledCombinations", () => {
       { rings: [4], skills: [1] },
       { rings: [5], skills: [] },
       { rings: [], skills: [5] },
+    ]);
+  });
+});
+
+describe("distinctComplementaryCombinations", () => {
+  test("threshold = 0", () => {
+    expect(
+      distinctComplementaryCombinations({ threshold: 0, size: 4 })
+    ).toStrictEqual([[0, 0, 0, 0]]);
+  });
+  test("threshold = 1", () => {
+    expect(
+      distinctComplementaryCombinations({ threshold: 1, size: 3 })
+    ).toStrictEqual([
+      [0, 0, 0],
+      [0, 0, 1],
+      [0, 1, 1],
+      [1, 1, 1],
+    ]);
+  });
+  test("threshold = 2", () => {
+    expect(
+      distinctComplementaryCombinations({ threshold: 2, size: 2 })
+    ).toStrictEqual([
+      [0, 0],
+      [0, 1],
+      [1, 1],
+      [0, 2],
+      [1, 2],
+      [2, 2],
     ]);
   });
 });
@@ -535,6 +566,12 @@ describe("cumulativeSuccess", () => {
         );
         expect(cumulativeSuccess({ ring: 2, skill: 3, tn: 4 })).toBeCloseTo(
           0.119,
+          4
+        );
+      });
+      test("ring = 3", () => {
+        expect(cumulativeSuccess({ ring: 3, skill: 1, tn: 4 })).toBeCloseTo(
+          0.1807,
           4
         );
       });

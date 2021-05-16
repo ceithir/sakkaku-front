@@ -81,11 +81,16 @@ export const pS = (n) => {
     ]
  */
 export const combinations = (n, options = {}) => {
-  const { maxCardinality = null } = options;
+  const { maxCardinality = null, maxValue = null } = options;
+
+  let storage = [];
 
   // TODO: Check if a smoother algorithm exists
-  const findCombinations = ({ n, candidate, storage, maxCardinality }) => {
+  const findCombinations = (candidate) => {
     if (maxCardinality !== null && candidate.length > maxCardinality) {
+      return;
+    }
+    if (maxValue !== null && candidate.some((value) => value > maxValue)) {
       return;
     }
 
@@ -95,26 +100,15 @@ export const combinations = (n, options = {}) => {
       const newCandidateB = [...candidate];
       newCandidateB[newCandidateB.length - 1] =
         newCandidateB[newCandidateB.length - 1] + 1;
-      findCombinations({
-        n,
-        candidate: newCandidateA,
-        storage,
-        maxCardinality,
-      });
-      findCombinations({
-        n,
-        candidate: newCandidateB,
-        storage,
-        maxCardinality,
-      });
+      findCombinations(newCandidateA);
+      findCombinations(newCandidateB);
     }
     if (total === n) {
       storage.push(candidate);
     }
   };
 
-  let storage = [];
-  findCombinations({ n, candidate: [1], storage, maxCardinality });
+  findCombinations([1]);
   return storage;
 };
 
@@ -133,7 +127,6 @@ export const sortedCombinations = (n, options = {}) => {
   return grouper(combinations(n, options));
 };
 
-// FIXME: Removed if unused, document if used
 export const subsets = ({ ring, skill, size }) => {
   if (size > ring.length + skill.length) {
     throw "Out of bounds";
@@ -242,7 +235,7 @@ export const uniqueSkilledCombinations = ({ ring, skill, n }) => {
   return result;
 };
 
-const distinctComplementaryCombinations = ({ threshold, size }) => {
+export const distinctComplementaryCombinations = ({ threshold, size }) => {
   if (size === 0) {
     return [];
   }
@@ -259,7 +252,15 @@ const distinctComplementaryCombinations = ({ threshold, size }) => {
     return result;
   }
 
-  throw "TODO";
+  let result = [new Array(size).fill(0)];
+  for (let i = 1; i <= size * threshold; i++) {
+    arrayUnique(
+      combinations(i, { maxCardinality: size, maxValue: threshold })
+    ).forEach((comb) => {
+      result.push([...new Array(size - comb.length).fill(0), ...comb]);
+    });
+  }
+  return result;
 };
 
 const sameArray = (a, b) => {
@@ -272,6 +273,29 @@ const sameArray = (a, b) => {
     }
   }
   return true;
+};
+
+const arrayUnique = (array) => {
+  const sortedArray = [...array].map((a) => a.sort());
+
+  let result = [];
+  let duplicatesIndex = [];
+
+  for (let i = 0; i < sortedArray.length; i++) {
+    if (duplicatesIndex.includes(i)) {
+      continue;
+    }
+
+    for (let j = i + 1; j < array.length; j++) {
+      if (sameArray(sortedArray[i], sortedArray[j])) {
+        duplicatesIndex.push(j);
+      }
+    }
+
+    result.push(sortedArray[i]);
+  }
+
+  return result;
 };
 
 const grouper = (array) => {
@@ -323,21 +347,6 @@ const exactSuccess = ({ ring, skill, tn }) => {
     );
   }
 
-  /**
-   * Probability x ring/skill dice will have a n value
-   * With all other dice's values at threshold or below
-   */
-  const xRingDiceAtNOtherRingDiceAtThresholdOrBelow = ({ x, n, threshold }) => {
-    if (x > ring) {
-      return 0;
-    }
-
-    return (
-      binomial(ring, x) *
-      Math.pow(pR(n), x) *
-      Math.pow(funcSum({ func: pR, n: threshold }), ring - x)
-    );
-  };
   const xSkillDiceAtNOtherSkillDiceAtThresholdOrBelow = ({
     x,
     n,
@@ -354,13 +363,6 @@ const exactSuccess = ({ ring, skill, tn }) => {
     );
   };
 
-  const exactlyXRingDiceMatchingN = (x, n) => {
-    return xRingDiceAtNOtherRingDiceAtThresholdOrBelow({
-      x,
-      n,
-      threshold: n - 1,
-    });
-  };
   const exactlyXSkillDiceMatchingN = (x, n) => {
     return xSkillDiceAtNOtherSkillDiceAtThresholdOrBelow({
       x,
@@ -381,225 +383,139 @@ const exactSuccess = ({ ring, skill, tn }) => {
     );
   }
 
-  /**
-   * One die at TN, everything else at zero
-   */
-  const matchTNWithExactlyOneDie =
-    ring * pR(tn) * Math.pow(pR(0), ring - 1) * Math.pow(pS(0), skill) +
-    skill * pS(tn) * Math.pow(pR(0), ring) * Math.pow(pS(0), skill - 1);
-
-  if (tn === 1) {
-    return matchTNWithExactlyOneDie;
-  }
-
-  // From this point onwards, ring >=2, skill >=1, tn >=2
-
-  if (tn === 2) {
-    if (ring === 2) {
-      let result = 0;
-      result += matchTNWithExactlyOneDie;
-
-      // Result achieved with rings only
-      result +=
-        funcSum({
-          func: (x) => exactlyXRingDiceMatchingN(x, 1),
-          n: ring,
-          i: 2,
-        }) * Math.pow(funcSum({ func: pS, n: 1 }), skill);
-
-      // Mix ring/skill
-      result +=
-        exactlyXRingDiceMatchingN(1, 1) *
-        funcSum({
-          func: (x) => exactlyXSkillDiceMatchingN(x, 1),
-          n: skill,
-          i: 1,
-        });
-
-      // Skill only
-      if (skill > 1) {
-        result +=
-          Math.pow(pR(0), ring) *
-          funcSum({
-            func: (x) => exactlyXSkillDiceMatchingN(x, 1),
-            n: skill,
-            i: 2,
-          });
-      }
-
-      return result;
+  const matchCombOtherDiceAtZero = ({ comb, diceP, diceCount }) => {
+    if (comb.length > diceCount) {
+      return 0;
     }
 
-    return (
-      matchTNWithExactlyOneDie +
-      exactlyXRingDiceMatchingN(2, 1) * Math.pow(pS(0), skill) +
-      exactlyXRingDiceMatchingN(1, 1) * exactlyXSkillDiceMatchingN(1, 1) +
-      Math.pow(pR(0), ring) * exactlyXSkillDiceMatchingN(2, 1)
-    );
-  }
+    let result = 1;
+    comb.forEach((x) => {
+      result *= diceP(x);
+    });
+    result *= Math.pow(diceP(0), diceCount - comb.length);
+    result *= distinctPermutationsCount([
+      ...comb,
+      ...new Array(diceCount - comb.length).fill(0),
+    ]);
 
-  if (tn === 3) {
-    const matchCombOtherDiceAtZero = ({ comb, diceP, diceCount }) => {
-      if (comb.length > diceCount) {
-        return 0;
+    return result;
+  };
+
+  const combToP = (comb, diceP) => {
+    return comb.reduce((acc, x) => acc * diceP(x), 1);
+  };
+
+  let result = 0;
+  const combs = uniqueSkilledCombinations({ ring, skill, n: tn });
+
+  const partialCombs = combs.filter(
+    ({ rings: rDice, skills: sDice }) => rDice.length + sDice.length < ring
+  );
+
+  partialCombs.forEach(({ rings: rDice, skills: sDice }) => {
+    result +=
+      matchCombOtherDiceAtZero({
+        comb: rDice,
+        diceP: pR,
+        diceCount: ring,
+      }) *
+      matchCombOtherDiceAtZero({
+        comb: sDice,
+        diceP: pS,
+        diceCount: skill,
+      });
+  });
+
+  const fullCombs = combs.filter(
+    ({ rings: rDice, skills: sDice }) => rDice.length + sDice.length === ring
+  );
+
+  // Ring only
+  fullCombs
+    .filter(({ skills: sDice }) => sDice.length === 0)
+    .forEach(({ rings: rDice }) => {
+      let subresult = 1;
+      subresult *= combToP(rDice, pR);
+      subresult *= distinctPermutationsCount(rDice);
+
+      if (skill > 0) {
+        subresult *= distinctComplementaryCombinations({
+          threshold: Math.min(...rDice),
+          size: skill,
+        }).reduce((acc, cb) => {
+          return acc + combToP(cb, pS) * distinctPermutationsCount(cb);
+        }, 0);
       }
 
-      let result = 1;
-      comb.forEach((x) => {
-        result *= diceP(x);
-      });
-      result *= Math.pow(diceP(0), diceCount - comb.length);
-      result *= distinctPermutationsCount([
-        ...comb,
-        ...new Array(diceCount - comb.length).fill(0),
-      ]);
+      result += subresult;
+    });
 
-      return result;
-    };
+  // Skill only
+  fullCombs
+    .filter(({ rings: rDice }) => rDice.length === 0)
+    .forEach(({ skills: sDice }) => {
+      let subresult = 1;
+      subresult *= Math.pow(pR(0), ring);
 
-    const combToP = (comb, diceP) => {
-      return comb.reduce((acc, x) => acc * diceP(x), 1);
-    };
-
-    const universal = () => {
-      let result = 0;
-      const combs = uniqueSkilledCombinations({ ring, skill, n: tn });
-
-      const partialCombs = combs.filter(
-        ({ rings: rDice, skills: sDice }) => rDice.length + sDice.length < ring
-      );
-
-      partialCombs.forEach(({ rings: rDice, skills: sDice }) => {
-        result +=
-          matchCombOtherDiceAtZero({
-            comb: rDice,
-            diceP: pR,
-            diceCount: ring,
-          }) *
-          matchCombOtherDiceAtZero({
-            comb: sDice,
-            diceP: pS,
-            diceCount: skill,
-          });
-      });
-
-      const fullCombs = combs.filter(
-        ({ rings: rDice, skills: sDice }) =>
-          rDice.length + sDice.length === ring
-      );
-
-      // Ring only
-      fullCombs
-        .filter(({ skills: sDice }) => sDice.length === 0)
-        .forEach(({ rings: rDice }) => {
-          let subresult = 1;
-          subresult *= combToP(rDice, pR);
-          subresult *= distinctPermutationsCount(rDice);
-
-          if (skill > 0) {
-            subresult *= distinctComplementaryCombinations({
-              threshold: Math.min(...rDice),
-              size: skill,
-            }).reduce((acc, cb) => {
-              return acc + combToP(cb, pS) * distinctPermutationsCount(cb);
-            }, 0);
-          }
-
-          result += subresult;
-        });
-
-      // Skill only
-      fullCombs
-        .filter(({ rings: rDice }) => rDice.length === 0)
-        .forEach(({ skills: sDice }) => {
-          let subresult = 1;
-          subresult *= Math.pow(pR(0), ring);
-
-          subresult *= combToP(sDice, pS);
-          if (sDice.length === skill) {
-            subresult *= distinctPermutationsCount(sDice);
-          } else {
-            subresult *= distinctComplementaryCombinations({
-              threshold: Math.min(...sDice),
-              size: skill - sDice.length,
-            }).reduce((acc, cb) => {
-              return (
-                acc +
-                combToP(cb, pS) * distinctPermutationsCount([...sDice, ...cb])
-              );
-            }, 0);
-          }
-
-          result += subresult;
-        });
-
-      //Ring + Skill
-      fullCombs
-        .filter(
-          ({ rings: rDice, skills: sDice }) =>
-            rDice.length > 0 && sDice.length > 0
-        )
-        .forEach(({ rings: rDice, skills: sDice }) => {
-          const threshold = Math.min(...rDice, ...sDice);
-
-          let subresult = 1;
-          subresult *= combToP(rDice, pR);
-          subresult *= distinctComplementaryCombinations({
-            threshold,
-            size: ring - rDice.length,
-          }).reduce((acc, cb) => {
-            const fullComb = [...rDice, ...cb];
-            // Eliminate combinations already handled before
-            // FIXME Blatantly shows some computations are done several times and thus the algorithm could be improved upon
-            if (fullComb.reduce((acc, val) => acc + val, 0) >= tn) {
-              return acc;
-            }
-
-            return acc + combToP(cb, pR) * distinctPermutationsCount(fullComb);
-          }, 0);
-
-          subresult *= combToP(sDice, pS);
-          if (skill === sDice.length) {
-            subresult *= distinctPermutationsCount(sDice);
-          } else {
-            subresult *= distinctComplementaryCombinations({
-              threshold,
-              size: skill - sDice.length,
-            }).reduce((acc, cb) => {
-              return (
-                acc +
-                combToP(cb, pS) * distinctPermutationsCount([...sDice, ...cb])
-              );
-            }, 0);
-          }
-
-          result += subresult;
-        });
-
-      return result;
-    };
-
-    return universal();
-  }
-
-  if (tn === 4) {
-    if (ring === 2) {
-      if (skill === 1) {
-        return (
-          matchTNWithExactlyOneDie +
-          // 3+1
-          2 * pR(3) * (pR(0) * pS(1) + pR(1) * (pS(0) + pS(1))) +
-          (2 * pR(1) * pR(0) + pR(1) * pR(1)) * pS(3) +
-          //2+2
-          2 * (pR(0) + pR(1)) * pR(2) * pS(2) +
-          pR(2) * pR(2) * (pS(0) + pS(1)) +
-          pR(2) * pR(2) * pS(2)
-        );
+      subresult *= combToP(sDice, pS);
+      if (sDice.length === skill) {
+        subresult *= distinctPermutationsCount(sDice);
+      } else {
+        subresult *= distinctComplementaryCombinations({
+          threshold: Math.min(...sDice),
+          size: skill - sDice.length,
+        }).reduce((acc, cb) => {
+          return (
+            acc + combToP(cb, pS) * distinctPermutationsCount([...sDice, ...cb])
+          );
+        }, 0);
       }
-    }
-  }
 
-  throw "TODO";
+      result += subresult;
+    });
+
+  //Ring + Skill
+  fullCombs
+    .filter(
+      ({ rings: rDice, skills: sDice }) => rDice.length > 0 && sDice.length > 0
+    )
+    .forEach(({ rings: rDice, skills: sDice }) => {
+      const threshold = Math.min(...rDice, ...sDice);
+
+      let subresult = 1;
+      subresult *= combToP(rDice, pR);
+      subresult *= distinctComplementaryCombinations({
+        threshold,
+        size: ring - rDice.length,
+      }).reduce((acc, cb) => {
+        const fullComb = [...rDice, ...cb];
+        // Eliminate combinations already handled before
+        // FIXME Blatantly shows some computations are done several times and thus the algorithm could be improved upon
+        if (fullComb.reduce((acc, val) => acc + val, 0) >= tn) {
+          return acc;
+        }
+
+        return acc + combToP(cb, pR) * distinctPermutationsCount(fullComb);
+      }, 0);
+
+      subresult *= combToP(sDice, pS);
+      if (skill === sDice.length) {
+        subresult *= distinctPermutationsCount(sDice);
+      } else {
+        subresult *= distinctComplementaryCombinations({
+          threshold,
+          size: skill - sDice.length,
+        }).reduce((acc, cb) => {
+          return (
+            acc + combToP(cb, pS) * distinctPermutationsCount([...sDice, ...cb])
+          );
+        }, 0);
+      }
+
+      result += subresult;
+    });
+
+  return result;
 };
 
 /**
