@@ -375,6 +375,32 @@ const exactSuccess = ({ ring, skill, tn }) => {
           pR(0) * pR(0) * 2 * pS(2) * pS(1)
         );
       }
+      if (skill === 3) {
+        return (
+          matchTNWithExactlyOneDie +
+          // Only rings
+          factorial(2) * pR(2) * pR(1) * Math.pow(pS(0) + pS(1), 3) +
+          // Ring + Skill
+          factorial(2) *
+            pR(2) *
+            pR(0) *
+            pS(1) *
+            ((factorial(3) / factorial(2)) * pS(0) * pS(0) +
+              (factorial(3) / factorial(2)) * pS(1) * pS(0) +
+              pS(1) * pS(1)) +
+          (factorial(2) * pR(1) * pR(0) + pR(1) * pR(1)) *
+            pS(2) *
+            ((factorial(3) / factorial(2)) * pS(0) * pS(0) +
+              factorial(3) * pS(1) * pS(0) +
+              (factorial(3) / factorial(2)) * pS(1) * pS(1)) +
+          // Only skills
+          pR(0) *
+            pR(0) *
+            pS(2) *
+            pS(1) *
+            (factorial(3) * pS(0) + (factorial(3) / factorial(2)) * pS(1))
+        );
+      }
     }
   }
 

@@ -482,6 +482,10 @@ describe("cumulativeSuccess", () => {
           0.6546,
           4
         );
+        expect(cumulativeSuccess({ ring: 3, skill: 4, tn: 3 })).toBeCloseTo(
+          0.8822,
+          4
+        );
       });
       test("ring = 4", () => {
         expect(cumulativeSuccess({ ring: 4, skill: 3, tn: 3 })).toBeCloseTo(
@@ -498,6 +502,10 @@ describe("cumulativeSuccess", () => {
         );
         expect(cumulativeSuccess({ ring: 2, skill: 2, tn: 4 })).toBeCloseTo(
           0.0837,
+          4
+        );
+        expect(cumulativeSuccess({ ring: 2, skill: 3, tn: 4 })).toBeCloseTo(
+          0.119,
           4
         );
       });
