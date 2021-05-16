@@ -147,6 +147,52 @@ export const subsets = ({ ring, skill, size }) => {
   });
 };
 
+/**
+ * Determine the number of _non-distinct_ combinations of skill and ring dice
+ * That can sum up to n
+ *
+ * Ring=2, Skill=3, N=5 -> [
+    { rings: [ 1, 4 ], skills: [] },
+    { rings: [ 1 ], skills: [ 4 ] },
+    { rings: [], skills: [ 1, 4 ] },
+    { rings: [ 2, 3 ], skills: [] },
+    { rings: [ 2 ], skills: [ 3 ] },
+    { rings: [], skills: [ 2, 3 ] },
+    { rings: [ 3, 2 ], skills: [] },
+    { rings: [ 3 ], skills: [ 2 ] },
+    { rings: [], skills: [ 3, 2 ] },
+    { rings: [ 4, 1 ], skills: [] },
+    { rings: [ 4 ], skills: [ 1 ] },
+    { rings: [], skills: [ 4, 1 ] },
+    { rings: [ 5 ], skills: [] },
+    { rings: [], skills: [ 5 ] }
+
+ * ]
+ */
+export const skilledCombinations = ({ ring, skill, n }) => {
+  const combs = combinations(n, { maxCardinality: ring });
+
+  let result = [];
+  combs.forEach((comb) => {
+    const sets = subsets({ ring, skill, size: comb.length });
+    sets.forEach(({ ring: r, skill: s }) => {
+      let rings = new Array(r);
+      let skills = new Array(s);
+
+      for (let i = 0; i < r; i++) {
+        rings[i] = comb[i];
+      }
+      for (let i = 0; i < s; i++) {
+        skills[i] = comb[r + i];
+      }
+
+      result.push({ rings, skills });
+    });
+  });
+
+  return result;
+};
+
 const sameArray = (a, b) => {
   if (a.length !== b.length) {
     return false;

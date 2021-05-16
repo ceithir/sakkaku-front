@@ -7,6 +7,7 @@ import {
   sortedCombinations,
   funcSum,
   subsets,
+  skilledCombinations,
 } from "./maths";
 
 /**
@@ -154,6 +155,60 @@ describe("sortedCombinations", () => {
       { value: [1, 3], count: 2 },
       { value: [2, 2], count: 1 },
       { value: [4], count: 1 },
+    ]);
+  });
+});
+
+describe("skilledCombinations", () => {
+  test("n = 1", () => {
+    expect(skilledCombinations({ ring: 1, skill: 1, n: 1 })).toStrictEqual([
+      { rings: [1], skills: [] },
+      { rings: [], skills: [1] },
+    ]);
+    expect(skilledCombinations({ ring: 2, skill: 3, n: 1 })).toStrictEqual([
+      { rings: [1], skills: [] },
+      { rings: [], skills: [1] },
+    ]);
+  });
+  test("n = 2", () => {
+    expect(skilledCombinations({ ring: 1, skill: 3, n: 2 })).toStrictEqual([
+      { rings: [2], skills: [] },
+      { rings: [], skills: [2] },
+    ]);
+    expect(skilledCombinations({ ring: 2, skill: 1, n: 2 })).toStrictEqual([
+      { rings: [1, 1], skills: [] },
+      { rings: [1], skills: [1] },
+      { rings: [2], skills: [] },
+      { rings: [], skills: [2] },
+    ]);
+    expect(skilledCombinations({ ring: 2, skill: 3, n: 2 })).toStrictEqual([
+      { rings: [1, 1], skills: [] },
+      { rings: [1], skills: [1] },
+      { rings: [], skills: [1, 1] },
+      { rings: [2], skills: [] },
+      { rings: [], skills: [2] },
+    ]);
+  });
+  test("n = 5", () => {
+    expect(skilledCombinations({ ring: 1, skill: 3, n: 5 })).toStrictEqual([
+      { rings: [5], skills: [] },
+      { rings: [], skills: [5] },
+    ]);
+    expect(skilledCombinations({ ring: 2, skill: 3, n: 5 })).toStrictEqual([
+      { rings: [1, 4], skills: [] },
+      { rings: [1], skills: [4] },
+      { rings: [], skills: [1, 4] },
+      { rings: [2, 3], skills: [] },
+      { rings: [2], skills: [3] },
+      { rings: [], skills: [2, 3] },
+      { rings: [3, 2], skills: [] },
+      { rings: [3], skills: [2] },
+      { rings: [], skills: [3, 2] },
+      { rings: [4, 1], skills: [] },
+      { rings: [4], skills: [1] },
+      { rings: [], skills: [4, 1] },
+      { rings: [5], skills: [] },
+      { rings: [], skills: [5] },
     ]);
   });
 });
