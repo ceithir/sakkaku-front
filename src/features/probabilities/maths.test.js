@@ -8,6 +8,8 @@ import {
   funcSum,
   subsets,
   skilledCombinations,
+  uniqueSkilledCombinations,
+  distinctPermutationsCount,
 } from "./maths";
 
 /**
@@ -48,6 +50,14 @@ describe("binomial", () => {
     expect(binomial(4, 3)).toStrictEqual(4);
     expect(binomial(4, 4)).toStrictEqual(1);
   });
+});
+
+test("distinctPermutationsCount", () => {
+  expect(distinctPermutationsCount([1])).toStrictEqual(1);
+  expect(distinctPermutationsCount([1, 1])).toStrictEqual(1);
+  expect(distinctPermutationsCount([1, 1, 2])).toStrictEqual(3);
+  expect(distinctPermutationsCount([1, 1, 2, 2])).toStrictEqual(6);
+  expect(distinctPermutationsCount([1, 2, 3])).toStrictEqual(6);
 });
 
 describe("funcSum", () => {
@@ -207,6 +217,25 @@ describe("skilledCombinations", () => {
       { rings: [4, 1], skills: [] },
       { rings: [4], skills: [1] },
       { rings: [], skills: [4, 1] },
+      { rings: [5], skills: [] },
+      { rings: [], skills: [5] },
+    ]);
+  });
+});
+
+describe("uniqueSkilledCombinations", () => {
+  test("n = 5", () => {
+    expect(
+      uniqueSkilledCombinations({ ring: 2, skill: 3, n: 5 })
+    ).toStrictEqual([
+      { rings: [1, 4], skills: [] },
+      { rings: [1], skills: [4] },
+      { rings: [], skills: [1, 4] },
+      { rings: [2, 3], skills: [] },
+      { rings: [2], skills: [3] },
+      { rings: [], skills: [2, 3] },
+      { rings: [3], skills: [2] },
+      { rings: [4], skills: [1] },
       { rings: [5], skills: [] },
       { rings: [], skills: [5] },
     ]);
