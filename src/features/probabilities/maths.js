@@ -1,6 +1,6 @@
 /**
  * Known issues:
- * - Probabilities were checked for consistency only against the empirical results from https://l5r-dice-sim.vercel.app/ so any bias from this one is also reflected there
+ * - Probabilities were checked for consistency in the generic case against the empirical results from https://l5r-dice-sim.vercel.app/ so any bias from this one is also reflected there
  * - Nothing has been done to avoid rounding errors piling up
  * - The maths are done as if the dice exploded before being chosen to be kept
  */
@@ -36,7 +36,7 @@ const factorial = (n) => {
 /**
  * Chances to get _exactly_ n success out of a given ring die
  */
-export const pR = (n) => {
+export const pRDefault = (n) => {
   if (n === 0) {
     return 1 / 2;
   }
@@ -47,12 +47,29 @@ export const pR = (n) => {
 /**
  * Chances to get _exactly_ n success out of a given skill die
  */
-export const pS = (n) => {
+export const pSDefault = (n) => {
   if (n === 0) {
     return 5 / 12;
   }
 
   return Math.pow(1 / 6, n - 1) * (5 / 12 + (1 / 6) * (5 / 12));
+};
+
+export const pRCompromised = (n) => {
+  if (n === 0) {
+    return 5 / 6;
+  }
+  if (n === 1) {
+    return 1 / 6;
+  }
+  return 0;
+};
+
+export const pSCompromised = (n) => {
+  if (n === 0) {
+    return 2 / 3;
+  }
+  return Math.pow(1 / 12, n - 1) * (1 / 4 + (1 / 12) * (2 / 3));
 };
 
 /**
@@ -302,7 +319,11 @@ const arrayUnique = (array) => {
 /**
  * Chances to _exactly_ match the TN out of a given roll assuming a "always pick highest" strategy
  */
-const exactSuccess = ({ ring, skill, tn }) => {
+const exactSuccess = ({ ring, skill, tn, options }) => {
+  const { compromised = false } = options;
+  const pR = compromised ? pRCompromised : pRDefault;
+  const pS = compromised ? pSCompromised : pSDefault;
+
   if (tn === 0) {
     return Math.pow(pR(0), ring) * Math.pow(pS(0), skill);
   }
@@ -505,14 +526,14 @@ const exactSuccess = ({ ring, skill, tn }) => {
 /**
  * Chances to _at least_ match the tn out of a given roll
  */
-export const cumulativeSuccess = ({ ring, skill, tn }) => {
+export const cumulativeSuccess = ({ ring, skill, tn, options = {} }) => {
   if (ring <= 0) {
     return tn <= 0 ? 1 : 0;
   }
 
   let result = 1;
   for (let i = 0; i < tn; i++) {
-    result -= exactSuccess({ ring, skill, tn: i });
+    result -= exactSuccess({ ring, skill, tn: i, options });
   }
   return result;
 };

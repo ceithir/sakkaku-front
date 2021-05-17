@@ -1,7 +1,9 @@
 import {
   cumulativeSuccess,
-  pR,
-  pS,
+  pRDefault as pR,
+  pSDefault as pS,
+  pRCompromised,
+  pSCompromised,
   combinations,
   subsets,
   skilledCombinations,
@@ -23,6 +25,18 @@ describe("die", () => {
     expect(pS(1)).toBeCloseTo(0.4861, 4);
     expect(pS(2)).toBeCloseTo(0.081, 4);
     expect(pS(3)).toBeCloseTo(0.0135, 4);
+  });
+
+  describe("compromised", () => {
+    test("ring", () => {
+      expect(pRCompromised(0)).toStrictEqual(5 / 6);
+      expect(pRCompromised(1)).toStrictEqual(1 / 6);
+      expect(pRCompromised(2)).toStrictEqual(0);
+    });
+    test("skill", () => {
+      expect(pSCompromised(0)).toStrictEqual(2 / 3);
+      expect(pSCompromised(1)).toStrictEqual(1 / 4 + 1 / 18);
+    });
   });
 });
 
@@ -631,6 +645,73 @@ describe("cumulativeSuccess", () => {
         0.8317,
         4
       );
+    });
+
+    describe("compromised", () => {
+      describe("skill = 0", () => {
+        test("tn = 1, ring = 1, skill = 0", () => {
+          expect(
+            cumulativeSuccess({
+              ring: 1,
+              skill: 0,
+              tn: 1,
+              options: { compromised: true },
+            })
+          ).toBeCloseTo(1 / 6, 4);
+        });
+        test("tn = 2, ring = 1, skill = 0", () => {
+          expect(
+            cumulativeSuccess({
+              ring: 1,
+              skill: 0,
+              tn: 2,
+              options: { compromised: true },
+            })
+          ).toBeCloseTo(0, 4);
+        });
+        test("tn = 3, ring = 2, skill = 0", () => {
+          expect(
+            cumulativeSuccess({
+              ring: 2,
+              skill: 0,
+              tn: 3,
+              options: { compromised: true },
+            })
+          ).toBeCloseTo(0, 4);
+        });
+      });
+      describe("skill = 1", () => {
+        test("tn = 1, ring = 1, skill = 1", () => {
+          expect(
+            cumulativeSuccess({
+              ring: 1,
+              skill: 1,
+              tn: 1,
+              options: { compromised: true },
+            })
+          ).toBeCloseTo(0.4444, 4);
+        });
+        test("tn = 2, ring = 1, skill = 1", () => {
+          expect(
+            cumulativeSuccess({
+              ring: 1,
+              skill: 1,
+              tn: 2,
+              options: { compromised: true },
+            })
+          ).toBeCloseTo(0.0278, 4);
+        });
+        test("tn = 2, ring = 2, skill = 1", () => {
+          expect(
+            cumulativeSuccess({
+              ring: 2,
+              skill: 1,
+              tn: 2,
+              options: { compromised: true },
+            })
+          ).toBeCloseTo(0.1397, 4);
+        });
+      });
     });
   });
 });
