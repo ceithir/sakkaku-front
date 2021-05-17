@@ -91,7 +91,6 @@ export const combinations = (n, options = {}) => {
 
   let storage = [];
 
-  // TODO: Check if a smoother algorithm exists
   const findCombinations = (candidate) => {
     if (maxCardinality !== null && candidate.length > maxCardinality) {
       return;
