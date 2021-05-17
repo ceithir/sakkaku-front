@@ -13,10 +13,6 @@ import {
   distinctComplementaryCombinations,
 } from "./maths";
 
-/**
- * Probabilities checked for consistency against empirical results from https://l5r-dice-sim.vercel.app/
- */
-
 describe("die", () => {
   test("ring", () => {
     expect(pR(0)).toStrictEqual(0.5);
@@ -569,9 +565,15 @@ describe("cumulativeSuccess", () => {
           4
         );
       });
-      test("ring = 3", () => {
+      test("ring = 3, skill = 1", () => {
         expect(cumulativeSuccess({ ring: 3, skill: 1, tn: 4 })).toBeCloseTo(
           0.1807,
+          4
+        );
+      });
+      test("ring = 3, skill = 2", () => {
+        expect(cumulativeSuccess({ ring: 3, skill: 2, tn: 4 })).toBeCloseTo(
+          0.2847,
           4
         );
       });

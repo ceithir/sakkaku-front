@@ -1,5 +1,6 @@
 /**
  * Known issues:
+ * - Probabilities were checked for consistency only against the empirical results from https://l5r-dice-sim.vercel.app/ so any bias from this one is also reflected there
  * - Nothing has been done to avoid rounding errors piling up
  * - The maths are done as if the dice exploded before being chosen to be kept
  */
@@ -391,6 +392,8 @@ const exactSuccess = ({ ring, skill, tn }) => {
     ({ rings: rDice, skills: sDice }) => rDice.length + sDice.length < ring
   );
 
+  // Case: Any combination that achieves the TN with less dice than can be kept
+  // All other dice must then be zero or the total would be above TN
   partialCombs.forEach(({ rings: rDice, skills: sDice }) => {
     result +=
       matchCombOtherDiceAtZero({
@@ -409,9 +412,10 @@ const exactSuccess = ({ ring, skill, tn }) => {
     ({ rings: rDice, skills: sDice }) => rDice.length + sDice.length === ring
   );
 
-  // Ring only
+  // Case: All ring dice exactly add up to TN
+  // Skill dice can be anything as long as it's equal or lower to the lowest ring die
   fullCombs
-    .filter(({ skills: sDice }) => sDice.length === 0)
+    .filter(({ skills: sDice }) => sDice.length === 0) // <=> rDice.length === ring
     .forEach(({ rings: rDice }) => {
       let subresult = 1;
       subresult *= combToP(rDice, pR);
@@ -429,9 +433,9 @@ const exactSuccess = ({ ring, skill, tn }) => {
       result += subresult;
     });
 
-  // Skill only
+  // Case: All ring dice are blank
   fullCombs
-    .filter(({ rings: rDice }) => rDice.length === 0)
+    .filter(({ rings: rDice }) => rDice.length === 0) // <=> sDice.length === ring
     .forEach(({ skills: sDice }) => {
       let subresult = 1;
       subresult *= Math.pow(pR(0), ring);
@@ -453,7 +457,8 @@ const exactSuccess = ({ ring, skill, tn }) => {
       result += subresult;
     });
 
-  //Ring + Skill
+  // Case: Achieving TN _requires_ mixing both dice
+  // Absolute mess as suggested by the FIXME comment below
   fullCombs
     .filter(
       ({ rings: rDice, skills: sDice }) => rDice.length > 0 && sDice.length > 0
@@ -468,9 +473,19 @@ const exactSuccess = ({ ring, skill, tn }) => {
         size: ring - rDice.length,
       }).reduce((acc, cb) => {
         const fullComb = [...rDice, ...cb];
+
         // Eliminate combinations already handled before
         // FIXME Blatantly shows some computations are done several times and thus the algorithm could be improved upon
-        if (fullComb.reduce((acc, val) => acc + val, 0) >= tn) {
+        if (
+          combs.some(({ rings: oR }) => {
+            return (
+              sameArray(
+                [...fullComb].sort(),
+                [...oR, ...new Array(ring - oR.length).fill(0)].sort()
+              ) && !sameArray(rDice, oR)
+            );
+          })
+        ) {
           return acc;
         }
 
