@@ -245,14 +245,6 @@ export const distinctComplementaryCombinations = ({ threshold, size }) => {
     return [new Array(size).fill(0)];
   }
 
-  if (threshold === 1) {
-    let result = [];
-    for (let i = 0; i <= size; i++) {
-      result.push([...new Array(size - i).fill(0), ...new Array(i).fill(1)]);
-    }
-    return result;
-  }
-
   let result = [new Array(size).fill(0)];
   for (let i = 1; i <= size * threshold; i++) {
     arrayUnique(
