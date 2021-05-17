@@ -1,11 +1,8 @@
 import {
-  binomial,
   cumulativeSuccess,
   pR,
   pS,
   combinations,
-  sortedCombinations,
-  funcSum,
   subsets,
   skilledCombinations,
   uniqueSkilledCombinations,
@@ -29,47 +26,12 @@ describe("die", () => {
   });
 });
 
-describe("binomial", () => {
-  test("n = 1", () => {
-    expect(binomial(1, 1)).toStrictEqual(1);
-  });
-  test("n = 2", () => {
-    expect(binomial(2, 1)).toStrictEqual(2);
-    expect(binomial(2, 2)).toStrictEqual(1);
-  });
-  test("n = 3", () => {
-    expect(binomial(3, 1)).toStrictEqual(3);
-    expect(binomial(3, 2)).toStrictEqual(3);
-    expect(binomial(3, 3)).toStrictEqual(1);
-  });
-  test("n = 4", () => {
-    expect(binomial(4, 1)).toStrictEqual(4);
-    expect(binomial(4, 2)).toStrictEqual(6);
-    expect(binomial(4, 3)).toStrictEqual(4);
-    expect(binomial(4, 4)).toStrictEqual(1);
-  });
-});
-
 test("distinctPermutationsCount", () => {
   expect(distinctPermutationsCount([1])).toStrictEqual(1);
   expect(distinctPermutationsCount([1, 1])).toStrictEqual(1);
   expect(distinctPermutationsCount([1, 1, 2])).toStrictEqual(3);
   expect(distinctPermutationsCount([1, 1, 2, 2])).toStrictEqual(6);
   expect(distinctPermutationsCount([1, 2, 3])).toStrictEqual(6);
-});
-
-describe("funcSum", () => {
-  test("x2", () => {
-    expect(funcSum({ func: (x) => 2 * x, n: 3 })).toStrictEqual(12);
-    expect(funcSum({ func: (x) => 2 * x, n: 1, i: 0 })).toStrictEqual(2);
-    expect(funcSum({ func: (x) => 2 * x, n: 1, i: 2 })).toStrictEqual(0);
-  });
-  test("square", () => {
-    expect(funcSum({ func: (x) => Math.pow(x, 2), n: 3 })).toStrictEqual(14);
-    expect(funcSum({ func: (x) => Math.pow(x, 2), n: 3, i: 2 })).toStrictEqual(
-      13
-    );
-  });
 });
 
 describe("combinations", () => {
@@ -135,34 +97,6 @@ describe("subsets", () => {
       { ring: 2, skill: 1 },
       { ring: 1, skill: 2 },
       { ring: 0, skill: 3 },
-    ]);
-  });
-});
-
-describe("sortedCombinations", () => {
-  test("n = 1", () => {
-    expect(sortedCombinations(1)).toStrictEqual([{ value: [1], count: 1 }]);
-  });
-  test("n = 2", () => {
-    expect(sortedCombinations(2)).toStrictEqual([
-      { value: [1, 1], count: 1 },
-      { value: [2], count: 1 },
-    ]);
-  });
-  test("n = 3", () => {
-    expect(sortedCombinations(3)).toStrictEqual([
-      { value: [1, 1, 1], count: 1 },
-      { value: [1, 2], count: 2 },
-      { value: [3], count: 1 },
-    ]);
-  });
-  test("n = 4", () => {
-    expect(sortedCombinations(4)).toStrictEqual([
-      { value: [1, 1, 1, 1], count: 1 },
-      { value: [1, 1, 2], count: 3 },
-      { value: [1, 3], count: 2 },
-      { value: [2, 2], count: 1 },
-      { value: [4], count: 1 },
     ]);
   });
 });

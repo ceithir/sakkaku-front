@@ -5,10 +5,6 @@
  * - The maths are done as if the dice exploded before being chosen to be kept
  */
 
-export const binomial = (n, k) => {
-  return factorial(n) / (factorial(n - k) * factorial(k));
-};
-
 export const distinctPermutationsCount = (list) => {
   let distincts = {};
   list.forEach((value) => {
@@ -35,14 +31,6 @@ const factorial = (n) => {
     return 1;
   }
   return n * factorial(n - 1);
-};
-
-export const funcSum = ({ func, n, i = 0 }) => {
-  let result = 0;
-  for (let j = i; j <= n; j++) {
-    result += func(j);
-  }
-  return result;
 };
 
 /**
@@ -113,21 +101,6 @@ export const combinations = (n, options = {}) => {
   return storage;
 };
 
-/**
- * Same as previous except it groups together combinations identical but for sorting order
- * Example:
- * n=4 -> [
-      { value: [1, 1, 1, 1], count: 1 },
-      { value: [1, 1, 2], count: 3 },
-      { value: [1, 3], count: 2 },
-      { value: [2, 2], count: 1 },
-      { value: [4], count: 1 },
-    ]
- */
-export const sortedCombinations = (n, options = {}) => {
-  return grouper(combinations(n, options));
-};
-
 export const subsets = ({ ring, skill, size }) => {
   if (size > ring.length + skill.length) {
     throw "Out of bounds";
@@ -152,7 +125,7 @@ export const subsets = ({ ring, skill, size }) => {
   };
   rec([]);
 
-  return grouper(storage).map(({ value }) => {
+  return arrayUnique(storage.map((a) => [...a].sort())).map((value) => {
     const r = value.filter((x) => x === "r").length;
     const s = value.filter((x) => x === "s").length;
 
@@ -326,68 +299,12 @@ const arrayUnique = (array) => {
   return result;
 };
 
-const grouper = (array) => {
-  let result = [];
-  let analyzedIndex = [];
-
-  for (let i = 0; i < array.length; i++) {
-    if (analyzedIndex.includes(i)) {
-      continue;
-    }
-    const value = [...array[i]].sort();
-    let count = 1;
-
-    for (let j = i + 1; j < array.length; j++) {
-      if (sameArray(value, [...array[j]].sort())) {
-        count++;
-        analyzedIndex.push(j);
-      }
-    }
-
-    result.push({ value, count });
-    analyzedIndex.push(i);
-  }
-
-  return result;
-};
-
 /**
  * Chances to _exactly_ match the TN out of a given roll assuming a "always pick highest" strategy
  */
 const exactSuccess = ({ ring, skill, tn }) => {
   if (tn === 0) {
     return Math.pow(pR(0), ring) * Math.pow(pS(0), skill);
-  }
-
-  if (skill === 0) {
-    return sortedCombinations(tn, { maxCardinality: ring }).reduce(
-      (acc, { value, count }) => {
-        const diceCount = value.length;
-        return (
-          acc +
-          count *
-            binomial(ring, diceCount) *
-            value.reduce((acc, dieValue) => acc * pR(dieValue), 1) *
-            Math.pow(pR(0), ring - diceCount)
-        );
-      },
-      0
-    );
-  }
-
-  if (ring === 1) {
-    return (
-      pR(tn) * Math.pow(funcSum({ func: pS, n: tn }), skill) +
-      funcSum({ func: pR, n: tn - 1 }) *
-        funcSum({
-          func: (x) =>
-            binomial(skill, x) *
-            Math.pow(pS(tn), x) *
-            Math.pow(funcSum({ func: pS, n: tn - 1 }), skill - x),
-          n: skill,
-          i: 1,
-        })
-    );
   }
 
   const matchCombOtherDiceAtZero = ({ comb, diceP, diceCount }) => {
