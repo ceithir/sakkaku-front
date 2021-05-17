@@ -11,6 +11,7 @@ import {
   uniqueSkilledCombinations,
   distinctPermutationsCount,
   distinctComplementaryCombinations,
+  bruteForcePermutations,
 } from "./maths";
 
 describe("die", () => {
@@ -265,6 +266,45 @@ describe("distinctComplementaryCombinations", () => {
       [0, 2],
       [1, 2],
       [2, 2],
+    ]);
+  });
+});
+
+describe("bruteForcePermutations", () => {
+  test("ring = 1", () => {
+    expect(bruteForcePermutations({ ring: 1, skill: 0, tn: 2 })).toStrictEqual([
+      [2],
+    ]);
+    expect(bruteForcePermutations({ ring: 1, skill: 1, tn: 2 })).toStrictEqual([
+      [0, 2],
+      [1, 2],
+      [2, 0],
+      [2, 1],
+      [2, 2],
+    ]);
+  });
+  test("ring = 2", () => {
+    expect(bruteForcePermutations({ ring: 2, skill: 1, tn: 1 })).toStrictEqual([
+      [0, 0, 1],
+      [0, 1, 0],
+      [1, 0, 0],
+    ]);
+    expect(bruteForcePermutations({ ring: 2, skill: 2, tn: 2 })).toStrictEqual([
+      [0, 0, 0, 2],
+      [0, 0, 1, 1],
+      [0, 0, 2, 0],
+      [0, 1, 0, 1],
+      [0, 1, 1, 0],
+      [0, 1, 1, 1],
+      [0, 2, 0, 0],
+      [1, 0, 0, 1],
+      [1, 0, 1, 0],
+      [1, 0, 1, 1],
+      [1, 1, 0, 0],
+      [1, 1, 0, 1],
+      [1, 1, 1, 0],
+      [1, 1, 1, 1],
+      [2, 0, 0, 0],
     ]);
   });
 });

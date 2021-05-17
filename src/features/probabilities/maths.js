@@ -256,6 +256,41 @@ export const distinctComplementaryCombinations = ({ threshold, size }) => {
   return result;
 };
 
+/**
+ * Supposedly for testing/debugging only...
+ */
+export const bruteForcePermutations = ({ ring, skill, tn }) => {
+  let allCombs = [];
+
+  const base = tn + 1;
+  for (let i = 0; i < Math.pow(tn + 1, ring + skill); i++) {
+    let tmp = [];
+    let quotient = Math.floor(i / base);
+    let remainder = i % base;
+    tmp.push(remainder);
+
+    while (quotient > 0) {
+      const n = quotient;
+      quotient = Math.floor(n / base);
+      remainder = n % base;
+      tmp.push(remainder);
+    }
+    for (let j = tmp.length; j < ring + skill; j++) {
+      tmp.push(0);
+    }
+    allCombs.push(tmp.reverse());
+  }
+
+  return allCombs.filter(
+    (comb) =>
+      [...comb]
+        .sort()
+        .reverse()
+        .slice(0, ring)
+        .reduce((acc, val) => acc + val, 0) === tn
+  );
+};
+
 const sameArray = (a, b) => {
   if (a.length !== b.length) {
     return false;
