@@ -347,36 +347,15 @@ const exactSuccess = ({ ring, skill, tn }) => {
     );
   }
 
-  const xSkillDiceAtNOtherSkillDiceAtThresholdOrBelow = ({
-    x,
-    n,
-    threshold,
-  }) => {
-    if (x > skill) {
-      return 0;
-    }
-
-    return (
-      binomial(skill, x) *
-      Math.pow(pS(n), x) *
-      Math.pow(funcSum({ func: pS, n: threshold }), skill - x)
-    );
-  };
-
-  const exactlyXSkillDiceMatchingN = (x, n) => {
-    return xSkillDiceAtNOtherSkillDiceAtThresholdOrBelow({
-      x,
-      n,
-      threshold: n - 1,
-    });
-  };
-
   if (ring === 1) {
     return (
       pR(tn) * Math.pow(funcSum({ func: pS, n: tn }), skill) +
       funcSum({ func: pR, n: tn - 1 }) *
         funcSum({
-          func: (x) => exactlyXSkillDiceMatchingN(x, tn),
+          func: (x) =>
+            binomial(skill, x) *
+            Math.pow(pS(tn), x) *
+            Math.pow(funcSum({ func: pS, n: tn - 1 }), skill - x),
           n: skill,
           i: 1,
         })
