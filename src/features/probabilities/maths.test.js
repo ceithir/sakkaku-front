@@ -577,6 +577,24 @@ describe("cumulativeSuccess", () => {
           4
         );
       });
+      test("ring = 3, skill = 3", () => {
+        expect(cumulativeSuccess({ ring: 3, skill: 3, tn: 4 })).toBeCloseTo(
+          0.3778,
+          4
+        );
+      });
+      test("ring = 4, skill = 2", () => {
+        expect(cumulativeSuccess({ ring: 4, skill: 2, tn: 4 })).toBeCloseTo(
+          0.5434,
+          4
+        );
+      });
+      test("ring = 4, skill = 5", () => {
+        expect(cumulativeSuccess({ ring: 4, skill: 5, tn: 4 })).toBeCloseTo(
+          0.8827,
+          4
+        );
+      });
     });
     describe("tn = 5", () => {
       test("ring = 2", () => {
