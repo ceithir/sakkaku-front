@@ -412,7 +412,6 @@ const exactSuccess = ({ ring, skill, tn }) => {
     return comb.reduce((acc, x) => acc * diceP(x), 1);
   };
 
-  let result = 0;
   const combs = uniqueSkilledCombinations({ ring, skill, n: tn });
 
   const partialCombs = combs.filter(
@@ -421,19 +420,24 @@ const exactSuccess = ({ ring, skill, tn }) => {
 
   // Case: Any combination that achieves the TN with less dice than can be kept
   // All other dice must then be zero or the total would be above TN
-  partialCombs.forEach(({ rings: rDice, skills: sDice }) => {
-    result +=
-      matchCombOtherDiceAtZero({
-        comb: rDice,
-        diceP: pR,
-        diceCount: ring,
-      }) *
-      matchCombOtherDiceAtZero({
-        comb: sDice,
-        diceP: pS,
-        diceCount: skill,
-      });
-  });
+  const withLessDiceThanMax = partialCombs.reduce(
+    (acc, { rings: rDice, skills: sDice }) => {
+      return (
+        acc +
+        matchCombOtherDiceAtZero({
+          comb: rDice,
+          diceP: pR,
+          diceCount: ring,
+        }) *
+          matchCombOtherDiceAtZero({
+            comb: sDice,
+            diceP: pS,
+            diceCount: skill,
+          })
+      );
+    },
+    0
+  );
 
   const fullCombs = combs.filter(
     ({ rings: rDice, skills: sDice }) => rDice.length + sDice.length === ring
@@ -441,9 +445,9 @@ const exactSuccess = ({ ring, skill, tn }) => {
 
   // Case: All ring dice exactly add up to TN
   // Skill dice can be anything as long as it's equal or lower to the lowest ring die
-  fullCombs
+  const withOnlyRingDice = fullCombs
     .filter(({ skills: sDice }) => sDice.length === 0) // <=> rDice.length === ring
-    .forEach(({ rings: rDice }) => {
+    .reduce((acc, { rings: rDice }) => {
       let subresult = 1;
       subresult *= combToP(rDice, pR);
       subresult *= distinctPermutationsCount(rDice);
@@ -457,13 +461,13 @@ const exactSuccess = ({ ring, skill, tn }) => {
         }, 0);
       }
 
-      result += subresult;
-    });
+      return acc + subresult;
+    }, 0);
 
   // Case: All ring dice are blank
-  fullCombs
+  const withOnlySkillDice = fullCombs
     .filter(({ rings: rDice }) => rDice.length === 0) // <=> sDice.length === ring
-    .forEach(({ skills: sDice }) => {
+    .reduce((acc, { skills: sDice }) => {
       let subresult = 1;
       subresult *= Math.pow(pR(0), ring);
 
@@ -481,62 +485,86 @@ const exactSuccess = ({ ring, skill, tn }) => {
         }, 0);
       }
 
-      result += subresult;
-    });
+      return acc + subresult;
+    }, 0);
 
   // Case: Achieving TN _requires_ mixing both dice
   // Absolute mess as suggested by the FIXME comment below
-  fullCombs
+  const withBothRingAndSkillDice = fullCombs
     .filter(
       ({ rings: rDice, skills: sDice }) => rDice.length > 0 && sDice.length > 0
     )
-    .forEach(({ rings: rDice, skills: sDice }) => {
+    .reduce((acc, { rings: rDice, skills: sDice }) => {
       const threshold = Math.min(...rDice, ...sDice);
 
-      let subresult = 1;
-      subresult *= combToP(rDice, pR);
-      subresult *= distinctComplementaryCombinations({
+      const fullRingCombs = distinctComplementaryCombinations({
         threshold,
         size: ring - rDice.length,
-      }).reduce((acc, cb) => {
-        const fullComb = [...rDice, ...cb];
-
+      })
+        .map((cb) => [...rDice, ...cb])
         // Eliminate combinations already handled before
-        // FIXME Blatantly shows some computations are done several times and thus the algorithm could be improved upon
-        if (
-          combs.some(({ rings: oR }) => {
-            return (
+        // FIXME The fact this is needed is sign something has gone very wrong
+        .filter((cb) => {
+          return !combs.some(
+            ({ rings: oR }) =>
               sameArray(
-                [...fullComb].sort(),
+                [...cb].sort(),
                 [...oR, ...new Array(ring - oR.length).fill(0)].sort()
               ) && !sameArray(rDice, oR)
-            );
-          })
-        ) {
-          return acc;
-        }
-
-        return acc + combToP(cb, pR) * distinctPermutationsCount(fullComb);
-      }, 0);
-
-      subresult *= combToP(sDice, pS);
-      if (skill === sDice.length) {
-        subresult *= distinctPermutationsCount(sDice);
-      } else {
-        subresult *= distinctComplementaryCombinations({
-          threshold,
-          size: skill - sDice.length,
-        }).reduce((acc, cb) => {
-          return (
-            acc + combToP(cb, pS) * distinctPermutationsCount([...sDice, ...cb])
           );
-        }, 0);
-      }
+        });
 
-      result += subresult;
-    });
+      return (
+        acc +
+        fullRingCombs.reduce((acc, fullRingComb) => {
+          if (skill === sDice.length) {
+            return (
+              acc +
+              combToP(fullRingComb, pR) *
+                distinctPermutationsCount(fullRingComb) *
+                combToP(sDice, pS) *
+                distinctPermutationsCount(sDice)
+            );
+          }
 
-  return result;
+          const fullSkillCombs = distinctComplementaryCombinations({
+            threshold,
+            size: skill - sDice.length,
+          })
+            .map((cb) => [...sDice, ...cb])
+            // Eliminate all combinations that go above TN
+            // FIXME Same as previous, should not be needed
+            .filter(
+              (fullCb) =>
+                [fullRingComb, ...fullCb]
+                  .sort()
+                  .reverse()
+                  .slice(0, ring)
+                  .reduce((acc, val) => acc + val, 0) !== tn
+            );
+
+          return (
+            acc +
+            combToP(fullRingComb, pR) *
+              distinctPermutationsCount(fullRingComb) *
+              fullSkillCombs.reduce((acc, fullSkillComb) => {
+                return (
+                  acc +
+                  combToP(fullSkillComb, pS) *
+                    distinctPermutationsCount(fullSkillComb)
+                );
+              }, 0)
+          );
+        }, 0)
+      );
+    }, 0);
+
+  return (
+    withLessDiceThanMax +
+    withOnlyRingDice +
+    withOnlySkillDice +
+    withBothRingAndSkillDice
+  );
 };
 
 /**
