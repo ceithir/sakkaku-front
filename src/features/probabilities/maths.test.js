@@ -672,6 +672,12 @@ describe("cumulativeSuccess", () => {
             4
           );
         });
+        test("skill = 2", () => {
+          expect(cumulativeSuccess({ ring: 3, skill: 2, tn: 5 })).toBeCloseTo(
+            0.0967,
+            4
+          );
+        });
       });
     });
   });

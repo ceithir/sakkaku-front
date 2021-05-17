@@ -464,16 +464,36 @@ const exactSuccess = ({ ring, skill, tn }) => {
       return acc + subresult;
     }, 0);
 
-  // Case: All skill dice exactly add up to TN
-  // Ring dice must contribute nothing to the result to avoid falling into one of the other cases
+  const addUpToTN = (comb, options = {}) => {
+    const { max = null } = options;
+
+    if (max === null) {
+      return comb.reduce((acc, x) => acc + x, 0) >= tn;
+    }
+
+    return (
+      [...comb]
+        .sort()
+        .reverse()
+        .slice(0, max)
+        .reduce((acc, x) => acc + x, 0) >= tn
+    );
+  };
+
+  // Case: A total of ring skill dice exactly add up to TN
+  // And the ring dice do not add up to TN (to avoid falling back into the previous case)
   const withOnlySkillDice = fullCombs
     .filter(({ rings: rDice }) => rDice.length === 0) // <=> sDice.length === ring
     .reduce((acc, { skills: sDice }) => {
       let subresult = 1;
-      subresult *= Math.pow(
-        funcSum({ func: pR, n: Math.min(...sDice) - 1 }),
-        ring
-      );
+      subresult *= distinctComplementaryCombinations({
+        threshold: Math.min(...sDice),
+        size: ring,
+      })
+        .filter((cb) => !addUpToTN(cb))
+        .reduce((acc, cb) => {
+          return acc + combToP(cb, pR) * distinctPermutationsCount(cb);
+        }, 0);
 
       subresult *= combToP(sDice, pS);
       if (sDice.length === skill) {
@@ -493,75 +513,69 @@ const exactSuccess = ({ ring, skill, tn }) => {
     }, 0);
 
   // Case: Achieving TN _requires_ mixing both dice
-  // Absolute mess as suggested by the FIXME comment below
-  const withBothRingAndSkillDice = fullCombs
-    .filter(
-      ({ rings: rDice, skills: sDice }) => rDice.length > 0 && sDice.length > 0
-    )
-    .reduce((acc, { rings: rDice, skills: sDice }) => {
-      const threshold = Math.min(...rDice, ...sDice);
+  const gruellingCases = fullCombs.filter(
+    ({ rings: rDice, skills: sDice }) => rDice.length > 0 && sDice.length > 0
+  );
+  let gruellingCombinations = [];
+  const addToGruellingCombinations = (comb) => {
+    if (
+      gruellingCombinations.some(
+        ({ rings, skills }) =>
+          sameArray([...rings].sort(), [...comb["rings"]].sort()) &&
+          sameArray([...skills].sort(), [...comb["skills"]].sort())
+      )
+    ) {
+      return;
+    }
+    gruellingCombinations.push(comb);
+  };
+  gruellingCases.forEach(({ rings: rDice, skills: sDice }) => {
+    const threshold = Math.min(...rDice, ...sDice);
 
-      const fullRingCombs = distinctComplementaryCombinations({
-        threshold,
-        size: ring - rDice.length,
+    distinctComplementaryCombinations({
+      threshold,
+      size: ring - rDice.length,
+    })
+      .map((cb) => [...rDice, ...cb])
+      .filter((fullRingComb) => {
+        return !addUpToTN(fullRingComb);
       })
-        .map((cb) => [...rDice, ...cb])
-        // Eliminate combinations already handled before
-        // FIXME The fact this is needed is sign something has gone very wrong
-        .filter((cb) => {
-          return !combs.some(
-            ({ rings: oR }) =>
-              sameArray(
-                [...cb].sort(),
-                [...oR, ...new Array(ring - oR.length).fill(0)].sort()
-              ) && !sameArray(rDice, oR)
-          );
-        });
+      .forEach((fullRingComb) => {
+        if (skill === sDice.length) {
+          return addToGruellingCombinations({
+            rings: fullRingComb,
+            skills: sDice,
+          });
+        }
 
+        distinctComplementaryCombinations({
+          threshold,
+          size: skill - sDice.length,
+        })
+          .map((cb) => [...sDice, ...cb])
+          .filter((fullSkillComb) => {
+            return !addUpToTN(fullSkillComb, { max: ring });
+          })
+          .forEach((fullSkillComb) => {
+            addToGruellingCombinations({
+              rings: fullRingComb,
+              skills: fullSkillComb,
+            });
+          });
+      });
+  });
+  const withBothRingAndSkillDice = gruellingCombinations.reduce(
+    (acc, { rings: fullRingComb, skills: fullSkillComb }) => {
       return (
         acc +
-        fullRingCombs.reduce((acc, fullRingComb) => {
-          if (skill === sDice.length) {
-            return (
-              acc +
-              combToP(fullRingComb, pR) *
-                distinctPermutationsCount(fullRingComb) *
-                combToP(sDice, pS) *
-                distinctPermutationsCount(sDice)
-            );
-          }
-
-          const fullSkillCombs = distinctComplementaryCombinations({
-            threshold,
-            size: skill - sDice.length,
-          })
-            .map((cb) => [...sDice, ...cb])
-            // Eliminate all combinations that go above TN
-            // FIXME Same as previous, should not be needed
-            .filter(
-              (fullCb) =>
-                [fullRingComb, ...fullCb]
-                  .sort()
-                  .reverse()
-                  .slice(0, ring)
-                  .reduce((acc, val) => acc + val, 0) !== tn
-            );
-
-          return (
-            acc +
-            combToP(fullRingComb, pR) *
-              distinctPermutationsCount(fullRingComb) *
-              fullSkillCombs.reduce((acc, fullSkillComb) => {
-                return (
-                  acc +
-                  combToP(fullSkillComb, pS) *
-                    distinctPermutationsCount(fullSkillComb)
-                );
-              }, 0)
-          );
-        }, 0)
+        combToP(fullRingComb, pR) *
+          distinctPermutationsCount(fullRingComb) *
+          combToP(fullSkillComb, pS) *
+          distinctPermutationsCount(fullSkillComb)
       );
-    }, 0);
+    },
+    0
+  );
 
   return (
     withLessDiceThanMax +
