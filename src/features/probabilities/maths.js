@@ -464,12 +464,16 @@ const exactSuccess = ({ ring, skill, tn }) => {
       return acc + subresult;
     }, 0);
 
-  // Case: All ring dice are blank
+  // Case: All skill dice exactly add up to TN
+  // Ring dice must contribute nothing to the result to avoid falling into one of the other cases
   const withOnlySkillDice = fullCombs
     .filter(({ rings: rDice }) => rDice.length === 0) // <=> sDice.length === ring
     .reduce((acc, { skills: sDice }) => {
       let subresult = 1;
-      subresult *= Math.pow(pR(0), ring);
+      subresult *= Math.pow(
+        funcSum({ func: pR, n: Math.min(...sDice) - 1 }),
+        ring
+      );
 
       subresult *= combToP(sDice, pS);
       if (sDice.length === skill) {
