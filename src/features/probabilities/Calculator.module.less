@@ -2,9 +2,17 @@
 
 .form {
   margin: 24px auto;
-  padding: 0 12px;
+  padding: 0 16px;
   max-width: @screen-md;
   justify-content: center;
+
+  &:global(.ant-form-inline) :global(.ant-form-item) {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: @screen-sm) {
+    justify-content: space-between;
+  }
 
   output {
     text-align: justify;
