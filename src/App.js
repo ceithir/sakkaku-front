@@ -11,6 +11,7 @@ import { setUser } from "./features/user/reducer";
 import HeritageRoll from "./features/heritage/Roll";
 import HeritageRollLoader from "./features/heritage/RollLoader";
 import HeritageListLoader from "./features/heritage/ListLoader";
+import Calculator from "./features/probabilities/Calculator";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,9 @@ const App = () => {
     <Router>
       <Layout>
         <Switch>
+          <Route path="/probabilities">
+            <Calculator />
+          </Route>
           <Route path="/heritage/list">
             <HeritageListLoader />
           </Route>

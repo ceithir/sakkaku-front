@@ -60,6 +60,9 @@ const CustomMenu = () => {
       <Menu.Item key="heritage" className={styles["sm-hide"]}>
         <Link to="/heritage">Heritage</Link>
       </Menu.Item>
+      <Menu.Item key="probabilities" className={styles["sm-hide"]}>
+        <Link to="/probabilities">{`Probabilities`}</Link>
+      </Menu.Item>
       <SubMenu
         key="plus"
         title={`...`}
@@ -76,6 +79,9 @@ const CustomMenu = () => {
         )}
         <Menu.Item key="heritage">
           <Link to="/heritage">Heritage</Link>
+        </Menu.Item>
+        <Menu.Item key="probabilities">
+          <Link to="/probabilities">{`Probabilities`}</Link>
         </Menu.Item>
       </SubMenu>
       <Menu.Item className={styles.login}>
