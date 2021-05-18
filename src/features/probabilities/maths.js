@@ -25,7 +25,7 @@ export const distinctPermutationsCount = (list) => {
 
 const factorial = (n) => {
   if (n < 0) {
-    throw "n must be >= 0";
+    throw new Error("n must be >= 0");
   }
   if (n === 0) {
     return 1;
@@ -119,10 +119,10 @@ export const combinations = (n, options = {}) => {
 
 export const subsets = ({ ring, skill, size }) => {
   if (size > ring.length + skill.length) {
-    throw "Out of bounds";
+    throw new Error("Out of bounds");
   }
   if (ring < 1) {
-    throw "Not possible for a standard roll thus not implemented";
+    throw new Error("Not possible for a standard roll thus not implemented");
   }
 
   let storage = [];
