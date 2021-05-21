@@ -33,6 +33,9 @@ const Summary = ({
   const unskilledAssist = modifierToAssist(
     modifiers.find((modifier) => /^unskilledassist([0-9]{2})$/.test(modifier))
   );
+  const extraRingDice = (modifiers.includes("void") ? 1 : 0) + unskilledAssist;
+  const extraSkillDice =
+    (modifiers.includes("wandering") ? 1 : 0) + skilledAssist;
 
   const special = [
     ...[
@@ -40,8 +43,8 @@ const Summary = ({
       modifiers.includes("compromised") && "Compromised",
       modifiers.includes("adversity") && "Adversity",
       modifiers.includes("distinction") && "Distinction",
-      skilledAssist > 0 && `Skilled Assist: ${skilledAssist}`,
-      unskilledAssist > 0 && `Unskilled Assist: ${unskilledAssist}`,
+      skilledAssist > 0 && `Skilled Assistance x${skilledAssist}`,
+      unskilledAssist > 0 && `Unskilled Assistance x${unskilledAssist}`,
       modifiers.includes("stirring") && "Shūji — Stirring the Embers",
     ],
     ...modifiers
@@ -91,25 +94,27 @@ const Summary = ({
       content: [
         {
           label: `Ring`,
-          content: modifiers.includes("void") ? (
-            <>
-              <Text>{ring}</Text>
-              <Text type="secondary">{` + 1`}</Text>
-            </>
-          ) : (
-            ring
-          ),
+          content:
+            extraRingDice > 0 ? (
+              <>
+                <Text>{ring}</Text>
+                <Text type="secondary">{` + ${extraRingDice}`}</Text>
+              </>
+            ) : (
+              ring
+            ),
         },
         {
           label: `Skill`,
-          content: modifiers.includes("wandering") ? (
-            <>
-              <Text>{skill}</Text>
-              <Text type="secondary">{` + 1`}</Text>
-            </>
-          ) : (
-            skill
-          ),
+          content:
+            extraSkillDice > 0 ? (
+              <>
+                <Text>{skill}</Text>
+                <Text type="secondary">{` + ${extraSkillDice}`}</Text>
+              </>
+            ) : (
+              skill
+            ),
         },
       ],
     },
