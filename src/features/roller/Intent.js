@@ -119,6 +119,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
       misc = misc.filter((x) => x !== "ringless");
     }
 
+    const assist = [
+      data["unskilled_assist"] &&
+        `unskilledassist${data["unskilled_assist"]
+          .toString()
+          .padStart(2, "0")}`,
+      data["skilled_assist"] &&
+        `skilledassist${data["skilled_assist"].toString().padStart(2, "0")}`,
+    ].filter(Boolean);
+
     onFinish({
       ...data,
       ring,
@@ -128,6 +137,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
         data["compromised"] && "compromised",
         voided && "void",
         data["school"],
+        ...assist,
         ...techniques,
         ...misc,
       ].filter(Boolean),
@@ -241,6 +251,20 @@ const Intent = ({ onFinish, values, onComplete }) => {
             valuePropName="checked"
           >
             <Switch />
+          </Form.Item>
+          <Form.Item
+            label="Skilled assist"
+            name="skilled_assist"
+            initialValue={0}
+          >
+            <InputNumber min={0} max={10} />
+          </Form.Item>
+          <Form.Item
+            label="Unskilled assist"
+            name="unskilled_assist"
+            initialValue={0}
+          >
+            <InputNumber min={0} max={10} />
           </Form.Item>
         </Panel>
       </Collapse>

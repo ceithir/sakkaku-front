@@ -20,12 +20,28 @@ const Summary = ({
   channeled,
   addkept,
 }) => {
+  const modifierToAssist = (modifier) => {
+    if (!modifier) {
+      return 0;
+    }
+
+    return parseInt(modifier.slice(-2));
+  };
+  const skilledAssist = modifierToAssist(
+    modifiers.find((modifier) => /^skilledassist([0-9]{2})$/.test(modifier))
+  );
+  const unskilledAssist = modifierToAssist(
+    modifiers.find((modifier) => /^unskilledassist([0-9]{2})$/.test(modifier))
+  );
+
   const special = [
     ...[
       modifiers.includes("void") && "Void Point",
       modifiers.includes("compromised") && "Compromised",
       modifiers.includes("adversity") && "Adversity",
       modifiers.includes("distinction") && "Distinction",
+      skilledAssist > 0 && `Skilled Assist: ${skilledAssist}`,
+      unskilledAssist > 0 && `Unskilled Assist: ${unskilledAssist}`,
       modifiers.includes("stirring") && "Shūji — Stirring the Embers",
     ],
     ...modifiers

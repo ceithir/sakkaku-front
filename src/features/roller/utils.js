@@ -29,20 +29,35 @@ export const isSpecialAlteration = (modifier) => {
 
 export const rolledDicesCount = ({ ring, skill, modifiers }) => {
   return (
-    keptDicesCount({ ring, modifiers }) +
+    ring +
     skill +
+    assistDiceCount(modifiers) +
+    (modifiers.includes("void") ? 1 : 0) +
     (modifiers.includes("wandering") ? 1 : 0)
   );
 };
 
 export const keptDicesCount = ({ ring, modifiers }) => {
-  return ring + (modifiers.includes("void") ? 1 : 0);
+  return (
+    ring + (modifiers.includes("void") ? 1 : 0) + assistDiceCount(modifiers)
+  );
 };
 
 export const isAlteration = (modifier) => {
   return (
     ["ishiken", "wandering"].includes(modifier) || isSpecialAlteration(modifier)
   );
+};
+
+const assistDiceCount = (modifiers) => {
+  if (!modifiers?.length) {
+    return 0;
+  }
+
+  return modifiers
+    .filter((modifier) => /^(un)?skilledassist([0-9]{2})$/.test(modifier))
+    .map((modifier) => parseInt(modifier.slice(-2)))
+    .reduce((acc, val) => acc + val, 0);
 };
 
 export const countDices = (keptDices) => {
@@ -144,8 +159,9 @@ export const replaceRerollsOfType = ({
 };
 
 export const replaceRerolls = ({ dices, rerollTypes, basePool }) => {
-  const rerollCount = dices.filter(({ status }) => status === "rerolled")
-    .length;
+  const rerollCount = dices.filter(
+    ({ status }) => status === "rerolled"
+  ).length;
   if (rerollCount === 0) {
     return dices;
   }

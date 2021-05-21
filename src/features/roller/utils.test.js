@@ -1,4 +1,9 @@
-import { replaceRerollsOfType, replaceRerolls } from "./utils";
+import {
+  replaceRerollsOfType,
+  replaceRerolls,
+  rolledDicesCount,
+  keptDicesCount,
+} from "./utils";
 
 describe("replaceRerollsOfType", () => {
   describe("current", () => {
@@ -667,5 +672,13 @@ describe("replaceRerolls", () => {
         metadata: [],
       },
     ]);
+  });
+});
+
+describe("assisted roll", () => {
+  test("count skilled assist dice properly", () => {
+    expect(
+      rolledDicesCount({ ring: 2, skill: 3, modifiers: ["unskilledassist05"] })
+    ).toStrictEqual(10);
   });
 });
