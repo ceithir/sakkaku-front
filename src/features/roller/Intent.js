@@ -113,21 +113,27 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
     const techniques = data["techniques"] || [];
 
-    let { ring, tn, void: voided, misc = [] } = data;
+    let {
+      ring,
+      tn,
+      void: voided,
+      misc = [],
+      unskilled_assist: unskilledAssist,
+      skilled_assist: skilledAssist,
+    } = data;
     if (misc.includes("ringless")) {
       ring = 0;
       tn = null;
       voided = false;
       misc = misc.filter((x) => x !== "ringless");
+      unskilledAssist = 0;
     }
 
     const assist = [
-      data["unskilled_assist"] &&
-        `unskilledassist${data["unskilled_assist"]
-          .toString()
-          .padStart(2, "0")}`,
-      data["skilled_assist"] &&
-        `skilledassist${data["skilled_assist"].toString().padStart(2, "0")}`,
+      unskilledAssist &&
+        `unskilledassist${unskilledAssist.toString().padStart(2, "0")}`,
+      skilledAssist &&
+        `skilledassist${skilledAssist.toString().padStart(2, "0")}`,
     ].filter(Boolean);
 
     onFinish({
@@ -294,13 +300,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
           >
             <InputNumber min={0} max={10} />
           </Form.Item>
-          <Form.Item
-            label="Unskilled assist"
-            name="unskilled_assist"
-            initialValue={0}
-          >
-            <InputNumber min={0} max={10} />
-          </Form.Item>
+          {!ringless && (
+            <Form.Item
+              label="Unskilled assist"
+              name="unskilled_assist"
+              initialValue={0}
+            >
+              <InputNumber min={0} max={10} />
+            </Form.Item>
+          )}
         </Panel>
       </Collapse>
       <Divider />
