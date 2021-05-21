@@ -160,7 +160,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
       onValuesChange={(changedValues) => {
         if (
           Object.keys(changedValues).some((name) =>
-            ["ring", "skill", "void", "channeled", "school"].includes(name)
+            [
+              "ring",
+              "skill",
+              "void",
+              "channeled",
+              "school",
+              "skilled_assist",
+              "unskilled_assist",
+            ].includes(name)
           )
         ) {
           form.validateFields(["channeled"]);
@@ -342,10 +350,14 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   const skill = form.getFieldValue("skill");
                   const voided = form.getFieldValue("void");
                   const school = form.getFieldValue("school");
+                  const skilledAssist =
+                    form.getFieldValue("skilled_assist") || 0;
+                  const unskilledAssist =
+                    form.getFieldValue("unskilled_assist") || 0;
 
                   if (
                     dices.filter(({ type }) => type === "ring").length >
-                    ring + (voided ? 1 : 0)
+                    ring + (voided ? 1 : 0) + unskilledAssist
                   ) {
                     return Promise.reject(
                       new Error(
@@ -356,7 +368,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
                   if (
                     dices.filter(({ type }) => type === "skill").length >
-                    skill + (school === "wandering" ? 1 : 0)
+                    skill + (school === "wandering" ? 1 : 0) + skilledAssist
                   ) {
                     return Promise.reject(
                       new Error(
