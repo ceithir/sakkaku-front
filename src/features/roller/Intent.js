@@ -102,6 +102,8 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [voided, setVoided] = useState(false);
   const [school, setSchool] = useState();
   const [ringless, setRingless] = useState(false);
+  const [skilledAssist, setSkilledAssist] = useState(0);
+  const [unskilledAssist, setUnskilledAssist] = useState(0);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -144,6 +146,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
     });
   };
 
+  const extraRingDice = (voided ? 1 : 0) + unskilledAssist;
+  const extraSkillDice = (school === "wandering" ? 1 : 0) + skilledAssist;
+
   return (
     <Form
       className={styles.form}
@@ -174,6 +179,20 @@ const Intent = ({ onFinish, values, onComplete }) => {
           Object.keys(changedValues).some((name) => ["misc"].includes(name))
         ) {
           setRingless(form.getFieldValue("misc").includes("ringless"));
+        }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["unskilled_assist"].includes(name)
+          )
+        ) {
+          setUnskilledAssist(form.getFieldValue("unskilled_assist"));
+        }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["skilled_assist"].includes(name)
+          )
+        ) {
+          setSkilledAssist(form.getFieldValue("skilled_assist"));
         }
       }}
     >
@@ -213,7 +232,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
           label="Ring"
           name="ring"
           rules={defaultRules}
-          className={classNames({ [styles.voided]: voided })}
+          className={classNames({
+            [styles.plus]: extraRingDice > 0,
+            [styles[`plus-${extraRingDice.toString().padStart(2, "0")}`]]:
+              extraRingDice > 0,
+          })}
         >
           <InputNumber min={1} max={10} />
         </Form.Item>
@@ -222,7 +245,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
         label="Skill"
         name="skill"
         rules={defaultRules}
-        className={classNames({ [styles.voided]: school === "wandering" })}
+        className={classNames({
+          [styles.plus]: extraSkillDice > 0,
+          [styles[`plus-${extraSkillDice.toString().padStart(2, "0")}`]]:
+            extraSkillDice > 0,
+        })}
       >
         <InputNumber min={0} max={10} />
       </Form.Item>
