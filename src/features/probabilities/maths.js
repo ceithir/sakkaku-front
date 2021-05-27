@@ -2,6 +2,7 @@
  * Mathematical concepts:
  * https://en.wikipedia.org/wiki/Combination
  * https://en.wikipedia.org/wiki/Permutation
+ * https://en.wikipedia.org/wiki/Geometric_progression
  */
 
 /**
@@ -631,6 +632,128 @@ export const cumulativeSuccess = ({ ring, skill, tn, options = {} }) => {
   let result = 1;
   for (let i = 0; i < tn; i++) {
     result -= exactSuccess({ ring, skill, tn: i, options });
+  }
+  return result;
+};
+
+/**
+ * Changes to get _exactly_ {n} success and exactly {opp}
+ */
+const pRExact = ({ n, opp }) => {
+  if (opp > 1) {
+    return 0;
+  }
+
+  if (n === 0) {
+    return opp === 1 ? 1 / 3 : 1 / 6;
+  }
+
+  if (opp === 0) {
+    return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 / 6));
+  }
+
+  return (Math.pow(1 / 6, n) * 1) / 3;
+};
+
+/**
+ * Chance to end on an opportunity (regardless of the number of success)
+ * I.e. the result of the infinite geometric series 1/3+(1/6)*1/3+(1/6)^2*1/3...
+ */
+const pROpp = () => {
+  return 2 / 5;
+};
+
+/**
+ * Changes to get _at least_ {n} success and exactly {opp}
+ */
+const pRAtLeast = ({ n, opp }) => {
+  if (opp > 1) {
+    return 0;
+  }
+
+  if (opp === 1) {
+    return Math.pow(1 / 6, n) * pROpp();
+  }
+
+  // opp === 0
+
+  if (n === 0) {
+    return 1 - pROpp();
+  }
+
+  return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pROpp()));
+};
+
+const atLeastTnExactOpp = ({ ring, tn, opp }) => {
+  const keptDiceCount = ring;
+
+  if (opp === 0) {
+    throw "Handled elsewhere";
+  }
+
+  if (keptDiceCount === 1) {
+    return pRAtLeast({ n: tn, opp });
+  }
+
+  if (keptDiceCount === 2) {
+    if (tn === 1) {
+      if (opp === 1) {
+        return (
+          ring * pRAtLeast({ n: 1, opp: 1 }) * pRExact({ n: 0, opp: 0 }) +
+          ring * pRAtLeast({ n: 1, opp: 0 }) * pRExact({ n: 0, opp: 1 }) +
+          ring * pRAtLeast({ n: 1, opp: 1 }) * pRAtLeast({ n: 1, opp: 0 })
+        );
+      }
+
+      if (opp === 2) {
+        return (
+          Math.pow(pRAtLeast({ n: tn, opp: 1 }), ring) +
+          ring * pRAtLeast({ n: tn, opp: 1 }) * pRExact({ n: 0, opp: 1 })
+        );
+      }
+    }
+
+    if (tn === 2) {
+      if (opp === 1) {
+        return (
+          ring * pRExact({ n: 1, opp: 1 }) * pRExact({ n: 1, opp: 0 }) +
+          ring * pRAtLeast({ n: 2, opp: 1 }) * pRAtLeast({ n: 2, opp: 0 }) +
+          ring * pRAtLeast({ n: 2, opp: 1 }) * pRExact({ n: 1, opp: 0 }) +
+          ring * pRAtLeast({ n: 2, opp: 1 }) * pRExact({ n: 0, opp: 0 }) +
+          ring * pRAtLeast({ n: 2, opp: 0 }) * pRExact({ n: 1, opp: 1 }) +
+          ring * pRAtLeast({ n: 2, opp: 0 }) * pRExact({ n: 0, opp: 1 })
+        );
+      }
+
+      if (opp === 2) {
+        return (
+          Math.pow(pRAtLeast({ n: tn, opp: 1 }), 2) +
+          ring *
+            pRAtLeast({ n: tn, opp: 1 }) *
+            (pRExact({ n: 0, opp: 1 }) + pRExact({ n: 1, opp: 1 })) +
+          Math.pow(pRExact({ n: 1, opp: 1 }), 2)
+        );
+      }
+    }
+  }
+
+  throw "TODO";
+};
+
+export const successAndOpp = ({ ring, skill, tn, opp = 0, options = {} }) => {
+  if (opp === 0) {
+    return cumulativeSuccess({ ring, skill, tn, options });
+  }
+
+  const keptDiceCount = ring;
+
+  if (skill > 0) {
+    throw "TODO";
+  }
+
+  let result = 0;
+  for (let i = opp; i <= keptDiceCount; i++) {
+    result += atLeastTnExactOpp({ ring, skill, tn, opp: i, options });
   }
   return result;
 };

@@ -12,6 +12,7 @@ import {
   complementaryCombinations,
   bruteForcePermutations,
   bruteForceChances,
+  successAndOpp,
 } from "./maths";
 
 describe("die", () => {
@@ -823,6 +824,88 @@ describe("cumulativeSuccess", () => {
             tn: 9,
           })
         ).toBeCloseTo(0.0003, 4);
+      });
+    });
+  });
+});
+
+describe("successAndOpp", () => {
+  describe("skill = 0", () => {
+    describe("ring = 1", () => {
+      test("tn = 0", () => {
+        expect(
+          successAndOpp({
+            ring: 1,
+            skill: 0,
+            tn: 0,
+            opp: 1,
+          })
+        ).toBeCloseTo(0.4, 4);
+      });
+      test("tn = 1", () => {
+        expect(
+          successAndOpp({
+            ring: 1,
+            skill: 0,
+            tn: 1,
+            opp: 1,
+          })
+        ).toBeCloseTo(0.0667, 4);
+      });
+      test("opp = 2", () => {
+        expect(
+          successAndOpp({
+            ring: 1,
+            skill: 0,
+            tn: 1,
+            opp: 2,
+          })
+        ).toStrictEqual(0);
+      });
+    });
+    describe("ring = 2", () => {
+      test("tn = 1, opp = 1", () => {
+        expect(
+          successAndOpp({
+            ring: 2,
+            skill: 0,
+            tn: 1,
+            opp: 1,
+          })
+        ).toBeCloseTo(0.4178, 4);
+      });
+
+      test("tn = 1, opp = 2", () => {
+        expect(
+          successAndOpp({
+            ring: 2,
+            skill: 0,
+            tn: 1,
+            opp: 2,
+          })
+        ).toBeCloseTo(0.0489, 4);
+      });
+
+      test("tn = 2, opp = 1", () => {
+        expect(
+          successAndOpp({
+            ring: 2,
+            skill: 0,
+            tn: 2,
+            opp: 1,
+          })
+        ).toBeCloseTo(0.1215, 4);
+      });
+
+      test("tn = 2, opp = 2", () => {
+        expect(
+          successAndOpp({
+            ring: 2,
+            skill: 0,
+            tn: 2,
+            opp: 2,
+          })
+        ).toBeCloseTo(0.0119, 4);
       });
     });
   });
