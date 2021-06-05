@@ -5,25 +5,33 @@
   max-width: 456px;
   justify-content: center;
   margin: 16px auto 24px auto;
-}
 
-.dices > .dice {
-  padding: 4px !important;
-  margin-right: 4px;
-  margin-bottom: 8px !important;
-  width: 72px;
-}
+  & > .dice {
+    padding: 4px !important;
+    margin-right: 4px;
+    margin-bottom: 8px !important;
+    width: 72px;
 
-.dices > .dice:last-child {
-  margin-right: 0;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .selectable {
   cursor: pointer;
-}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-.selectable:hover {
-  background-color: #69c0ff;
+  input {
+    margin: 4px;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: #69c0ff;
+  }
 }
 
 .selected {
