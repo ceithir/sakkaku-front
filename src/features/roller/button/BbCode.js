@@ -3,23 +3,30 @@ import { Button, message } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { countDices } from "../utils";
 
-const BbCode = ({ id, description, tn, dices, modifiers = [] }) => {
+const imgUrlRoot = `https://sakkaku.org/media/dice`;
+const diceToImage = ({
+  type,
+  value: { opportunity = 0, success = 0, explosion = 0, strife = 0 },
+}) => {
+  return `${imgUrlRoot}/${type}/exp${explosion}opp${opportunity}str${strife}suc${success}.png`;
+};
+
+const BbCode = ({
+  id,
+  description,
+  tn,
+  dices,
+  modifiers = [],
+  cleanedUpDice,
+}) => {
   const buttonText = `Copy as BBCode`;
 
   if (!id) {
     return <Button disabled>{buttonText}</Button>;
   }
 
-  const keptDices = dices.filter(({ status }) => {
-    return status === "kept";
-  });
-
-  const {
-    successCount,
-    opportunityCount,
-    strifeCount,
-    blankCount,
-  } = countDices(keptDices);
+  const { successCount, opportunityCount, strifeCount, blankCount } =
+    countDices(cleanedUpDice);
 
   let result = [
     {
@@ -51,9 +58,14 @@ const BbCode = ({ id, description, tn, dices, modifiers = [] }) => {
     .map(({ label, value }) => `${label}: [b]${value}[/b]`)
     .join(" / ");
 
-  const text = `[url="${
-    window.location.origin
-  }/rolls/${id}"]${description}[/url] | TN: ${tn || "?"} | ${shortResult}`;
+  const url = `${window.location.origin}/rolls/${id}`;
+
+  const text =
+    `[url="${url}"]${description}[/url] | TN: ${tn || "?"} | ${shortResult}` +
+    "\n" +
+    `[url="${url}"]${cleanedUpDice.map(
+      (dice) => `[img]${diceToImage(dice)}[/img]`
+    )}[/url]`;
 
   return (
     <CopyToClipboard
