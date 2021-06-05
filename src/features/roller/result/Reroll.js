@@ -139,16 +139,15 @@ const Reroll = ({ dices, basePool, rerollTypes, className }) => {
     <div className={classNames(styles.box, { [className]: !!className })}>
       {rerollTypes.map((rerollType, i) => {
         return (
-          <>
+          <React.Fragment key={rerollType}>
             <SingleReroll
-              key={rerollType}
               dices={dices}
               basePool={basePool}
               rerollType={rerollType}
               rerollTypes={rerollTypes}
             />
             {i < rerollTypes.length - 1 && <Divider />}
-          </>
+          </React.Fragment>
         );
       })}
     </div>
