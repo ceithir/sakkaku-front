@@ -1,5 +1,4 @@
 import React from "react";
-import { Tooltip, Image } from "antd";
 import blankRing from "./images/dice/black.png";
 import strifeOpportunityRing from "./images/dice/blackot.png";
 import strifeSuccessRing from "./images/dice/blackst.png";
@@ -77,13 +76,7 @@ const getText = ({ value: { opportunity, strife, success, explosion } }) => {
 };
 
 const Dice = ({ dice }) => {
-  return (
-    <Tooltip title={getText(dice)}>
-      <div>
-        <Image src={getImage(dice)} alt={getText(dice)} preview={false} />
-      </div>
-    </Tooltip>
-  );
+  return <img src={getImage(dice)} alt={getText(dice)} />;
 };
 
 export default Dice;
