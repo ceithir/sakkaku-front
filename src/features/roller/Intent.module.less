@@ -5,6 +5,42 @@
   max-width: @screen-md;
   .torii-box();
   padding-bottom: 0;
+
+  fieldset {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    & > * {
+      margin-right: 24px;
+    }
+
+    :global(.ant-select-auto-complete) {
+      min-width: 240px;
+    }
+
+    & + :global(.ant-divider) {
+      margin-top: 0;
+    }
+  }
+
+  :global(.ant-collapse-content) fieldset:last-of-type {
+    margin-bottom: -24px;
+  }
+
+  .checkboxes {
+    :global(.ant-form-item-control-input-content) {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .channel {
+    button {
+      display: block;
+      margin: 0 auto;
+    }
+  }
 }
 
 .plus :global(.ant-form-item-control-input-content):after {
@@ -57,4 +93,10 @@
     margin-left: -36px;
     margin-right: -36px;
   }
+}
+
+.click_for_info {
+  padding-left: 2px;
+  color: dodgerblue;
+  text-decoration: underline dotted;
 }

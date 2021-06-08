@@ -8,6 +8,7 @@ import {
   Select,
   Collapse,
   Checkbox,
+  Popover,
 } from "antd";
 import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
@@ -29,11 +30,6 @@ import ABILITIES, { longname } from "./data/abilities";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
 
 const tailLayout = {
   labelCol: { span: 0 },
@@ -159,7 +155,17 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const commonModifiersOptions = [
     !ringless && {
       value: "void",
-      label: `Seize the Moment (spend 1 Void point for +1 Ring die)`,
+      label: (
+        <span>
+          {`Seize the Moment`}
+          <Popover
+            content={`Spend 1 Void point for +1 Ring die`}
+            trigger="click"
+          >
+            <sup className={styles["click_for_info"]}>{`?`}</sup>
+          </Popover>
+        </span>
+      ),
     },
     {
       value: "distinction",
@@ -177,7 +183,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   return (
     <Form
       className={styles.form}
-      {...layout}
+      layout="vertical"
       initialValues={values}
       onFinish={wrappedOnFinish}
       scrollToFirstError
@@ -234,18 +240,20 @@ const Intent = ({ onFinish, values, onComplete }) => {
     >
       {!!user && (
         <>
-          <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
-            <AutoComplete
-              options={arrayToAutoCompleteOptions(campaigns)}
-              placeholder={"The Dead of Winter"}
-            />
-          </Form.Item>
-          <Form.Item label="Character" name="character" rules={defaultRules}>
-            <AutoComplete
-              options={arrayToAutoCompleteOptions(characters)}
-              placeholder={"Doji Sakura"}
-            />
-          </Form.Item>
+          <fieldset>
+            <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
+              <AutoComplete
+                options={arrayToAutoCompleteOptions(campaigns)}
+                placeholder={"The Dead of Winter"}
+              />
+            </Form.Item>
+            <Form.Item label="Character" name="character" rules={defaultRules}>
+              <AutoComplete
+                options={arrayToAutoCompleteOptions(characters)}
+                placeholder={"Doji Sakura"}
+              />
+            </Form.Item>
+          </fieldset>
           <Form.Item
             label="Description"
             name="description"
@@ -255,55 +263,50 @@ const Intent = ({ onFinish, values, onComplete }) => {
               placeholder={"Running at the foe! Fire, Fitness, Keen Balance"}
             />
           </Form.Item>
+          <Divider />
         </>
       )}
-      {!ringless && (
-        <Form.Item label="TN" name="tn">
-          <InputNumber min={1} />
-        </Form.Item>
-      )}
-      <Divider />
-      {!ringless && (
+      <fieldset>
+        {!ringless && (
+          <Form.Item
+            label="Ring"
+            name="ring"
+            rules={defaultRules}
+            className={classNames({
+              [styles.plus]: extraRingDice > 0,
+              [styles[`plus-${extraRingDice.toString().padStart(2, "0")}`]]:
+                extraRingDice > 0,
+            })}
+          >
+            <InputNumber min={1} max={10} />
+          </Form.Item>
+        )}
         <Form.Item
-          label="Ring"
-          name="ring"
+          label="Skill"
+          name="skill"
           rules={defaultRules}
           className={classNames({
-            [styles.plus]: extraRingDice > 0,
-            [styles[`plus-${extraRingDice.toString().padStart(2, "0")}`]]:
-              extraRingDice > 0,
+            [styles.plus]: extraSkillDice > 0,
+            [styles[`plus-${extraSkillDice.toString().padStart(2, "0")}`]]:
+              extraSkillDice > 0,
           })}
         >
-          <InputNumber min={1} max={10} />
+          <InputNumber min={0} max={10} />
         </Form.Item>
-      )}
-      <Form.Item
-        label="Skill"
-        name="skill"
-        rules={defaultRules}
-        className={classNames({
-          [styles.plus]: extraSkillDice > 0,
-          [styles[`plus-${extraSkillDice.toString().padStart(2, "0")}`]]:
-            extraSkillDice > 0,
-        })}
-      >
-        <InputNumber min={0} max={10} />
-      </Form.Item>
+        {!ringless && (
+          <Form.Item label="TN" name="tn">
+            <InputNumber min={1} />
+          </Form.Item>
+        )}
+      </fieldset>
       <Divider />
       <Collapse ghost>
         <Panel header={"Common modifiers"}>
-          <Form.Item name="common_modifiers" label={`Inherent Modifiers`}>
+          <Form.Item name="common_modifiers" className={styles.checkboxes}>
             <Checkbox.Group options={commonModifiersOptions} />
           </Form.Item>
           {!ringless && (
-            <>
-              <Form.Item
-                label="Skilled assist"
-                name="skilled_assist"
-                initialValue={0}
-              >
-                <InputNumber min={0} max={10} />
-              </Form.Item>
+            <fieldset>
               <Form.Item
                 label="Unskilled assist"
                 name="unskilled_assist"
@@ -311,7 +314,14 @@ const Intent = ({ onFinish, values, onComplete }) => {
               >
                 <InputNumber min={0} max={10} />
               </Form.Item>
-            </>
+              <Form.Item
+                label="Skilled assist"
+                name="skilled_assist"
+                initialValue={0}
+              >
+                <InputNumber min={0} max={10} />
+              </Form.Item>
+            </fieldset>
           )}
         </Panel>
       </Collapse>
@@ -415,10 +425,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   buttonText={"Use Channeled Die"}
                   add={add}
                   remove={remove}
-                  buttonLayout={{
-                    labelCol: { span: 0 },
-                    wrapperCol: { span: 16, offset: 8 },
-                  }}
+                  className={styles.channel}
                 />
               );
             }}

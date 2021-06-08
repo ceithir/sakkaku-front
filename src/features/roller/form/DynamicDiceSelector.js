@@ -15,10 +15,10 @@ const DynamicDiceSelector = ({
   remove,
   values = [],
   facets,
-  buttonLayout,
+  className,
 }) => {
   return (
-    <>
+    <div className={className}>
       {fields.map((field, index) => (
         <Form.Item required={false} key={field.key} label={labelText}>
           <Form.Item {...field} noStyle>
@@ -40,7 +40,7 @@ const DynamicDiceSelector = ({
           </Form.Item>
         </Form.Item>
       ))}
-      <Form.Item {...buttonLayout}>
+      <Form.Item>
         <Button
           type="dashed"
           onClick={() => add(defaultValue)}
@@ -50,7 +50,7 @@ const DynamicDiceSelector = ({
         </Button>
         <Form.ErrorList errors={errors} />
       </Form.Item>
-    </>
+    </div>
   );
 };
 
