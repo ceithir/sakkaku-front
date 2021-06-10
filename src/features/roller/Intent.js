@@ -3,12 +3,11 @@ import {
   Form,
   Input,
   InputNumber,
-  Radio,
-  Switch,
   Divider,
   AutoComplete,
   Select,
   Collapse,
+  Checkbox,
 } from "antd";
 import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
@@ -99,11 +98,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const user = useSelector(selectUser);
-  const [voided, setVoided] = useState(false);
   const [school, setSchool] = useState();
   const [ringless, setRingless] = useState(false);
   const [skilledAssist, setSkilledAssist] = useState(0);
   const [unskilledAssist, setUnskilledAssist] = useState(0);
+  const [commonModifiers, setCommonModifiers] = useState([]);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -111,22 +110,27 @@ const Intent = ({ onFinish, values, onComplete }) => {
     dispatch(addCampaign(data["campaign"]));
     dispatch(addCharacter(data["character"]));
 
-    const techniques = data["techniques"] || [];
-
-    let {
-      ring,
-      tn,
-      void: voided,
+    const {
+      common_modifiers: commonModifiers = [],
+      school,
+      techniques = [],
       misc = [],
       unskilled_assist: unskilledAssist,
       skilled_assist: skilledAssist,
     } = data;
+
     if (misc.includes("ringless")) {
-      ring = 0;
-      tn = null;
-      voided = false;
-      misc = misc.filter((x) => x !== "ringless");
-      unskilledAssist = 0;
+      return onFinish({
+        ...data,
+        ring: 0,
+        tn: null,
+        modifiers: [
+          ...commonModifiers.filter((x) => x !== "void"),
+          ...misc.filter((x) => x !== "ringless"),
+          school,
+          ...techniques,
+        ].filter(Boolean),
+      });
     }
 
     const assist = [
@@ -138,13 +142,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
     onFinish({
       ...data,
-      ring,
-      tn,
       modifiers: [
-        data["modifier"],
-        data["compromised"] && "compromised",
-        voided && "void",
-        data["school"],
+        ...commonModifiers,
+        school,
         ...assist,
         ...techniques,
         ...misc,
@@ -152,8 +152,27 @@ const Intent = ({ onFinish, values, onComplete }) => {
     });
   };
 
-  const extraRingDice = (voided ? 1 : 0) + unskilledAssist;
+  const extraRingDice =
+    (commonModifiers.includes("void") ? 1 : 0) + unskilledAssist;
   const extraSkillDice = (school === "wandering" ? 1 : 0) + skilledAssist;
+
+  const commonModifiersOptions = [
+    !ringless && {
+      value: "void",
+      label: `Seize the Moment (spend 1 Void point for +1 Ring die)`,
+    },
+    {
+      value: "distinction",
+      label: `Distinction`,
+      disabled: commonModifiers.includes("adversity"),
+    },
+    {
+      value: "adversity",
+      label: `Adversity`,
+      disabled: commonModifiers.includes("distinction"),
+    },
+    { value: "compromised", label: `Compromised` },
+  ].filter(Boolean);
 
   return (
     <Form
@@ -169,20 +188,16 @@ const Intent = ({ onFinish, values, onComplete }) => {
             [
               "ring",
               "skill",
-              "void",
+              "common_modifiers",
               "channeled",
               "school",
               "skilled_assist",
               "unskilled_assist",
+              "misc",
             ].includes(name)
           )
         ) {
           form.validateFields(["channeled"]);
-        }
-        if (
-          Object.keys(changedValues).some((name) => ["void"].includes(name))
-        ) {
-          setVoided(form.getFieldValue("void"));
         }
         if (
           Object.keys(changedValues).some((name) => ["school"].includes(name))
@@ -207,6 +222,13 @@ const Intent = ({ onFinish, values, onComplete }) => {
           )
         ) {
           setSkilledAssist(form.getFieldValue("skilled_assist"));
+        }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["common_modifiers"].includes(name)
+          )
+        ) {
+          setCommonModifiers(form.getFieldValue("common_modifiers"));
         }
       }}
     >
@@ -270,44 +292,26 @@ const Intent = ({ onFinish, values, onComplete }) => {
       <Divider />
       <Collapse ghost>
         <Panel header={"Common modifiers"}>
-          {!ringless && (
-            <Form.Item
-              label={"Void for +1 Ring die?"}
-              name="void"
-              valuePropName="checked"
-            >
-              <Switch />
-            </Form.Item>
-          )}
-          <Form.Item label="(Dis)Advantage" name="modifier">
-            <Radio.Group>
-              <Radio.Button value="">None</Radio.Button>
-              <Radio.Button value="distinction">Distinction</Radio.Button>
-              <Radio.Button value="adversity">Adversity</Radio.Button>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item
-            label="Compromised?"
-            name="compromised"
-            valuePropName="checked"
-          >
-            <Switch />
-          </Form.Item>
-          <Form.Item
-            label="Skilled assist"
-            name="skilled_assist"
-            initialValue={0}
-          >
-            <InputNumber min={0} max={10} />
+          <Form.Item name="common_modifiers" label={`Inherent Modifiers`}>
+            <Checkbox.Group options={commonModifiersOptions} />
           </Form.Item>
           {!ringless && (
-            <Form.Item
-              label="Unskilled assist"
-              name="unskilled_assist"
-              initialValue={0}
-            >
-              <InputNumber min={0} max={10} />
-            </Form.Item>
+            <>
+              <Form.Item
+                label="Skilled assist"
+                name="skilled_assist"
+                initialValue={0}
+              >
+                <InputNumber min={0} max={10} />
+              </Form.Item>
+              <Form.Item
+                label="Unskilled assist"
+                name="unskilled_assist"
+                initialValue={0}
+              >
+                <InputNumber min={0} max={10} />
+              </Form.Item>
+            </>
           )}
         </Panel>
       </Collapse>
@@ -356,12 +360,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
                   const ring = form.getFieldValue("ring");
                   const skill = form.getFieldValue("skill");
-                  const voided = form.getFieldValue("void");
+                  const voided = (
+                    form.getFieldValue("common_modifiers") || []
+                  ).includes("void");
                   const school = form.getFieldValue("school");
                   const skilledAssist =
                     form.getFieldValue("skilled_assist") || 0;
                   const unskilledAssist =
                     form.getFieldValue("unskilled_assist") || 0;
+                  const misc = form.getFieldValue("misc") || [];
 
                   if (
                     dices.filter(({ type }) => type === "ring").length >
@@ -383,6 +390,16 @@ const Intent = ({ onFinish, values, onComplete }) => {
                         "More channeled skill dice than rolled skill dice"
                       )
                     );
+                  }
+
+                  if (misc.includes("ringless")) {
+                    if (dices.some(({ type }) => type === "ring")) {
+                      return Promise.reject(
+                        new Error(
+                          "Cannot channel ring dice for a ringless roll"
+                        )
+                      );
+                    }
                   }
                 },
               },
