@@ -15,12 +15,11 @@ import {
 import Keep from "./Keep";
 import Summary from "./Summary";
 import { Collapse } from "antd";
-import styles from "./index.module.css";
 import { setParameters, load } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import NextButton from "./NextButton";
 import { selectUser } from "../user/reducer";
-import Steps, { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
+import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 import RerollResult from "./result/Reroll";
 import KeepResult from "./result/Keep";
 import ResolveResult from "./result/Resolve";
@@ -33,12 +32,10 @@ const { Panel } = Collapse;
 
 const Layout = ({ children }) => {
   const user = useSelector(selectUser);
-  const currentStep = useSelector(selectStep);
 
   return (
     <>
       {!user && <AnonymousAlert />}
-      <Steps current={currentStep} className={styles.steps} />
       <>{children}</>
     </>
   );
