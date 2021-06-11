@@ -23,23 +23,12 @@ import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 import RerollResult from "./result/Reroll";
 import KeepResult from "./result/Keep";
 import ResolveResult from "./result/Resolve";
-import AnonymousAlert from "../../AnonymousAlert";
 import { isReroll, rolledDicesCount } from "./utils";
 import Modifier from "./Modifier";
 import Channel from "./Channel";
+import Layout from "./Layout";
 
 const { Panel } = Collapse;
-
-const Layout = ({ children }) => {
-  const user = useSelector(selectUser);
-
-  return (
-    <>
-      {!user && <AnonymousAlert />}
-      <>{children}</>
-    </>
-  );
-};
 
 const Roller = ({ save }) => {
   const roll = useSelector(selectAll);

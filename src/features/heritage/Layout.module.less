@@ -1,7 +1,4 @@
-@import (reference) "~antd/dist/antd.less";
-
-@title-color: #942b39;
-@title-font: "Julee", cursive;
+@import (reference) "../../common.less";
 
 .layout {
   padding-top: 24px;
@@ -16,8 +13,7 @@
   }
 
   & > h1:global(.ant-typography) {
-    color: @title-color;
-    font-family: @title-font;
+    .red-title();
   }
 
   & > * {

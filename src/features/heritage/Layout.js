@@ -39,7 +39,7 @@ const Layout = ({ children, dices }) => {
           backgroundImage: `url(${backgroundImage})`,
         }}
       >
-        <Title>{`Heritage Roll`}</Title>
+        <Title>{`Legend of the Five Rings – Heritage Roll`}</Title>
         {dices && <Dices dices={dices} />}
         <>{children}</>
       </div>
