@@ -13,13 +13,16 @@ const CustomLayout = ({ children }) => {
       </Header>
       <Content>{children}</Content>
       <Footer className={styles.footer}>
-        {`Sakkaku Project / 2020-2021 / `}
-        <a href="mailto:contact.sakkaku@gmail.com">Issue? Suggestion?</a>
-        {` / © `}
+        {`A dice roller for the `}
         <a href="https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/">
-          FFG
+          {`Legend of the Five Rings Roleplaying Game (5th edition)`}
         </a>
-        {` for all texts and assets`}
+        {` – ©FFG for all texts and assets`}
+        <br />
+        {`This website is not affiliated in any way with Fantasy Flight Games or Edge Studio.`}
+        <br />
+        {`For any issue or suggestion: `}
+        <a href="mailto:contact.sakkaku@gmail.com">{`contact.sakkaku@gmail.com`}</a>
       </Footer>
     </Layout>
   );
