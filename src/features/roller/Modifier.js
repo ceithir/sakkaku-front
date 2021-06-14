@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  reroll,
-  alter,
-  goToKeepStep,
-  addModifiers,
-  channelInsteadOfKeeping,
-} from "./reducer";
+import { reroll, alter } from "./reducer";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Ability from "./reroll/Ability";
@@ -13,7 +7,6 @@ import Ishiken from "./reroll/Ishiken";
 import DragonWard from "./reroll/DragonWard";
 import Sailor from "./reroll/Sailor";
 import Alter from "./reroll/Alter";
-import Confirm from "./reroll/Confirm";
 import {
   isSpecialReroll,
   rolledDicesCount,
@@ -181,29 +174,7 @@ const Modifier = ({ roll, dispatch }) => {
     );
   }
 
-  const addReroll = () =>
-    dispatch(
-      addModifiers(roll, [
-        `ruleless${modifiers.length.toString().padStart(2, "0")}`,
-      ])
-    );
-  const addAlteration = () =>
-    dispatch(
-      addModifiers(roll, [
-        `reasonless${modifiers.length.toString().padStart(2, "0")}`,
-      ])
-    );
-  return (
-    <Confirm
-      dices={dices}
-      onFinish={() => dispatch(goToKeepStep())}
-      basePool={basePool}
-      rerollTypes={rerollTypes}
-      addReroll={modifiers.length < 100 && addReroll}
-      addAlteration={modifiers.length < 100 && addAlteration}
-      channel={() => dispatch(channelInsteadOfKeeping())}
-    />
-  );
+  return null;
 };
 
 const WrappedModifier = ({ roll, dispatch }) => {

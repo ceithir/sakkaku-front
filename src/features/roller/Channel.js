@@ -4,7 +4,15 @@ import { replaceRerolls } from "./utils";
 import { Button } from "antd";
 import styles from "./Channel.module.css";
 
-const Channel = ({ dices, onFinish, basePool, rerollTypes, cancel }) => {
+const Channel = ({
+  dices,
+  onFinish,
+  basePool,
+  rerollTypes,
+  cancel,
+  addReroll,
+  addAlteration,
+}) => {
   const [toChannel, setToChannel] = useState([]);
 
   const toggle = (index) => {
@@ -47,7 +55,18 @@ const Channel = ({ dices, onFinish, basePool, rerollTypes, cancel }) => {
       })}
       footer={
         <div className={styles.buttons}>
-          <Button onClick={cancel}>{`Cancel`}</Button>
+          {dices.some(({ type }) => type === "ring") ? (
+            <Button onClick={cancel}>{`Cancel`}</Button>
+          ) : (
+            <>
+              <Button disabled={!addReroll} onClick={addReroll}>
+                {`Reroll some dice`}
+              </Button>
+              <Button disabled={!addAlteration} onClick={addAlteration}>
+                {`Alter some dice`}
+              </Button>
+            </>
+          )}
           <Button
             onClick={() => {
               onFinish(toChannel);

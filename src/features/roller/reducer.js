@@ -15,7 +15,6 @@ const initialState = {
   toKeep: [],
   channeled: [],
   addkept: [],
-  explicitGoToKeep: false,
   channelInsteadOfKeeping: false,
 };
 
@@ -34,7 +33,6 @@ const slice = createSlice({
       state.toKeep = [];
       state.channeled = [];
       state.addkept = [];
-      state.explicitGoToKeep = false;
       state.channelInsteadOfKeeping = false;
 
       state.id = null;
@@ -61,6 +59,9 @@ const slice = createSlice({
       state.modifiers = modifiers;
       state.channeled = channeled;
       state.addkept = addkept;
+      if (ring === 0) {
+        state.channelInsteadOfKeeping = true;
+      }
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -96,19 +97,14 @@ const slice = createSlice({
     setAddKept: (state, action) => {
       state.addkept = action.payload;
     },
-    goToKeepStep: (state) => {
-      state.explicitGoToKeep = true;
-    },
     setModifiers: (state, action) => {
       state.modifiers = action.payload;
     },
     channelInsteadOfKeeping: (state) => {
       state.channelInsteadOfKeeping = true;
-      state.explicitGoToKeep = true;
     },
     keepInsteadOfChanneling: (state) => {
       state.channelInsteadOfKeeping = false;
-      state.explicitGoToKeep = false;
     },
   },
 });
@@ -121,7 +117,6 @@ export const {
   load,
   setToKeep,
   setAddKept,
-  goToKeepStep,
   channelInsteadOfKeeping,
   keepInsteadOfChanneling,
 } = slice.actions;
@@ -392,13 +387,7 @@ export const channel = (roll, positions) => (dispatch) => {
 export const selectAll = (state) => state.roll;
 export const selectLoading = (state) => state.roll.loading;
 export const selectStep = (state) => {
-  const {
-    dices,
-    metadata,
-    modifiers,
-    animatedStep,
-    explicitGoToKeep,
-  } = state.roll;
+  const { dices, metadata, modifiers, animatedStep } = state.roll;
 
   if (animatedStep) {
     return animatedStep;
@@ -418,10 +407,6 @@ export const selectStep = (state) => {
   }
 
   if (dicesRolled && rerollDone) {
-    if (!explicitGoToKeep) {
-      return REROLL;
-    }
-
     return KEEP;
   }
 

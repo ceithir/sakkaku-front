@@ -1,7 +1,7 @@
 import React from "react";
 import NextButton from "./NextButton";
 import Result from "./Result";
-import { Typography, Form } from "antd";
+import { Typography, Form, Button } from "antd";
 import ExplosionDices from "./ExplosionDices";
 import styles from "./Keep.module.less";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,6 +9,7 @@ import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import { FACETS } from "./DiceSideSelector";
 import { rolledDicesCount, keptDicesCount } from "./utils";
+import LineContainer from "./button/LineContainer";
 
 const { Paragraph } = Typography;
 
@@ -60,6 +61,9 @@ const Keep = ({
   addkept,
   setAddKept,
   modifiers,
+  addReroll,
+  addAlteration,
+  channel,
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
@@ -217,11 +221,22 @@ const Keep = ({
         />
       </div>
       {!keepingExplosions && (
-        <AddKeptDiceForm
-          dices={addkept}
-          onChange={setAddKept}
-          compromised={compromised}
-        />
+        <>
+          <LineContainer>
+            <Button disabled={!addReroll} onClick={addReroll}>
+              {`Reroll some dice`}
+            </Button>
+            <Button disabled={!addAlteration} onClick={addAlteration}>
+              {`Alter some dice`}
+            </Button>
+            <Button onClick={channel}>{`Channel`}</Button>
+          </LineContainer>
+          <AddKeptDiceForm
+            dices={addkept}
+            onChange={setAddKept}
+            compromised={compromised}
+          />
+        </>
       )}
       <NextButton
         onClick={() => {

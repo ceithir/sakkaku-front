@@ -11,6 +11,8 @@ import {
   setAddKept,
   keepInsteadOfChanneling,
   channel,
+  addModifiers,
+  channelInsteadOfKeeping as channelInsteadOfKeepingFunc,
 } from "./reducer";
 import Keep from "./Keep";
 import Summary from "./Summary";
@@ -132,6 +134,26 @@ const Roller = ({ save }) => {
 
     if (name === KEEP) {
       if (currentStep === KEEP) {
+        const addReroll =
+          modifiers.length < 100
+            ? () => {
+                dispatch(
+                  addModifiers(roll, [
+                    `ruleless${modifiers.length.toString().padStart(2, "0")}`,
+                  ])
+                );
+              }
+            : null;
+        const addAlteration =
+          modifiers.length < 100
+            ? () =>
+                dispatch(
+                  addModifiers(roll, [
+                    `reasonless${modifiers.length.toString().padStart(2, "0")}`,
+                  ])
+                )
+            : null;
+
         if (channelInsteadOfKeeping) {
           return (
             <Channel
@@ -140,6 +162,8 @@ const Roller = ({ save }) => {
               rerollTypes={rerollTypes}
               onFinish={(toChannel) => dispatch(channel(roll, toChannel))}
               cancel={() => dispatch(keepInsteadOfChanneling())}
+              addReroll={addReroll}
+              addAlteration={addAlteration}
             />
           );
         }
@@ -155,6 +179,9 @@ const Roller = ({ save }) => {
             addkept={addkept}
             setAddKept={(data) => dispatch(setAddKept(data))}
             modifiers={modifiers}
+            addReroll={addReroll}
+            addAlteration={addAlteration}
+            channel={() => dispatch(channelInsteadOfKeepingFunc())}
           />
         );
       }
