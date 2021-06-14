@@ -9,7 +9,6 @@ import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import { FACETS } from "./DiceSideSelector";
 import { rolledDicesCount, keptDicesCount } from "./utils";
-import LineContainer from "./button/LineContainer";
 
 const { Paragraph } = Typography;
 
@@ -20,7 +19,6 @@ const AddKeptDiceForm = ({ dices, onChange, compromised }) => {
         onChange(allValues["dices"]);
       }}
       initialValues={{ dices }}
-      className={styles["add-kept-form"]}
     >
       <Form.List name="dices">
         {(fields, { add, remove }, { errors }) => {
@@ -220,24 +218,6 @@ const Keep = ({
           modifiers={rerollTypes}
         />
       </div>
-      {!keepingExplosions && (
-        <>
-          <LineContainer>
-            <Button disabled={!addReroll} onClick={addReroll}>
-              {`Reroll some dice`}
-            </Button>
-            <Button disabled={!addAlteration} onClick={addAlteration}>
-              {`Alter some dice`}
-            </Button>
-            <Button onClick={channel}>{`Channel`}</Button>
-          </LineContainer>
-          <AddKeptDiceForm
-            dices={addkept}
-            onChange={setAddKept}
-            compromised={compromised}
-          />
-        </>
-      )}
       <NextButton
         onClick={() => {
           if (!keepingExplosions && addkept?.length) {
@@ -253,6 +233,24 @@ const Keep = ({
       >
         {buttonText()}
       </NextButton>
+      {!keepingExplosions && (
+        <div className={styles["additional-actions"]}>
+          <div className={styles.buttons}>
+            <Button disabled={!addReroll} onClick={addReroll}>
+              {`Reroll some dice`}
+            </Button>
+            <Button disabled={!addAlteration} onClick={addAlteration}>
+              {`Alter some dice`}
+            </Button>
+            <Button onClick={channel}>{`Channel`}</Button>
+          </div>
+          <AddKeptDiceForm
+            dices={addkept}
+            onChange={setAddKept}
+            compromised={compromised}
+          />
+        </div>
+      )}
     </div>
   );
 };

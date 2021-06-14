@@ -19,12 +19,28 @@
   margin-top: 24px;
 }
 
-.add-kept-form > div > div:last-child {
-  text-align: right;
+.additional-actions {
+  margin-top: 24px;
 
-  @media (min-width: @screen-sm) {
-    text-align: left;
-    float: left;
+  .buttons {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    button {
+      margin-right: 16px;
+    }
+  }
+
+  @media (min-width: @screen-md) {
+    .buttons {
+      float: left;
+    }
+
+    form {
+      button {
+        float: right;
+      }
+    }
   }
 }
 

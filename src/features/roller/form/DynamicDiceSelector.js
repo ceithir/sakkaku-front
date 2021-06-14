@@ -19,6 +19,16 @@ const DynamicDiceSelector = ({
 }) => {
   return (
     <div className={className}>
+      <Form.Item>
+        <Button
+          type="dashed"
+          onClick={() => add(defaultValue)}
+          icon={<PlusOutlined />}
+        >
+          {buttonText}
+        </Button>
+        <Form.ErrorList errors={errors} />
+      </Form.Item>
       {fields.map((field, index) => (
         <Form.Item required={false} key={field.key} label={labelText}>
           <Form.Item {...field} noStyle>
@@ -40,16 +50,6 @@ const DynamicDiceSelector = ({
           </Form.Item>
         </Form.Item>
       ))}
-      <Form.Item>
-        <Button
-          type="dashed"
-          onClick={() => add(defaultValue)}
-          icon={<PlusOutlined />}
-        >
-          {buttonText}
-        </Button>
-        <Form.ErrorList errors={errors} />
-      </Form.Item>
     </div>
   );
 };
