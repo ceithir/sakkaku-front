@@ -12,7 +12,8 @@ const NextButton = ({ children, disabled, ...props }) => {
       <Button
         type="primary"
         className={styles.button}
-        disabled={disabled || loading}
+        disabled={disabled}
+        loading={loading}
         {...props}
       >
         {children}

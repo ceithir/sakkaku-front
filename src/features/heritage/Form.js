@@ -122,7 +122,7 @@ const CustomForm = () => {
       )}
       <Form.Item {...tailLayout} className={styles.footer}>
         {user && <Link to="/heritage/list">{`See previous rolls`}</Link>}
-        <Button type="primary" htmlType="submit" disabled={loading}>
+        <Button type="primary" htmlType="submit" loading={loading}>
           {`Roll`}
         </Button>
       </Form.Item>
