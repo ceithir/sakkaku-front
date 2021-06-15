@@ -55,7 +55,10 @@ const Ability = ({
       footer={
         <div className={styles.buttons}>
           {cancel && <Button onClick={cancel}>{`Cancel`}</Button>}
-          <NextButton onClick={() => onFinish(toReroll)}>
+          <NextButton
+            onClick={() => onFinish(toReroll)}
+            disabled={cancel && toReroll.length === 0}
+          >
             {buttonText()}
           </NextButton>
         </div>

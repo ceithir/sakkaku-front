@@ -91,7 +91,10 @@ const Alter = ({ text, dices, onFinish, basePool, rerollTypes, cancel }) => {
           </div>
           <div className={styles.buttons}>
             {cancel && <Button onClick={cancel}>{`Cancel`}</Button>}
-            <NextButton onClick={() => onFinish(alterations)}>
+            <NextButton
+              onClick={() => onFinish(alterations)}
+              disabled={cancel && alterations.length === 0}
+            >
               {buttonText()}
             </NextButton>
           </div>
