@@ -818,4 +818,40 @@ describe("preselect best dice to reroll", () => {
       })
     ).toStrictEqual([1, 3]);
   });
+  test("can restrict reroll to only some kind of die", () => {
+    expect(
+      bestDiceToReroll({
+        roll: {
+          ring: 2,
+          skill: 2,
+          dices: [
+            {
+              type: "ring",
+              value: { explosion: 1, strife: 1 },
+              status: "pending",
+            },
+            {
+              type: "ring",
+              value: { success: 1 },
+              status: "pending",
+            },
+            {
+              type: "skill",
+              value: {},
+              status: "pending",
+            },
+
+            {
+              type: "skill",
+              value: { explosion: 1, strife: 1 },
+              status: "pending",
+            },
+          ],
+        },
+        max: 2,
+        restrictFunc: ({ value: { success = 0, explosion = 0 } }) =>
+          success > 0 || explosion > 0,
+      })
+    ).toStrictEqual([1, 3]);
+  });
 });

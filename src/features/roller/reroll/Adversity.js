@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
+import { bestDiceToReroll } from "../utils";
 
-const Adversity = ({ dices, onFinish }) => {
-  const [toReroll, setToReroll] = useState([]);
+const Adversity = ({ dices, onFinish, modifiers, mode }) => {
+  const defaultToReroll =
+    mode === "semiauto"
+      ? bestDiceToReroll({
+          roll: { dices, modifiers },
+          max: 2,
+          restrictFunc: ({ value: { success = 0, explosion = 0 } }) =>
+            success > 0 || explosion > 0,
+        })
+      : [];
+
+  const [toReroll, setToReroll] = useState(defaultToReroll);
   const successDices = dices.filter(
     ({ value }) => value.success || value.explosion
   );

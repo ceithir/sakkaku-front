@@ -45,6 +45,8 @@ const Modifier = ({ roll, dispatch }) => {
       <Adversity
         dices={dices}
         onFinish={(positions) => dispatch(reroll(roll, positions, "adversity"))}
+        modifiers={modifiers}
+        mode={mode}
       />
     );
   }

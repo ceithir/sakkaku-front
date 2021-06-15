@@ -243,13 +243,14 @@ export const bestKeepableDice = (roll) => {
     .slice(0, keptDicesCount(roll));
 };
 
-export const bestDiceToReroll = ({ roll, max }) => {
+export const bestDiceToReroll = ({ roll, max, restrictFunc }) => {
   const { dices, modifiers = [] } = roll;
   const compromised = modifiers.includes("compromised");
 
   let pendingIndexes = [];
-  dices.forEach(({ status }, i) => {
-    if (status === "pending") {
+  dices.forEach((die, i) => {
+    const { status } = die;
+    if (status === "pending" && (!restrictFunc || restrictFunc(die))) {
       pendingIndexes.push(i);
     }
   });
