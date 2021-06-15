@@ -2,8 +2,18 @@ import React, { useState } from "react";
 import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 import { replaceRerolls } from "../utils";
+import { Button } from "antd";
+import styles from "./Ability.module.less";
 
-const Ability = ({ dices, onFinish, text, basePool, rerollTypes, title }) => {
+const Ability = ({
+  dices,
+  onFinish,
+  text,
+  basePool,
+  rerollTypes,
+  title,
+  cancel,
+}) => {
   const [toReroll, setToReroll] = useState([]);
   const toggle = (index) => {
     if (toReroll.includes(index)) {
@@ -14,7 +24,7 @@ const Ability = ({ dices, onFinish, text, basePool, rerollTypes, title }) => {
 
   const buttonText = () => {
     if (toReroll.length === 0) {
-      return "Skip";
+      return "Continue";
     }
 
     if (toReroll.length === 1) {
@@ -43,9 +53,12 @@ const Ability = ({ dices, onFinish, text, basePool, rerollTypes, title }) => {
         rerollTypes,
       })}
       footer={
-        <NextButton onClick={() => onFinish(toReroll)}>
-          {buttonText()}
-        </NextButton>
+        <div className={styles.buttons}>
+          {cancel && <Button onClick={cancel}>{`Cancel`}</Button>}
+          <NextButton onClick={() => onFinish(toReroll)}>
+            {buttonText()}
+          </NextButton>
+        </div>
       }
       theme="reroll"
     />

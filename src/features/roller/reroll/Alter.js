@@ -3,7 +3,8 @@ import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 import { replaceRerolls } from "../utils";
 import DiceSideSelector from "../DiceSideSelector";
-import styles from "./Alter.module.css";
+import styles from "./Alter.module.less";
+import { Button } from "antd";
 
 const AVAILABLE_FACETS = {
   ring: [
@@ -25,7 +26,7 @@ const AVAILABLE_FACETS = {
   ],
 };
 
-const Alter = ({ text, dices, onFinish, basePool, rerollTypes }) => {
+const Alter = ({ text, dices, onFinish, basePool, rerollTypes, cancel }) => {
   const [alterations, setAlterations] = useState([]);
   const positions = alterations.map(({ position }) => position);
 
@@ -88,9 +89,12 @@ const Alter = ({ text, dices, onFinish, basePool, rerollTypes }) => {
               );
             })}
           </div>
-          <NextButton onClick={() => onFinish(alterations)}>
-            {buttonText()}
-          </NextButton>
+          <div className={styles.buttons}>
+            {cancel && <Button onClick={cancel}>{`Cancel`}</Button>}
+            <NextButton onClick={() => onFinish(alterations)}>
+              {buttonText()}
+            </NextButton>
+          </div>
         </>
       }
       theme="reroll"

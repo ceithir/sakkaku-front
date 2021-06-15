@@ -324,6 +324,21 @@ export const addModifiers = (roll, newModifiers) => (dispatch) => {
   const { id, modifiers } = roll;
   const allModifiers = [...modifiers, ...newModifiers];
 
+  updateModifiers(id, allModifiers, dispatch);
+};
+
+export const removeModifiers = (roll, deletedModifiers) => (dispatch) => {
+  dispatch(setLoading(true));
+
+  const { id, modifiers } = roll;
+  const allModifiers = modifiers.filter(
+    (mod) => !deletedModifiers.includes(mod)
+  );
+
+  updateModifiers(id, allModifiers, dispatch);
+};
+
+const updateModifiers = (id, allModifiers, dispatch) => {
   if (id) {
     authentifiedPostOnServer({
       uri: `/ffg/l5r/rolls/${id}/parameters`,

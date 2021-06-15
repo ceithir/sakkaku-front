@@ -1,5 +1,5 @@
 import React from "react";
-import { reroll, alter } from "./reducer";
+import { reroll, alter, removeModifiers } from "./reducer";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Ability from "./reroll/Ability";
@@ -47,7 +47,7 @@ const Modifier = ({ roll, dispatch }) => {
       />
     );
   }
-  const AbilityReroll = ({ name, text }) => {
+  const AbilityReroll = ({ name, text, ...props }) => {
     return (
       <Ability
         dices={dices}
@@ -56,6 +56,7 @@ const Modifier = ({ roll, dispatch }) => {
         basePool={basePool}
         rerollTypes={rerollTypes}
         title={longname(name)}
+        {...props}
       />
     );
   };
@@ -127,6 +128,7 @@ const Modifier = ({ roll, dispatch }) => {
       <AbilityReroll
         name={specialReroll}
         text={`Custom reroll: Select the dice you want/have to reroll.`}
+        cancel={() => dispatch(removeModifiers(roll, [specialReroll]))}
       />
     );
   }
@@ -170,6 +172,7 @@ const Modifier = ({ roll, dispatch }) => {
         basePool={basePool}
         rerollTypes={rerollTypes}
         text={`Custom alteration: Change the result as you want/have to.`}
+        cancel={() => dispatch(removeModifiers(roll, [specialAlteration]))}
       />
     );
   }
