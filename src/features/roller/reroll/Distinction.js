@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
+import { bestDiceToReroll } from "../utils";
 
-const Distinction = ({ dices, onFinish, modifiers }) => {
-  const [toReroll, setToReroll] = useState([]);
+const Distinction = ({ dices, onFinish, modifiers, mode }) => {
+  const defaultToReroll =
+    mode === "semiauto"
+      ? bestDiceToReroll({ roll: { dices, modifiers }, max: 2 })
+      : [];
+  const [toReroll, setToReroll] = useState(defaultToReroll);
   const max = modifiers.includes("stirring") ? 3 : 2;
   const bypassMax =
     modifiers.includes("deathdealer") || modifiers.includes("manipulator");

@@ -18,7 +18,7 @@ import Wandering from "./reroll/Wandering";
 import styles from "./Modifier.module.less";
 
 const Modifier = ({ roll, dispatch }) => {
-  const { dices, modifiers, metadata } = roll;
+  const { dices, modifiers, metadata, mode } = roll;
 
   const compromised = modifiers.includes("compromised");
   const basePool = rolledDicesCount(roll);
@@ -35,6 +35,7 @@ const Modifier = ({ roll, dispatch }) => {
           dispatch(reroll(roll, positions, "distinction"))
         }
         modifiers={modifiers}
+        mode={mode}
       />
     );
   }

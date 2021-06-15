@@ -3,6 +3,7 @@ import {
   replaceRerolls,
   rolledDicesCount,
   bestKeepableDice,
+  bestDiceToReroll,
 } from "./utils";
 
 describe("replaceRerollsOfType", () => {
@@ -731,6 +732,89 @@ describe("preselect best keepable dice", () => {
             status: "pending",
           },
         ],
+      })
+    ).toStrictEqual([1, 3]);
+  });
+});
+
+describe("preselect best dice to reroll", () => {
+  test("it prefers opportunity over success", () => {
+    expect(
+      bestDiceToReroll({
+        roll: {
+          ring: 1,
+          skill: 1,
+          dices: [
+            {
+              type: "ring",
+              value: { opportunity: 1 },
+              status: "pending",
+            },
+            {
+              type: "skill",
+              value: { success: 1, strife: 1 },
+              status: "pending",
+            },
+          ],
+        },
+        max: 1,
+      })
+    ).toStrictEqual([0]);
+  });
+  test("if compromised, it tries to reroll compromised dice first", () => {
+    expect(
+      bestDiceToReroll({
+        roll: {
+          ring: 1,
+          skill: 1,
+          dices: [
+            {
+              type: "ring",
+              value: { opportunity: 1 },
+              status: "pending",
+            },
+            {
+              type: "skill",
+              value: { success: 1, strife: 1 },
+              status: "pending",
+            },
+          ],
+          modifiers: ["compromised"],
+        },
+        max: 1,
+      })
+    ).toStrictEqual([1]);
+  });
+  test("prefer to reroll skill dice over ring dice", () => {
+    expect(
+      bestDiceToReroll({
+        roll: {
+          ring: 2,
+          skill: 2,
+          dices: [
+            {
+              type: "ring",
+              value: {},
+              status: "pending",
+            },
+            {
+              type: "skill",
+              value: {},
+              status: "pending",
+            },
+            {
+              type: "ring",
+              value: {},
+              status: "pending",
+            },
+            {
+              type: "skill",
+              value: {},
+              status: "pending",
+            },
+          ],
+        },
+        max: 2,
       })
     ).toStrictEqual([1, 3]);
   });

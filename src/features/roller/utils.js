@@ -242,3 +242,41 @@ export const bestKeepableDice = (roll) => {
     .map(({ index }) => index)
     .slice(0, keptDicesCount(roll));
 };
+
+export const bestDiceToReroll = ({ roll, max }) => {
+  const { dices, modifiers = [] } = roll;
+  const compromised = modifiers.includes("compromised");
+
+  let pendingIndexes = [];
+  dices.forEach(({ status }, i) => {
+    if (status === "pending") {
+      pendingIndexes.push(i);
+    }
+  });
+
+  return pendingIndexes
+    .map((index) => {
+      const die = dices[index];
+      const {
+        type,
+        value: { strife = 0 },
+      } = die;
+
+      return {
+        index,
+        weight: dieWeight(die) + (compromised ? strife * -100 : 0),
+        type,
+      };
+    })
+    .sort(({ weight: a, type: tA }, { weight: b, type: tB }) => {
+      if (a === b) {
+        if (tA === tB) {
+          return 0;
+        }
+        return tA > tB ? -1 : 1;
+      }
+      return a < b ? -1 : 1;
+    })
+    .map(({ index }) => index)
+    .slice(0, max);
+};
