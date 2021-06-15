@@ -3,6 +3,7 @@ import {
   replaceRerolls,
   rolledDicesCount,
   keptDicesCount,
+  bestKeepableDice,
 } from "./utils";
 
 describe("replaceRerollsOfType", () => {
@@ -680,5 +681,58 @@ describe("assisted roll", () => {
     expect(
       rolledDicesCount({ ring: 2, skill: 3, modifiers: ["unskilledassist05"] })
     ).toStrictEqual(10);
+  });
+});
+
+describe("preselect best keepable dice", () => {
+  test("it prefers success over opportunity", () => {
+    expect(
+      bestKeepableDice({
+        ring: 1,
+        skill: 1,
+        dices: [
+          {
+            type: "skill",
+            value: { opportunity: 1 },
+            status: "pending",
+          },
+          {
+            type: "ring",
+            value: { strife: 1, success: 1 },
+            status: "pending",
+          },
+        ],
+      })
+    ).toStrictEqual([1]);
+  });
+  test("prefer to keep skill dice over ring dice", () => {
+    expect(
+      bestKeepableDice({
+        ring: 2,
+        skill: 2,
+        dices: [
+          {
+            type: "ring",
+            value: { strife: 1, explosion: 1 },
+            status: "pending",
+          },
+          {
+            type: "skill",
+            value: { strife: 1, explosion: 1 },
+            status: "pending",
+          },
+          {
+            type: "ring",
+            value: { strife: 1, explosion: 1 },
+            status: "pending",
+          },
+          {
+            type: "skill",
+            value: { strife: 1, explosion: 1 },
+            status: "pending",
+          },
+        ],
+      })
+    ).toStrictEqual([1, 3]);
   });
 });

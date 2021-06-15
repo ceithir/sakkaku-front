@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer, authentifiedPostOnServer } from "../../server";
 import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
-import { isReroll } from "./utils";
+import { isReroll, bestKeepableDice } from "./utils";
 
 const initialState = {
   tn: 3,
@@ -82,7 +82,7 @@ const slice = createSlice({
 
       state.loading = false;
       window.history.pushState(null, null, `/rolls/${id}`);
-      state.toKeep = [];
+      state.toKeep = defaultToKeep(state);
     },
     update: (state, action) => {
       const { dices, metadata } = action.payload;
@@ -90,7 +90,7 @@ const slice = createSlice({
       state.metadata = metadata;
 
       state.loading = false;
-      state.toKeep = [];
+      state.toKeep = defaultToKeep(state);
     },
     setToKeep: (state, action) => {
       state.toKeep = action.payload;
@@ -467,5 +467,15 @@ export const selectHidden = (state) =>
   state.roll.loading && !state.roll.animatedStep;
 
 export const selectToKeep = (state) => state.roll.toKeep;
+
+const defaultToKeep = (roll) => {
+  const { mode } = roll;
+
+  if (mode !== "semiauto") {
+    return [];
+  }
+
+  return bestKeepableDice(roll);
+};
 
 export default slice.reducer;

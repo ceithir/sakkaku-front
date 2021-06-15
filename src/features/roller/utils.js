@@ -27,7 +27,7 @@ export const isSpecialAlteration = (modifier) => {
   return /^reasonless([0-9]{2})?$/.test(modifier);
 };
 
-export const rolledDicesCount = ({ ring, skill, modifiers }) => {
+export const rolledDicesCount = ({ ring, skill, modifiers = [] }) => {
   return (
     ring +
     skill +
@@ -37,7 +37,7 @@ export const rolledDicesCount = ({ ring, skill, modifiers }) => {
   );
 };
 
-export const keptDicesCount = ({ ring, modifiers }) => {
+export const keptDicesCount = ({ ring, modifiers = [] }) => {
   return (
     ring + (modifiers.includes("void") ? 1 : 0) + assistDiceCount(modifiers)
   );
@@ -195,4 +195,50 @@ export const splitExplosions = ({ dices, basePool, rerollTypes }) => {
     split.push(currentDices);
   }
   return split;
+};
+
+const dieWeight = ({
+  value: { success = 0, opportunity = 0, explosion = 0, strife = 0 },
+}) => {
+  return explosion * 10 + success * 5 + opportunity * 2 + strife * -1;
+};
+
+export const bestKeepableDice = (roll) => {
+  const { dices, modifiers = [] } = roll;
+
+  let pendingIndexes = [];
+  dices.forEach(({ status, value: { strife = 0 } }, i) => {
+    if (
+      status === "pending" &&
+      (!modifiers.includes("compromised") || strife === 0)
+    ) {
+      pendingIndexes.push(i);
+    }
+  });
+
+  if (dices.some(({ status }) => status === "kept")) {
+    return pendingIndexes;
+  }
+
+  return pendingIndexes
+    .map((index) => {
+      const die = dices[index];
+
+      return {
+        index,
+        weight: dieWeight(die),
+        type: die["type"],
+      };
+    })
+    .sort(({ weight: a, type: tA }, { weight: b, type: tB }) => {
+      if (a === b) {
+        if (tA === tB) {
+          return 0;
+        }
+        return tA > tB ? -1 : 1;
+      }
+      return a > b ? -1 : 1;
+    })
+    .map(({ index }) => index)
+    .slice(0, keptDicesCount(roll));
 };
