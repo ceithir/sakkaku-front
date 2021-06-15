@@ -262,10 +262,11 @@ export const bestDiceToReroll = ({ roll, max, restrictFunc }) => {
         type,
         value: { strife = 0 },
       } = die;
+      const weight = compromised && strife > 0 ? -100 : dieWeight(die);
 
       return {
         index,
-        weight: dieWeight(die) + (compromised ? strife * -100 : 0),
+        weight,
         type,
       };
     })
