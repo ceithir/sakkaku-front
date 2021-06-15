@@ -8,7 +8,6 @@ import {
   Select,
   Collapse,
   Checkbox,
-  Popover,
 } from "antd";
 import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
@@ -27,6 +26,7 @@ import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import classNames from "classnames";
 import AbilityDescription from "./glitter/AbilityDescription";
 import ABILITIES, { longname } from "./data/abilities";
+import Hint from "./glitter/Hint";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -158,12 +158,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
       label: (
         <span>
           {`Seize the Moment`}
-          <Popover
-            content={`Spend 1 Void point for +1 Ring die`}
-            trigger="click"
-          >
-            <sup className={styles["click_for_info"]}>{`?`}</sup>
-          </Popover>
+          <Hint text={`Spend 1 Void point for +1 Ring die`} />
         </span>
       ),
     },
