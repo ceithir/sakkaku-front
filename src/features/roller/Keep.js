@@ -89,12 +89,12 @@ const Keep = ({
   };
 
   const text = () => {
-    if (trulyCompromised) {
-      return "Being compromised, you cannot keep any die with strife… Which, in this very specific case, means you cannot keep any die at all.";
-    }
-
     if (keepingExplosions) {
       return "Select which explosions you wish to keep (if any).";
+    }
+
+    if (trulyCompromised) {
+      return "Being compromised, you cannot keep any die with strife… Which, in this very specific case, means you cannot keep any die at all.";
     }
 
     let defaultText =
