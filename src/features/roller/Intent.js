@@ -8,6 +8,7 @@ import {
   Select,
   Collapse,
   Checkbox,
+  Radio,
 } from "antd";
 import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
@@ -19,6 +20,7 @@ import {
   addCharacter,
   selectUser,
 } from "../user/reducer";
+import { setMode } from "./reducer";
 import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
@@ -105,6 +107,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
     dispatch(addCampaign(data["campaign"]));
     dispatch(addCharacter(data["character"]));
+    dispatch(setMode(data["mode"]));
 
     const {
       common_modifiers: commonModifiers = [],
@@ -233,6 +236,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
         }
       }}
     >
+      <Form.Item name="mode">
+        <Radio.Group
+          options={[
+            { label: "Manual", value: "manual" },
+            { label: "Semi-Auto", value: "semiauto" },
+          ]}
+          optionType="button"
+        />
+      </Form.Item>
       {!!user && (
         <>
           <fieldset>

@@ -16,6 +16,7 @@ const initialState = {
   channeled: [],
   addkept: [],
   channelInsteadOfKeeping: false,
+  mode: "semiauto",
 };
 
 const slice = createSlice({
@@ -106,6 +107,9 @@ const slice = createSlice({
     keepInsteadOfChanneling: (state) => {
       state.channelInsteadOfKeeping = false;
     },
+    setMode: (state, action) => {
+      state.mode = action.payload;
+    },
   },
 });
 
@@ -119,6 +123,7 @@ export const {
   setAddKept,
   channelInsteadOfKeeping,
   keepInsteadOfChanneling,
+  setMode,
 } = slice.actions;
 
 const { update, setError, setModifiers } = slice.actions;
