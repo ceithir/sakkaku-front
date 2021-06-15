@@ -1,0 +1,19 @@
+.container {
+  &
+    > :global(.ant-collapse-item.ant-collapse-no-arrow)
+    > :global(.ant-collapse-header) {
+    color: dodgerblue;
+    text-decoration: underline dashed;
+    text-underline-offset: 4px;
+    padding-top: 0;
+    padding-left: 0;
+    margin-top: -12px;
+  }
+
+  &
+    > :global(.ant-collapse-item)
+    > :global(.ant-collapse-content)
+    > :global(.ant-collapse-content-box) {
+    padding-top: 0;
+  }
+}

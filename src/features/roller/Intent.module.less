@@ -19,10 +19,11 @@
     :global(.ant-select-auto-complete) {
       min-width: 240px;
     }
+  }
 
-    & + :global(.ant-divider) {
-      margin-top: 0;
-    }
+  fieldset + :global(.ant-divider),
+  :global(.ant-collapse) + :global(.ant-divider) {
+    margin-top: 0;
   }
 
   :global(.ant-collapse-content) fieldset:last-of-type {
@@ -41,16 +42,6 @@
       display: block;
       margin: 0 auto;
     }
-  }
-
-  .mode-slider {
-    float: left;
-  }
-
-  .mode-slider-hint {
-    float: left;
-    position: relative;
-    top: 0;
   }
 }
 

@@ -28,7 +28,7 @@ import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import classNames from "classnames";
 import AbilityDescription from "./glitter/AbilityDescription";
 import ABILITIES, { longname } from "./data/abilities";
-import Hint from "./glitter/Hint";
+import ExplainOptions from "./glitter/ExplainOptions";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -102,7 +102,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
     dispatch(addCampaign(data["campaign"]));
     dispatch(addCharacter(data["character"]));
-    dispatch(setMode(data["mode"]));
+    !!data["mode"] && dispatch(setMode(data["mode"]));
 
     const {
       common_modifiers: commonModifiers = [],
@@ -153,24 +153,26 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const commonModifiersOptions = [
     !ringless && {
       value: "void",
-      label: (
-        <span>
-          {`Seize the Moment`}
-          <Hint text={`Spend 1 Void point for +1 Ring die`} />
-        </span>
-      ),
+      label: `Seize the Moment`,
+      description: `A character may spend 1 Void point to roll one additional Ring die and subsequently keep one additional die. [Core, page 36]`,
     },
     {
       value: "distinction",
       label: `Distinction`,
       disabled: commonModifiers.includes("adversity"),
+      description: `Each distinction has a [...] standardized mechanical effect, which applies in the circumstances described in the distinction’s entry and allows the character to reroll up to two dice. [Core, page 99]`,
     },
     {
       value: "adversity",
       label: `Adversity`,
       disabled: commonModifiers.includes("distinction"),
+      description: `When an adversity applies to a task a character is trying to accomplish [...], the character’s player must choose and reroll two dice containing (Success) or (Explosion) symbols (if results with these symbols in the pool). After resolving the check, if the character failed, they gain 1 Void point. [Core, page 116]`,
     },
-    { value: "compromised", label: `Compromised` },
+    {
+      value: "compromised",
+      label: `Compromised`,
+      description: `When making a check, a Compromised character cannot keep dice containing (Strife) symbols (to a potential minimum of 0 kept dice). [Core, page 30]`,
+    },
   ].filter(Boolean);
 
   return (
@@ -298,6 +300,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
           <Form.Item name="common_modifiers" className={styles.checkboxes}>
             <Checkbox.Group options={commonModifiersOptions} />
           </Form.Item>
+          <ExplainOptions options={commonModifiersOptions} />
           {!ringless && (
             <fieldset>
               <Form.Item
@@ -440,33 +443,33 @@ const Intent = ({ onFinish, values, onComplete }) => {
               optionFilterProp="label"
             />
           </Form.Item>
+          <Form.Item name="mode" label={`Roller behavior`}>
+            <Radio.Group
+              options={[
+                { label: "Semi-automatic", value: "semiauto" },
+                { label: "Manual", value: "manual" },
+              ]}
+              optionType="button"
+            />
+          </Form.Item>
+          <ExplainOptions
+            options={[
+              {
+                label: `Semi-automatic`,
+                description: `The roller will try to preselect the best dice to reroll/keep.`,
+              },
+              {
+                label: `Manual`,
+                description: `All dice must be picked by hand.`,
+              },
+            ]}
+          />
         </Panel>
       </Collapse>
       <Divider />
-      <fielset>
-        <Form.Item name="mode" className={styles["mode-slider"]}>
-          <Radio.Group
-            options={[
-              { label: "Manual", value: "manual" },
-              { label: "Semi-auto", value: "semiauto" },
-            ]}
-            optionType="button"
-          />
-        </Form.Item>
-        <Hint
-          text={
-            <>
-              <span>{`Semi-auto: The roller will try to preselect the best dice to reroll/keep.`}</span>
-              <br />
-              <span>{`Manual: All dice must be picked by hand.`}</span>
-            </>
-          }
-          className={styles["mode-slider-hint"]}
-        />
-        <Form.Item>
-          <NextButton htmlType="submit">{`Roll`}</NextButton>
-        </Form.Item>
-      </fielset>
+      <Form.Item>
+        <NextButton htmlType="submit">{`Roll`}</NextButton>
+      </Form.Item>
     </Form>
   );
 };
