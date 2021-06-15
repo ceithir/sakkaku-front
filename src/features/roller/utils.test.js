@@ -2,7 +2,6 @@ import {
   replaceRerollsOfType,
   replaceRerolls,
   rolledDicesCount,
-  keptDicesCount,
   bestKeepableDice,
 } from "./utils";
 
