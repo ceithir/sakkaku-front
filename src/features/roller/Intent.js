@@ -33,11 +33,6 @@ import Hint from "./glitter/Hint";
 const { TextArea } = Input;
 const { Panel } = Collapse;
 
-const tailLayout = {
-  labelCol: { span: 0 },
-  wrapperCol: { span: 24 },
-};
-
 const defaultRules = [{ required: true, message: "Please fill this field" }];
 
 const arrayToAutoCompleteOptions = (values) => {
@@ -236,15 +231,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
         }
       }}
     >
-      <Form.Item name="mode">
-        <Radio.Group
-          options={[
-            { label: "Manual", value: "manual" },
-            { label: "Semi-Auto", value: "semiauto" },
-          ]}
-          optionType="button"
-        />
-      </Form.Item>
       {!!user && (
         <>
           <fieldset>
@@ -457,9 +443,30 @@ const Intent = ({ onFinish, values, onComplete }) => {
         </Panel>
       </Collapse>
       <Divider />
-      <Form.Item {...tailLayout}>
-        <NextButton htmlType="submit">Roll</NextButton>
-      </Form.Item>
+      <fielset>
+        <Form.Item name="mode" className={styles["mode-slider"]}>
+          <Radio.Group
+            options={[
+              { label: "Manual", value: "manual" },
+              { label: "Semi-auto", value: "semiauto" },
+            ]}
+            optionType="button"
+          />
+        </Form.Item>
+        <Hint
+          text={
+            <>
+              <span>{`Semi-auto: The roller will try to preselect the best dice to reroll/keep.`}</span>
+              <br />
+              <span>{`Manual: All dice must be picked by hand.`}</span>
+            </>
+          }
+          className={styles["mode-slider-hint"]}
+        />
+        <Form.Item>
+          <NextButton htmlType="submit">{`Roll`}</NextButton>
+        </Form.Item>
+      </fielset>
     </Form>
   );
 };
