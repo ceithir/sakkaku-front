@@ -302,22 +302,37 @@ const Intent = ({ onFinish, values, onComplete }) => {
           </Form.Item>
           <ExplainOptions options={commonModifiersOptions} />
           {!ringless && (
-            <fieldset>
-              <Form.Item
-                label="Unskilled assist"
-                name="unskilled_assist"
-                initialValue={0}
-              >
-                <InputNumber min={0} max={10} />
-              </Form.Item>
-              <Form.Item
-                label="Skilled assist"
-                name="skilled_assist"
-                initialValue={0}
-              >
-                <InputNumber min={0} max={10} />
-              </Form.Item>
-            </fieldset>
+            <>
+              <fieldset className={styles["assist-container"]}>
+                <Form.Item
+                  label="Assistance (unskilled)"
+                  name="unskilled_assist"
+                  initialValue={0}
+                >
+                  <InputNumber min={0} max={10} />
+                </Form.Item>
+                <Form.Item
+                  label="Assistance (skilled)"
+                  name="skilled_assist"
+                  initialValue={0}
+                >
+                  <InputNumber min={0} max={10} />
+                </Form.Item>
+              </fieldset>
+              <ExplainOptions
+                description={`If a character making a check receives assistance from one or more others, the character making the check rolls one additional Skill die per [skilled assistant], and one additional Ring die per [unskilled assistant]. Then [...] a character making a check with assistance may keep up to 1 additional die per assisting character. [Core, page 26]`}
+                options={[
+                  {
+                    label: `Assistance (unskilled)`,
+                    description: `Number of assisting characters who have 0 ranks in the skill in use.`,
+                  },
+                  {
+                    label: `Assistance (skilled)`,
+                    description: `Number of assisting characters who have 1 or more ranks of the skill in use.`,
+                  },
+                ]}
+              />
+            </>
           )}
         </Panel>
       </Collapse>
