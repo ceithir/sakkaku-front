@@ -14,10 +14,10 @@ const ExplainOptions = ({ options, description }) => {
             <dl>
               {options.map(({ label, description }) => {
                 return (
-                  <>
+                  <React.Fragment key={label}>
                     <dt>{label}</dt>
                     <dd>{description}</dd>
-                  </>
+                  </React.Fragment>
                 );
               })}
             </dl>
