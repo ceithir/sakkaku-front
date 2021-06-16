@@ -8,21 +8,19 @@ const ExplainOptions = ({ options, description }) => {
   return (
     <Collapse ghost className={styles.container}>
       <Panel header={"What does that mean?"} showArrow={false}>
-        <>
-          {description && <p>{description}</p>}
-          {
-            <dl>
-              {options.map(({ label, description }) => {
-                return (
-                  <React.Fragment key={label}>
-                    <dt>{label}</dt>
-                    <dd>{description}</dd>
-                  </React.Fragment>
-                );
-              })}
-            </dl>
-          }
-        </>
+        {description && <p>{description}</p>}
+        {
+          <dl>
+            {options.map(({ label, description }) => {
+              return (
+                <React.Fragment key={label}>
+                  <dt>{label}</dt>
+                  <dd>{description}</dd>
+                </React.Fragment>
+              );
+            })}
+          </dl>
+        }
       </Panel>
     </Collapse>
   );
