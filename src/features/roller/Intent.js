@@ -29,6 +29,7 @@ import classNames from "classnames";
 import AbilityDescription from "./glitter/AbilityDescription";
 import ABILITIES, { longname } from "./data/abilities";
 import ExplainOptions from "./glitter/ExplainOptions";
+import { Strife, Success, Explosion } from "./glitter/Symbol";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -166,12 +167,26 @@ const Intent = ({ onFinish, values, onComplete }) => {
       value: "adversity",
       label: `Adversity`,
       disabled: commonModifiers.includes("distinction"),
-      description: `When an adversity applies to a task a character is trying to accomplish [...], the character’s player must choose and reroll two dice containing (Success) or (Explosion) symbols (if results with these symbols in the pool). After resolving the check, if the character failed, they gain 1 Void point. [Core, page 116]`,
+      description: (
+        <>
+          {`When an adversity applies to a task a character is trying to accomplish [...], the character’s player must choose and reroll two dice containing `}
+          <Success />
+          {` or `}
+          <Explosion />
+          {` symbols (if results with these symbols in the pool). After resolving the check, if the character failed, they gain 1 Void point. [Core, page 116]`}
+        </>
+      ),
     },
     {
       value: "compromised",
       label: `Compromised`,
-      description: `When making a check, a Compromised character cannot keep dice containing (Strife) symbols (to a potential minimum of 0 kept dice). [Core, page 30]`,
+      description: (
+        <>
+          {`When making a check, a Compromised character cannot keep dice containing `}
+          <Strife />
+          {` symbols (to a potential minimum of 0 kept dice). [Core, page 30]`}
+        </>
+      ),
     },
   ].filter(Boolean);
 
