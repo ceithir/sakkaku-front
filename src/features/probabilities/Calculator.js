@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, InputNumber, Typography, Switch } from "antd";
+import { Form, InputNumber, Typography, Switch, Divider } from "antd";
 import { cumulativeSuccess } from "./maths";
 import styles from "./Calculator.module.less";
 
@@ -7,18 +7,26 @@ const { Paragraph, Text } = Typography;
 
 const Calculator = () => {
   const [form] = Form.useForm();
-  const initialValues = { ring: 3, skill: 1, tn: 3 };
-  const [values, setValues] = useState(initialValues);
-  const [compromised, setComprised] = useState(false);
+  const initialValues = {
+    ring: 3,
+    skill: 1,
+    tn: 3,
+    unskilled_assist: 0,
+    skilled_assist: 0,
+    compromised: false,
+  };
+  const [
+    { ring, skill, tn, unskilled_assist, skilled_assist, compromised },
+    setValues,
+  ] = useState(initialValues);
 
   return (
     <Form
       layout={"inline"}
       form={form}
-      initialValues={{ ...initialValues, compromised: false }}
-      onValuesChange={(_, { ring, skill, tn, compromised }) => {
-        setValues({ ring, skill, tn });
-        setComprised(compromised);
+      initialValues={initialValues}
+      onValuesChange={(_, values) => {
+        setValues(values);
       }}
       className={styles.form}
     >
@@ -38,6 +46,14 @@ const Calculator = () => {
       >
         <Switch />
       </Form.Item>
+      <Divider />
+      <Form.Item label="Assistance (unskilled)" name="unskilled_assist">
+        <InputNumber min={0} max={10} />
+      </Form.Item>
+      <Form.Item label="Assistance (skilled)" name="skilled_assist">
+        <InputNumber min={0} max={10} />
+      </Form.Item>
+      <Divider />
       <output>
         <Paragraph>
           <Text>
@@ -47,7 +63,15 @@ const Calculator = () => {
           </Text>
           <Text strong>{`${(
             Math.abs(
-              cumulativeSuccess({ ...values, options: { compromised } })
+              cumulativeSuccess({
+                tn,
+                ring: ring + unskilled_assist,
+                skill: skill + skilled_assist,
+                options: {
+                  compromised,
+                  keptDiceCount: ring + unskilled_assist + skilled_assist,
+                },
+              })
             ) * 100
           ).toFixed(2)}%`}</Text>
           <Text>{`.`}</Text>
