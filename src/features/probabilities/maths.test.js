@@ -4,12 +4,12 @@ import {
   pSDefault as pS,
   pRCompromised,
   pSCompromised,
-  combinations,
+  permutations,
   subsets,
-  skilledCombinations,
-  uniqueSkilledCombinations,
-  distinctPermutationsCount,
-  distinctComplementaryCombinations,
+  ringSkillPermutations,
+  ringSkillCombinations,
+  permutationsCount,
+  complementaryCombinations,
   bruteForcePermutations,
 } from "./maths";
 
@@ -40,26 +40,26 @@ describe("die", () => {
   });
 });
 
-test("distinctPermutationsCount", () => {
-  expect(distinctPermutationsCount([1])).toStrictEqual(1);
-  expect(distinctPermutationsCount([1, 1])).toStrictEqual(1);
-  expect(distinctPermutationsCount([1, 1, 2])).toStrictEqual(3);
-  expect(distinctPermutationsCount([1, 1, 2, 2])).toStrictEqual(6);
-  expect(distinctPermutationsCount([1, 2, 3])).toStrictEqual(6);
+test("permutationsCount", () => {
+  expect(permutationsCount([1])).toStrictEqual(1);
+  expect(permutationsCount([1, 1])).toStrictEqual(1);
+  expect(permutationsCount([1, 1, 2])).toStrictEqual(3);
+  expect(permutationsCount([1, 1, 2, 2])).toStrictEqual(6);
+  expect(permutationsCount([1, 2, 3])).toStrictEqual(6);
 });
 
-describe("combinations", () => {
+describe("permutations", () => {
   test("n = 1", () => {
-    expect(combinations(1)).toStrictEqual([[1]]);
+    expect(permutations(1)).toStrictEqual([[1]]);
   });
   test("n = 2", () => {
-    expect(combinations(2)).toStrictEqual([[1, 1], [2]]);
+    expect(permutations(2)).toStrictEqual([[1, 1], [2]]);
   });
   test("n = 3", () => {
-    expect(combinations(3)).toStrictEqual([[1, 1, 1], [1, 2], [2, 1], [3]]);
+    expect(permutations(3)).toStrictEqual([[1, 1, 1], [1, 2], [2, 1], [3]]);
   });
   test("n = 4", () => {
-    expect(combinations(4)).toStrictEqual([
+    expect(permutations(4)).toStrictEqual([
       [1, 1, 1, 1],
       [1, 1, 2],
       [1, 2, 1],
@@ -69,7 +69,7 @@ describe("combinations", () => {
       [3, 1],
       [4],
     ]);
-    expect(combinations(4, { maxCardinality: 2 })).toStrictEqual([
+    expect(permutations(4, { maxCardinality: 2 })).toStrictEqual([
       [1, 3],
       [2, 2],
       [3, 1],
@@ -115,29 +115,29 @@ describe("subsets", () => {
   });
 });
 
-describe("skilledCombinations", () => {
+describe("ringSkillPermutations", () => {
   test("n = 1", () => {
-    expect(skilledCombinations({ ring: 1, skill: 1, n: 1 })).toStrictEqual([
+    expect(ringSkillPermutations({ ring: 1, skill: 1, n: 1 })).toStrictEqual([
       { rings: [1], skills: [] },
       { rings: [], skills: [1] },
     ]);
-    expect(skilledCombinations({ ring: 2, skill: 3, n: 1 })).toStrictEqual([
+    expect(ringSkillPermutations({ ring: 2, skill: 3, n: 1 })).toStrictEqual([
       { rings: [1], skills: [] },
       { rings: [], skills: [1] },
     ]);
   });
   test("n = 2", () => {
-    expect(skilledCombinations({ ring: 1, skill: 3, n: 2 })).toStrictEqual([
+    expect(ringSkillPermutations({ ring: 1, skill: 3, n: 2 })).toStrictEqual([
       { rings: [2], skills: [] },
       { rings: [], skills: [2] },
     ]);
-    expect(skilledCombinations({ ring: 2, skill: 1, n: 2 })).toStrictEqual([
+    expect(ringSkillPermutations({ ring: 2, skill: 1, n: 2 })).toStrictEqual([
       { rings: [1, 1], skills: [] },
       { rings: [1], skills: [1] },
       { rings: [2], skills: [] },
       { rings: [], skills: [2] },
     ]);
-    expect(skilledCombinations({ ring: 2, skill: 3, n: 2 })).toStrictEqual([
+    expect(ringSkillPermutations({ ring: 2, skill: 3, n: 2 })).toStrictEqual([
       { rings: [1, 1], skills: [] },
       { rings: [1], skills: [1] },
       { rings: [], skills: [1, 1] },
@@ -146,11 +146,11 @@ describe("skilledCombinations", () => {
     ]);
   });
   test("n = 5", () => {
-    expect(skilledCombinations({ ring: 1, skill: 3, n: 5 })).toStrictEqual([
+    expect(ringSkillPermutations({ ring: 1, skill: 3, n: 5 })).toStrictEqual([
       { rings: [5], skills: [] },
       { rings: [], skills: [5] },
     ]);
-    expect(skilledCombinations({ ring: 2, skill: 3, n: 5 })).toStrictEqual([
+    expect(ringSkillPermutations({ ring: 2, skill: 3, n: 5 })).toStrictEqual([
       { rings: [1, 4], skills: [] },
       { rings: [1], skills: [4] },
       { rings: [], skills: [1, 4] },
@@ -169,11 +169,9 @@ describe("skilledCombinations", () => {
   });
 });
 
-describe("uniqueSkilledCombinations", () => {
+describe("ringSkillCombinations", () => {
   test("n = 5", () => {
-    expect(
-      uniqueSkilledCombinations({ ring: 2, skill: 3, n: 5 })
-    ).toStrictEqual([
+    expect(ringSkillCombinations({ ring: 2, skill: 3, n: 5 })).toStrictEqual([
       { rings: [1, 4], skills: [] },
       { rings: [1], skills: [4] },
       { rings: [], skills: [1, 4] },
@@ -188,16 +186,14 @@ describe("uniqueSkilledCombinations", () => {
   });
 });
 
-describe("distinctComplementaryCombinations", () => {
+describe("complementaryCombinations", () => {
   test("threshold = 0", () => {
-    expect(
-      distinctComplementaryCombinations({ threshold: 0, size: 4 })
-    ).toStrictEqual([[0, 0, 0, 0]]);
+    expect(complementaryCombinations({ threshold: 0, size: 4 })).toStrictEqual([
+      [0, 0, 0, 0],
+    ]);
   });
   test("threshold = 1", () => {
-    expect(
-      distinctComplementaryCombinations({ threshold: 1, size: 3 })
-    ).toStrictEqual([
+    expect(complementaryCombinations({ threshold: 1, size: 3 })).toStrictEqual([
       [0, 0, 0],
       [0, 0, 1],
       [0, 1, 1],
@@ -205,9 +201,7 @@ describe("distinctComplementaryCombinations", () => {
     ]);
   });
   test("threshold = 2", () => {
-    expect(
-      distinctComplementaryCombinations({ threshold: 2, size: 2 })
-    ).toStrictEqual([
+    expect(complementaryCombinations({ threshold: 2, size: 2 })).toStrictEqual([
       [0, 0],
       [0, 1],
       [1, 1],

@@ -1,11 +1,17 @@
 /**
+ * Mathematical concepts:
+ * https://en.wikipedia.org/wiki/Combination
+ * https://en.wikipedia.org/wiki/Permutation
+ */
+
+/**
  * Known issues:
  * - Probabilities were checked for consistency in the generic case against the empirical results from https://l5r-dice-sim.vercel.app/ so any bias from this one is also reflected there
  * - Nothing has been done to avoid rounding errors piling up
  * - The maths are done as if the dice exploded before being chosen to be kept
  */
 
-export const distinctPermutationsCount = (list) => {
+export const permutationsCount = (list) => {
   let distincts = {};
   list.forEach((value) => {
     if (distincts[value]) {
@@ -55,6 +61,9 @@ export const pSDefault = (n) => {
   return Math.pow(1 / 6, n - 1) * (5 / 12 + (1 / 6) * (5 / 12));
 };
 
+/**
+ * Chances to get _exactly_ n success out of a given ring die while compromised
+ */
 export const pRCompromised = (n) => {
   if (n === 0) {
     return 5 / 6;
@@ -65,6 +74,9 @@ export const pRCompromised = (n) => {
   return 0;
 };
 
+/**
+ * Chances to get _exactly_ n success out of a given skill die while compromised
+ */
 export const pSCompromised = (n) => {
   if (n === 0) {
     return 2 / 3;
@@ -73,7 +85,7 @@ export const pSCompromised = (n) => {
 };
 
 /**
- * Determine the different sums that can end up with a result of n
+ * List all permutations of non-zero positive integers that sum up to n
  * Example:
  * n=4 -> [
       [1, 1, 1, 1],
@@ -86,12 +98,12 @@ export const pSCompromised = (n) => {
       [4],
     ]
  */
-export const combinations = (n, options = {}) => {
+export const permutations = (n, options = {}) => {
   const { maxCardinality = null, maxValue = null } = options;
 
   let storage = [];
 
-  const findCombinations = (candidate) => {
+  const findPermutations = (candidate) => {
     if (maxCardinality !== null && candidate.length > maxCardinality) {
       return;
     }
@@ -105,18 +117,27 @@ export const combinations = (n, options = {}) => {
       const newCandidateB = [...candidate];
       newCandidateB[newCandidateB.length - 1] =
         newCandidateB[newCandidateB.length - 1] + 1;
-      findCombinations(newCandidateA);
-      findCombinations(newCandidateB);
+      findPermutations(newCandidateA);
+      findPermutations(newCandidateB);
     }
     if (total === n) {
       storage.push(candidate);
     }
   };
 
-  findCombinations([1]);
+  findPermutations([1]);
   return storage;
 };
 
+/**
+ * List all ways pick {size} dice out of a pool of {ring} ring dice and {skill} skill dice
+ * Example:
+ * ring=2, skill=3, size=3 -> [
+      { ring: 2, skill: 1 },
+      { ring: 1, skill: 2 },
+      { ring: 0, skill: 3 },
+    ]
+ */
 export const subsets = ({ ring, skill, size }) => {
   if (size > ring.length + skill.length) {
     throw new Error("Out of bounds");
@@ -153,10 +174,9 @@ export const subsets = ({ ring, skill, size }) => {
 };
 
 /**
- * Determine the number of _non-distinct_ combinations of skill and ring dice
- * That can sum up to n
- *
- * Ring=2, Skill=3, N=5 -> [
+ * List all permutations of {ring} dice among a pool of {ring} ring dice plus {skill} skill dice summing up to n
+ * Example:
+ * ring=2, skill=3, n=5 -> [
     { rings: [ 1, 4 ], skills: [] },
     { rings: [ 1 ], skills: [ 4 ] },
     { rings: [], skills: [ 1, 4 ] },
@@ -171,11 +191,12 @@ export const subsets = ({ ring, skill, size }) => {
     { rings: [], skills: [ 4, 1 ] },
     { rings: [ 5 ], skills: [] },
     { rings: [], skills: [ 5 ] }
-
- * ]
+   ]
  */
-export const skilledCombinations = ({ ring, skill, n }) => {
-  const combs = combinations(n, { maxCardinality: ring });
+export const ringSkillPermutations = ({ ring, skill, n }) => {
+  const keptDiceCount = ring;
+
+  const combs = permutations(n, { maxCardinality: keptDiceCount });
 
   let result = [];
   combs.forEach((comb) => {
@@ -198,8 +219,23 @@ export const skilledCombinations = ({ ring, skill, n }) => {
   return result;
 };
 
-export const uniqueSkilledCombinations = ({ ring, skill, n }) => {
-  const array = skilledCombinations({ ring, skill, n }).map(
+/**
+ * List all permutations of {ring} dice among a pool of {ring} ring dice plus {skill} skill dice summing up to n
+ * ring=2, skill=3, n=5 -> [
+      { rings: [1, 4], skills: [] },
+      { rings: [1], skills: [4] },
+      { rings: [], skills: [1, 4] },
+      { rings: [2, 3], skills: [] },
+      { rings: [2], skills: [3] },
+      { rings: [], skills: [2, 3] },
+      { rings: [3], skills: [2] },
+      { rings: [4], skills: [1] },
+      { rings: [5], skills: [] },
+      { rings: [], skills: [5] },
+    ]
+ */
+export const ringSkillCombinations = ({ ring, skill, n }) => {
+  const array = ringSkillPermutations({ ring, skill, n }).map(
     ({ rings, skills }) => {
       return { rings: rings.sort(), skills: skills.sort() };
     }
@@ -225,7 +261,18 @@ export const uniqueSkilledCombinations = ({ ring, skill, n }) => {
   return result;
 };
 
-export const distinctComplementaryCombinations = ({ threshold, size }) => {
+/**
+ * List all combinations between of {size} integers between 0 and {threshold}
+ * threshold=2, size=2 -> [
+    [0, 0],
+    [0, 1],
+    [1, 1],
+    [0, 2],
+    [1, 2],
+    [2, 2],
+  ]
+ */
+export const complementaryCombinations = ({ threshold, size }) => {
   if (size === 0) {
     return [];
   }
@@ -237,7 +284,7 @@ export const distinctComplementaryCombinations = ({ threshold, size }) => {
   let result = [new Array(size).fill(0)];
   for (let i = 1; i <= size * threshold; i++) {
     arrayUnique(
-      combinations(i, { maxCardinality: size, maxValue: threshold })
+      permutations(i, { maxCardinality: size, maxValue: threshold })
     ).forEach((comb) => {
       result.push([...new Array(size - comb.length).fill(0), ...comb]);
     });
@@ -246,7 +293,8 @@ export const distinctComplementaryCombinations = ({ threshold, size }) => {
 };
 
 /**
- * Supposedly for testing/debugging only...
+ * As the name suggests, list all possible permutations
+ * Not used by the the algorithm, just there for testing/debugging
  */
 export const bruteForcePermutations = ({ ring, skill, tn }) => {
   let allCombs = [];
@@ -315,11 +363,55 @@ const arrayUnique = (array) => {
   return result;
 };
 
+const matchCombOtherDiceAtZero = ({ comb, diceP, diceCount }) => {
+  if (comb.length > diceCount) {
+    return 0;
+  }
+
+  let result = 1;
+  comb.forEach((x) => {
+    result *= diceP(x);
+  });
+  result *= Math.pow(diceP(0), diceCount - comb.length);
+  result *= permutationsCount([
+    ...comb,
+    ...new Array(diceCount - comb.length).fill(0),
+  ]);
+
+  return result;
+};
+
+const combToP = (comb, diceP) => {
+  return comb.reduce((acc, x) => acc * diceP(x), 1);
+};
+
+const addUpToTN = (comb, tn, options = {}) => {
+  const { max = null } = options;
+
+  if (max === null) {
+    return comb.reduce((acc, x) => acc + x, 0) >= tn;
+  }
+
+  return (
+    [...comb]
+      .sort()
+      .reverse()
+      .slice(0, max)
+      .reduce((acc, x) => acc + x, 0) >= tn
+  );
+};
+
 /**
  * Chances to _exactly_ match the TN out of a given roll assuming a "always pick highest" strategy
+ *
+ * General algorithm:
+ * 1. List all combinations summing up to that TN
+ * 2. Determine the probability of each happening
+ * 3. Sum them all
  */
 const exactSuccess = ({ ring, skill, tn, options }) => {
   const { compromised = false } = options;
+  const keptDiceCount = ring;
   const pR = compromised ? pRCompromised : pRDefault;
   const pS = compromised ? pSCompromised : pSDefault;
 
@@ -327,38 +419,16 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
     return Math.pow(pR(0), ring) * Math.pow(pS(0), skill);
   }
 
-  const matchCombOtherDiceAtZero = ({ comb, diceP, diceCount }) => {
-    if (comb.length > diceCount) {
-      return 0;
-    }
+  const combs = ringSkillCombinations({ ring, skill, n: tn });
 
-    let result = 1;
-    comb.forEach((x) => {
-      result *= diceP(x);
-    });
-    result *= Math.pow(diceP(0), diceCount - comb.length);
-    result *= distinctPermutationsCount([
-      ...comb,
-      ...new Array(diceCount - comb.length).fill(0),
-    ]);
-
-    return result;
-  };
-
-  const combToP = (comb, diceP) => {
-    return comb.reduce((acc, x) => acc * diceP(x), 1);
-  };
-
-  const combs = uniqueSkilledCombinations({ ring, skill, n: tn });
-
-  const partialCombs = combs.filter(
-    ({ rings: rDice, skills: sDice }) => rDice.length + sDice.length < ring
-  );
-
-  // Case: Any combination that achieves the TN with less dice than can be kept
-  // All other dice must then be zero or the total would be above TN
-  const withLessDiceThanMax = partialCombs.reduce(
-    (acc, { rings: rDice, skills: sDice }) => {
+  // Case: Any combination summing up to the TN with less dice than the max that can be kept
+  // All other dice must therefore be at zero or the total would be above TN
+  const withLessDiceThanMax = combs
+    .filter(
+      ({ rings: rDice, skills: sDice }) =>
+        rDice.length + sDice.length < keptDiceCount
+    )
+    .reduce((acc, { rings: rDice, skills: sDice }) => {
       return (
         acc +
         matchCombOtherDiceAtZero({
@@ -372,87 +442,70 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
             diceCount: skill,
           })
       );
-    },
-    0
-  );
+    }, 0);
 
   const fullCombs = combs.filter(
-    ({ rings: rDice, skills: sDice }) => rDice.length + sDice.length === ring
+    ({ rings: rDice, skills: sDice }) =>
+      rDice.length + sDice.length === keptDiceCount
   );
 
-  // Case: All ring dice exactly add up to TN
-  // Skill dice can be anything as long as it's equal or lower to the lowest ring die
+  // Case: keptDiceCount ring dice add up exactly to TN
+  // Skill dice can have any value as long as it's equal or lower to the lowest ring die
   const withOnlyRingDice = fullCombs
-    .filter(({ skills: sDice }) => sDice.length === 0) // <=> rDice.length === ring
+    .filter(({ skills: sDice }) => sDice.length === 0) // <=> rDice.length === keptDiceCount
     .reduce((acc, { rings: rDice }) => {
       let subresult = 1;
       subresult *= combToP(rDice, pR);
-      subresult *= distinctPermutationsCount(rDice);
+      subresult *= permutationsCount(rDice);
 
       if (skill > 0) {
-        subresult *= distinctComplementaryCombinations({
+        subresult *= complementaryCombinations({
           threshold: Math.min(...rDice),
           size: skill,
         }).reduce((acc, cb) => {
-          return acc + combToP(cb, pS) * distinctPermutationsCount(cb);
+          return acc + combToP(cb, pS) * permutationsCount(cb);
         }, 0);
       }
 
       return acc + subresult;
     }, 0);
 
-  const addUpToTN = (comb, options = {}) => {
-    const { max = null } = options;
-
-    if (max === null) {
-      return comb.reduce((acc, x) => acc + x, 0) >= tn;
-    }
-
-    return (
-      [...comb]
-        .sort()
-        .reverse()
-        .slice(0, max)
-        .reduce((acc, x) => acc + x, 0) >= tn
-    );
-  };
-
-  // Case: A total of ring skill dice exactly add up to TN
-  // And the ring dice do not add up to TN (to avoid falling back into the previous case)
+  // Case:
+  // 1. keptDiceCount skill dice exactly add up to TN
+  // 2. It's not possible to achieve the TN with solely ring dice (to avoid falling back into the previous case)
   const withOnlySkillDice = fullCombs
-    .filter(({ rings: rDice }) => rDice.length === 0) // <=> sDice.length === ring
+    .filter(({ rings: rDice }) => rDice.length === 0) // <=> sDice.length === keptDiceCount
     .reduce((acc, { skills: sDice }) => {
       let subresult = 1;
-      subresult *= distinctComplementaryCombinations({
+      subresult *= complementaryCombinations({
         threshold: Math.min(...sDice),
         size: ring,
       })
-        .filter((cb) => !addUpToTN(cb))
+        .filter((cb) => !addUpToTN(cb, tn))
         .reduce((acc, cb) => {
-          return acc + combToP(cb, pR) * distinctPermutationsCount(cb);
+          return acc + combToP(cb, pR) * permutationsCount(cb);
         }, 0);
 
       subresult *= combToP(sDice, pS);
       if (sDice.length === skill) {
-        subresult *= distinctPermutationsCount(sDice);
+        subresult *= permutationsCount(sDice);
       } else {
-        subresult *= distinctComplementaryCombinations({
+        subresult *= complementaryCombinations({
           threshold: Math.min(...sDice),
           size: skill - sDice.length,
         }).reduce((acc, cb) => {
-          return (
-            acc + combToP(cb, pS) * distinctPermutationsCount([...sDice, ...cb])
-          );
+          return acc + combToP(cb, pS) * permutationsCount([...sDice, ...cb]);
         }, 0);
       }
 
       return acc + subresult;
     }, 0);
 
-  // Case: Achieving TN _requires_ mixing both dice
+  // Case: Achieving the TN _requires_ mixing both dice
   const gruellingCases = fullCombs.filter(
     ({ rings: rDice, skills: sDice }) => rDice.length > 0 && sDice.length > 0
   );
+  // No more tricks there, we just compute the "supposedly small" list of all these combinations
   let gruellingCombinations = [];
   const addToGruellingCombinations = (comb) => {
     if (
@@ -469,13 +522,13 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
   gruellingCases.forEach(({ rings: rDice, skills: sDice }) => {
     const threshold = Math.min(...rDice, ...sDice);
 
-    distinctComplementaryCombinations({
+    complementaryCombinations({
       threshold,
       size: ring - rDice.length,
     })
       .map((cb) => [...rDice, ...cb])
       .filter((fullRingComb) => {
-        return !addUpToTN(fullRingComb);
+        return !addUpToTN(fullRingComb, tn);
       })
       .forEach((fullRingComb) => {
         if (skill === sDice.length) {
@@ -485,13 +538,13 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
           });
         }
 
-        distinctComplementaryCombinations({
+        complementaryCombinations({
           threshold,
           size: skill - sDice.length,
         })
           .map((cb) => [...sDice, ...cb])
           .filter((fullSkillComb) => {
-            return !addUpToTN(fullSkillComb, { max: ring });
+            return !addUpToTN(fullSkillComb, tn, { max: keptDiceCount });
           })
           .forEach((fullSkillComb) => {
             addToGruellingCombinations({
@@ -506,9 +559,9 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
       return (
         acc +
         combToP(fullRingComb, pR) *
-          distinctPermutationsCount(fullRingComb) *
+          permutationsCount(fullRingComb) *
           combToP(fullSkillComb, pS) *
-          distinctPermutationsCount(fullSkillComb)
+          permutationsCount(fullSkillComb)
       );
     },
     0
