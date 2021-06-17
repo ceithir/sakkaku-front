@@ -296,7 +296,8 @@ export const complementaryCombinations = ({ threshold, size }) => {
  * As the name suggests, list all possible permutations
  * Not used by the the algorithm, just there for testing/debugging
  */
-export const bruteForcePermutations = ({ ring, skill, tn }) => {
+export const bruteForcePermutations = ({ ring, skill, tn, options = {} }) => {
+  const { keptDiceCount = ring } = options;
   let allCombs = [];
 
   const base = tn + 1;
@@ -323,9 +324,32 @@ export const bruteForcePermutations = ({ ring, skill, tn }) => {
       [...comb]
         .sort()
         .reverse()
-        .slice(0, ring)
+        .slice(0, keptDiceCount)
         .reduce((acc, val) => acc + val, 0) === tn
   );
+};
+
+const bruteForceExact = ({ ring, skill, tn, options }) => {
+  return bruteForcePermutations({ ring, skill, tn, options }).reduce(
+    (acc, permutation) => {
+      return (
+        acc +
+        permutation.slice(0, ring).reduce((acc, n) => acc * pRDefault(n), 1) *
+          permutation.slice(ring).reduce((acc, n) => acc * pSDefault(n), 1)
+      );
+    },
+    0
+  );
+};
+
+export const bruteForceChances = ({ ring, skill, tn, options = {} }) => {
+  let result = 1;
+
+  for (let i = 0; i < tn; i++) {
+    result -= bruteForceExact({ ring, skill, tn: i, options });
+  }
+
+  return result;
 };
 
 const sameArray = (a, b) => {

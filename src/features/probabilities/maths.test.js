@@ -11,6 +11,7 @@ import {
   permutationsCount,
   complementaryCombinations,
   bruteForcePermutations,
+  bruteForceChances,
 } from "./maths";
 
 describe("die", () => {
@@ -248,6 +249,14 @@ describe("bruteForcePermutations", () => {
       [1, 1, 1, 1],
       [2, 0, 0, 0],
     ]);
+  });
+});
+describe("bruteForceChances", () => {
+  test("ring = 2, skill = 3, tn = 3", () => {
+    expect(bruteForceChances({ ring: 2, skill: 3, tn: 2 })).toBeCloseTo(
+      0.8885,
+      4
+    );
   });
 });
 
