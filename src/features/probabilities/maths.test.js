@@ -716,5 +716,58 @@ describe("cumulativeSuccess", () => {
         });
       });
     });
+
+    describe("keeping more dice than ring (assistance)", () => {
+      test("tn = 3, ring = 2, skill = 2, kept = 3", () => {
+        expect(
+          cumulativeSuccess({
+            ring: 2,
+            skill: 2,
+            tn: 3,
+            options: { keptDiceCount: 3 },
+          })
+        ).toBeCloseTo(0.496, 4);
+      });
+      test("tn = 8, ring = 2, skill = 2, kept = 3", () => {
+        expect(
+          cumulativeSuccess({
+            ring: 2,
+            skill: 2,
+            tn: 8,
+            options: { keptDiceCount: 3 },
+          })
+        ).toBeCloseTo(0.001, 4);
+      });
+      test("tn = 5, ring = 2, skill = 5, kept = 3", () => {
+        expect(
+          cumulativeSuccess({
+            ring: 2,
+            skill: 5,
+            tn: 5,
+            options: { keptDiceCount: 3 },
+          })
+        ).toBeCloseTo(0.1866, 4);
+      });
+      test("tn = 5, ring = 4, skill = 3, kept = 5", () => {
+        expect(
+          cumulativeSuccess({
+            ring: 4,
+            skill: 3,
+            tn: 5,
+            options: { keptDiceCount: 5 },
+          })
+        ).toBeCloseTo(0.4735, 4);
+      });
+      test("tn = 7, ring = 4, skill = 3, kept = 5", () => {
+        expect(
+          cumulativeSuccess({
+            ring: 4,
+            skill: 3,
+            tn: 7,
+            options: { keptDiceCount: 5 },
+          })
+        ).toBeCloseTo(0.103, 4);
+      });
+    });
   });
 });

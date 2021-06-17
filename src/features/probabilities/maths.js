@@ -174,7 +174,7 @@ export const subsets = ({ ring, skill, size }) => {
 };
 
 /**
- * List all permutations of {ring} dice among a pool of {ring} ring dice plus {skill} skill dice summing up to n
+ * List all permutations of {keptDiceCount} dice among a pool of {ring} ring dice plus {skill} skill dice summing up to n
  * Example:
  * ring=2, skill=3, n=5 -> [
     { rings: [ 1, 4 ], skills: [] },
@@ -193,9 +193,12 @@ export const subsets = ({ ring, skill, size }) => {
     { rings: [], skills: [ 5 ] }
    ]
  */
-export const ringSkillPermutations = ({ ring, skill, n }) => {
-  const keptDiceCount = ring;
-
+export const ringSkillPermutations = ({
+  ring,
+  skill,
+  n,
+  keptDiceCount = ring,
+}) => {
   const combs = permutations(n, { maxCardinality: keptDiceCount });
 
   let result = [];
@@ -220,7 +223,7 @@ export const ringSkillPermutations = ({ ring, skill, n }) => {
 };
 
 /**
- * List all permutations of {ring} dice among a pool of {ring} ring dice plus {skill} skill dice summing up to n
+ * List all permutations of {keptDiceCount} dice among a pool of {ring} ring dice plus {skill} skill dice summing up to n
  * ring=2, skill=3, n=5 -> [
       { rings: [1, 4], skills: [] },
       { rings: [1], skills: [4] },
@@ -234,8 +237,8 @@ export const ringSkillPermutations = ({ ring, skill, n }) => {
       { rings: [], skills: [5] },
     ]
  */
-export const ringSkillCombinations = ({ ring, skill, n }) => {
-  const array = ringSkillPermutations({ ring, skill, n }).map(
+export const ringSkillCombinations = ({ ring, skill, n, keptDiceCount }) => {
+  const array = ringSkillPermutations({ ring, skill, n, keptDiceCount }).map(
     ({ rings, skills }) => {
       return { rings: rings.sort(), skills: skills.sort() };
     }
@@ -434,8 +437,7 @@ const addUpToTN = (comb, tn, options = {}) => {
  * 3. Sum them all
  */
 const exactSuccess = ({ ring, skill, tn, options }) => {
-  const { compromised = false } = options;
-  const keptDiceCount = ring;
+  const { compromised = false, keptDiceCount = ring } = options;
   const pR = compromised ? pRCompromised : pRDefault;
   const pS = compromised ? pSCompromised : pSDefault;
 
@@ -443,7 +445,7 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
     return Math.pow(pR(0), ring) * Math.pow(pS(0), skill);
   }
 
-  const combs = ringSkillCombinations({ ring, skill, n: tn });
+  const combs = ringSkillCombinations({ ring, skill, n: tn, keptDiceCount });
 
   // Case: Any combination summing up to the TN with less dice than the max that can be kept
   // All other dice must therefore be at zero or the total would be above TN
@@ -546,11 +548,15 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
   gruellingCases.forEach(({ rings: rDice, skills: sDice }) => {
     const threshold = Math.min(...rDice, ...sDice);
 
-    complementaryCombinations({
-      threshold,
-      size: ring - rDice.length,
-    })
-      .map((cb) => [...rDice, ...cb])
+    const fullRingCombs =
+      ring - rDice.length > 0
+        ? complementaryCombinations({
+            threshold,
+            size: ring - rDice.length,
+          }).map((cb) => [...rDice, ...cb])
+        : [rDice];
+
+    fullRingCombs
       .filter((fullRingComb) => {
         return !addUpToTN(fullRingComb, tn);
       })
@@ -578,6 +584,7 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
           });
       });
   });
+
   const withBothRingAndSkillDice = gruellingCombinations.reduce(
     (acc, { rings: fullRingComb, skills: fullSkillComb }) => {
       return (
@@ -603,8 +610,16 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
  * Chances to _at least_ match the tn out of a given roll
  */
 export const cumulativeSuccess = ({ ring, skill, tn, options = {} }) => {
-  if (ring <= 0) {
+  const { keptDiceCount = ring } = options;
+
+  if (keptDiceCount <= 0) {
     return tn <= 0 ? 1 : 0;
+  }
+  if (keptDiceCount > ring + skill) {
+    throw new Error("Cannot keep more dice than available");
+  }
+  if (keptDiceCount < ring) {
+    throw new Error("Not implemented");
   }
 
   let result = 1;
