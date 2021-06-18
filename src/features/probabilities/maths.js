@@ -435,6 +435,8 @@ const addUpToTN = (comb, tn, options = {}) => {
  * 1. List all combinations summing up to that TN
  * 2. Determine the probability of each happening
  * 3. Sum them all
+ *
+ * FIXME: With a high TN, a high number of dice rolled, and a low number of dice kept, performances are terrible
  */
 const exactSuccess = ({ ring, skill, tn, options }) => {
   const { compromised = false, keptDiceCount = ring } = options;

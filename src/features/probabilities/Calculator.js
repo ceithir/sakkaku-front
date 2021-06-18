@@ -59,13 +59,13 @@ const Calculator = () => {
       className={styles.form}
     >
       <Form.Item label="Ring" name="ring">
-        <InputNumber min={1} max={10} />
+        <InputNumber min={1} max={6} />
       </Form.Item>
       <Form.Item label="Skill" name="skill">
-        <InputNumber min={0} max={10} />
+        <InputNumber min={0} max={6} />
       </Form.Item>
       <Form.Item label="TN" name="tn">
-        <InputNumber min={1} max={10} />
+        <InputNumber min={1} max={8} />
       </Form.Item>
       <Form.Item
         label={"Compromised?"}
@@ -76,10 +76,10 @@ const Calculator = () => {
       </Form.Item>
       <Divider />
       <Form.Item label="Assistance (unskilled)" name="unskilled_assist">
-        <InputNumber min={0} max={10} />
+        <InputNumber min={0} max={5} />
       </Form.Item>
       <Form.Item label="Assistance (skilled)" name="skilled_assist">
-        <InputNumber min={0} max={10} />
+        <InputNumber min={0} max={5} />
       </Form.Item>
       <Divider />
       <output>
