@@ -121,8 +121,8 @@ const StaticTextOutput = ({ result, loading, compromised }) => {
     <Paragraph>
       <Text>
         {compromised
-          ? `Chances to achieve TN, by taking no strife at all, ignoring rerolls, alterations and other modifiers: `
-          : `Chances to achieve TN, by taking as much strife as necessary, ignoring rerolls, alterations and other modifiers: `}
+          ? `Chances to achieve TN, without taking strife, ignoring rerolls and other modifiers: `
+          : `Chances to achieve TN, taking as much strife as necessary, ignoring rerolls and other modifiers: `}
       </Text>
       <Text strong>{loading ? <LoadingOutlined /> : result}</Text>
       <Text>{`.`}</Text>
