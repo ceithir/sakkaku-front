@@ -5,6 +5,18 @@ import styles from "./Calculator.module.less";
 
 const { Paragraph, Text } = Typography;
 
+let cache = {};
+const cumulativeSuccessWithCache = (params) => {
+  const key = JSON.stringify(params);
+  if (cache[key]) {
+    return cache[key];
+  }
+
+  const result = cumulativeSuccess(params);
+  cache[key] = result;
+  return result;
+};
+
 const TextOutput = ({
   ring,
   skill,
@@ -13,7 +25,7 @@ const TextOutput = ({
   skilled_assist,
   compromised,
 }) => {
-  const proba = cumulativeSuccess({
+  const proba = cumulativeSuccessWithCache({
     tn,
     ring: ring + unskilled_assist,
     skill: skill + skilled_assist,
