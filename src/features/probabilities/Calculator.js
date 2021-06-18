@@ -100,7 +100,12 @@ const TextOutput = ({
       return;
     }
 
-    setLoading(true);
+    setTimeout(() => {
+      if (!setFromCache()) {
+        setLoading(true);
+      }
+    }, 100);
+
     computeAndCacheCumulativeSuccess({
       mathParams,
       callback: setFromCache,
