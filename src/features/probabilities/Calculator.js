@@ -54,6 +54,27 @@ const TextOutput = ({
   }, []);
 
   useEffect(() => {
+    if (
+      ![tn, ring, skill, skilled_assist, unskilled_assist].every(
+        (n) => Number.isInteger(n) && n >= 0
+      )
+    ) {
+      setLoading(true);
+      return;
+    }
+
+    if (
+      tn > 8 ||
+      ring < 1 ||
+      ring > 6 ||
+      skill > 6 ||
+      skilled_assist > 5 ||
+      unskilled_assist > 5
+    ) {
+      setLoading(true);
+      return;
+    }
+
     const mathParams = {
       tn,
       ring: ring + unskilled_assist,
