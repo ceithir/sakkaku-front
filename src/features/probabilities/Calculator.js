@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Form, InputNumber, Typography, Switch, Divider } from "antd";
-import { cumulativeSuccess } from "./maths";
 import styles from "./Calculator.module.less";
+import worker from "workerize-loader!./worker"; // eslint-disable-line import/no-webpack-loader-syntax
+import { LoadingOutlined } from "@ant-design/icons";
 
 const { Paragraph, Text } = Typography;
 
+let workerInstance;
 let cache = {};
 const keify = (mathParams) => JSON.stringify(mathParams);
 const load = (params) => cache[keify(params)];
@@ -13,13 +15,15 @@ const save = (params, result) => {
 };
 
 const computeAndCacheCumulativeSuccess = async ({ mathParams, callback }) => {
-  const result = `${(Math.abs(cumulativeSuccess(mathParams)) * 100).toFixed(
-    2
-  )}%`;
+  workerInstance.asyncCumulativeSuccess(mathParams);
 
-  save(mathParams, result);
-
-  callback(result);
+  const intervalID = setInterval(() => {
+    const result = load(mathParams);
+    if (result) {
+      clearInterval(intervalID);
+      callback(result);
+    }
+  });
 };
 
 const TextOutput = ({
@@ -34,6 +38,22 @@ const TextOutput = ({
   const [result, setResult] = useState();
 
   useEffect(() => {
+    if (workerInstance) {
+      workerInstance.terminate();
+    }
+    workerInstance = worker();
+    workerInstance.addEventListener("message", (message) => {
+      const {
+        data: { type, params, result },
+      } = message;
+      if (type === "custom") {
+        const formattedResult = `${(Math.abs(result) * 100).toFixed(2)}%`;
+        save(params, formattedResult);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     const mathParams = {
       tn,
       ring: ring + unskilled_assist,
@@ -43,23 +63,39 @@ const TextOutput = ({
         keptDiceCount: ring + unskilled_assist + skilled_assist,
       },
     };
-    const callback = (data) => {
-      setResult(data);
+
+    const setFromCache = () => {
+      const cachedResult = load(mathParams);
+      if (!cachedResult) {
+        return false;
+      }
+
+      setResult(cachedResult);
       setLoading(false);
+      return true;
     };
 
-    const cachedResult = load(mathParams);
-    if (cachedResult) {
-      return callback(cachedResult);
+    if (setFromCache()) {
+      return;
     }
 
     setLoading(true);
     computeAndCacheCumulativeSuccess({
       mathParams,
-      callback,
+      callback: setFromCache,
     });
   }, [ring, skill, tn, unskilled_assist, skilled_assist, compromised]);
 
+  return (
+    <StaticTextOutput
+      loading={loading}
+      result={result}
+      compromised={compromised}
+    />
+  );
+};
+
+const StaticTextOutput = ({ result, loading, compromised }) => {
   return (
     <Paragraph>
       <Text>
@@ -67,7 +103,7 @@ const TextOutput = ({
           ? `Chances to achieve TN, by taking no strife at all, ignoring rerolls, alterations and other modifiers: `
           : `Chances to achieve TN, by taking as much strife as necessary, ignoring rerolls, alterations and other modifiers: `}
       </Text>
-      <Text strong>{loading ? "???" : result}</Text>
+      <Text strong>{loading ? <LoadingOutlined /> : result}</Text>
       <Text>{`.`}</Text>
     </Paragraph>
   );
