@@ -5,6 +5,37 @@ import styles from "./Calculator.module.less";
 
 const { Paragraph, Text } = Typography;
 
+const TextOutput = ({
+  ring,
+  skill,
+  tn,
+  unskilled_assist,
+  skilled_assist,
+  compromised,
+}) => {
+  const proba = cumulativeSuccess({
+    tn,
+    ring: ring + unskilled_assist,
+    skill: skill + skilled_assist,
+    options: {
+      compromised,
+      keptDiceCount: ring + unskilled_assist + skilled_assist,
+    },
+  });
+
+  return (
+    <Paragraph>
+      <Text>
+        {compromised
+          ? `Chances to achieve TN, by taking no strife at all, ignoring rerolls, alterations and other modifiers: `
+          : `Chances to achieve TN, by taking as much strife as necessary, ignoring rerolls, alterations and other modifiers: `}
+      </Text>
+      <Text strong>{`${(Math.abs(proba) * 100).toFixed(2)}%`}</Text>
+      <Text>{`.`}</Text>
+    </Paragraph>
+  );
+};
+
 const Calculator = () => {
   const [form] = Form.useForm();
   const initialValues = {
@@ -15,10 +46,7 @@ const Calculator = () => {
     skilled_assist: 0,
     compromised: false,
   };
-  const [
-    { ring, skill, tn, unskilled_assist, skilled_assist, compromised },
-    setValues,
-  ] = useState(initialValues);
+  const [values, setValues] = useState(initialValues);
 
   return (
     <Form
@@ -55,27 +83,7 @@ const Calculator = () => {
       </Form.Item>
       <Divider />
       <output>
-        <Paragraph>
-          <Text>
-            {compromised
-              ? `Chances to achieve TN, by taking no strife at all, ignoring rerolls, alterations and other modifiers: `
-              : `Chances to achieve TN, by taking as much strife as necessary, ignoring rerolls, alterations and other modifiers: `}
-          </Text>
-          <Text strong>{`${(
-            Math.abs(
-              cumulativeSuccess({
-                tn,
-                ring: ring + unskilled_assist,
-                skill: skill + skilled_assist,
-                options: {
-                  compromised,
-                  keptDiceCount: ring + unskilled_assist + skilled_assist,
-                },
-              })
-            ) * 100
-          ).toFixed(2)}%`}</Text>
-          <Text>{`.`}</Text>
-        </Paragraph>
+        <TextOutput {...values} />
       </output>
     </Form>
   );
