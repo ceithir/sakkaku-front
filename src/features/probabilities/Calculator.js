@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, InputNumber, Typography, Switch, Divider } from "antd";
 import { cumulativeSuccess } from "./maths";
 import styles from "./Calculator.module.less";
@@ -6,15 +6,20 @@ import styles from "./Calculator.module.less";
 const { Paragraph, Text } = Typography;
 
 let cache = {};
-const cumulativeSuccessWithCache = (params) => {
-  const key = JSON.stringify(params);
-  if (cache[key]) {
-    return cache[key];
-  }
+const keify = (mathParams) => JSON.stringify(mathParams);
+const load = (params) => cache[keify(params)];
+const save = (params, result) => {
+  cache[keify(params)] = result;
+};
 
-  const result = cumulativeSuccess(params);
-  cache[key] = result;
-  return result;
+const computeAndCacheCumulativeSuccess = async ({ mathParams, callback }) => {
+  const result = `${(Math.abs(cumulativeSuccess(mathParams)) * 100).toFixed(
+    2
+  )}%`;
+
+  save(mathParams, result);
+
+  callback(result);
 };
 
 const TextOutput = ({
@@ -25,15 +30,35 @@ const TextOutput = ({
   skilled_assist,
   compromised,
 }) => {
-  const proba = cumulativeSuccessWithCache({
-    tn,
-    ring: ring + unskilled_assist,
-    skill: skill + skilled_assist,
-    options: {
-      compromised,
-      keptDiceCount: ring + unskilled_assist + skilled_assist,
-    },
-  });
+  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState();
+
+  useEffect(() => {
+    const mathParams = {
+      tn,
+      ring: ring + unskilled_assist,
+      skill: skill + skilled_assist,
+      options: {
+        compromised,
+        keptDiceCount: ring + unskilled_assist + skilled_assist,
+      },
+    };
+    const callback = (data) => {
+      setResult(data);
+      setLoading(false);
+    };
+
+    const cachedResult = load(mathParams);
+    if (cachedResult) {
+      return callback(cachedResult);
+    }
+
+    setLoading(true);
+    computeAndCacheCumulativeSuccess({
+      mathParams,
+      callback,
+    });
+  }, [ring, skill, tn, unskilled_assist, skilled_assist, compromised]);
 
   return (
     <Paragraph>
@@ -42,7 +67,7 @@ const TextOutput = ({
           ? `Chances to achieve TN, by taking no strife at all, ignoring rerolls, alterations and other modifiers: `
           : `Chances to achieve TN, by taking as much strife as necessary, ignoring rerolls, alterations and other modifiers: `}
       </Text>
-      <Text strong>{`${(Math.abs(proba) * 100).toFixed(2)}%`}</Text>
+      <Text strong>{loading ? "???" : result}</Text>
       <Text>{`.`}</Text>
     </Paragraph>
   );
