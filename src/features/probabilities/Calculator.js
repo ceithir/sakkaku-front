@@ -38,9 +38,6 @@ const TextOutput = ({
   const [result, setResult] = useState();
 
   useEffect(() => {
-    if (workerInstance) {
-      workerInstance.terminate();
-    }
     workerInstance = worker();
     workerInstance.addEventListener("message", (message) => {
       const {
@@ -51,6 +48,9 @@ const TextOutput = ({
         save(params, formattedResult);
       }
     });
+    return () => {
+      workerInstance.terminate();
+    };
   }, []);
 
   useEffect(() => {
