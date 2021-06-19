@@ -9,7 +9,7 @@ const ExplainOptions = ({ options, description }) => {
     <Collapse ghost className={styles.container}>
       <Panel header={"What does that mean?"} showArrow={false}>
         {description && <p>{description}</p>}
-        {
+        {!!options?.length && (
           <dl>
             {options.map(({ label, description }) => {
               return (
@@ -20,7 +20,7 @@ const ExplainOptions = ({ options, description }) => {
               );
             })}
           </dl>
-        }
+        )}
       </Panel>
     </Collapse>
   );

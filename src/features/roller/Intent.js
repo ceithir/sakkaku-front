@@ -30,6 +30,7 @@ import AbilityDescription from "./glitter/AbilityDescription";
 import ABILITIES, { longname } from "./data/abilities";
 import ExplainOptions from "./glitter/ExplainOptions";
 import { Strife, Success, Explosion } from "./glitter/Symbol";
+import Dice from "./Dice";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -97,6 +98,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [skilledAssist, setSkilledAssist] = useState(0);
   const [unskilledAssist, setUnskilledAssist] = useState(0);
   const [commonModifiers, setCommonModifiers] = useState([]);
+  const [channeled, setChanneled] = useState([]);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -246,6 +248,13 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           setCommonModifiers(form.getFieldValue("common_modifiers"));
         }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["channeled"].includes(name)
+          )
+        ) {
+          setChanneled(form.getFieldValue("channeled"));
+        }
       }}
     >
       {!!user && (
@@ -309,6 +318,14 @@ const Intent = ({ onFinish, values, onComplete }) => {
           </Form.Item>
         )}
       </fieldset>
+      {channeled.length > 0 && (
+        <p className={styles["channeled-summary"]}>
+          {`${channeled.length} of these dice won't be rolled but instead set to:`}
+          {channeled.map((dice, i) => {
+            return <Dice key={i.toString()} dice={dice} />;
+          })}
+        </p>
+      )}
       <Divider />
       <Collapse ghost>
         <Panel header={"Common modifiers"}>
@@ -447,7 +464,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   fields={fields}
                   defaultValue={{ type: "skill", value: { success: 1 } }}
                   errors={errors}
-                  labelText={"Channeled Die"}
                   buttonText={"Use Channeled Die"}
                   add={add}
                   remove={remove}
@@ -456,6 +472,18 @@ const Intent = ({ onFinish, values, onComplete }) => {
               );
             }}
           </Form.List>
+          <ExplainOptions
+            description={
+              <>
+                <p>
+                  {`When making a check to perform an invocation [...], the character may choose to channel any number of kept dice. Instead of resolving the rest of the check, the character reserves these dice, making sure to keep track of the faces they are showing. The check ends, and the character does not resolve any dice results or effects, including success or failure.`}
+                </p>
+                <p>
+                  {`During the character’s next turn, if they perform an invocation of the same Element, they may tap into their channeled dice. [...] the character rolls one fewer Skill die for each reserved Skill die and one fewer Ring die for each reserved Ring die, then adds the channeled dice to the results (set to the results they were showing when channeled). [Core, page 190]`}
+                </p>
+              </>
+            }
+          />
           <Form.Item label={"Misc."} name="misc">
             <Select
               mode="multiple"
