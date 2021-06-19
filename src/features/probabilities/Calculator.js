@@ -64,6 +64,7 @@ const TextOutput = ({
     }
 
     if (
+      tn < 1 ||
       tn > 8 ||
       ring < 1 ||
       ring > 6 ||
