@@ -205,10 +205,49 @@ describe("complementaryCombinations", () => {
     expect(complementaryCombinations({ threshold: 2, size: 2 })).toStrictEqual([
       [0, 0],
       [0, 1],
-      [1, 1],
       [0, 2],
+      [1, 1],
       [1, 2],
       [2, 2],
+    ]);
+  });
+  test("threshold = 3", () => {
+    expect(complementaryCombinations({ threshold: 3, size: 4 })).toStrictEqual([
+      [0, 0, 0, 0],
+      [0, 0, 0, 1],
+      [0, 0, 0, 2],
+      [0, 0, 0, 3],
+      [0, 0, 1, 1],
+      [0, 0, 1, 2],
+      [0, 0, 1, 3],
+      [0, 0, 2, 2],
+      [0, 0, 2, 3],
+      [0, 0, 3, 3],
+      [0, 1, 1, 1],
+      [0, 1, 1, 2],
+      [0, 1, 1, 3],
+      [0, 1, 2, 2],
+      [0, 1, 2, 3],
+      [0, 1, 3, 3],
+      [0, 2, 2, 2],
+      [0, 2, 2, 3],
+      [0, 2, 3, 3],
+      [0, 3, 3, 3],
+      [1, 1, 1, 1],
+      [1, 1, 1, 2],
+      [1, 1, 1, 3],
+      [1, 1, 2, 2],
+      [1, 1, 2, 3],
+      [1, 1, 3, 3],
+      [1, 2, 2, 2],
+      [1, 2, 2, 3],
+      [1, 2, 3, 3],
+      [1, 3, 3, 3],
+      [2, 2, 2, 2],
+      [2, 2, 2, 3],
+      [2, 2, 3, 3],
+      [2, 3, 3, 3],
+      [3, 3, 3, 3],
     ]);
   });
 });
@@ -767,6 +806,18 @@ describe("cumulativeSuccess", () => {
             options: { keptDiceCount: 5 },
           })
         ).toBeCloseTo(0.103, 4);
+      });
+    });
+
+    describe("performances when TN is high and kept dice are low", () => {
+      test("tn = 9, ring = 2, skill = 9", () => {
+        expect(
+          cumulativeSuccess({
+            ring: 2,
+            skill: 9,
+            tn: 9,
+          })
+        ).toBeCloseTo(0.0003, 4);
       });
     });
   });

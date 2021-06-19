@@ -269,29 +269,44 @@ export const ringSkillCombinations = ({ ring, skill, n, keptDiceCount }) => {
  * threshold=2, size=2 -> [
     [0, 0],
     [0, 1],
-    [1, 1],
     [0, 2],
+    [1, 1],
     [1, 2],
     [2, 2],
   ]
+ *
+ * See discussion on algorithm here: https://stackoverflow.com/questions/127704/algorithm-to-return-all-combinations-of-k-elements-from-n
  */
 export const complementaryCombinations = ({ threshold, size }) => {
   if (size === 0) {
     return [];
   }
 
-  if (threshold === 0) {
-    return [new Array(size).fill(0)];
+  let resultPerSize = {};
+  resultPerSize[1] = [];
+  for (let i = 1; i <= threshold; i++) {
+    resultPerSize[1].push([i]);
+  }
+
+  for (let s = 2; s <= size; s++) {
+    resultPerSize[s] = [];
+    for (let i = 1; i <= threshold; i++) {
+      for (let j = 0; j < resultPerSize[s - 1].length; j++) {
+        if (resultPerSize[s - 1][j][0] < i) {
+          continue;
+        }
+        resultPerSize[s].push([i, ...resultPerSize[s - 1][j]]);
+      }
+    }
   }
 
   let result = [new Array(size).fill(0)];
-  for (let i = 1; i <= size * threshold; i++) {
-    arrayUnique(
-      permutations(i, { maxCardinality: size, maxValue: threshold })
-    ).forEach((comb) => {
-      result.push([...new Array(size - comb.length).fill(0), ...comb]);
+  for (let i = 1; i <= size; i++) {
+    resultPerSize[i].forEach((r) => {
+      result.push([...new Array(size - i).fill(0), ...r]);
     });
   }
+
   return result;
 };
 
@@ -436,7 +451,7 @@ const addUpToTN = (comb, tn, options = {}) => {
  * 2. Determine the probability of each happening
  * 3. Sum them all
  *
- * FIXME: With a high TN, a high number of dice rolled, and a low number of dice kept, performances are terrible
+ * FIXME: With a high TN, a high number of dice rolled, and a low number of dice kept, performances are mediocre
  */
 const exactSuccess = ({ ring, skill, tn, options }) => {
   const { compromised = false, keptDiceCount = ring } = options;
@@ -448,7 +463,6 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
   }
 
   const combs = ringSkillCombinations({ ring, skill, n: tn, keptDiceCount });
-
   // Case: Any combination summing up to the TN with less dice than the max that can be kept
   // All other dice must therefore be at zero or the total would be above TN
   const withLessDiceThanMax = combs
