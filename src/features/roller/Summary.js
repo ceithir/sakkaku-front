@@ -39,7 +39,7 @@ const Summary = ({
 
   const special = [
     ...[
-      modifiers.includes("void") && "Void Point",
+      modifiers.includes("void") && "Seize the Moment",
       modifiers.includes("compromised") && "Compromised",
       modifiers.includes("adversity") && "Adversity",
       modifiers.includes("distinction") && "Distinction",
