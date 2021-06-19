@@ -56,21 +56,10 @@ const TextOutput = ({
   useEffect(() => {
     if (
       ![tn, ring, skill, skilled_assist, unskilled_assist].every(
-        (n) => Number.isInteger(n) && n >= 0
-      )
-    ) {
-      setLoading(true);
-      return;
-    }
-
-    if (
+        (n) => Number.isInteger(n) && n >= 0 && n <= 10
+      ) ||
       tn < 1 ||
-      tn > 8 ||
-      ring < 1 ||
-      ring > 6 ||
-      skill > 6 ||
-      skilled_assist > 5 ||
-      unskilled_assist > 5
+      ring < 1
     ) {
       setLoading(true);
       return;
@@ -159,13 +148,13 @@ const Calculator = () => {
       className={styles.form}
     >
       <Form.Item label="Ring" name="ring">
-        <InputNumber min={1} max={6} />
+        <InputNumber min={1} max={10} />
       </Form.Item>
       <Form.Item label="Skill" name="skill">
-        <InputNumber min={0} max={6} />
+        <InputNumber min={0} max={10} />
       </Form.Item>
       <Form.Item label="TN" name="tn">
-        <InputNumber min={1} max={8} />
+        <InputNumber min={1} max={10} />
       </Form.Item>
       <Form.Item
         label={"Compromised?"}
@@ -176,10 +165,10 @@ const Calculator = () => {
       </Form.Item>
       <Divider />
       <Form.Item label="Assistance (unskilled)" name="unskilled_assist">
-        <InputNumber min={0} max={5} />
+        <InputNumber min={0} max={10} />
       </Form.Item>
       <Form.Item label="Assistance (skilled)" name="skilled_assist">
-        <InputNumber min={0} max={5} />
+        <InputNumber min={0} max={10} />
       </Form.Item>
       <Divider />
       <output>
