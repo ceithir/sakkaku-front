@@ -250,6 +250,11 @@ describe("complementaryCombinations", () => {
       [3, 3, 3, 3],
     ]);
   });
+  test("size = 0", () => {
+    expect(complementaryCombinations({ threshold: 1, size: 0 })).toStrictEqual([
+      [],
+    ]);
+  });
 });
 
 describe("bruteForcePermutations", () => {

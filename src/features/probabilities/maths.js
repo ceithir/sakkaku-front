@@ -276,13 +276,12 @@ export const ringSkillCombinations = ({ ring, skill, n, keptDiceCount }) => {
   ]
  *
  * See discussion on algorithm here: https://stackoverflow.com/questions/127704/algorithm-to-return-all-combinations-of-k-elements-from-n
+ *
+ * Note: size=0 will return [[]]
  */
 export const complementaryCombinations = ({ threshold, size }) => {
-  if (size === 0) {
-    return [];
-  }
-
   let resultPerSize = {};
+
   resultPerSize[1] = [];
   for (let i = 1; i <= threshold; i++) {
     resultPerSize[1].push([i]);
@@ -500,14 +499,12 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
       subresult *= combToP(rDice, pR);
       subresult *= permutationsCount(rDice);
 
-      if (skill > 0) {
-        subresult *= complementaryCombinations({
-          threshold: Math.min(...rDice),
-          size: skill,
-        }).reduce((acc, cb) => {
-          return acc + combToP(cb, pS) * permutationsCount(cb);
-        }, 0);
-      }
+      subresult *= complementaryCombinations({
+        threshold: Math.min(...rDice),
+        size: skill,
+      }).reduce((acc, cb) => {
+        return acc + combToP(cb, pS) * permutationsCount(cb);
+      }, 0);
 
       return acc + subresult;
     }, 0);
@@ -529,16 +526,12 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
         }, 0);
 
       subresult *= combToP(sDice, pS);
-      if (sDice.length === skill) {
-        subresult *= permutationsCount(sDice);
-      } else {
-        subresult *= complementaryCombinations({
-          threshold: Math.min(...sDice),
-          size: skill - sDice.length,
-        }).reduce((acc, cb) => {
-          return acc + combToP(cb, pS) * permutationsCount([...sDice, ...cb]);
-        }, 0);
-      }
+      subresult *= complementaryCombinations({
+        threshold: Math.min(...sDice),
+        size: skill - sDice.length,
+      }).reduce((acc, cb) => {
+        return acc + combToP(cb, pS) * permutationsCount([...sDice, ...cb]);
+      }, 0);
 
       return acc + subresult;
     }, 0);
@@ -564,13 +557,10 @@ const exactSuccess = ({ ring, skill, tn, options }) => {
   gruellingCases.forEach(({ rings: rDice, skills: sDice }) => {
     const threshold = Math.min(...rDice, ...sDice);
 
-    const fullRingCombs =
-      ring - rDice.length > 0
-        ? complementaryCombinations({
-            threshold,
-            size: ring - rDice.length,
-          }).map((cb) => [...rDice, ...cb])
-        : [rDice];
+    const fullRingCombs = complementaryCombinations({
+      threshold,
+      size: ring - rDice.length,
+    }).map((cb) => [...rDice, ...cb]);
 
     fullRingCombs
       .filter((fullRingComb) => {
