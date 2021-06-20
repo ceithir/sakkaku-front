@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Dice from "./Dice";
 
 const StaticDice = ({ dice, theme }) => {
-  const { selected, disabled, value } = dice;
+  const { selected, disabled, value, className } = dice;
 
   return (
     <div
@@ -13,6 +13,7 @@ const StaticDice = ({ dice, theme }) => {
         [styles.unselectable]: disabled,
         [styles[`theme-${theme}`]]: !!theme,
         [styles.explosion]: value?.explosion,
+        [className]: !!className,
       })}
     >
       <Dice dice={dice} />

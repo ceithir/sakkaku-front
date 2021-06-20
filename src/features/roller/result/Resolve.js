@@ -8,7 +8,7 @@ import DirectLink from "../button/DirectLink";
 import LineContainer from "../button/LineContainer";
 import { Typography } from "antd";
 
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
 
 const Resolve = ({
   dices,
@@ -21,11 +21,20 @@ const Resolve = ({
 }) => {
   const isChannel = dices.some(({ status }) => status === "channeled");
 
+  const isASetDice = (dice) =>
+    ["channeled", "addkept"].includes(dice?.metadata?.source);
+
   const cleanedUpDice = orderDices(
     replaceRerolls({ dices, basePool, rerollTypes }).filter(
       ({ status }) => status === "kept" || status === "channeled"
     )
-  );
+  ).map((dice) => {
+    if (isASetDice(dice)) {
+      return { ...dice, className: styles["set-die"] };
+    }
+
+    return dice;
+  });
 
   return (
     <div className={styles.layout}>
@@ -37,6 +46,13 @@ const Resolve = ({
             >{`The following dice were channeled (reserved) for a later roll.`}</Text>
           )}
           <Dices dices={cleanedUpDice} />
+          {dices.some(isASetDice) && (
+            <Paragraph type="secondary">
+              {dices.filter(isASetDice).length > 1
+                ? `*These dice were not rolled but set to those values.`
+                : `*This die was not rolled but set to that value.`}
+            </Paragraph>
+          )}
           {!isChannel && (
             <Result dices={dices} tn={tn} modifiers={rerollTypes} />
           )}
