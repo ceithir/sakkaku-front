@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 import { bestDiceToReroll } from "../utils";
+import RerollDiceBox from "./RerollDiceBox";
 
 const Distinction = ({ dices, onFinish, modifiers, mode }) => {
   const defaultToReroll =
@@ -52,7 +52,7 @@ const Distinction = ({ dices, onFinish, modifiers, mode }) => {
   };
 
   return (
-    <DicesBox
+    <RerollDiceBox
       title={title()}
       text={text()}
       dices={dices.map((dice, index) => {
@@ -71,7 +71,6 @@ const Distinction = ({ dices, onFinish, modifiers, mode }) => {
           {buttonText()}
         </NextButton>
       }
-      theme="reroll"
     />
   );
 };

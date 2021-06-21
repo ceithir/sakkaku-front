@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
-import { replaceRerolls } from "../utils";
 import { longname } from "../data/abilities";
 import { Opportunity } from "../glitter/Symbol";
+import RerollDiceBox from "./RerollDiceBox";
 
 const Wandering = ({ dices, onFinish, basePool, rerollTypes }) => {
   const [alterations, setAlterations] = useState([]);
@@ -39,28 +38,25 @@ const Wandering = ({ dices, onFinish, basePool, rerollTypes }) => {
   };
 
   return (
-    <DicesBox
+    <RerollDiceBox
       title={longname("wandering")}
       text={text}
-      dices={replaceRerolls({
-        dices: dices.map((dice, index) => {
-          return {
-            ...dice,
-            selectable: true,
-            selected: positions.includes(index),
-            disabled: false,
-            toggle: () => toggle(index),
-          };
-        }),
-        basePool,
-        rerollTypes,
+      dices={dices.map((dice, index) => {
+        return {
+          ...dice,
+          selectable: true,
+          selected: positions.includes(index),
+          disabled: false,
+          toggle: () => toggle(index),
+        };
       })}
+      basePool={basePool}
+      rerollTypes={rerollTypes}
       footer={
         <NextButton onClick={() => onFinish(alterations)}>
           {buttonText()}
         </NextButton>
       }
-      theme="reroll"
     />
   );
 };

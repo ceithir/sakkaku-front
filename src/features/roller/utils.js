@@ -166,6 +166,10 @@ export const replaceRerolls = ({ dices, rerollTypes, basePool }) => {
     return dices;
   }
 
+  if (!basePool || !rerollTypes?.length) {
+    return orderDices(dices.filter(({ status }) => status !== "rerolled"));
+  }
+
   const previousRerollTypes = [...rerollTypes];
   const rerollType = previousRerollTypes.pop();
 

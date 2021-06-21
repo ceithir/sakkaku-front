@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
-import { replaceRerolls } from "../utils";
 import { Button } from "antd";
 import styles from "./Ability.module.less";
+import RerollDiceBox from "./RerollDiceBox";
 
 const Ability = ({
   dices,
@@ -35,23 +34,21 @@ const Ability = ({
   };
 
   return (
-    <DicesBox
+    <RerollDiceBox
       title={title}
       text={text}
-      dices={replaceRerolls({
-        dices: dices.map((dice, index) => {
-          const selected = toReroll.includes(index);
-          return {
-            ...dice,
-            selectable: true,
-            selected,
-            disabled: false,
-            toggle: () => toggle(index),
-          };
-        }),
-        basePool,
-        rerollTypes,
+      dices={dices.map((dice, index) => {
+        const selected = toReroll.includes(index);
+        return {
+          ...dice,
+          selectable: true,
+          selected,
+          disabled: false,
+          toggle: () => toggle(index),
+        };
       })}
+      basePool={basePool}
+      rerollTypes={rerollTypes}
       footer={
         <div className={styles.buttons}>
           {cancel && <Button onClick={cancel}>{`Cancel`}</Button>}
@@ -63,7 +60,6 @@ const Ability = ({
           </NextButton>
         </div>
       }
-      theme="reroll"
     />
   );
 };

@@ -58,7 +58,6 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
     return null;
   }
 
-  const theme = "reroll";
   const title = getTitle(rerollType);
 
   if (!dices.some((dice) => isRerollOfType(dice, rerollType))) {
@@ -99,12 +98,16 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
       <div className={styles.container}>
         <Dices
           dices={leftDices().map((dice) => {
+            const selected = isRerollOfType(dice, rerollType);
+
             return {
               ...dice,
               selected: isRerollOfType(dice, rerollType),
+              className: classNames(dice.className, {
+                [styles.selected]: selected,
+              }),
             };
           })}
-          theme={theme}
           className={styles.dices}
         />
         <div className={styles["arrow-right"]}>{"⇨"}</div>
@@ -117,12 +120,15 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
             basePool,
           }).map((dice) => {
             if (isFromRerollOfType(dice, rerollType)) {
-              return { ...dice, selected: true };
+              return {
+                ...dice,
+                selected: true,
+                className: classNames(dice.className, styles.selected),
+              };
             }
 
             return dice;
           })}
-          theme={theme}
           className={styles.dices}
         />
       </div>

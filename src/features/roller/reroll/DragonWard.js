@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
-import { replaceRerolls } from "../utils";
+import RerollDiceBox from "./RerollDiceBox";
 
 const DragonWard = ({ dices, onFinish, basePool, rerollTypes }) => {
   const [toReroll, setToReroll] = useState([]);
@@ -20,24 +19,22 @@ const DragonWard = ({ dices, onFinish, basePool, rerollTypes }) => {
   const text = `You must reroll dice containing success up to the attacked Mirumoto's school rank.`;
 
   return (
-    <DicesBox
+    <RerollDiceBox
       title={"Enemy Mirumoto Two-Heavens Adept"}
       text={text}
-      dices={replaceRerolls({
-        dices: dices.map((dice, index) => {
-          const selected = toReroll.includes(index);
-          const selectable = dice.value.success > 0 || dice.value.explosion > 0;
-          return {
-            ...dice,
-            selectable,
-            selected,
-            disabled: !selectable,
-            toggle: () => toggle(index),
-          };
-        }),
-        basePool,
-        rerollTypes,
+      dices={dices.map((dice, index) => {
+        const selected = toReroll.includes(index);
+        const selectable = dice.value.success > 0 || dice.value.explosion > 0;
+        return {
+          ...dice,
+          selectable,
+          selected,
+          disabled: !selectable,
+          toggle: () => toggle(index),
+        };
       })}
+      basePool={basePool}
+      rerollTypes={rerollTypes}
       footer={
         <NextButton
           disabled={toReroll.length < min}
@@ -46,7 +43,6 @@ const DragonWard = ({ dices, onFinish, basePool, rerollTypes }) => {
           {"Continue"}
         </NextButton>
       }
-      theme="reroll"
     />
   );
 };

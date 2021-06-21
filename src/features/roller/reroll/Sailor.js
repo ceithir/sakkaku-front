@@ -1,33 +1,29 @@
 import React from "react";
 import NextButton from "../NextButton";
 import Ability from "./Ability";
-import DicesBox from "../DicesBox";
 import { longname } from "../data/abilities";
-import { replaceRerolls } from "../utils";
+import RerollDiceBox from "./RerollDiceBox";
 
 const Sailor = ({ dices, onFinish, basePool, rerollTypes, compromised }) => {
   const title = longname("sailor");
 
   if (compromised) {
     return (
-      <DicesBox
+      <RerollDiceBox
         title={title}
         text={"You may not use your School Ability as you are compromised."}
-        dices={replaceRerolls({
-          dices: dices.map((dice) => {
-            return {
-              ...dice,
-              selectable: false,
-              disabled: true,
-            };
-          }),
-          basePool,
-          rerollTypes,
+        dices={dices.map((dice) => {
+          return {
+            ...dice,
+            selectable: false,
+            disabled: true,
+          };
         })}
+        basePool={basePool}
+        rerollTypes={rerollTypes}
         footer={
           <NextButton onClick={() => onFinish([])}>{"Continue"}</NextButton>
         }
-        theme="reroll"
       />
     );
   }

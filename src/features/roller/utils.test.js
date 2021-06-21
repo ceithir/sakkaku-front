@@ -674,6 +674,55 @@ describe("replaceRerolls", () => {
       },
     ]);
   });
+  test("just hides all rerolls if no reroll type is provided", () => {
+    const roll = {
+      dices: [
+        {
+          type: "ring",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+          status: "kept",
+          metadata: [],
+        },
+        {
+          type: "ring",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "distinction" },
+        },
+        {
+          type: "ring",
+          value: { strife: 1, success: 0, explosion: 1, opportunity: 0 },
+          status: "pending",
+          metadata: { source: "distinction" },
+        },
+      ],
+      metadata: { rerolls: ["distinction"] },
+      parameters: {
+        ring: 2,
+        skill: 0,
+        modifiers: ["distinction"],
+      },
+    };
+    const { dices } = roll;
+    expect(
+      replaceRerolls({
+        dices,
+      })
+    ).toStrictEqual([
+      {
+        type: "ring",
+        value: { strife: 0, success: 0, explosion: 0, opportunity: 1 },
+        status: "kept",
+        metadata: [],
+      },
+      {
+        type: "ring",
+        value: { strife: 1, success: 0, explosion: 1, opportunity: 0 },
+        status: "pending",
+        metadata: { source: "distinction" },
+      },
+    ]);
+  });
 });
 
 describe("assisted roll", () => {

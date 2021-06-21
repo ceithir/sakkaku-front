@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import NextButton from "../NextButton";
-import { replaceRerolls } from "../utils";
 import { Typography } from "antd";
 import styles from "./Ishiken.module.less";
 import DiceSideSelector from "../DiceSideSelector";
 import { longname } from "../data/abilities";
 import Dices from "../Dices";
+import { diceWrapper } from "./RerollDiceBox";
 
 const { Text, Paragraph, Title } = Typography;
 
@@ -91,7 +91,7 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
         <Title level={3}>{longname("ishiken")}</Title>
         <Paragraph className={styles.text}>{text}</Paragraph>
         <Dices
-          dices={replaceRerolls({
+          dices={diceWrapper({
             dices: dices.map((dice, index) => {
               const selected = positions.includes(index);
               const selectable =
@@ -109,7 +109,6 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
             basePool,
             rerollTypes,
           })}
-          theme={"reroll"}
         />
       </div>
       <div className={styles.footer}>

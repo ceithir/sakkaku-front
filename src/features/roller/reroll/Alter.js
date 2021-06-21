@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
-import { replaceRerolls } from "../utils";
 import DiceSideSelector from "../DiceSideSelector";
 import styles from "./Alter.module.less";
 import { Button } from "antd";
+import RerollDiceBox from "./RerollDiceBox";
 
 const AVAILABLE_FACETS = {
   ring: [
@@ -48,22 +47,20 @@ const Alter = ({ text, dices, onFinish, basePool, rerollTypes, cancel }) => {
   };
 
   return (
-    <DicesBox
+    <RerollDiceBox
       text={text}
-      dices={replaceRerolls({
-        dices: dices.map((dice, index) => {
-          const selected = positions.includes(index);
-          return {
-            ...dice,
-            selectable: true,
-            selected,
-            disabled: false,
-            toggle: () => toggle(index),
-          };
-        }),
-        basePool,
-        rerollTypes,
+      dices={dices.map((dice, index) => {
+        const selected = positions.includes(index);
+        return {
+          ...dice,
+          selectable: true,
+          selected,
+          disabled: false,
+          toggle: () => toggle(index),
+        };
       })}
+      basePool={basePool}
+      rerollTypes={rerollTypes}
       footer={
         <>
           <div className={styles.list}>
@@ -100,7 +97,6 @@ const Alter = ({ text, dices, onFinish, basePool, rerollTypes, cancel }) => {
           </div>
         </>
       }
-      theme="reroll"
     />
   );
 };

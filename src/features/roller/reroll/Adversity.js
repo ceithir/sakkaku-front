@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import DicesBox from "../DicesBox";
 import NextButton from "../NextButton";
 import { bestDiceToReroll } from "../utils";
+import RerollDiceBox from "./RerollDiceBox";
 
 const Adversity = ({ dices, onFinish, modifiers, mode }) => {
   const defaultToReroll =
@@ -29,7 +29,7 @@ const Adversity = ({ dices, onFinish, modifiers, mode }) => {
   const text = `Due to your Adversity, you must select two success dice (or as much as possible if you don't have two) that will be rerolled.`;
 
   return (
-    <DicesBox
+    <RerollDiceBox
       title={"Adversity"}
       text={text}
       dices={dices.map((dice, index) => {
@@ -52,7 +52,6 @@ const Adversity = ({ dices, onFinish, modifiers, mode }) => {
           {"Continue"}
         </NextButton>
       }
-      theme="reroll"
     />
   );
 };

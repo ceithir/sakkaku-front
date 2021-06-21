@@ -3,26 +3,25 @@ import styles from "./Dices.module.less";
 import classNames from "classnames";
 import Dice from "./Dice";
 
-const buildClassNames = ({ dice, theme }) => {
+const buildClassNames = ({ dice }) => {
   const { selected, disabled, className } = dice;
 
   return {
     [styles.selected]: selected,
     [styles.unselectable]: disabled,
-    [styles[`theme-${theme}`]]: !!theme,
     [className]: !!className,
   };
 };
 
-const StaticDice = ({ dice, theme }) => {
+const StaticDice = ({ dice }) => {
   return (
-    <div className={classNames(styles.dice, buildClassNames({ dice, theme }))}>
+    <div className={classNames(styles.dice, buildClassNames({ dice }))}>
       <Dice dice={dice} />
     </div>
   );
 };
 
-const Dices = ({ dices, theme, className }) => {
+const Dices = ({ dices, className }) => {
   if (!dices?.length) {
     return null;
   }
@@ -37,7 +36,7 @@ const Dices = ({ dices, theme, className }) => {
           const { selectable, selected, toggle } = dice;
 
           if (!selectable) {
-            return <StaticDice key={key} dice={dice} theme={theme} />;
+            return <StaticDice key={key} dice={dice} />;
           }
 
           return (
@@ -45,7 +44,7 @@ const Dices = ({ dices, theme, className }) => {
               key={key}
               className={classNames(styles.dice, {
                 [styles.selectable]: true,
-                ...buildClassNames({ dice, theme }),
+                ...buildClassNames({ dice }),
               })}
             >
               <Dice dice={dice} />
@@ -60,7 +59,7 @@ const Dices = ({ dices, theme, className }) => {
   return (
     <div className={classNames(styles.dices, { [className]: !!className })}>
       {dices.map((dice, index) => {
-        return <StaticDice key={index.toString()} dice={dice} theme={theme} />;
+        return <StaticDice key={index.toString()} dice={dice} />;
       })}
     </div>
   );
