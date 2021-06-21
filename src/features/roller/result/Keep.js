@@ -14,6 +14,8 @@ const Keep = ({ dices, basePool, rerollTypes }) => {
             ...dice,
             disabled: !selected,
             selected,
+            className:
+              dice.metadata?.source === "addkept" && styles["addkept-die"],
           };
         })}
       />

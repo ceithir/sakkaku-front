@@ -165,6 +165,7 @@ const Keep = ({
         selected,
         disabled,
         toggle: () => toggle(index),
+        className: dice.metadata?.source === "addkept" && styles["addkept-die"],
       };
     });
 
@@ -178,6 +179,7 @@ const Keep = ({
             metadata: { source: "addkept" },
             selected: true,
             selectable: false,
+            className: styles["addkept-die"],
           };
         }),
       ];
