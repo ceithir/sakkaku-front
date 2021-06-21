@@ -3,19 +3,21 @@ import styles from "./Dices.module.less";
 import classNames from "classnames";
 import Dice from "./Dice";
 
-const StaticDice = ({ dice, theme }) => {
+const buildClassNames = ({ dice, theme }) => {
   const { selected, disabled, value, className } = dice;
 
+  return {
+    [styles.selected]: selected,
+    [styles.unselectable]: disabled,
+    [styles[`theme-${theme}`]]: !!theme,
+    [styles.explosion]: value?.explosion,
+    [className]: !!className,
+  };
+};
+
+const StaticDice = ({ dice, theme }) => {
   return (
-    <div
-      className={classNames(styles.dice, {
-        [styles.selected]: selected,
-        [styles.unselectable]: disabled,
-        [styles[`theme-${theme}`]]: !!theme,
-        [styles.explosion]: value?.explosion,
-        [className]: !!className,
-      })}
-    >
+    <div className={classNames(styles.dice, buildClassNames({ dice, theme }))}>
       <Dice dice={dice} />
     </div>
   );
@@ -33,7 +35,7 @@ const Dices = ({ dices, theme, className }) => {
       <form className={classNames(styles.dices, { [className]: !!className })}>
         {dices.map((dice, index) => {
           const key = index.toString();
-          const { selectable, selected, disabled, toggle, value } = dice;
+          const { selectable, selected, toggle } = dice;
 
           if (!selectable) {
             return <StaticDice key={key} dice={dice} theme={theme} />;
@@ -44,10 +46,7 @@ const Dices = ({ dices, theme, className }) => {
               key={key}
               className={classNames(styles.dice, {
                 [styles.selectable]: true,
-                [styles.selected]: selected,
-                [styles.unselectable]: disabled,
-                [styles[`theme-${theme}`]]: !!theme,
-                [styles.explosion]: value?.explosion,
+                ...buildClassNames({ dice, theme }),
               })}
             >
               <Dice dice={dice} />
