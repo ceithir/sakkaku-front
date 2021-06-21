@@ -4,13 +4,12 @@ import classNames from "classnames";
 import Dice from "./Dice";
 
 const buildClassNames = ({ dice, theme }) => {
-  const { selected, disabled, value, className } = dice;
+  const { selected, disabled, className } = dice;
 
   return {
     [styles.selected]: selected,
     [styles.unselectable]: disabled,
     [styles[`theme-${theme}`]]: !!theme,
-    [styles.explosion]: value?.explosion,
     [className]: !!className,
   };
 };
