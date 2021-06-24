@@ -8,6 +8,11 @@ export const diceToImageSrc = (
 ) => {
   return `${imgUrlRoot}/${type}/exp${explosion}opp${opportunity}str${strife}suc${success}-${resolution}.png`;
 };
+const diceToImageSrcSet = (dice) => {
+  return [1, 2, 3]
+    .map((n) => `${diceToImageSrc(dice, 60 * n)} ${n}x`)
+    .join(", ");
+};
 
 const getText = ({ value: { opportunity, strife, success, explosion } }) => {
   return (
@@ -23,7 +28,13 @@ const getText = ({ value: { opportunity, strife, success, explosion } }) => {
 };
 
 const Dice = ({ dice }) => {
-  return <img src={diceToImageSrc(dice)} alt={getText(dice)} />;
+  return (
+    <img
+      src={diceToImageSrc(dice)}
+      alt={getText(dice)}
+      srcSet={diceToImageSrcSet(dice)}
+    />
+  );
 };
 
 export default Dice;
