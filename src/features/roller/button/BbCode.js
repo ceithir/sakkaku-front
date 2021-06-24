@@ -56,9 +56,9 @@ const BbCode = ({
   const text =
     `[url="${url}"]${description}[/url] | TN: ${tn || "?"} | ${shortResult}` +
     "\n" +
-    `[url="${url}"]${cleanedUpDice.map(
-      (dice) => `[img]${diceToImageSrc(dice)}[/img]`
-    )}[/url]`;
+    `[url="${url}"]${cleanedUpDice
+      .map((dice) => `[img]${diceToImageSrc(dice)}[/img]`)
+      .join(" ")}[/url]`;
 
   return (
     <CopyToClipboard
