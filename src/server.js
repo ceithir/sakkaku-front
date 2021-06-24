@@ -1,5 +1,7 @@
-const serverRoot =
-  process.env.NODE_ENV === "production" ? "/api" : "http://127.0.0.1:8000/api";
+export const serverRoot =
+  process.env.NODE_ENV === "production" ? "" : "http://127.0.0.1:8000";
+
+const apiRoot = `${serverRoot}/api`;
 
 const requestOnServer = async ({
   uri,
@@ -17,7 +19,7 @@ const requestOnServer = async ({
   }
 
   try {
-    const response = await fetch(`${serverRoot}${uri}`, {
+    const response = await fetch(`${apiRoot}${uri}`, {
       method,
       headers: { ...defaultHeaders, ...extraHeaders },
       body: body ? JSON.stringify(body) : undefined,

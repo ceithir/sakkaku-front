@@ -2,14 +2,7 @@ import React from "react";
 import { Button, message } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { countDices } from "../utils";
-
-const imgUrlRoot = `https://sakkaku.org/media/dice`;
-const diceToImage = ({
-  type,
-  value: { opportunity = 0, success = 0, explosion = 0, strife = 0 },
-}) => {
-  return `${imgUrlRoot}/${type}/exp${explosion}opp${opportunity}str${strife}suc${success}.png`;
-};
+import { diceToImageSrc } from "../Dice";
 
 const BbCode = ({
   id,
@@ -64,7 +57,7 @@ const BbCode = ({
     `[url="${url}"]${description}[/url] | TN: ${tn || "?"} | ${shortResult}` +
     "\n" +
     `[url="${url}"]${cleanedUpDice.map(
-      (dice) => `[img]${diceToImage(dice)}[/img]`
+      (dice) => `[img]${diceToImageSrc(dice)}[/img]`
     )}[/url]`;
 
   return (
