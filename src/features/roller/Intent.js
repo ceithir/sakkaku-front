@@ -29,7 +29,7 @@ import classNames from "classnames";
 import AbilityDescription from "./glitter/AbilityDescription";
 import ABILITIES, { longname } from "./data/abilities";
 import ExplainOptions from "./glitter/ExplainOptions";
-import { Strife, Success, Explosion } from "./glitter/Symbol";
+import { Strife, Success, Explosion } from "../display/Symbol";
 import Dice from "./Dice";
 
 const { TextArea } = Input;

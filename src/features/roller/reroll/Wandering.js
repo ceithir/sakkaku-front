@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NextButton from "../NextButton";
 import { longname } from "../data/abilities";
-import { Opportunity } from "../glitter/Symbol";
+import { Opportunity } from "../../display/Symbol";
 import RerollDiceBox from "./RerollDiceBox";
 
 const Wandering = ({ dices, onFinish, basePool, rerollTypes }) => {

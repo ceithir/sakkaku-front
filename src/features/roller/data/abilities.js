@@ -5,7 +5,7 @@ import deathdealerImage from "./images/abilities/deathdealer.jpg";
 import ishikenImage from "./images/abilities/ishiken.jpg";
 import sailorImage from "./images/abilities/sailor.png";
 import wanderingImage from "./images/abilities/wandering.jpg";
-import { Opportunity } from "../glitter/Symbol";
+import { Opportunity } from "../../display/Symbol";
 
 const ABILITIES = {
   manipulator: {
