@@ -2,8 +2,6 @@ import React from "react";
 import Dices from "./Dices";
 import { Divider } from "antd";
 import { splitExplosions } from "./utils";
-import styles from "./ExplosionDices.module.less";
-import classNames from "classnames";
 
 const ExplosionDices = ({ dices, basePool, className, rerollTypes }) => {
   if (!basePool || basePool > dices.length) {
@@ -16,23 +14,7 @@ const ExplosionDices = ({ dices, basePool, className, rerollTypes }) => {
         return (
           <React.Fragment key={index.toString()}>
             {index > 0 && <Divider />}
-            <Dices
-              dices={dices.map((dice) => {
-                const {
-                  value: { explosion = 0 },
-                  className,
-                } = dice;
-
-                if (explosion > 0) {
-                  return {
-                    ...dice,
-                    className: classNames(className, styles.explosion),
-                  };
-                }
-
-                return dice;
-              })}
-            />
+            <Dices dices={dices} />
           </React.Fragment>
         );
       })}
