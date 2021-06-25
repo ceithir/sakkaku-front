@@ -14,6 +14,12 @@ const Description = ({ name, effect, image, className, images = [] }) => {
           src={image}
           alt=""
           srcSet={images.map(({ src, width }) => `${src} ${width}w`).join(", ")}
+          sizes={
+            images.length &&
+            `(min-width: 768px) 240px, ${
+              images.sort(({ width: a }, { width: b }) => b - a)[0]["width"]
+            }px`
+          }
         />
       }
       style={{
