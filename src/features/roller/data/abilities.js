@@ -11,19 +11,19 @@ const ABILITIES = {
   manipulator: {
     school: "Bayushi Manipulator",
     name: `Weakness Is My Strength`,
-    effect: `When you exploit a target’s disadvantage (see Turning Advantages and Disadvantages, page 100 of the core rulebook) as part of a Scheme action, you do not need to spend a Void point, and you may reroll additional dice up to your school rank.`,
+    effect: `When you exploit a target’s disadvantage (see Turning Advantages and Disadvantages, page 100 of the core rulebook) as part of a Scheme action, you do not need to spend a Void point, and you may reroll additional dice up to your school rank. [Core, page 78]`,
     image: manipulatorImage,
   },
   shadow: {
     school: "Ikoma Shadow",
     name: `Victory before Honor`,
-    effect: `Once per scene when performing a check, you may stake an amount of honor no greater than your school rank to re-roll a number of dice equal to twice the amount of honor staked. For each re-rolled die result that does not contain a (success) or (explosion), you forfeit one staked honor.`,
+    effect: `Once per scene when performing a check, you may stake an amount of honor no greater than your school rank to re-roll a number of dice equal to twice the amount of honor staked. For each re-rolled die result that does not contain a (success) or (explosion), you forfeit one staked honor. [Court of Stones, page 92]`,
     image: shadowImage,
   },
   deathdealer: {
     school: "Bayushi Deathdealer",
     name: `Way of the Scorpion`,
-    effect: `When you exploit a target’s disadvantage (see Turning Advantages and Disadvantages, page 100 of the core rulebook) as part of an Initiative check for a duel or an Attack action, you do not need to spend a Void point, and you may reroll additional dice up to your school rank.`,
+    effect: `When you exploit a target’s disadvantage (see Turning Advantages and Disadvantages, page 100 of the core rulebook) as part of an Initiative check for a duel or an Attack action, you do not need to spend a Void point, and you may reroll additional dice up to your school rank. [Court of Stones, page 89]`,
     image: deathdealerImage,
   },
   ishiken: {
@@ -49,6 +49,7 @@ const ABILITIES = {
           results equal to the fatigue you received, and alter each to a
           non-blank result of your choice.
         </p>
+        <p>{`[Celestial Realms, page 82]`}</p>
       </>
     ),
     image: ishikenImage,
@@ -56,7 +57,7 @@ const ABILITIES = {
   sailor: {
     school: "Storm Fleet Sailor",
     name: `Sailor’s Fortune`,
-    effect: `Once per round when making a Trade skill check, if you are not Compromised, you may receive a number of strife up to your school rank to reroll that many rolled dice.`,
+    effect: `Once per round when making a Trade skill check, if you are not Compromised, you may receive a number of strife up to your school rank to reroll that many rolled dice. [The Mantis Clan DLC, page 5]`,
     image: sailorImage,
   },
   wandering: {
@@ -68,7 +69,7 @@ const ABILITIES = {
         <span>
           {`Choose a signature weapon category (or unarmed) with GM approval. When using a weapon from this category for an Attack action or Performance check, roll one additional skill die. Additionally, when making such a check you may suffer fatigue up to your school rank to alter that many results of your kept dice to `}
           <Opportunity />
-          {` results.`}
+          {` results. [Path of Waves, page 48]`}
         </span>
       </p>
     ),
