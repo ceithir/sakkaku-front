@@ -5,11 +5,17 @@ import classNames from "classnames";
 import backgroundImage from "../../../background.jpg";
 import ABILITIES from "../data/abilities";
 
-const Description = ({ name, effect, image, className }) => {
+const Description = ({ name, effect, image, className, images = [] }) => {
   return (
     <Card
       className={classNames(styles.card, { [className]: !!className })}
-      cover={<img src={image} alt="" />}
+      cover={
+        <img
+          src={image}
+          alt=""
+          srcSet={images.map(({ src, width }) => `${src} ${width}w`).join(", ")}
+        />
+      }
       style={{
         backgroundImage: `url(${backgroundImage})`,
       }}

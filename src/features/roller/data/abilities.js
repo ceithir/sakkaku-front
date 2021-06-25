@@ -6,6 +6,12 @@ import ishikenImage from "./images/abilities/ishiken.png";
 import sailorImage from "./images/abilities/sailor.png";
 import wanderingImage from "./images/abilities/wandering.jpg";
 import { Opportunity } from "../../display/Symbol";
+import deathdealerImage240 from "./images/abilities/deathdealer-240w.jpg";
+import ishikenImage240 from "./images/abilities/ishiken-240w.png";
+import manipulatorImage240 from "./images/abilities/manipulator-240w.png";
+import sailorImage240 from "./images/abilities/sailor-240w.png";
+import shadowImage240 from "./images/abilities/shadow-240w.png";
+import wanderingImage240 from "./images/abilities/wandering-240w.jpg";
 
 const ABILITIES = {
   manipulator: {
@@ -13,18 +19,30 @@ const ABILITIES = {
     name: `Weakness Is My Strength`,
     effect: `When you exploit a target’s disadvantage (see Turning Advantages and Disadvantages, page 100 of the core rulebook) as part of a Scheme action, you do not need to spend a Void point, and you may reroll additional dice up to your school rank. [Core, page 78]`,
     image: manipulatorImage,
+    images: [
+      { src: manipulatorImage240, width: 240 },
+      { src: manipulatorImage, width: 500 },
+    ],
   },
   shadow: {
     school: "Ikoma Shadow",
     name: `Victory before Honor`,
     effect: `Once per scene when performing a check, you may stake an amount of honor no greater than your school rank to re-roll a number of dice equal to twice the amount of honor staked. For each re-rolled die result that does not contain a (success) or (explosion), you forfeit one staked honor. [Court of Stones, page 92]`,
     image: shadowImage,
+    images: [
+      { src: shadowImage240, width: 240 },
+      { src: shadowImage, width: 746 },
+    ],
   },
   deathdealer: {
     school: "Bayushi Deathdealer",
     name: `Way of the Scorpion`,
     effect: `When you exploit a target’s disadvantage (see Turning Advantages and Disadvantages, page 100 of the core rulebook) as part of an Initiative check for a duel or an Attack action, you do not need to spend a Void point, and you may reroll additional dice up to your school rank. [Court of Stones, page 89]`,
     image: deathdealerImage,
+    images: [
+      { src: deathdealerImage240, width: 240 },
+      { src: deathdealerImage, width: 1280 },
+    ],
   },
   ishiken: {
     school: "Ishiken Initiate",
@@ -55,12 +73,20 @@ const ABILITIES = {
       </>
     ),
     image: ishikenImage,
+    images: [
+      { src: ishikenImage240, width: 240 },
+      { src: ishikenImage, width: 468 },
+    ],
   },
   sailor: {
     school: "Storm Fleet Sailor",
     name: `Sailor’s Fortune`,
     effect: `Once per round when making a Trade skill check, if you are not Compromised, you may receive a number of strife up to your school rank to reroll that many rolled dice. [The Mantis Clan DLC, page 5]`,
     image: sailorImage,
+    images: [
+      { src: sailorImage240, width: 240 },
+      { src: sailorImage, width: 800 },
+    ],
   },
   wandering: {
     school: "The Wandering Blade",
@@ -78,6 +104,10 @@ const ABILITIES = {
       </>
     ),
     image: wanderingImage,
+    images: [
+      { src: wanderingImage240, width: 240 },
+      { src: wanderingImage, width: 1000 },
+    ],
   },
 };
 
