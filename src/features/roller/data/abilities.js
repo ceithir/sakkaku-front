@@ -1,8 +1,8 @@
 import React from "react";
 import manipulatorImage from "./images/abilities/manipulator.png";
-import shadowImage from "./images/abilities/shadow.jpg";
+import shadowImage from "./images/abilities/shadow.png";
 import deathdealerImage from "./images/abilities/deathdealer.jpg";
-import ishikenImage from "./images/abilities/ishiken.jpg";
+import ishikenImage from "./images/abilities/ishiken.png";
 import sailorImage from "./images/abilities/sailor.png";
 import wanderingImage from "./images/abilities/wandering.jpg";
 import { Opportunity } from "../../display/Symbol";
