@@ -32,7 +32,9 @@ const ABILITIES = {
     effect: (
       <>
         <p>
-          <strong>Way of the Void (School Ability): </strong>
+          <strong>Way of the Void</strong>
+        </p>
+        <p>
           <span>
             When you make a check using your Void Ring, after rolling dice, you
             may receive a number of fatigue up to your school rank. If you do,
@@ -64,14 +66,16 @@ const ABILITIES = {
     school: "The Wandering Blade",
     name: "Signature Weapon",
     effect: (
-      <p>
-        <strong>{`The Wandering Blade (School Ability): `}</strong>
-        <span>
-          {`Choose a signature weapon category (or unarmed) with GM approval. When using a weapon from this category for an Attack action or Performance check, roll one additional skill die. Additionally, when making such a check you may suffer fatigue up to your school rank to alter that many results of your kept dice to `}
-          <Opportunity />
-          {` results. [Path of Waves, page 48]`}
-        </span>
-      </p>
+      <>
+        <strong>{`The Wandering Blade`}</strong>
+        <p>
+          <span>
+            {`Choose a signature weapon category (or unarmed) with GM approval. When using a weapon from this category for an Attack action or Performance check, roll one additional skill die. Additionally, when making such a check you may suffer fatigue up to your school rank to alter that many results of your kept dice to `}
+            <Opportunity />
+            {` results. [Path of Waves, page 48]`}
+          </span>
+        </p>
+      </>
     ),
     image: wanderingImage,
   },

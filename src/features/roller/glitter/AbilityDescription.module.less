@@ -1,0 +1,14 @@
+@import (reference) "~antd/dist/antd.less";
+
+.card {
+  display: flex;
+  align-items: center;
+
+  .text > p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: @screen-md) {
+    flex-direction: column;
+  }
+}
