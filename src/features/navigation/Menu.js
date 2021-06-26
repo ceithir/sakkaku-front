@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import logo from "./logo.png";
 import styles from "./Menu.module.css";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
+import logo150 from "./logo-150.png";
+import logo100 from "./logo-100.png";
+import logo50 from "./logo-50.png";
 
 const { SubMenu } = Menu;
 
@@ -43,7 +45,13 @@ const CustomMenu = () => {
     >
       <Menu.Item className={styles.logo} key="home">
         <Link to="/">
-          <img alt="Logo" src={logo} />
+          <img
+            alt="Logo"
+            src={logo50}
+            width="50"
+            height="50"
+            srcset={`${logo50}, ${logo100} 2x, ${logo150} 3x`}
+          />
         </Link>
       </Menu.Item>
       <Menu.Item key="new_roll">
