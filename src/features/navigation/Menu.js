@@ -50,7 +50,7 @@ const CustomMenu = () => {
             src={logo50}
             width="50"
             height="50"
-            srcset={`${logo50}, ${logo100} 2x, ${logo150} 3x`}
+            srcSet={`${logo50}, ${logo100} 2x, ${logo150} 3x`}
           />
         </Link>
       </Menu.Item>
