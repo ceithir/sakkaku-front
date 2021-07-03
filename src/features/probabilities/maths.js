@@ -740,7 +740,7 @@ const atLeastTnExactOpp = ({ ring, tn, opp }) => {
   throw "TODO";
 };
 
-export const successAndOpp = ({ ring, skill, tn, opp = 0, options = {} }) => {
+export const chances = ({ ring, skill, tn, opp = 0, options = {} }) => {
   if (opp === 0) {
     return cumulativeSuccess({ ring, skill, tn, options });
   }

@@ -12,7 +12,7 @@ import {
   complementaryCombinations,
   bruteForcePermutations,
   bruteForceChances,
-  successAndOpp,
+  chances,
 } from "./maths";
 
 describe("die", () => {
@@ -829,12 +829,12 @@ describe("cumulativeSuccess", () => {
   });
 });
 
-describe("successAndOpp", () => {
+describe("chances", () => {
   describe("skill = 0", () => {
     describe("ring = 1", () => {
       test("tn = 0", () => {
         expect(
-          successAndOpp({
+          chances({
             ring: 1,
             skill: 0,
             tn: 0,
@@ -844,7 +844,7 @@ describe("successAndOpp", () => {
       });
       test("tn = 1", () => {
         expect(
-          successAndOpp({
+          chances({
             ring: 1,
             skill: 0,
             tn: 1,
@@ -854,7 +854,7 @@ describe("successAndOpp", () => {
       });
       test("opp = 2", () => {
         expect(
-          successAndOpp({
+          chances({
             ring: 1,
             skill: 0,
             tn: 1,
@@ -866,7 +866,7 @@ describe("successAndOpp", () => {
     describe("ring = 2", () => {
       test("tn = 1, opp = 1", () => {
         expect(
-          successAndOpp({
+          chances({
             ring: 2,
             skill: 0,
             tn: 1,
@@ -877,7 +877,7 @@ describe("successAndOpp", () => {
 
       test("tn = 1, opp = 2", () => {
         expect(
-          successAndOpp({
+          chances({
             ring: 2,
             skill: 0,
             tn: 1,
@@ -888,7 +888,7 @@ describe("successAndOpp", () => {
 
       test("tn = 2, opp = 1", () => {
         expect(
-          successAndOpp({
+          chances({
             ring: 2,
             skill: 0,
             tn: 2,
@@ -899,7 +899,7 @@ describe("successAndOpp", () => {
 
       test("tn = 2, opp = 2", () => {
         expect(
-          successAndOpp({
+          chances({
             ring: 2,
             skill: 0,
             tn: 2,
