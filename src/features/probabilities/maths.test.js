@@ -907,6 +907,86 @@ describe("chances", () => {
           })
         ).toBeCloseTo(0.0119, 4);
       });
+
+      test("tn = 3, opp = 1", () => {
+        expect(
+          chances({
+            ring: 2,
+            skill: 0,
+            tn: 3,
+            opp: 1,
+          })
+        ).toBeCloseTo(0.0289, 4);
+      });
+
+      test("tn = 3, opp = 2", () => {
+        expect(
+          chances({
+            ring: 2,
+            skill: 0,
+            tn: 3,
+            opp: 2,
+          })
+        ).toBeCloseTo(0.0026, 4);
+      });
+    });
+    describe("ring = 3", () => {
+      test("tn = 1, opp = 1", () => {
+        expect(
+          chances({
+            ring: 3,
+            skill: 0,
+            tn: 1,
+            opp: 1,
+          })
+        ).toBeCloseTo(0.6636, 4);
+      });
+
+      test("tn = 3, opp = 1", () => {
+        expect(
+          chances({
+            ring: 3,
+            skill: 0,
+            tn: 3,
+            opp: 1,
+          })
+        ).toBeCloseTo(0.1389, 4);
+      });
+
+      test("tn = 4, opp = 1", () => {
+        expect(
+          chances({
+            ring: 3,
+            skill: 0,
+            tn: 4,
+            opp: 1,
+          })
+        ).toBeCloseTo(0.0408, 4);
+      });
+    });
+
+    describe("ring = 5", () => {
+      test("tn = 1, opp = 3", () => {
+        expect(
+          chances({
+            ring: 5,
+            skill: 0,
+            tn: 1,
+            opp: 3,
+          })
+        ).toBeCloseTo(0.2927, 4);
+      });
+
+      test("tn = 3, opp = 3", () => {
+        expect(
+          chances({
+            ring: 5,
+            skill: 0,
+            tn: 3,
+            opp: 3,
+          })
+        ).toBeCloseTo(0.1076, 4);
+      });
     });
   });
 });
