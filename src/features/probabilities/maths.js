@@ -684,60 +684,151 @@ const pRAtLeast = ({ n, opp }) => {
   return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pROpp()));
 };
 
-const atLeastTnExactOpp = ({ ring, tn, opp }) => {
+const oppPermutations = ({ keptDiceCount, totalDiceCount, total }) => {
+  let storage = [];
+
+  const findPermutations = (candidate) => {
+    if (candidate.length > totalDiceCount) {
+      return;
+    }
+    if (candidate.some((value) => value > 1)) {
+      return;
+    }
+    if (candidate.length === totalDiceCount) {
+      if (
+        candidate.slice(0, keptDiceCount).reduce((acc, val) => acc + val, 0) ===
+        total
+      ) {
+        storage.push(candidate);
+      }
+    }
+
+    const newCandidateA = [...candidate, 0];
+    const newCandidateB = [...candidate];
+    newCandidateB[newCandidateB.length - 1] =
+      newCandidateB[newCandidateB.length - 1] + 1;
+    findPermutations(newCandidateA);
+    findPermutations(newCandidateB);
+  };
+
+  findPermutations([0]);
+  return storage;
+};
+
+const atLeastTnExactOpp = ({ ring, skill, tn, opp }) => {
   const keptDiceCount = ring;
+  const totalDiceCount = ring + skill;
 
   if (opp === 0) {
     throw "Handled elsewhere";
   }
 
-  if (keptDiceCount === 1) {
-    return pRAtLeast({ n: tn, opp });
-  }
+  const buildCombinations = () => {
+    const successCombinations = ringSkillCombinations({
+      ring,
+      skill,
+      n: tn,
+      keptDiceCount,
+    });
+    const opportunityPermutations = oppPermutations({
+      keptDiceCount,
+      totalDiceCount,
+      total: opp,
+    });
 
-  if (keptDiceCount === 2) {
-    if (tn === 1) {
-      if (opp === 1) {
-        return (
-          ring * pRAtLeast({ n: 1, opp: 1 }) * pRExact({ n: 0, opp: 0 }) +
-          ring * pRAtLeast({ n: 1, opp: 0 }) * pRExact({ n: 0, opp: 1 }) +
-          ring * pRAtLeast({ n: 1, opp: 1 }) * pRAtLeast({ n: 1, opp: 0 })
-        );
-      }
-
-      if (opp === 2) {
-        return (
-          Math.pow(pRAtLeast({ n: tn, opp: 1 }), ring) +
-          ring * pRAtLeast({ n: tn, opp: 1 }) * pRExact({ n: 0, opp: 1 })
-        );
-      }
+    if (successCombinations.some(({ skills }) => skills.length > 0)) {
+      throw "Not implement";
     }
 
-    if (tn === 2) {
-      if (opp === 1) {
-        return (
-          ring * pRExact({ n: 1, opp: 1 }) * pRExact({ n: 1, opp: 0 }) +
-          ring * pRAtLeast({ n: 2, opp: 1 }) * pRAtLeast({ n: 2, opp: 0 }) +
-          ring * pRAtLeast({ n: 2, opp: 1 }) * pRExact({ n: 1, opp: 0 }) +
-          ring * pRAtLeast({ n: 2, opp: 1 }) * pRExact({ n: 0, opp: 0 }) +
-          ring * pRAtLeast({ n: 2, opp: 0 }) * pRExact({ n: 1, opp: 1 }) +
-          ring * pRAtLeast({ n: 2, opp: 0 }) * pRExact({ n: 0, opp: 1 })
-        );
+    const fullCombinations = () => {
+      if (tn === 0) {
+        return [new Array(ring).fill(0)];
       }
 
-      if (opp === 2) {
-        return (
-          Math.pow(pRAtLeast({ n: tn, opp: 1 }), 2) +
-          ring *
-            pRAtLeast({ n: tn, opp: 1 }) *
-            (pRExact({ n: 0, opp: 1 }) + pRExact({ n: 1, opp: 1 })) +
-          Math.pow(pRExact({ n: 1, opp: 1 }), 2)
-        );
-      }
-    }
-  }
+      return successCombinations
+        .map(({ rings }) => rings)
+        .reduce((acc, rDice) => {
+          return [
+            ...acc,
+            ...complementaryCombinations({
+              threshold: Math.min(...rDice),
+              size: ring - rDice.length,
+            }).map((cb) => [...rDice, ...cb]),
+          ];
+        }, []);
+    };
 
-  throw "TODO";
+    let crossed = [];
+    fullCombinations().forEach((sCb) => {
+      opportunityPermutations.forEach((oCb) => {
+        let result = [];
+        for (let i = 0; i < totalDiceCount; i++) {
+          result[i] = { success: sCb[i], opportunity: oCb[i] };
+        }
+        crossed.push(result);
+      });
+    });
+
+    // FIXME The need for a sort/deduplicate shows there's a issue with how the combs are computed
+    crossed = crossed.map((cb) => {
+      return cb.sort(
+        (
+          { success: a1, opportunity: b1 },
+          { success: a2, opportunity: b2 }
+        ) => {
+          if (a1 === a2) {
+            return b2 - b1;
+          }
+          return a2 - a1;
+        }
+      );
+    });
+
+    const isEqual = (combA, combB) => {
+      return combA.every(({ success, opportunity }, i) => {
+        return (
+          combB[i]["success"] === success &&
+          combB[i]["opportunity"] === opportunity
+        );
+      });
+    };
+
+    crossed = crossed.filter((cb1, index) => {
+      for (let i = 0; i < index; i++) {
+        if (isEqual(cb1, crossed[i])) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    return crossed;
+  };
+
+  const fullyFullCombs = buildCombinations();
+
+  return fullyFullCombs.reduce((acc, cb) => {
+    const coeff = permutationsCount(
+      cb.map(({ success, opportunity }) => {
+        return `${success}-${opportunity}`;
+      })
+    );
+
+    return (
+      acc +
+      coeff *
+        cb.reduce((acc, { success, opportunity }) => {
+          const current = () => {
+            if (success === tn) {
+              return pRAtLeast({ n: success, opp: opportunity });
+            }
+
+            return pRExact({ n: success, opp: opportunity });
+          };
+          return acc * current();
+        }, 1)
+    );
+  }, 0);
 };
 
 export const chances = ({ ring, skill, tn, opp = 0, options = {} }) => {
