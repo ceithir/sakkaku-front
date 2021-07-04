@@ -637,7 +637,7 @@ export const cumulativeSuccess = ({ ring, skill, tn, options = {} }) => {
 };
 
 /**
- * Changes to get _exactly_ {n} success and exactly {opp}
+ * Changes to get _exactly_ {n} success and exactly {opp} on a given ring die
  */
 const pRExact = ({ n, opp }) => {
   if (opp > 1) {
@@ -652,11 +652,11 @@ const pRExact = ({ n, opp }) => {
     return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 / 6));
   }
 
-  return (Math.pow(1 / 6, n) * 1) / 3;
+  return Math.pow(1 / 6, n) * (1 / 3);
 };
 
 /**
- * Chance to end on an opportunity (regardless of the number of success)
+ * Chance to end on an opportunity (regardless of the number of success) on a given ring die
  * I.e. the result of the infinite geometric series 1/3+(1/6)*1/3+(1/6)^2*1/3...
  */
 const pROpp = () => {
@@ -664,7 +664,7 @@ const pROpp = () => {
 };
 
 /**
- * Changes to get _at least_ {n} success and exactly {opp}
+ * Changes to get _at least_ {n} success and exactly {opp} on a given ring die
  */
 const pRAtLeast = ({ n, opp }) => {
   if (opp > 1) {
@@ -682,6 +682,54 @@ const pRAtLeast = ({ n, opp }) => {
   }
 
   return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pROpp()));
+};
+
+/**
+ * Changes to get _exactly_ {n} success and exactly {opp} on a given skill die
+ */
+const pSExact = ({ n, opp }) => {
+  if (opp > 1) {
+    return 0;
+  }
+
+  if (n === 0) {
+    return opp === 1 ? 1 / 4 : 1 / 6;
+  }
+
+  if (opp === 0) {
+    return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 / 6));
+  }
+
+  return Math.pow(1 / 6, n - 1) * (1 / 12 + (1 / 6) * (1 / 4));
+};
+
+/**
+ * Chance to end on an opportunity (regardless of the number of success) on a given skill die
+ * I.e. the result of the infinite geometric series 1/3+(1/6)*1/3+(1/6)^2*1/3...
+ */
+const pSOpp = () => {
+  return 2 / 5;
+};
+
+/**
+ * Changes to get _at least_ {n} success and exactly {opp} on a given skill die
+ */
+const pSAtLeast = ({ n, opp }) => {
+  if (opp > 1) {
+    return 0;
+  }
+
+  if (opp === 1) {
+    return Math.pow(1 / 6, n - 1) * (1 / 12 + (1 / 6) * pSOpp());
+  }
+
+  // opp === 0
+
+  if (n === 0) {
+    return 1 - pROpp();
+  }
+
+  return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pSOpp()));
 };
 
 const oppPermutations = ({ keptDiceCount, totalDiceCount, total }) => {
@@ -810,6 +858,12 @@ export const chances = ({ ring, skill, tn, opp = 0, options = {} }) => {
   }
 
   const keptDiceCount = ring;
+
+  if (tn === 1 && ring === 1 && skill === 1) {
+    return (
+      1 - (1 - pRAtLeast({ n: 1, opp: 1 })) * (1 - pSAtLeast({ n: 1, opp: 1 }))
+    );
+  }
 
   if (skill > 0) {
     throw "TODO";

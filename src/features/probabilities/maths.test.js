@@ -1000,4 +1000,16 @@ describe("chances", () => {
       });
     });
   });
+  describe("skill = 1", () => {
+    test("ring = 1, tn = 1, opp = 1", () => {
+      expect(
+        chances({
+          ring: 1,
+          skill: 1,
+          tn: 1,
+          opp: 1,
+        })
+      ).toBeCloseTo(0.2067, 4);
+    });
+  });
 });
