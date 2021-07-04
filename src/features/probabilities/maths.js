@@ -735,21 +735,11 @@ const atLeastTnExactOpp = ({ ring, skill, tn, opp }) => {
   }
 
   const buildCombinations = () => {
-    const successCombinations = ringSkillCombinations({
-      ring,
-      skill,
-      n: tn,
-      keptDiceCount,
-    });
     const opportunityPermutations = oppPermutations({
       keptDiceCount,
       totalDiceCount,
       total: opp,
     });
-
-    if (successCombinations.some(({ skills }) => skills.length > 0)) {
-      throw "Not implement";
-    }
 
     const isEqual = (combA, combB) => {
       return combA.every(({ success, opportunity }, i) => {
