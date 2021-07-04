@@ -751,32 +751,6 @@ const atLeastTnExactOpp = ({ ring, skill, tn, opp }) => {
       throw "Not implement";
     }
 
-    let crossed = [];
-    ringCombinations({ ring, tn }).forEach((sCb) => {
-      opportunityPermutations.forEach((oCb) => {
-        let result = [];
-        for (let i = 0; i < totalDiceCount; i++) {
-          result[i] = { success: sCb[i], opportunity: oCb[i] };
-        }
-        crossed.push(result);
-      });
-    });
-
-    // FIXME The need for a sort/deduplicate shows there's a issue with how the combs are computed
-    crossed = crossed.map((cb) => {
-      return cb.sort(
-        (
-          { success: a1, opportunity: b1 },
-          { success: a2, opportunity: b2 }
-        ) => {
-          if (a1 === a2) {
-            return b2 - b1;
-          }
-          return a2 - a1;
-        }
-      );
-    });
-
     const isEqual = (combA, combB) => {
       return combA.every(({ success, opportunity }, i) => {
         return (
@@ -786,13 +760,29 @@ const atLeastTnExactOpp = ({ ring, skill, tn, opp }) => {
       });
     };
 
-    crossed = crossed.filter((cb1, index) => {
-      for (let i = 0; i < index; i++) {
-        if (isEqual(cb1, crossed[i])) {
-          return false;
+    let crossed = [];
+    ringCombinations({ ring, tn }).forEach((sCb) => {
+      opportunityPermutations.forEach((oCb) => {
+        let result = [];
+        for (let i = 0; i < totalDiceCount; i++) {
+          result[i] = { success: sCb[i], opportunity: oCb[i] };
         }
-      }
-      return true;
+
+        // FIXME The need for a sort/deduplicate shows there's a issue with how the combs are computed
+        result.sort(
+          (
+            { success: a1, opportunity: b1 },
+            { success: a2, opportunity: b2 }
+          ) => {
+            return a2 - a1 || b2 - b1;
+          }
+        );
+        if (crossed.some((cb) => isEqual(cb, result))) {
+          return;
+        }
+
+        crossed.push(result);
+      });
     });
 
     return crossed;
