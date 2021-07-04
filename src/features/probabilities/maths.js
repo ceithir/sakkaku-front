@@ -715,6 +715,17 @@ const oppPermutations = ({ keptDiceCount, totalDiceCount, total }) => {
   return storage;
 };
 
+const ringCombinations = ({ ring, tn }) => {
+  if (tn === 0) {
+    return [new Array(ring).fill(0)];
+  }
+
+  return complementaryCombinations({
+    threshold: tn,
+    size: ring,
+  }).filter((cb) => cb.reduce((acc, val) => acc + val, 0) >= tn);
+};
+
 const atLeastTnExactOpp = ({ ring, skill, tn, opp }) => {
   const keptDiceCount = ring;
   const totalDiceCount = ring + skill;
@@ -740,51 +751,8 @@ const atLeastTnExactOpp = ({ ring, skill, tn, opp }) => {
       throw "Not implement";
     }
 
-    let ringOnlyCombinations = successCombinations.map(({ rings }) => rings);
-
-    let extraCombinations = [];
-    const tryExtra = (cb) => {
-      for (let i = 0; i < cb.length; i++) {
-        if (cb[i] < tn - 1) {
-          let newComb = [...cb];
-          newComb[i] = cb[i] + 1;
-
-          const unknown = !extraCombinations.some((knownCb) =>
-            knownCb.every((_, index) => {
-              return knownCb[index] === newComb[index];
-            })
-          );
-
-          if (unknown) {
-            extraCombinations.push(newComb);
-            tryExtra(newComb);
-          }
-        }
-      }
-    };
-    ringOnlyCombinations
-      .filter((cb) => cb.some((success) => success < tn - 1))
-      .forEach(tryExtra);
-    ringOnlyCombinations = [...ringOnlyCombinations, ...extraCombinations];
-
-    const fullCombinations = () => {
-      if (tn === 0) {
-        return [new Array(ring).fill(0)];
-      }
-
-      return ringOnlyCombinations.reduce((acc, rDice) => {
-        return [
-          ...acc,
-          ...complementaryCombinations({
-            threshold: Math.min(...rDice),
-            size: ring - rDice.length,
-          }).map((cb) => [...rDice, ...cb]),
-        ];
-      }, []);
-    };
-
     let crossed = [];
-    fullCombinations().forEach((sCb) => {
+    ringCombinations({ ring, tn }).forEach((sCb) => {
       opportunityPermutations.forEach((oCb) => {
         let result = [];
         for (let i = 0; i < totalDiceCount; i++) {

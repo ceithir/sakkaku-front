@@ -987,6 +987,17 @@ describe("chances", () => {
           })
         ).toBeCloseTo(0.1076, 4);
       });
+
+      test("tn = 6, opp = 2", () => {
+        expect(
+          chances({
+            ring: 5,
+            skill: 0,
+            tn: 6,
+            opp: 2,
+          })
+        ).toBeCloseTo(0.0199, 4);
+      });
     });
   });
 });
