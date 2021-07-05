@@ -789,69 +789,70 @@ const coeff = (cb) =>
     })
   );
 
+// FIXME More or less a brute force algorithm with abysmal complexity
 const successOppCombinations = ({ ring, skill, tn, keptDiceCount, opp }) => {
+  // Rework oppPermutations for how it's now used
   const oppPerms = oppPermutations({
-    keptDiceCount,
+    keptDiceCount: ring + skill,
     totalDiceCount: ring + skill,
     total: opp,
   });
+  const masks = oppPermutations({
+    keptDiceCount: ring + skill,
+    totalDiceCount: ring + skill,
+    total: 1,
+  }).filter((cb) => cb.reduce((acc, val) => acc + val, 0) === keptDiceCount);
 
   const baseCombs = (size) =>
     complementaryCombinations({
       threshold: tn,
       size,
-    }).map((cb) => cb.sort((a, b) => a - b));
+    });
 
   const ringCombs = baseCombs(ring);
   const skillCombs = baseCombs(skill);
 
   let combs = [];
 
-  for (let i = 0; i <= keptDiceCount; i++) {
-    if (i > ring || keptDiceCount - i > skill) {
-      continue;
-    }
+  ringCombs.forEach((ringComb) => {
+    skillCombs.forEach((skillComb) => {
+      const fullComb = [...ringComb, ...skillComb];
 
-    ringCombs.forEach((ringComb) => {
-      skillCombs.forEach((skillComb) => {
-        if (
-          ringComb.slice(0, i).reduce((acc, val) => acc + val, 0) +
-            skillComb
-              .slice(0, keptDiceCount - i)
-              .reduce((acc, val) => acc + val, 0) <
-          tn
-        ) {
-          return;
+      for (let i = 0; i < masks.length; i++) {
+        const mask = masks[i];
+
+        const totalSuccess = fullComb.reduce(
+          (acc, success, index) => acc + success * mask[index],
+          0
+        );
+        if (totalSuccess < tn) {
+          continue;
         }
-        oppPerms.forEach((oppPerm) => {
-          let ringResult = [];
-          let skillResult = [];
-          for (let j = 0; j < i; j++) {
-            ringResult.push({ success: ringComb[j], opportunity: oppPerm[j] });
+
+        oppPerms.forEach((perm) => {
+          const totalOpp = perm.reduce(
+            (acc, opportunity, index) => acc + opportunity * mask[index],
+            0
+          );
+
+          if (totalOpp < opp) {
+            return;
           }
-          for (let j = i; j < keptDiceCount; j++) {
-            skillResult.push({
-              success: skillComb[j - i],
-              opportunity: oppPerm[j],
-            });
+
+          let ringResult = new Array(ring);
+          let skillResult = new Array(skill);
+          for (let j = 0; j < ring; j++) {
+            ringResult[j] = { success: fullComb[j], opportunity: perm[j] };
           }
-          for (let j = keptDiceCount; j < keptDiceCount + (ring - i); j++) {
-            ringResult.push({
-              success: ringComb[j - (keptDiceCount - i)],
-              opportunity: oppPerm[j],
-            });
-          }
-          for (let j = keptDiceCount + (ring - i); j < ring + skill; j++) {
-            skillResult.push({
-              success: skillComb[j - ring],
-              opportunity: oppPerm[j],
-            });
+          for (let j = ring; j < ring + skill; j++) {
+            skillResult[j - ring] = {
+              success: fullComb[j],
+              opportunity: perm[j],
+            };
           }
 
           ringResult.sort(sorter);
           skillResult.sort(sorter);
-
-          // FIXME Should be able to create the list without building duplicates
           if (
             combs.some(({ ringDice, skillDice }) => {
               return (
@@ -862,11 +863,12 @@ const successOppCombinations = ({ ring, skill, tn, keptDiceCount, opp }) => {
           ) {
             return;
           }
+
           combs.push({ ringDice: ringResult, skillDice: skillResult });
         });
-      });
+      }
     });
-  }
+  });
 
   return combs;
 };

@@ -1000,8 +1000,8 @@ describe("chances", () => {
       });
     });
   });
-  describe("skill = 1", () => {
-    test("ring = 1, tn = 1, opp = 1", () => {
+  describe("skill > 0", () => {
+    test("ring = 1, skill = 1, tn = 1, opp = 1", () => {
       expect(
         chances({
           ring: 1,
@@ -1010,6 +1010,26 @@ describe("chances", () => {
           opp: 1,
         })
       ).toBeCloseTo(0.2067, 4);
+    });
+    test("ring = 2, skill = 1, tn = 1, opp = 1", () => {
+      expect(
+        chances({
+          ring: 2,
+          skill: 1,
+          tn: 1,
+          opp: 1,
+        })
+      ).toBeCloseTo(0.6845, 4);
+    });
+    test("ring = 2, skill = 3, tn = 2, opp = 1", () => {
+      expect(
+        chances({
+          ring: 2,
+          skill: 3,
+          tn: 2,
+          opp: 1,
+        })
+      ).toBeCloseTo(0.594, 4);
     });
   });
 });
