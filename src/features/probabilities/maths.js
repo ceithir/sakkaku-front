@@ -732,7 +732,7 @@ const pSAtLeast = ({ n, opp }) => {
   return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pSOpp()));
 };
 
-const oppPermutations = ({ keptDiceCount, totalDiceCount, total }) => {
+const zeroOnePermutations = ({ totalDiceCount, min, max }) => {
   let storage = [];
 
   const findPermutations = (candidate) => {
@@ -743,10 +743,8 @@ const oppPermutations = ({ keptDiceCount, totalDiceCount, total }) => {
       return;
     }
     if (candidate.length === totalDiceCount) {
-      if (
-        candidate.slice(0, keptDiceCount).reduce((acc, val) => acc + val, 0) >=
-        total
-      ) {
+      const total = candidate.reduce((acc, val) => acc + val, 0);
+      if (total >= min && (!max || total <= max)) {
         storage.push(candidate);
       }
     }
@@ -791,17 +789,15 @@ const coeff = (cb) =>
 
 // FIXME More or less a brute force algorithm with abysmal complexity
 const successOppCombinations = ({ ring, skill, tn, keptDiceCount, opp }) => {
-  // Rework oppPermutations for how it's now used
-  const oppPerms = oppPermutations({
-    keptDiceCount: ring + skill,
+  const oppPerms = zeroOnePermutations({
     totalDiceCount: ring + skill,
-    total: opp,
+    min: opp,
   });
-  const masks = oppPermutations({
-    keptDiceCount: ring + skill,
+  const masks = zeroOnePermutations({
     totalDiceCount: ring + skill,
-    total: 1,
-  }).filter((cb) => cb.reduce((acc, val) => acc + val, 0) === keptDiceCount);
+    min: keptDiceCount,
+    max: keptDiceCount,
+  });
 
   const baseCombs = (size) =>
     complementaryCombinations({
