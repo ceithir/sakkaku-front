@@ -4,6 +4,7 @@ import styles from "./Calculator.module.less";
 import worker from "workerize-loader!./worker"; // eslint-disable-line import/no-webpack-loader-syntax
 import { LoadingOutlined } from "@ant-design/icons";
 import useInterval from "./useInterval";
+import Title from "../display/Title";
 
 const { Paragraph, Text } = Typography;
 
@@ -166,47 +167,50 @@ const Calculator = () => {
   const [values, setValues] = useState(initialValues);
 
   return (
-    <Form
-      layout={"inline"}
-      form={form}
-      initialValues={initialValues}
-      onValuesChange={(_, values) => {
-        setValues(values);
-      }}
-      className={styles.form}
-    >
-      <Form.Item label="Ring" name="ring">
-        <InputNumber min={1} max={10} />
-      </Form.Item>
-      <Form.Item label="Skill" name="skill">
-        <InputNumber min={0} max={10} />
-      </Form.Item>
-      <Form.Item label="TN" name="tn">
-        <InputNumber min={1} max={10} />
-      </Form.Item>
-      <Divider />
-      <Form.Item
-        label={"Compromised?"}
-        name="compromised"
-        valuePropName="checked"
+    <div className={styles.layout}>
+      <Title>{`Legend of the Five Rings – Probabilities`}</Title>
+      <Form
+        layout={"inline"}
+        form={form}
+        initialValues={initialValues}
+        onValuesChange={(_, values) => {
+          setValues(values);
+        }}
+        className={styles.form}
       >
-        <Switch />
-      </Form.Item>
-      <Form.Item label="Opportunities" name="opp">
-        <InputNumber min={0} max={10} />
-      </Form.Item>
-      <Divider />
-      <Form.Item label="Assistance (unskilled)" name="unskilled_assist">
-        <InputNumber min={0} max={10} />
-      </Form.Item>
-      <Form.Item label="Assistance (skilled)" name="skilled_assist">
-        <InputNumber min={0} max={10} />
-      </Form.Item>
-      <Divider />
-      <output>
-        <TextOutput {...values} />
-      </output>
-    </Form>
+        <Form.Item label="Ring" name="ring">
+          <InputNumber min={1} max={10} />
+        </Form.Item>
+        <Form.Item label="Skill" name="skill">
+          <InputNumber min={0} max={10} />
+        </Form.Item>
+        <Form.Item label="TN" name="tn">
+          <InputNumber min={1} max={10} />
+        </Form.Item>
+        <Divider />
+        <Form.Item
+          label={"Compromised?"}
+          name="compromised"
+          valuePropName="checked"
+        >
+          <Switch />
+        </Form.Item>
+        <Form.Item label="Opportunities" name="opp">
+          <InputNumber min={0} max={10} />
+        </Form.Item>
+        <Divider />
+        <Form.Item label="Assistance (unskilled)" name="unskilled_assist">
+          <InputNumber min={0} max={10} />
+        </Form.Item>
+        <Form.Item label="Assistance (skilled)" name="skilled_assist">
+          <InputNumber min={0} max={10} />
+        </Form.Item>
+        <Divider />
+        <output>
+          <TextOutput {...values} />
+        </output>
+      </Form>
+    </div>
   );
 };
 

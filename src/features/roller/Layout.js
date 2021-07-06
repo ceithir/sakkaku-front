@@ -2,11 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 import AnonymousAlert from "../../AnonymousAlert";
-import { Typography } from "antd";
-import styles from "./Layout.module.less";
-import backgroundImage from "../../background.jpg";
-
-const { Title } = Typography;
+import Title from "../display/Title";
 
 const Layout = ({ children }) => {
   const user = useSelector(selectUser);
@@ -14,12 +10,7 @@ const Layout = ({ children }) => {
   return (
     <>
       {!user && <AnonymousAlert />}
-      <Title
-        className={styles.title}
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-        }}
-      >{`Legend of the Five Rings – Check Roll`}</Title>
+      <Title>{`Legend of the Five Rings – Check Roll`}</Title>
       <>{children}</>
     </>
   );
