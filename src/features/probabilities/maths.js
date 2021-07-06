@@ -948,6 +948,10 @@ export const chances = ({ ring, skill, tn, opp = 0, options = {} }) => {
 
   const { compromised = false, keptDiceCount = ring } = options;
 
+  if (opp > keptDiceCount) {
+    return 0;
+  }
+
   const pRAtLeast = compromised ? pRAtLeastCompromised : pRAtLeastDefault;
   const pRExact = compromised ? pRExactCompromised : pRExactDefault;
   const pSAtLeast = compromised ? pSAtLeastCompromised : pSAtLeastDefault;
