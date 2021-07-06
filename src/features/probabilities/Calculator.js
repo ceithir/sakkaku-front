@@ -111,7 +111,7 @@ const TextOutput = ({
     }
 
     setLoading(true);
-  }, 100);
+  }, 200);
 
   return (
     <StaticTextOutput
