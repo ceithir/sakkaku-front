@@ -864,21 +864,47 @@ const coeff = (cb) =>
 
 // FIXME More or less a brute force algorithm with abysmal complexity
 const successOppCombinations = ({ ring, skill, tn, keptDiceCount, opp }) => {
-  const oppPerms = zeroOnePermutations({
-    totalDiceCount: ring + skill,
-    min: opp,
-  });
   const masks = zeroOnePermutations({
     totalDiceCount: ring + skill,
     min: keptDiceCount,
     max: keptDiceCount,
   });
 
-  const baseCombs = (size) =>
+  const baseCombs = (size) => {
+    if (size === 0) {
+      return [[]];
+    }
+
+    let combs = [];
+
+    const oppPerms = zeroOnePermutations({
+      totalDiceCount: size,
+      min: 0,
+    });
+
     complementaryCombinations({
       threshold: tn,
       size,
+    }).forEach((cb) => {
+      oppPerms.forEach((perm) => {
+        let crossedCb = new Array(size);
+        for (let i = 0; i < size; i++) {
+          crossedCb[i] = { success: cb[i], opportunity: perm[i] };
+        }
+        crossedCb.sort(sorter);
+        if (
+          combs.some((existingCb) => {
+            return sameSuccessOppComb(existingCb, crossedCb);
+          })
+        ) {
+          return;
+        }
+        combs.push(crossedCb);
+      });
     });
+
+    return combs;
+  };
 
   const ringCombs = baseCombs(ring);
   const skillCombs = baseCombs(skill);
@@ -893,50 +919,21 @@ const successOppCombinations = ({ ring, skill, tn, keptDiceCount, opp }) => {
         const mask = masks[i];
 
         const totalSuccess = fullComb.reduce(
-          (acc, success, index) => acc + success * mask[index],
+          (acc, { success }, index) => acc + success * mask[index],
           0
         );
         if (totalSuccess < tn) {
           continue;
         }
-
-        oppPerms.forEach((perm) => {
-          const totalOpp = perm.reduce(
-            (acc, opportunity, index) => acc + opportunity * mask[index],
-            0
-          );
-
-          if (totalOpp < opp) {
-            return;
-          }
-
-          let ringResult = new Array(ring);
-          let skillResult = new Array(skill);
-          for (let j = 0; j < ring; j++) {
-            ringResult[j] = { success: fullComb[j], opportunity: perm[j] };
-          }
-          for (let j = ring; j < ring + skill; j++) {
-            skillResult[j - ring] = {
-              success: fullComb[j],
-              opportunity: perm[j],
-            };
-          }
-
-          ringResult.sort(sorter);
-          skillResult.sort(sorter);
-          if (
-            combs.some(({ ringDice, skillDice }) => {
-              return (
-                sameSuccessOppComb(ringResult, ringDice) &&
-                sameSuccessOppComb(skillResult, skillDice)
-              );
-            })
-          ) {
-            return;
-          }
-
-          combs.push({ ringDice: ringResult, skillDice: skillResult });
-        });
+        const totalOpp = fullComb.reduce(
+          (acc, { opportunity }, index) => acc + opportunity * mask[index],
+          0
+        );
+        if (totalOpp < opp) {
+          continue;
+        }
+        combs.push({ ringDice: ringComb, skillDice: skillComb });
+        break;
       }
     });
   });
