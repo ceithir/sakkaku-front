@@ -639,7 +639,7 @@ export const cumulativeSuccess = ({ ring, skill, tn, options = {} }) => {
 /**
  * Changes to get _exactly_ {n} success and exactly {opp} on a given ring die
  */
-const pRExact = ({ n, opp }) => {
+const pRExactDefault = ({ n, opp }) => {
   if (opp > 1) {
     return 0;
   }
@@ -659,35 +659,67 @@ const pRExact = ({ n, opp }) => {
  * Chance to end on an opportunity (regardless of the number of success) on a given ring die
  * I.e. the result of the infinite geometric series 1/3+(1/6)*1/3+(1/6)^2*1/3...
  */
-const pROpp = () => {
+const pROppDefault = () => {
   return 2 / 5;
 };
 
 /**
  * Changes to get _at least_ {n} success and exactly {opp} on a given ring die
  */
-const pRAtLeast = ({ n, opp }) => {
+const pRAtLeastDefault = ({ n, opp }) => {
   if (opp > 1) {
     return 0;
   }
 
   if (opp === 1) {
-    return Math.pow(1 / 6, n) * pROpp();
+    return Math.pow(1 / 6, n) * pROppDefault();
   }
 
   // opp === 0
 
   if (n === 0) {
-    return 1 - pROpp();
+    return 1 - pROppDefault();
   }
 
-  return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pROpp()));
+  return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pROppDefault()));
+};
+
+const pRExactCompromised = ({ n, opp }) => {
+  if (opp === 0 && n === 0) {
+    return 2 / 3;
+  }
+
+  if (opp === 1 && n === 0) {
+    return 1 / 6;
+  }
+
+  if (opp === 0 && n === 1) {
+    return 1 / 6;
+  }
+
+  return 0;
+};
+
+const pRAtLeastCompromised = ({ n, opp }) => {
+  if (opp === 0 && n === 0) {
+    return 5 / 6;
+  }
+
+  if (opp === 1 && n === 0) {
+    return 1 / 6;
+  }
+
+  if (opp === 0 && n === 1) {
+    return 1 / 6;
+  }
+
+  return 0;
 };
 
 /**
  * Changes to get _exactly_ {n} success and exactly {opp} on a given skill die
  */
-const pSExact = ({ n, opp }) => {
+const pSExactDefault = ({ n, opp }) => {
   if (opp > 1) {
     return 0;
   }
@@ -707,29 +739,72 @@ const pSExact = ({ n, opp }) => {
  * Chance to end on an opportunity (regardless of the number of success) on a given skill die
  * I.e. the result of the infinite geometric series 1/3+(1/6)*1/3+(1/6)^2*1/3...
  */
-const pSOpp = () => {
+const pSOppDefault = () => {
   return 2 / 5;
 };
 
 /**
  * Changes to get _at least_ {n} success and exactly {opp} on a given skill die
  */
-const pSAtLeast = ({ n, opp }) => {
+const pSAtLeastDefault = ({ n, opp }) => {
   if (opp > 1) {
     return 0;
   }
 
   if (opp === 1) {
-    return Math.pow(1 / 6, n - 1) * (1 / 12 + (1 / 6) * pSOpp());
+    return Math.pow(1 / 6, n - 1) * (1 / 12 + (1 / 6) * pSOppDefault());
   }
 
   // opp === 0
 
   if (n === 0) {
-    return 1 - pROpp();
+    return 1 - pROppDefault();
   }
 
-  return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pSOpp()));
+  return Math.pow(1 / 6, n - 1) * (1 / 3 + (1 / 6) * (1 - pSOppDefault()));
+};
+
+const pSExactCompromised = ({ n, opp }) => {
+  if (opp > 1) {
+    return 0;
+  }
+
+  if (n === 0) {
+    return opp === 1 ? 1 / 4 : 1 / 6;
+  }
+
+  if (opp === 0) {
+    return Math.pow(1 / 12, n - 1) * (1 / 6 + (1 / 12) * (5 / 12));
+  }
+
+  return Math.pow(1 / 12, n - 1) * (1 / 12 + (1 / 12) * (1 / 4));
+};
+
+/**
+ * (1/3)+(1/12)*(1/3)+(1/12)^2*(1/3)...
+ */
+const pSOppCompromised = () => {
+  return 4 / 11;
+};
+
+const pSAtLeastCompromised = ({ n, opp }) => {
+  if (opp > 1) {
+    return 0;
+  }
+
+  if (opp === 1) {
+    return Math.pow(1 / 12, n - 1) * (1 / 12 + (1 / 12) * pSOppCompromised());
+  }
+
+  // opp === 0
+
+  if (n === 0) {
+    return 1 - pSOppCompromised();
+  }
+
+  return (
+    Math.pow(1 / 12, n - 1) * (1 / 6 + (1 / 12) * (1 - pSOppCompromised()))
+  );
 };
 
 const zeroOnePermutations = ({ totalDiceCount, min, max }) => {
@@ -874,7 +949,12 @@ export const chances = ({ ring, skill, tn, opp = 0, options = {} }) => {
     return cumulativeSuccess({ ring, skill, tn, options });
   }
 
-  const keptDiceCount = ring;
+  const { compromised = false, keptDiceCount = ring } = options;
+
+  const pRAtLeast = compromised ? pRAtLeastCompromised : pRAtLeastDefault;
+  const pRExact = compromised ? pRExactCompromised : pRExactDefault;
+  const pSAtLeast = compromised ? pSAtLeastCompromised : pSAtLeastDefault;
+  const pSExact = compromised ? pSExactCompromised : pSExactDefault;
 
   return successOppCombinations({
     ring,

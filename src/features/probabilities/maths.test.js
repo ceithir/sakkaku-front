@@ -1032,4 +1032,28 @@ describe("chances", () => {
       ).toBeCloseTo(0.594, 4);
     });
   });
+  describe("compromised", () => {
+    test("ring = 3, skill = 0, tn = 2, opp = 1", () => {
+      expect(
+        chances({
+          ring: 3,
+          skill: 0,
+          tn: 2,
+          opp: 1,
+          options: { compromised: true },
+        })
+      ).toBeCloseTo(0.0139, 4);
+    });
+    test("ring = 1, skill = 1, tn = 1, opp = 2, keptDiceCount = 2", () => {
+      expect(
+        chances({
+          ring: 1,
+          skill: 1,
+          tn: 1,
+          opp: 2,
+          options: { compromised: true, keptDiceCount: 2 },
+        })
+      ).toBeCloseTo(0.0189, 4);
+    });
+  });
 });
