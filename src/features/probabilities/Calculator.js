@@ -117,21 +117,38 @@ const TextOutput = ({
       loading={loading}
       result={result}
       compromised={compromised}
+      opp={opp}
+      tn={tn}
     />
   );
 };
 
-const StaticTextOutput = ({ result, loading, compromised }) => {
+const StaticTextOutput = ({ result, loading, compromised, tn, opp }) => {
+  const text = () => {
+    if (opp > 0) {
+      const oppAsText = opp > 1 ? `${opp} opportunities` : `${opp} opportunity`;
+
+      return compromised
+        ? `Chances to have at least ${tn} success and at least ${oppAsText} without taking strife: `
+        : `Chances to have at least ${tn} success and at least ${oppAsText}, taking as much strife as necessary: `;
+    }
+
+    return compromised
+      ? `Chances to have at least ${tn} success without taking strife: `
+      : `Chances to have at least ${tn} success, taking as much strife as necessary: `;
+  };
+
   return (
-    <Paragraph>
-      <Text>
-        {compromised
-          ? `Chances to achieve TN, without taking strife, ignoring rerolls and other modifiers: `
-          : `Chances to achieve TN, taking as much strife as necessary, ignoring rerolls and other modifiers: `}
-      </Text>
-      <Text strong>{loading ? <LoadingOutlined /> : result}</Text>
-      <Text>{`.`}</Text>
-    </Paragraph>
+    <>
+      <Paragraph>
+        <Text>{text()}</Text>
+        <Text strong>{loading ? <LoadingOutlined /> : result}</Text>
+        <Text>{`.`}</Text>
+      </Paragraph>
+      <Paragraph>
+        {`All results ignore rerolls, alterations, and other modifiers.`}
+      </Paragraph>
+    </>
   );
 };
 
