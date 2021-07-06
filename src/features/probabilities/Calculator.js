@@ -3,6 +3,7 @@ import { Form, InputNumber, Typography, Switch, Divider } from "antd";
 import styles from "./Calculator.module.less";
 import worker from "workerize-loader!./worker"; // eslint-disable-line import/no-webpack-loader-syntax
 import { LoadingOutlined } from "@ant-design/icons";
+import useInterval from "./useInterval";
 
 const { Paragraph, Text } = Typography;
 
@@ -13,17 +14,23 @@ const load = (params) => cache[keify(params)];
 const save = (params, result) => {
   cache[keify(params)] = result;
 };
+const exists = (params) => !!load(params);
 
-const computeAndCacheChances = async ({ mathParams, callback }) => {
-  workerInstance.asyncChances(mathParams);
-
-  const intervalID = setInterval(() => {
-    const result = load(mathParams);
-    if (result) {
-      clearInterval(intervalID);
-      callback(result);
-    }
-  });
+const validParameters = ({
+  tn,
+  ring,
+  skill,
+  skilled_assist,
+  unskilled_assist,
+  opp,
+}) => {
+  return (
+    [tn, ring, skill, skilled_assist, unskilled_assist, opp].every(
+      (n) => Number.isInteger(n) && n >= 0 && n <= 10
+    ) &&
+    tn >= 1 &&
+    ring >= 1
+  );
 };
 
 const TextOutput = ({
@@ -56,13 +63,15 @@ const TextOutput = ({
 
   useEffect(() => {
     if (
-      ![tn, ring, skill, skilled_assist, unskilled_assist, opp].every(
-        (n) => Number.isInteger(n) && n >= 0 && n <= 10
-      ) ||
-      tn < 1 ||
-      ring < 1
+      !validParameters({
+        ring,
+        skill,
+        tn,
+        unskilled_assist,
+        skilled_assist,
+        opp,
+      })
     ) {
-      setLoading(true);
       return;
     }
 
@@ -76,33 +85,32 @@ const TextOutput = ({
       },
       opp,
     };
+    if (exists(mathParams)) {
+      return;
+    }
+    workerInstance.asyncChances(mathParams);
+  }, [ring, skill, tn, unskilled_assist, skilled_assist, compromised, opp]);
 
-    const setFromCache = () => {
-      const cachedResult = load(mathParams);
-      if (!cachedResult) {
-        return false;
-      }
-
-      setResult(cachedResult);
-      setLoading(false);
-      return true;
+  useInterval(() => {
+    const mathParams = {
+      tn,
+      ring: ring + unskilled_assist,
+      skill: skill + skilled_assist,
+      options: {
+        compromised,
+        keptDiceCount: ring + unskilled_assist + skilled_assist,
+      },
+      opp,
     };
 
-    if (setFromCache()) {
+    if (exists(mathParams)) {
+      setResult(load(mathParams));
+      setLoading(false);
       return;
     }
 
-    setTimeout(() => {
-      if (!setFromCache()) {
-        setLoading(true);
-      }
-    }, 100);
-
-    computeAndCacheChances({
-      mathParams,
-      callback: setFromCache,
-    });
-  }, [ring, skill, tn, unskilled_assist, skilled_assist, compromised, opp]);
+    setLoading(true);
+  }, 100);
 
   return (
     <StaticTextOutput
