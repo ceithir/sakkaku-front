@@ -1,5 +1,5 @@
-import { cumulativeSuccess } from "./maths";
+import { chances } from "./maths";
 
-export const asyncCumulativeSuccess = (params) => {
-  postMessage({ type: "custom", params, result: cumulativeSuccess(params) });
+export const asyncChances = (params) => {
+  postMessage({ type: "custom", params, result: chances(params) });
 };

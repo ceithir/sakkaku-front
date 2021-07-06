@@ -14,8 +14,8 @@ const save = (params, result) => {
   cache[keify(params)] = result;
 };
 
-const computeAndCacheCumulativeSuccess = async ({ mathParams, callback }) => {
-  workerInstance.asyncCumulativeSuccess(mathParams);
+const computeAndCacheChances = async ({ mathParams, callback }) => {
+  workerInstance.asyncChances(mathParams);
 
   const intervalID = setInterval(() => {
     const result = load(mathParams);
@@ -33,6 +33,7 @@ const TextOutput = ({
   unskilled_assist,
   skilled_assist,
   compromised,
+  opp,
 }) => {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState();
@@ -55,7 +56,7 @@ const TextOutput = ({
 
   useEffect(() => {
     if (
-      ![tn, ring, skill, skilled_assist, unskilled_assist].every(
+      ![tn, ring, skill, skilled_assist, unskilled_assist, opp].every(
         (n) => Number.isInteger(n) && n >= 0 && n <= 10
       ) ||
       tn < 1 ||
@@ -73,6 +74,7 @@ const TextOutput = ({
         compromised,
         keptDiceCount: ring + unskilled_assist + skilled_assist,
       },
+      opp,
     };
 
     const setFromCache = () => {
@@ -96,11 +98,11 @@ const TextOutput = ({
       }
     }, 100);
 
-    computeAndCacheCumulativeSuccess({
+    computeAndCacheChances({
       mathParams,
       callback: setFromCache,
     });
-  }, [ring, skill, tn, unskilled_assist, skilled_assist, compromised]);
+  }, [ring, skill, tn, unskilled_assist, skilled_assist, compromised, opp]);
 
   return (
     <StaticTextOutput
@@ -134,6 +136,7 @@ const Calculator = () => {
     unskilled_assist: 0,
     skilled_assist: 0,
     compromised: false,
+    opp: 0,
   };
   const [values, setValues] = useState(initialValues);
 
@@ -156,12 +159,16 @@ const Calculator = () => {
       <Form.Item label="TN" name="tn">
         <InputNumber min={1} max={10} />
       </Form.Item>
+      <Divider />
       <Form.Item
         label={"Compromised?"}
         name="compromised"
         valuePropName="checked"
       >
         <Switch />
+      </Form.Item>
+      <Form.Item label="Opportunities" name="opp">
+        <InputNumber min={0} max={10} />
       </Form.Item>
       <Divider />
       <Form.Item label="Assistance (unskilled)" name="unskilled_assist">
