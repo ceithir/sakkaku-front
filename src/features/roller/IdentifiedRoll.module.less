@@ -3,4 +3,12 @@
 .ongoing {
   background-color: @default-background-color;
   padding: 24px;
+
+  & > * {
+    margin-bottom: 24px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
