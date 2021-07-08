@@ -51,13 +51,14 @@ const BbCode = ({
     .map(({ label, value }) => `${label}: [b]${value}[/b]`)
     .join(" / ");
 
-  const url = `${window.location.origin}/rolls/${id}`;
+  const host = window.location.origin;
+  const url = `${host}/rolls/${id}`;
 
   const text =
     `[url="${url}"]${description}[/url] | TN: ${tn || "?"} | ${shortResult}` +
     "\n" +
     `[url="${url}"]${cleanedUpDice
-      .map((dice) => `[img]${diceToImageSrc(dice)}[/img]`)
+      .map((dice) => `[img]${diceToImageSrc(dice, { host })}[/img]`)
       .join(" ")}[/url]`;
 
   return (

@@ -1,16 +1,15 @@
 import React from "react";
-import { serverRoot } from "../../server";
 
-const imgUrlRoot = `${serverRoot}/media/dice`;
+const imgUrlRoot = `/media/dice`;
 export const diceToImageSrc = (
   { type, value: { opportunity = 0, success = 0, explosion = 0, strife = 0 } },
-  resolution = 60
+  { resolution = 60, host = "" } = {}
 ) => {
-  return `${imgUrlRoot}/${type}/exp${explosion}opp${opportunity}str${strife}suc${success}-${resolution}.png`;
+  return `${host}${imgUrlRoot}/${type}/exp${explosion}opp${opportunity}str${strife}suc${success}-${resolution}.png`;
 };
 const diceToImageSrcSet = (dice) => {
   return [1, 2, 3]
-    .map((n) => `${diceToImageSrc(dice, 60 * n)} ${n}x`)
+    .map((n) => `${diceToImageSrc(dice, { resolution: 60 * n })} ${n}x`)
     .join(", ");
 };
 
