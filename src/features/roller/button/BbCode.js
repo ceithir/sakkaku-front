@@ -58,7 +58,7 @@ const BbCode = ({
     `[url="${url}"]${description}[/url] | TN: ${tn || "?"} | ${shortResult}` +
     "\n" +
     `[url="${url}"]${cleanedUpDice
-      .map((dice) => `[img]${diceToImageSrc(dice, { host })}[/img]`)
+      .map((dice) => `[img]${host}${diceToImageSrc(dice)}[/img]`)
       .join(" ")}[/url]`;
 
   return (

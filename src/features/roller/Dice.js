@@ -1,11 +1,12 @@
 import React from "react";
 
 const imgUrlRoot = `/media/dice`;
+
 export const diceToImageSrc = (
   { type, value: { opportunity = 0, success = 0, explosion = 0, strife = 0 } },
-  { resolution = 60, host = "" } = {}
+  { resolution = 60 } = {}
 ) => {
-  return `${host}${imgUrlRoot}/${type}/exp${explosion}opp${opportunity}str${strife}suc${success}-${resolution}.png`;
+  return `${imgUrlRoot}/${type}/exp${explosion}opp${opportunity}str${strife}suc${success}-${resolution}.png`;
 };
 const diceToImageSrcSet = (dice) => {
   return [1, 2, 3]
