@@ -410,8 +410,7 @@ const TABLES = {
             {
               min: 10,
               max: 10,
-              text:
-                "the deed to a small piece of land on the border of Lion territory",
+              text: "the deed to a small piece of land on the border of Lion territory",
             },
           ],
         },
@@ -524,7 +523,7 @@ const TABLES = {
           "You can unequivocally trace your lineage back to the earliest days of the Kaiu Wall. It is said that the blood of your family is mixed with the mortar holding together the first stones of the Wall.",
         modifier: "Increase your status by 3.",
         effect:
-          "You gain the Blessed Lineage advantage (see page 103 of the core rulebook). This can be assigned in excess of the normal limitations on disadvantages at character creation. While on the Wall, your glory rank is treated a1 higher.",
+          "You gain the Blessed Lineage advantage (see page 103 of the core rulebook). This can be assigned in excess of the normal limitations on disadvantages at character creation. While on the Wall, your glory rank is treated as 1 higher.",
       },
       {
         name: "Infamous Builder",
@@ -803,8 +802,7 @@ const TABLES = {
             {
               min: 10,
               max: 10,
-              text:
-                "the deed to a small piece of land on the border of Phoenix territory",
+              text: "the deed to a small piece of land on the border of Phoenix territory",
             },
           ],
         },
@@ -955,8 +953,7 @@ const TABLES = {
             {
               min: 10,
               max: 10,
-              text:
-                "the deed to a small piece of land on the border of Crane territory",
+              text: "the deed to a small piece of land on the border of Crane territory",
             },
           ],
         },
