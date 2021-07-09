@@ -16,15 +16,14 @@ const StaticRoll = ({ roll, context }) => {
     return (
       <Layout dices={dices} context={context}>
         <p>{`Player has yet to choose between the following options.`}</p>
-        <SummaryList>
-          {dices
+        <SummaryList
+          table={table}
+          list={dices
             .filter(({ status }) => status === "pending")
-            .map(({ value }, index) => {
-              return (
-                <Summary key={index.toString()} table={table} rolls={[value]} />
-              );
+            .map(({ value }) => {
+              return { rolls: [value] };
             })}
-        </SummaryList>
+        />
       </Layout>
     );
   }

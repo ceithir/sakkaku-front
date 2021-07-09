@@ -30,7 +30,7 @@ const Effect = ({ effect, roll }) => {
   );
 };
 
-const Summary = ({ table, rolls, children }) => {
+const Summary = ({ table, rolls }) => {
   if (!table || !TABLES[table]) {
     return null;
   }
@@ -61,7 +61,6 @@ const Summary = ({ table, rolls, children }) => {
           {TABLES[table]["name"]}
         </Descriptions.Item>
       </Descriptions>
-      <>{children}</>
     </div>
   );
 };

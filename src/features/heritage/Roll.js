@@ -39,12 +39,13 @@ const Roll = () => {
     return (
       <Layout dices={dices} context={context}>
         <p>{`Choose one of those two options as the relative for whom your character is named.`}</p>
-        <SummaryList>
-          {dices
+        <SummaryList
+          list={dices
             .filter(({ status }) => status === "pending")
             .map(({ value }, index) => {
-              return (
-                <Summary key={index.toString()} table={table} rolls={[value]}>
+              return {
+                rolls: [value],
+                footer: (
                   <div className={styles.footer}>
                     <Button
                       onClick={() =>
@@ -52,10 +53,11 @@ const Roll = () => {
                       }
                     >{`Keep that result`}</Button>
                   </div>
-                </Summary>
-              );
+                ),
+              };
             })}
-        </SummaryList>
+          table={table}
+        ></SummaryList>
       </Layout>
     );
   }
