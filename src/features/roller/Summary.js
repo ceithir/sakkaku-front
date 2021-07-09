@@ -5,6 +5,7 @@ import Dice from "./Dice";
 import styles from "./Summary.module.less";
 import { orderDices, isSpecialReroll, isSpecialAlteration } from "./utils";
 import ABILITIES from "./data/abilities";
+import CharacterSheet from "../display/CharacterSheet";
 
 const { Text } = Typography;
 
@@ -148,24 +149,11 @@ const Summary = ({
     },
   ].filter(Boolean);
 
-  const buildDescription = (data) => {
-    return (
-      <dl>
-        {data.map(({ label, content }) => {
-          return (
-            <div key={label}>
-              <dt>{label}</dt>
-              <dd>
-                {Array.isArray(content) ? buildDescription(content) : content}
-              </dd>
-            </div>
-          );
-        })}
-      </dl>
-    );
-  };
-
-  return <div className={styles.container}>{buildDescription(data)}</div>;
+  return (
+    <div className={styles.container}>
+      <CharacterSheet data={data} />
+    </div>
+  );
 };
 
 export default Summary;
