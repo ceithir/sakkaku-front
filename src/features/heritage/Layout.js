@@ -42,7 +42,7 @@ const Layout = ({ children, dices, context }) => {
       >
         <Title>{`Legend of the Five Rings – Heritage Roll`}</Title>
         {dices && <Dices dices={dices} />}
-        {context && <Context {...context} />}
+        {context?.character && <Context {...context} />}
         <>{children}</>
       </div>
     </>
