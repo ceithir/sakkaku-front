@@ -5,6 +5,7 @@ import AnonymousAlert from "../../AnonymousAlert";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 import backgroundImage from "../../background.jpg";
+import Context from "./Context";
 
 const { Text, Title } = Typography;
 
@@ -27,7 +28,7 @@ const Dices = ({ dices }) => {
   );
 };
 
-const Layout = ({ children, dices }) => {
+const Layout = ({ children, dices, context }) => {
   const user = useSelector(selectUser);
 
   return (
@@ -41,6 +42,7 @@ const Layout = ({ children, dices }) => {
       >
         <Title>{`Legend of the Five Rings – Heritage Roll`}</Title>
         {dices && <Dices dices={dices} />}
+        {context && <Context {...context} />}
         <>{children}</>
       </div>
     </>

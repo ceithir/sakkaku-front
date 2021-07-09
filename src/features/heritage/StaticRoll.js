@@ -14,7 +14,7 @@ const StaticRoll = ({ roll, context }) => {
 
   if (dices.some(({ status }) => status === "pending")) {
     return (
-      <Layout dices={dices}>
+      <Layout dices={dices} context={context}>
         <p>{`Player has yet to choose between the following options.`}</p>
         <SummaryList>
           {dices
@@ -30,13 +30,12 @@ const StaticRoll = ({ roll, context }) => {
   }
 
   return (
-    <Layout dices={dices}>
+    <Layout dices={dices} context={context}>
       <Summary
         table={table}
         rolls={dices
           .filter(({ status }) => status === "kept")
           .map(({ value }) => value)}
-        context={context}
       />
     </Layout>
   );

@@ -30,7 +30,7 @@ const Effect = ({ effect, roll }) => {
   );
 };
 
-const Summary = ({ table, rolls, children, context }) => {
+const Summary = ({ table, rolls, children }) => {
   if (!table || !TABLES[table]) {
     return null;
   }
@@ -50,28 +50,6 @@ const Summary = ({ table, rolls, children, context }) => {
         layout="vertical"
         column={{ xs: 1, sm: 1, md: 3 }}
       >
-        {context && (
-          <>
-            {context.character && (
-              <>
-                <Descriptions.Item label="Character">
-                  {context.character}
-                </Descriptions.Item>
-                <Descriptions.Item label="Campaign">
-                  {context.campaign || "N/A"}
-                </Descriptions.Item>
-                <Descriptions.Item label="Player">
-                  {context.user?.name || `N/A`}
-                </Descriptions.Item>
-              </>
-            )}
-            {context.description && (
-              <Descriptions.Item label="Description" span={3}>
-                {context.description}
-              </Descriptions.Item>
-            )}
-          </>
-        )}
         <Descriptions.Item label="Result" span={2}>
           {description}
         </Descriptions.Item>

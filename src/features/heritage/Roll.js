@@ -37,7 +37,7 @@ const Roll = () => {
 
   if (dices.some(({ status }) => status === "pending")) {
     return (
-      <Layout dices={dices}>
+      <Layout dices={dices} context={context}>
         <p>{`Choose one of those two options as the relative for whom your character is named.`}</p>
         <SummaryList>
           {dices
@@ -61,13 +61,12 @@ const Roll = () => {
   }
 
   return (
-    <Layout dices={dices}>
+    <Layout dices={dices} context={context}>
       <Summary
         table={table}
         rolls={dices
           .filter(({ status }) => status === "kept")
           .map(({ value }) => value)}
-        context={context}
       />
       <div className={styles.footer}>
         <Button
