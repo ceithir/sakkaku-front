@@ -1,7 +1,7 @@
 @import (reference) "~antd/dist/antd.less";
 
 .container {
-  max-width: 100%;
+  max-width: @screen-xl;
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
@@ -9,23 +9,5 @@
 
   & > * {
     margin-bottom: 24px;
-  }
-
-  @media (min-width: @screen-lg) {
-    flex-direction: row;
-    align-items: flex-start;
-
-    & > * {
-      max-width: 50vw;
-      margin: 0 12px 0 12px;
-    }
-
-    & > *:first-child {
-      margin-left: 24px;
-    }
-
-    & > *:last-child {
-      margin-right: 24px;
-    }
   }
 }
