@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { selectError, selectRoll, keep, reset, selectContext } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
-import styles from "./Roll.module.css";
+import styles from "./Roll.module.less";
 import Form from "./Form";
 import Summary from "./Summary";
 import { selectUser } from "../user/reducer";
@@ -64,28 +64,30 @@ const Roll = () => {
 
   return (
     <Layout dices={dices} context={context}>
-      <Summary
-        table={table}
-        rolls={dices
-          .filter(({ status }) => status === "kept")
-          .map(({ value }) => value)}
-      />
-      <div className={styles.footer}>
-        <Button
-          onClick={() => {
-            dispatch(reset());
-          }}
-          type="dashed"
-        >{`Roll another heritage`}</Button>
-        {user && (
+      <div className={styles.expandable}>
+        <Summary
+          table={table}
+          rolls={dices
+            .filter(({ status }) => status === "kept")
+            .map(({ value }) => value)}
+        />
+        <div className={styles.footer}>
           <Button
             onClick={() => {
               dispatch(reset());
-              history.push("/heritage/list");
             }}
             type="dashed"
-          >{`See all`}</Button>
-        )}
+          >{`Roll another heritage`}</Button>
+          {user && (
+            <Button
+              onClick={() => {
+                dispatch(reset());
+                history.push("/heritage/list");
+              }}
+              type="dashed"
+            >{`See all`}</Button>
+          )}
+        </div>
       </div>
     </Layout>
   );

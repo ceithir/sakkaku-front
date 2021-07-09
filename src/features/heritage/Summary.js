@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, Descriptions } from "antd";
 import TABLES, { entry } from "./data/heritage";
 import styles from "./Summary.module.less";
+import classNames from "classnames";
 
 const { Text } = Typography;
 
@@ -30,7 +31,7 @@ const Effect = ({ effect, roll }) => {
   );
 };
 
-const Summary = ({ table, rolls }) => {
+const Summary = ({ table, rolls, className }) => {
   if (!table || !TABLES[table]) {
     return null;
   }
@@ -43,18 +44,16 @@ const Summary = ({ table, rolls }) => {
   });
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, { [className]: !!className })}>
       <Descriptions
         title={name}
         bordered
         layout="vertical"
-        column={{ xs: 1, sm: 1, md: 3 }}
+        column={{ xs: 1, sm: 1, md: 2, lg: 4 }}
       >
-        <Descriptions.Item label="Result" span={2}>
-          {description}
-        </Descriptions.Item>
+        <Descriptions.Item label="Result">{description}</Descriptions.Item>
         <Descriptions.Item label="Modifier">{modifier}</Descriptions.Item>
-        <Descriptions.Item label="Other effects" span={2}>
+        <Descriptions.Item label="Other effects">
           <Effect effect={effect} roll={secondRoll} />
         </Descriptions.Item>
         <Descriptions.Item label="Ref.">

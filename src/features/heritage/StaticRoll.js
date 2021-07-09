@@ -2,6 +2,7 @@ import React from "react";
 import Summary from "./Summary";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
+import styles from "./StaticRoll.module.less";
 
 const StaticRoll = ({ roll, context }) => {
   const { dices, metadata } = roll;
@@ -35,6 +36,7 @@ const StaticRoll = ({ roll, context }) => {
         rolls={dices
           .filter(({ status }) => status === "kept")
           .map(({ value }) => value)}
+        className={styles.expandable}
       />
     </Layout>
   );
