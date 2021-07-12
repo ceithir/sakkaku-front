@@ -113,7 +113,13 @@ const CustomForm = () => {
           <Form.Item
             label={`Gm's email`}
             name="gm_email"
-            tooltip={`This mail will only be used to send a one-time notification to your GM with your roll results and will be forgotten about immediately after.`}
+            tooltip={
+              <>
+                {`If provided, this email will be used to send a one-time notification to your GM with your roll results then be forgotten about immediately after.`}
+                <br />
+                {`A copy of that email will also be sent (as Bcc) to you.`}
+              </>
+            }
           >
             <Input type="email" placeholder={`best-gm@fallenash.com`} />
           </Form.Item>
