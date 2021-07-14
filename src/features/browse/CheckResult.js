@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "./Result.module.css";
+import styles from "./CheckResult.module.css";
 import { Success, Opportunity, Strife } from "../display/Symbol";
 
-const Result = ({ opportunity, success, strife }) => {
+const CheckResult = ({ opportunity, success, strife }) => {
   return (
     <span className={styles.result}>
       <Success />
@@ -15,4 +15,4 @@ const Result = ({ opportunity, success, strife }) => {
   );
 };
 
-export default Result;
+export default CheckResult;

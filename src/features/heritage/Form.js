@@ -12,7 +12,6 @@ import {
   addCharacter,
   selectUser,
 } from "../user/reducer";
-import { Link } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -126,7 +125,6 @@ const CustomForm = () => {
         </>
       )}
       <Form.Item {...tailLayout} className={styles.footer}>
-        {user && <Link to="/heritage/list">{`See previous rolls`}</Link>}
         <Button type="primary" htmlType="submit" loading={loading}>
           {`Roll`}
         </Button>
