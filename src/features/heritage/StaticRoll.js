@@ -3,6 +3,7 @@ import Summary from "./Summary";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
 import styles from "./StaticRoll.module.less";
+import GoBackButton from "../browse/GoBackButton";
 
 const StaticRoll = ({ roll, context }) => {
   const { dices, metadata } = roll;
@@ -13,9 +14,20 @@ const StaticRoll = ({ roll, context }) => {
 
   const { table } = metadata;
 
-  if (dices.some(({ status }) => status === "pending")) {
+  const CustomLayout = ({ children }) => {
     return (
       <Layout dices={dices} context={context}>
+        {children}
+        <div className={styles["go-back-container"]}>
+          <GoBackButton />
+        </div>
+      </Layout>
+    );
+  };
+
+  if (dices.some(({ status }) => status === "pending")) {
+    return (
+      <CustomLayout>
         <p>{`Player has yet to choose between the following options.`}</p>
         <SummaryList
           table={table}
@@ -25,12 +37,12 @@ const StaticRoll = ({ roll, context }) => {
               return { rolls: [value] };
             })}
         />
-      </Layout>
+      </CustomLayout>
     );
   }
 
   return (
-    <Layout dices={dices} context={context}>
+    <CustomLayout>
       <Summary
         table={table}
         rolls={dices
@@ -38,7 +50,7 @@ const StaticRoll = ({ roll, context }) => {
           .map(({ value }) => value)}
         className={styles.expandable}
       />
-    </Layout>
+    </CustomLayout>
   );
 };
 

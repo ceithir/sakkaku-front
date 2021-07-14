@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { Button } from "antd";
+import { useParams } from "react-router-dom";
 import { getOnServer } from "../../server";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import Complete from "./Complete";
@@ -13,18 +12,7 @@ import { selectUser } from "../user/reducer";
 import Breadcrumb from "./Breadcrumb";
 import { orderDices } from "./utils";
 import styles from "./IdentifiedRoll.module.less";
-
-const GoBackButton = (props) => {
-  const history = useHistory();
-  return (
-    <Button
-      onClick={() => {
-        history.length > 2 ? history.goBack() : history.push("/rolls");
-      }}
-      {...props}
-    >{`Go back`}</Button>
-  );
-};
+import GoBackButton from "../browse/GoBackButton";
 
 const IdentifiedRoll = () => {
   const { id } = useParams();
