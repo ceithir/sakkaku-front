@@ -3,12 +3,7 @@ import "./App.less";
 import Roller from "./features/roller";
 import Layout from "./features/navigation/Layout";
 import { getOnServer } from "./server";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import List from "./features/browse/List";
 import IdentifiedRoll from "./features/roller/IdentifiedRoll";
 import { useDispatch } from "react-redux";
@@ -16,28 +11,6 @@ import { setUser } from "./features/user/reducer";
 import HeritageRoll from "./features/heritage/Roll";
 import HeritageRollLoader from "./features/heritage/RollLoader";
 import Calculator from "./features/probabilities/Calculator";
-import queryString from "query-string";
-import { selectUser } from "./features/user/reducer";
-import { useSelector } from "react-redux";
-import Loader from "./features/navigation/Loader";
-
-// TODO Remove once both app and server will be clean
-const TemporaryRedirect = () => {
-  const user = useSelector(selectUser);
-
-  if (!user) {
-    return <Loader />;
-  }
-
-  return (
-    <Redirect
-      to={`/rolls?${queryString.stringify({
-        type: "FFG-L5R-Heritage",
-        player: user.id,
-      })}`}
-    />
-  );
-};
 
 const App = () => {
   const dispatch = useDispatch();
@@ -57,9 +30,6 @@ const App = () => {
         <Switch>
           <Route path="/probabilities">
             <Calculator />
-          </Route>
-          <Route path="/heritage/list">
-            <TemporaryRedirect />
           </Route>
           <Route path="/heritage/:uuid">
             <HeritageRollLoader />
