@@ -8,9 +8,7 @@ import Form from "./Form";
 import Summary from "./Summary";
 import { selectUser } from "../user/reducer";
 import Layout from "./Layout";
-import { useHistory } from "react-router-dom";
 import SummaryList from "./SummaryList";
-import queryString from "query-string";
 
 const Roll = () => {
   const error = useSelector(selectError);
@@ -18,7 +16,6 @@ const Roll = () => {
   const roll = useSelector(selectRoll);
   const context = useSelector(selectContext);
   const user = useSelector(selectUser);
-  const history = useHistory();
 
   const { dices, metadata } = roll;
 
@@ -79,17 +76,6 @@ const Roll = () => {
             }}
             type="dashed"
           >{`Roll another heritage`}</Button>
-          <Button
-            onClick={() => {
-              dispatch(reset());
-              history.push(
-                `/rolls?${queryString.stringify({
-                  type: "FFG-L5R-Heritage",
-                })}`
-              );
-            }}
-            type="dashed"
-          >{`See all`}</Button>
         </div>
       </div>
     </Layout>
