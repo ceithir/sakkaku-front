@@ -10,6 +10,7 @@ import { selectUser } from "../user/reducer";
 import Layout from "./Layout";
 import { useHistory } from "react-router-dom";
 import SummaryList from "./SummaryList";
+import queryString from "query-string";
 
 const Roll = () => {
   const error = useSelector(selectError);
@@ -78,15 +79,17 @@ const Roll = () => {
             }}
             type="dashed"
           >{`Roll another heritage`}</Button>
-          {user && (
-            <Button
-              onClick={() => {
-                dispatch(reset());
-                history.push("/heritage/list");
-              }}
-              type="dashed"
-            >{`See all`}</Button>
-          )}
+          <Button
+            onClick={() => {
+              dispatch(reset());
+              history.push(
+                `/rolls?${queryString.stringify({
+                  type: "FFG-L5R-Heritage",
+                })}`
+              );
+            }}
+            type="dashed"
+          >{`See all`}</Button>
         </div>
       </div>
     </Layout>
