@@ -54,76 +54,80 @@ export const { setLoading, setError, reset, load } = slice.actions;
 
 const { update, setContext, setUuid } = slice.actions;
 
-export const create = ({ context, metadata, user, gm_email }) => (dispatch) => {
-  dispatch(setLoading(true));
-  dispatch(setContext({ ...context, user }));
+export const create =
+  ({ context, metadata, user, gm_email }) =>
+  (dispatch) => {
+    dispatch(setLoading(true));
+    dispatch(setContext({ ...context, user }));
 
-  const error = (e) => {
-    dispatch(setError(e));
-  };
+    const error = (e) => {
+      dispatch(setError(e));
+    };
 
-  if (user) {
-    const { campaign, character, description } = context;
+    if (user) {
+      const { campaign, character, description } = context;
 
-    authentifiedPostOnServer({
-      uri: "/ffg/l5r/heritage-rolls/create",
-      body: {
-        campaign,
-        character,
-        description,
-        metadata,
-        gm_email,
-      },
-      success: ({ uuid, roll }) => {
-        dispatch(setUuid(uuid));
-        dispatch(update(roll));
-      },
-      error,
-    });
-    return;
-  }
+      authentifiedPostOnServer({
+        uri: "/ffg/l5r/heritage-rolls/create",
+        body: {
+          campaign,
+          character,
+          description,
+          metadata,
+          gm_email,
+        },
+        success: ({ uuid, roll }) => {
+          dispatch(setUuid(uuid));
+          dispatch(update(roll));
+        },
+        error,
+      });
+      return;
+    }
 
-  postOnServer({
-    uri: "/public/ffg/l5r/heritage-rolls/create",
-    body: { metadata },
-    success: (data) => {
-      dispatch(update(data));
-    },
-    error,
-  });
-};
-
-export const keep = ({ roll, position, user }) => (dispatch) => {
-  dispatch(setLoading(true));
-
-  const error = (e) => {
-    dispatch(setError(e));
-  };
-
-  if (user) {
-    const { uuid } = roll;
-    authentifiedPostOnServer({
-      uri: `/ffg/l5r/heritage-rolls/${uuid}/keep`,
-      body: {
-        position,
-      },
-      success: ({ roll }) => {
-        dispatch(update(roll));
+    postOnServer({
+      uri: "/public/ffg/l5r/heritage-rolls/create",
+      body: { metadata },
+      success: (data) => {
+        dispatch(update(data));
       },
       error,
     });
-    return;
-  }
+  };
 
-  postOnServer({
-    uri: "/public/ffg/l5r/heritage-rolls/keep",
-    body: { roll, position },
-    success: (data) => {
-      dispatch(update(data));
-    },
-    error,
-  });
-};
+export const keep =
+  ({ roll, position, user }) =>
+  (dispatch) => {
+    dispatch(setLoading(true));
+
+    const error = (e) => {
+      dispatch(setError(e));
+    };
+
+    if (user) {
+      const { uuid } = roll;
+      authentifiedPostOnServer({
+        uri: `/ffg/l5r/heritage-rolls/${uuid}/keep`,
+        body: {
+          position,
+        },
+        success: ({ roll }) => {
+          dispatch(update(roll));
+        },
+        error,
+      });
+      return;
+    }
+
+    postOnServer({
+      uri: "/public/ffg/l5r/heritage-rolls/keep",
+      body: { roll, position },
+      success: (data) => {
+        dispatch(update(data));
+      },
+      error,
+    });
+  };
 
 export const selectLoading = (state) => state.heritage.loading;
 export const selectError = (state) => state.heritage.error;
