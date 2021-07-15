@@ -6,7 +6,7 @@ const slice = createSlice({
   initialState: {
     dices: [],
     loading: false,
-    error: null,
+    error: false,
     metadata: {},
     context: {},
     uuid: null,
@@ -60,8 +60,8 @@ export const create =
     dispatch(setLoading(true));
     dispatch(setContext({ ...context, user }));
 
-    const error = (e) => {
-      dispatch(setError(e));
+    const error = () => {
+      dispatch(setError(true));
     };
 
     if (user) {
@@ -100,8 +100,8 @@ export const keep =
   (dispatch) => {
     dispatch(setLoading(true));
 
-    const error = (e) => {
-      dispatch(setError(e));
+    const error = () => {
+      dispatch(setError(true));
     };
 
     if (user) {

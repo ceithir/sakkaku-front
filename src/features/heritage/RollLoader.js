@@ -32,9 +32,9 @@ const RollLoader = () => {
         setData(data);
         dispatch(setLoading(false));
       },
-      error: (e) => {
+      error: () => {
         dispatch(setLoading(false));
-        dispatch(setError(e));
+        dispatch(setError(true));
       },
     });
   }, [uuid, dispatch]);
