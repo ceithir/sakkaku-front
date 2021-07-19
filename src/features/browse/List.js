@@ -9,6 +9,7 @@ import { Link, useLocation } from "react-router-dom";
 import Loader from "../navigation/Loader";
 import Pagination from "../../Pagination";
 import HeritageResult from "./HeritageResult";
+import heritageTables from "../heritage/data/heritage";
 
 const { Text } = Typography;
 
@@ -92,6 +93,15 @@ const columns = [
     dataIndex: "description",
     key: "description",
     responsive: ["lg"],
+    render: ({ description, type, metadata }) => {
+      if (!description && type === "FFG-L5R-Heritage") {
+        return (
+          <Text type="secondary">{heritageTables[metadata?.table]?.name}</Text>
+        );
+      }
+
+      return description;
+    },
   },
   {
     title: "Result",
@@ -230,7 +240,7 @@ const List = () => {
         campaign,
         character: { campaign, character },
         player: user,
-        description,
+        description: { description, type, metadata },
         result: { result, type, metadata },
         success: { type, roll, result },
         see_more: { id, uuid, type },

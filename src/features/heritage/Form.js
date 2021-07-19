@@ -100,11 +100,7 @@ const CustomForm = () => {
               placeholder={"Doji Sakura"}
             />
           </Form.Item>
-          <Form.Item
-            label="Description"
-            name="description"
-            rules={mandatoryIfLogged}
-          >
+          <Form.Item label="Description" name="description">
             <TextArea
               placeholder={`Using Celestial Realms Table to emphasize my character's mother was born Phoenix.`}
             />

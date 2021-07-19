@@ -7,7 +7,7 @@ const Context = ({ character, campaign, user, description }) => {
     { label: `Character`, content: character },
     { label: `Campaign`, content: campaign },
     user && { label: `Player`, content: user.name },
-    { label: `Description`, content: description },
+    description && { label: `Description`, content: description },
   ].filter(Boolean);
 
   return (
