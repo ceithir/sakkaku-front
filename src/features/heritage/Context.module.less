@@ -1,11 +1,14 @@
 @import (reference) "../../common.less";
 
 .container {
-  .torii-box-light();
-  padding-bottom: 0;
   max-width: @screen-xs;
-}
 
-.expanded {
-  max-width: @screen-lg;
+  &.expanded {
+    max-width: @screen-lg;
+  }
+
+  & > div {
+    .torii-box-light();
+    padding-bottom: 0;
+  }
 }
