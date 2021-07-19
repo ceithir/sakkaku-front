@@ -109,19 +109,6 @@ const CustomForm = () => {
               placeholder={`Using Celestial Realms Table to emphasize my character's mother was born Phoenix.`}
             />
           </Form.Item>
-          <Form.Item
-            label={`Gm's email`}
-            name="gm_email"
-            tooltip={
-              <>
-                {`If provided, this email will be used to send a one-time notification to your GM with your roll results then be forgotten about immediately after.`}
-                <br />
-                {`A copy of that email will also be sent (as Bcc) to you.`}
-              </>
-            }
-          >
-            <Input type="email" placeholder={`best-gm@fallenash.com`} />
-          </Form.Item>
         </>
       )}
       <Form.Item {...tailLayout} className={styles.footer}>
