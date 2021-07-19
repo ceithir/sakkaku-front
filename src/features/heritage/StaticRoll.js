@@ -14,9 +14,9 @@ const StaticRoll = ({ roll, context }) => {
 
   const { table } = metadata;
 
-  const CustomLayout = ({ children }) => {
+  const CustomLayout = ({ children, ...props }) => {
     return (
-      <Layout dices={dices} context={context}>
+      <Layout dices={dices} context={context} {...props}>
         {children}
         <div className={styles["go-back-container"]}>
           <GoBackButton />
@@ -27,8 +27,9 @@ const StaticRoll = ({ roll, context }) => {
 
   if (dices.some(({ status }) => status === "pending")) {
     return (
-      <CustomLayout>
-        <p>{`Player has yet to choose between the following options.`}</p>
+      <CustomLayout
+        instruction={`Player has yet to choose between the following options.`}
+      >
         <SummaryList
           table={table}
           list={dices

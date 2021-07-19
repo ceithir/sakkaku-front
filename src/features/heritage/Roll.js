@@ -35,8 +35,11 @@ const Roll = () => {
 
   if (dices.some(({ status }) => status === "pending")) {
     return (
-      <Layout dices={dices} context={context}>
-        <p>{`Choose one of those two options as the relative for whom your character is named.`}</p>
+      <Layout
+        dices={dices}
+        context={context}
+        instruction={`Choose one of those two options as the relative for whom your character is named.`}
+      >
         <SummaryList
           list={dices
             .filter(({ status }) => status === "pending")
