@@ -186,6 +186,32 @@ const Intent = ({ onFinish, values, onComplete }) => {
     },
   ].filter(Boolean);
 
+  const miscOptions = [
+    {
+      value: "stirring",
+      label: "Affected by — Shūji — Stirring the Embers",
+      description: `Until the end of the scene, when [chosen Distinction advantage] applies to a check, the target [of Stirring the Embers] may reroll up to three dice (instead of two). [Core, page 219]`,
+    },
+    {
+      value: "2heavens",
+      label: "Affected by — School Ability  — Way of the Dragon",
+      description: (
+        <>
+          {`When a [Mirumoto Two-Heavens Adept is] targeted by an Attack check with a melee weapon, [they] may [...] ward or trap. If [they] ward, the attacker must reroll dice containing `}
+          <Success />
+          {` or `}
+          <Explosion />
+          {` up to [the Mirumoto] school rank. [Core, page 68]`}
+        </>
+      ),
+    },
+    {
+      value: "ringless",
+      label: "Ringless roll",
+      description: `Roll only skill dice. You won't be able to keep (and therefore explode) any die, only to reserve them for later. This is used for a few mechanics like the Center action in a duel. [Core, page 260]`,
+    },
+  ];
+
   return (
     <Form
       className={styles.form}
@@ -469,23 +495,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
             <Select
               mode="multiple"
               placeholder={"Extra options for unusual cases"}
-              options={[
-                {
-                  value: "stirring",
-                  label: "Shūji — Stirring the Embers",
-                },
-                {
-                  value: "2heavens",
-                  label: "Attacking a warding Mirumoto Two-Heavens Adept",
-                },
-                {
-                  value: "ringless",
-                  label: "Ringless roll (ex: Center Duel Action)",
-                },
-              ]}
+              options={miscOptions}
               optionFilterProp="label"
             />
           </Form.Item>
+          <ExplainOptions options={miscOptions} />
           <Form.Item name="mode" label={`Roller behavior`}>
             <Radio.Group
               options={[
