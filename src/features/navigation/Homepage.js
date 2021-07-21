@@ -21,9 +21,17 @@ const Link = ({ uri, children }) => {
 };
 
 const Section = ({ title, text, links = [] }) => {
+  const slug = title
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+
   return (
     <div className={styles.section}>
-      <Title level={2}>{title}</Title>
+      <Title level={2} id={slug}>
+        {title}
+        <a href={`#${slug}`} className={styles.anchor}>{`#`}</a>
+      </Title>
       <div className={styles.content}>
         {text}
         {links.length > 0 && (
