@@ -110,7 +110,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
     const {
       common_modifiers: commonModifiers = [],
       school,
-      techniques = [],
       misc = [],
       unskilled_assist: unskilledAssist,
       skilled_assist: skilledAssist,
@@ -125,7 +124,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
           ...commonModifiers.filter((x) => x !== "void"),
           ...misc.filter((x) => x !== "ringless"),
           school,
-          ...techniques,
         ].filter(Boolean),
       });
     }
@@ -139,13 +137,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
     onFinish({
       ...data,
-      modifiers: [
-        ...commonModifiers,
-        school,
-        ...assist,
-        ...techniques,
-        ...misc,
-      ].filter(Boolean),
+      modifiers: [...commonModifiers, school, ...assist, ...misc].filter(
+        Boolean
+      ),
     });
   };
 
@@ -389,19 +383,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
           {school && (
             <AbilityDescription ability={school} className={styles.school} />
           )}
-          <Form.Item label="Techniques" name="techniques">
-            <Select
-              mode="multiple"
-              placeholder="Relevant shūji, kata, etc."
-              options={[
-                {
-                  value: "stirring",
-                  label: "Shūji — Stirring the Embers",
-                },
-              ]}
-              optionFilterProp="label"
-            />
-          </Form.Item>
           <Form.List
             name="channeled"
             rules={[
@@ -489,6 +470,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
               mode="multiple"
               placeholder={"Extra options for unusual cases"}
               options={[
+                {
+                  value: "stirring",
+                  label: "Shūji — Stirring the Embers",
+                },
                 {
                   value: "2heavens",
                   label: "Attacking a warding Mirumoto Two-Heavens Adept",
