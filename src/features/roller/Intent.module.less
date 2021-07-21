@@ -60,6 +60,13 @@
       margin-left: 8px;
     }
   }
+
+  :global(.ant-form-item-has-error)
+    + :global(.ant-collapse)
+    > :global(.ant-collapse-item.ant-collapse-no-arrow)
+    > :global(.ant-collapse-header) {
+    margin-top: 0;
+  }
 }
 
 .plus :global(.ant-form-item-control-input-content):after {

@@ -275,6 +275,13 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           setChanneled(form.getFieldValue("channeled"));
         }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["common_modifiers", "misc"].includes(name)
+          )
+        ) {
+          form.validateFields(["misc"]);
+        }
       }}
     >
       {!!user && (
@@ -491,7 +498,28 @@ const Intent = ({ onFinish, values, onComplete }) => {
               </>
             }
           />
-          <Form.Item label={"Misc."} name="misc">
+          <Form.Item
+            label={"Misc."}
+            name="misc"
+            rules={[
+              {
+                validator: async (_, misc) => {
+                  if (
+                    misc?.includes("stirring") &&
+                    !form
+                      .getFieldValue("common_modifiers")
+                      ?.includes("distinction")
+                  ) {
+                    return Promise.reject(
+                      new Error(
+                        "Stirring the Embers has no effect on rolls not already affected by a Distinction."
+                      )
+                    );
+                  }
+                },
+              },
+            ]}
+          >
             <Select
               mode="multiple"
               placeholder={"Extra options for unusual cases"}
