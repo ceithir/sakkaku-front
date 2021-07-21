@@ -17,9 +17,9 @@ const CustomLayout = ({ children }) => {
         <a href="https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/">
           {`Legend of the Five Rings Roleplaying Game (5th edition)`}
         </a>
-        {` – ©FFG for all texts and assets`}
+        {` – ©FFG for all quoted texts and images`}
         <br />
-        {`This website is not affiliated in any way with Fantasy Flight Games or Edge Studio.`}
+        {`This website is not affiliated in any way with Fantasy Flight Games or EDGE Studio.`}
         <br />
         {`For any issue or suggestion: `}
         <a href="mailto:contact.sakkaku@gmail.com">{`contact.sakkaku@gmail.com`}</a>
