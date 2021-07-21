@@ -37,7 +37,7 @@ const slice = createSlice({
       state.channelInsteadOfKeeping = false;
 
       state.id = null;
-      window.history.pushState(null, null, "/");
+      window.history.pushState(null, null, "/roll");
     },
     setParameters: (state, action) => {
       const {

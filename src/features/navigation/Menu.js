@@ -18,6 +18,10 @@ const CustomMenu = () => {
   useEffect(() => {
     const getMenuKey = ({ pathname, search }) => {
       if (pathname === "/") {
+        return "home";
+      }
+
+      if (pathname === "/roll") {
         return "new_roll";
       }
 
@@ -55,7 +59,7 @@ const CustomMenu = () => {
         </Link>
       </Menu.Item>
       <Menu.Item key="new_roll">
-        <Link to="/">Roll</Link>
+        <Link to="/roll">Roll</Link>
       </Menu.Item>
       <Menu.Item key="all_rolls" className={styles["sm-hide"]}>
         <Link to="/rolls">All rolls</Link>

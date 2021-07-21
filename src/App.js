@@ -11,6 +11,7 @@ import { setUser } from "./features/user/reducer";
 import HeritageRoll from "./features/heritage/Roll";
 import HeritageRollLoader from "./features/heritage/RollLoader";
 import Calculator from "./features/probabilities/Calculator";
+import Homepage from "./features/navigation/Homepage";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,8 +44,11 @@ const App = () => {
           <Route path="/rolls">
             <List />
           </Route>
-          <Route path="/">
+          <Route path="/roll">
             <Roller />
+          </Route>
+          <Route path="/">
+            <Homepage />
           </Route>
         </Switch>
       </Layout>
