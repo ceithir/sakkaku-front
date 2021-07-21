@@ -9,6 +9,7 @@ const REROLL_TYPES = [
   "ruthless",
   "sailor",
   "wandering",
+  "offering",
 ];
 
 export const isReroll = (modifier) => {

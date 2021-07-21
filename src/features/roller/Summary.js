@@ -42,6 +42,7 @@ const Summary = ({
     ...[
       modifiers.includes("void") && "Seize the Moment",
       modifiers.includes("compromised") && "Compromised",
+      modifiers.includes("offering") && "Proper Offerings",
       modifiers.includes("adversity") && "Adversity",
       modifiers.includes("distinction") && "Distinction",
       skilledAssist > 0 && `Skilled Assistance x${skilledAssist}`,

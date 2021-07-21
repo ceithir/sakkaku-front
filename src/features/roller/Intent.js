@@ -188,6 +188,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
   const miscOptions = [
     {
+      value: "offering",
+      label: "Invocation — Proper Offerings",
+      description: `A shugenja who makes a material offering alongside an invocation may reroll up to 3 rolled dice showing blank results. [Core, page 189]`,
+    },
+    {
       value: "stirring",
       label: "Affected by — Shūji — Stirring the Embers",
       description: `Until the end of the scene, when [chosen Distinction advantage] applies to a check, the target [of Stirring the Embers] may reroll up to three dice (instead of two). [Core, page 219]`,

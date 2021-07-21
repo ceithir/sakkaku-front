@@ -16,6 +16,7 @@ import Result from "./result/Reroll";
 import { longname } from "./data/abilities";
 import Wandering from "./reroll/Wandering";
 import styles from "./Modifier.module.less";
+import Offering from "./reroll/Offering";
 
 const Modifier = ({ roll, dispatch }) => {
   const { dices, modifiers, metadata, mode } = roll;
@@ -26,6 +27,17 @@ const Modifier = ({ roll, dispatch }) => {
 
   const shouldShow = (modifier) =>
     modifiers.includes(modifier) && !rerollTypes.includes(modifier);
+
+  if (shouldShow("offering")) {
+    return (
+      <Offering
+        dices={dices}
+        onFinish={(positions) => dispatch(reroll(roll, positions, "offering"))}
+        basePool={basePool}
+        rerollTypes={rerollTypes}
+      />
+    );
+  }
 
   if (shouldShow("distinction")) {
     return (
