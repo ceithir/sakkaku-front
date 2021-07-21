@@ -19,7 +19,6 @@ const TITLES = {
   distinction: "Distinction",
   adversity: "Adversity",
   "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
-  ruthless: "Custom reroll (from NPCs' or other PCs' effects)",
   offering: "Proper Offerings",
 };
 

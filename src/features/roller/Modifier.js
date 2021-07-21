@@ -105,15 +105,6 @@ const Modifier = ({ roll, dispatch }) => {
     );
   }
 
-  if (shouldShow("ruthless")) {
-    return (
-      <AbilityReroll
-        name={"ruthless"}
-        text={`Custom reroll: Select the dice you have to reroll.`}
-      />
-    );
-  }
-
   if (shouldShow("shadow")) {
     return (
       <AbilityReroll

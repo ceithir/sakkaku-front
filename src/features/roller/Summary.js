@@ -55,8 +55,6 @@ const Summary = ({
     ...[
       modifiers.includes("2heavens") &&
         "Attacking a warding Mirumoto Two-Heavens Adept",
-      modifiers.includes("ruthless") &&
-        "Custom reroll (from NPCs' or other PCs' effects)",
       modifiers.some(isSpecialReroll) && "Custom reroll",
       modifiers.some(isSpecialAlteration) && "Custom alteration",
     ],

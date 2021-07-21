@@ -6,7 +6,6 @@ const REROLL_TYPES = [
   "manipulator",
   "ishiken",
   "2heavens",
-  "ruthless",
   "sailor",
   "wandering",
   "offering",
