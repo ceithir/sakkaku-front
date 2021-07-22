@@ -1,8 +1,10 @@
 import React from "react";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Button, Typography, AutoComplete } from "antd";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router-dom";
 import styles from "./Search.module.less";
+import { useSelector } from "react-redux";
+import { selectCampaigns, selectCharacters } from "../user/reducer";
 
 const { Title } = Typography;
 
@@ -16,9 +18,24 @@ const trim = (obj) => {
   return newObj;
 };
 
+const arrayToAutoCompleteOptions = (values) => {
+  if (!values) {
+    return undefined;
+  }
+
+  return values.map((value) => {
+    return {
+      value,
+    };
+  });
+};
+
 const Search = () => {
   const location = useLocation();
   const history = useHistory();
+
+  const campaigns = useSelector(selectCampaigns);
+  const characters = useSelector(selectCharacters);
 
   const onFinish = (data) => {
     history.push(`/rolls?${queryString.stringify(trim(data))}`);
@@ -31,10 +48,10 @@ const Search = () => {
       <Title level={2}>{`Search`}</Title>
       <Form onFinish={onFinish} layout="inline" initialValues={initialValues}>
         <Form.Item label={`Campaign`} name="campaign">
-          <Input />
+          <AutoComplete options={arrayToAutoCompleteOptions(campaigns)} />
         </Form.Item>
         <Form.Item label={`Character`} name="character">
-          <Input />
+          <AutoComplete options={arrayToAutoCompleteOptions(characters)} />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
