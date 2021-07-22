@@ -32,6 +32,8 @@ const arrayToAutoCompleteOptions = (values) => {
 };
 
 const StaticSearch = ({ initialValues, onFinish, campaigns, characters }) => {
+  const shouldOpenAdvanced = !!initialValues.type;
+
   return (
     <div className={styles.container}>
       <Title level={2}>{`Search`}</Title>
@@ -49,8 +51,8 @@ const StaticSearch = ({ initialValues, onFinish, campaigns, characters }) => {
             </Button>
           </Form.Item>
         </fieldset>
-        <Collapse ghost>
-          <Panel header="Advanced">
+        <Collapse ghost defaultActiveKey={shouldOpenAdvanced ? 1 : undefined}>
+          <Panel header="Advanced" key="1">
             <fieldset>
               <Form.Item label={`Type`} name="type">
                 <Select
