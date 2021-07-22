@@ -9,7 +9,7 @@ import Roller from "./index";
 import Loader from "../navigation/Loader";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
-import Breadcrumb from "./Breadcrumb";
+import Breadcrumb from "../navigation/Breadcrumb";
 import { orderDices } from "./utils";
 import styles from "./IdentifiedRoll.module.less";
 import GoBackButton from "../browse/GoBackButton";

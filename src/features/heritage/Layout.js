@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 import backgroundImage from "../../background.jpg";
 import Context from "./Context";
+import Breadcrumb from "./Breadcrumb";
 
 const { Title } = Typography;
 
@@ -15,6 +16,7 @@ const Layout = ({ children, dices, context, instruction }) => {
   return (
     <>
       {!user && <AnonymousAlert />}
+      <Breadcrumb {...context} />
       <div
         className={styles.layout}
         style={{
