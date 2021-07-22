@@ -9,7 +9,6 @@ import Roller from "./index";
 import Loader from "../navigation/Loader";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
-import Breadcrumb from "../navigation/Breadcrumb";
 import { orderDices } from "./utils";
 import styles from "./IdentifiedRoll.module.less";
 import GoBackButton from "../browse/GoBackButton";
@@ -51,7 +50,6 @@ const IdentifiedRoll = () => {
 
   const { roll, user: player, result } = data;
   const { dices, parameters } = roll;
-  const { campaign, character, description } = data;
 
   if (!result && user && player && user.id === player.id) {
     return <Roller save={data} />;
@@ -59,11 +57,6 @@ const IdentifiedRoll = () => {
 
   return (
     <>
-      <Breadcrumb
-        campaign={campaign}
-        character={character}
-        description={description}
-      />
       {result ? (
         <Complete
           dices={dices}

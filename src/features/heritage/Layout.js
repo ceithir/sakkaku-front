@@ -3,7 +3,6 @@ import { Typography } from "antd";
 import styles from "./Layout.module.less";
 import backgroundImage from "../../background.jpg";
 import Context from "./Context";
-import Breadcrumb from "./Breadcrumb";
 
 const { Title } = Typography;
 
@@ -11,7 +10,6 @@ const Layout = ({ children, dices, context, instruction, alert }) => {
   return (
     <>
       {alert}
-      <Breadcrumb {...context} />
       <div
         className={styles.layout}
         style={{
