@@ -3,6 +3,7 @@ import NextButton from "../NextButton";
 import { Button } from "antd";
 import styles from "./Ability.module.less";
 import RerollDiceBox from "./RerollDiceBox";
+import { bestDiceToReroll } from "../utils";
 
 const Ability = ({
   dices,
@@ -12,8 +13,17 @@ const Ability = ({
   rerollTypes,
   title,
   cancel,
+  modifiers,
+  shouldPreselectDice,
 }) => {
-  const [toReroll, setToReroll] = useState([]);
+  const defaultToReroll = shouldPreselectDice
+    ? bestDiceToReroll({
+        roll: { dices, modifiers },
+        max: 1,
+      })
+    : [];
+  const [toReroll, setToReroll] = useState(defaultToReroll);
+
   const toggle = (index) => {
     if (toReroll.includes(index)) {
       return setToReroll(toReroll.filter((i) => i !== index));

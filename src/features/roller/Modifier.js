@@ -35,6 +35,8 @@ const Modifier = ({ roll, dispatch }) => {
         onFinish={(positions) => dispatch(reroll(roll, positions, "offering"))}
         basePool={basePool}
         rerollTypes={rerollTypes}
+        modifiers={modifiers}
+        mode={mode}
       />
     );
   }
@@ -71,6 +73,7 @@ const Modifier = ({ roll, dispatch }) => {
         basePool={basePool}
         rerollTypes={rerollTypes}
         title={longname(name)}
+        modifiers={modifiers}
         {...props}
       />
     );
@@ -81,6 +84,7 @@ const Modifier = ({ roll, dispatch }) => {
       <AbilityReroll
         name={"deathdealer"}
         text={`Thanks to your School Ability, you may reroll dice up to your school rank.`}
+        shouldPreselectDice={mode === "semiauto"}
       />
     );
   }
@@ -90,6 +94,7 @@ const Modifier = ({ roll, dispatch }) => {
       <AbilityReroll
         name={"manipulator"}
         text={`Thanks to your School Ability, you may reroll dice up to your school rank.`}
+        shouldPreselectDice={mode === "semiauto"}
       />
     );
   }
@@ -101,6 +106,8 @@ const Modifier = ({ roll, dispatch }) => {
         onFinish={(positions) => dispatch(reroll(roll, positions, "2heavens"))}
         basePool={basePool}
         rerollTypes={rerollTypes}
+        modifiers={modifiers}
+        mode={mode}
       />
     );
   }

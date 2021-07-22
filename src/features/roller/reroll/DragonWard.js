@@ -1,9 +1,27 @@
 import React, { useState } from "react";
 import NextButton from "../NextButton";
 import RerollDiceBox from "./RerollDiceBox";
+import { bestDiceToReroll } from "../utils";
 
-const DragonWard = ({ dices, onFinish, basePool, rerollTypes }) => {
-  const [toReroll, setToReroll] = useState([]);
+const DragonWard = ({
+  dices,
+  onFinish,
+  basePool,
+  rerollTypes,
+  modifiers,
+  mode,
+}) => {
+  const defaultToReroll =
+    mode === "semiauto"
+      ? bestDiceToReroll({
+          roll: { dices, modifiers },
+          max: 1,
+          restrictFunc: ({ value: { success = 0, explosion = 0 } }) =>
+            success > 0 || explosion > 0,
+        })
+      : [];
+
+  const [toReroll, setToReroll] = useState(defaultToReroll);
   const min = Math.min(
     1,
     dices.filter(

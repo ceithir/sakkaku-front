@@ -1,10 +1,29 @@
 import React, { useState } from "react";
 import NextButton from "../NextButton";
 import RerollDiceBox from "./RerollDiceBox";
+import { bestDiceToReroll } from "../utils";
 
-const Offering = ({ dices, onFinish, basePool, rerollTypes }) => {
-  const [toReroll, setToReroll] = useState([]);
+const Offering = ({
+  dices,
+  onFinish,
+  basePool,
+  rerollTypes,
+  modifiers,
+  mode,
+}) => {
   const max = 3;
+  const isBlank = ({ value: { opportunity, success, explosion, strife } }) =>
+    success === 0 && explosion === 0 && opportunity === 0 && strife === 0;
+  const defaultToReroll =
+    mode === "semiauto"
+      ? bestDiceToReroll({
+          roll: { dices, modifiers },
+          max,
+          restrictFunc: isBlank,
+        })
+      : [];
+  const [toReroll, setToReroll] = useState(defaultToReroll);
+
   const toggle = (index) => {
     if (toReroll.includes(index)) {
       return setToReroll(toReroll.filter((i) => i !== index));
@@ -28,12 +47,7 @@ const Offering = ({ dices, onFinish, basePool, rerollTypes }) => {
             return false;
           }
 
-          return (
-            dice.value.success === 0 &&
-            dice.value.explosion === 0 &&
-            dice.value.opportunity === 0 &&
-            dice.value.strife === 0
-          );
+          return isBlank(dice);
         };
         const selectable = isSelectable();
 
