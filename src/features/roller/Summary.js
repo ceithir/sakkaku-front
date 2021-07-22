@@ -5,7 +5,6 @@ import styles from "./Summary.module.less";
 import { orderDices, isSpecialReroll, isSpecialAlteration } from "./utils";
 import ABILITIES from "./data/abilities";
 import CharacterSheet from "../display/CharacterSheet";
-import { CharacterLink, CampaignLink, PlayerLink } from "../navigation/Links";
 
 const { Text } = Typography;
 
@@ -63,23 +62,6 @@ const Summary = ({
     .join(" / ");
 
   const data = [
-    player && {
-      label: `Identity`,
-      content: [
-        {
-          label: `Campaign`,
-          content: <CampaignLink campaign={campaign} />,
-        },
-        {
-          label: `Character`,
-          content: <CharacterLink campaign={campaign} character={character} />,
-        },
-        {
-          label: `Player`,
-          content: <PlayerLink player={player} />,
-        },
-      ],
-    },
     description && {
       label: `Description`,
       content: description,
@@ -146,7 +128,7 @@ const Summary = ({
 
   return (
     <div className={styles.container}>
-      <CharacterSheet data={data} />
+      <CharacterSheet data={data} identity={{ character, campaign, player }} />
     </div>
   );
 };

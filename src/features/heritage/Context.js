@@ -2,22 +2,12 @@ import React from "react";
 import CharacterSheet from "../display/CharacterSheet";
 import styles from "./Context.module.less";
 import classNames from "classnames";
-import { CharacterLink, CampaignLink, PlayerLink } from "../navigation/Links";
 
 const Context = ({ character, campaign, user, description, dices = [] }) => {
   const [firstDie, secondDie, thirdDie] = dices;
   const picked = dices.find(({ status }) => status === "kept");
 
   const data = [
-    character && {
-      label: `Character`,
-      content: <CharacterLink character={character} />,
-    },
-    campaign && {
-      label: `Campaign`,
-      content: <CampaignLink campaign={campaign} character={character} />,
-    },
-    user && { label: `Player`, content: <PlayerLink player={user} /> },
     dices.length > 0 && {
       label: "Dice",
       content: [
@@ -42,7 +32,10 @@ const Context = ({ character, campaign, user, description, dices = [] }) => {
         [styles.expanded]: !!character,
       })}
     >
-      <CharacterSheet data={data} />
+      <CharacterSheet
+        data={data}
+        identity={{ character, campaign, player: user }}
+      />
     </div>
   );
 };
