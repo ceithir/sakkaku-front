@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Typography, AutoComplete } from "antd";
+import { Form, Button, Typography, AutoComplete, Select, Collapse } from "antd";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router-dom";
 import styles from "./Search.module.less";
@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { selectCampaigns, selectCharacters } from "../user/reducer";
 
 const { Title } = Typography;
+const { Panel } = Collapse;
 
 const trim = (obj) => {
   let newObj = {};
@@ -30,19 +31,7 @@ const arrayToAutoCompleteOptions = (values) => {
   });
 };
 
-const Search = () => {
-  const location = useLocation();
-  const history = useHistory();
-
-  const campaigns = useSelector(selectCampaigns);
-  const characters = useSelector(selectCharacters);
-
-  const onFinish = (data) => {
-    history.push(`/rolls?${queryString.stringify(trim(data))}`);
-  };
-
-  const initialValues = queryString.parse(location.search);
-
+const StaticSearch = ({ initialValues, onFinish, campaigns, characters }) => {
   return (
     <div className={styles.container}>
       <Title level={2}>{`Search`}</Title>
@@ -58,8 +47,44 @@ const Search = () => {
             {`Submit`}
           </Button>
         </Form.Item>
+        <Collapse ghost>
+          <Panel header="Advanced">
+            <Form.Item label={`Type`} name="type">
+              <Select
+                options={[
+                  { value: "FFG-L5R", label: `FFG L5R Check` },
+                  { value: "FFG-L5R-Heritage", label: `FFG L5R Heritage` },
+                ]}
+                allowClear={true}
+              />
+            </Form.Item>
+          </Panel>
+        </Collapse>
       </Form>
     </div>
+  );
+};
+
+const Search = () => {
+  const location = useLocation();
+  const history = useHistory();
+
+  const campaigns = useSelector(selectCampaigns);
+  const characters = useSelector(selectCharacters);
+
+  const onFinish = (data) => {
+    history.push(`/rolls?${queryString.stringify(trim(data))}`);
+  };
+
+  const initialValues = queryString.parse(location.search);
+
+  return (
+    <StaticSearch
+      initialValues={initialValues}
+      onFinish={onFinish}
+      campaigns={campaigns}
+      characters={characters}
+    />
   );
 };
 
