@@ -9,6 +9,7 @@ import Summary from "./Summary";
 import { selectUser } from "../user/reducer";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
+import AnonymousAlert from "../../AnonymousAlert";
 
 const Roll = () => {
   const error = useSelector(selectError);
@@ -25,7 +26,7 @@ const Roll = () => {
 
   if (!dices.length) {
     return (
-      <Layout>
+      <Layout alert={!user && <AnonymousAlert />}>
         <Form />
       </Layout>
     );
