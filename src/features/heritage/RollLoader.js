@@ -15,6 +15,16 @@ import {
 import StaticRoll from "./StaticRoll";
 import Roll from "./Roll";
 
+const isOngoingRollOfCurrentUser = ({ data, user }) => {
+  return (
+    data &&
+    user &&
+    data.user &&
+    user.id === data.user.id &&
+    data.roll.dices.some(({ status }) => status === "pending")
+  );
+};
+
 const RollLoader = () => {
   const { uuid } = useParams();
   const user = useSelector(selectUser);
@@ -43,7 +53,7 @@ const RollLoader = () => {
     if (!data) {
       return;
     }
-    if (user && data.user && user.id === data.user.id) {
+    if (isOngoingRollOfCurrentUser({ data, user })) {
       const {
         uuid,
         roll: { dices, metadata },
@@ -72,7 +82,7 @@ const RollLoader = () => {
     return null;
   }
 
-  if (user && data.user && user.id === data.user.id) {
+  if (isOngoingRollOfCurrentUser({ user, data })) {
     return <Roll />;
   }
 
