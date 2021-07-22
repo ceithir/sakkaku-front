@@ -4,7 +4,7 @@ import BbCode from "../button/BbCode";
 import styles from "./Resolve.module.less";
 import Dices from "../Dices";
 import { replaceRerolls, orderDices } from "../utils";
-import DirectLink from "../button/DirectLink";
+import CopyLink from "../../trinket/CopyLink";
 import LineContainer from "../button/LineContainer";
 import { Typography } from "antd";
 
@@ -60,7 +60,7 @@ const Resolve = ({
           )}
         </div>
         <LineContainer>
-          <DirectLink id={id} />
+          <CopyLink disabled={!id} />
           <BbCode
             id={id}
             dices={dices}

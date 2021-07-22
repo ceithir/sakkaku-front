@@ -10,6 +10,7 @@ import { selectUser } from "../user/reducer";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
 import AnonymousAlert from "../../AnonymousAlert";
+import CopyLink from "../trinket/CopyLink";
 
 const Roll = () => {
   const error = useSelector(selectError);
@@ -74,6 +75,7 @@ const Roll = () => {
             .map(({ value }) => value)}
         />
         <div className={styles.footer}>
+          <CopyLink disabled={!roll.uuid} />
           <Button
             onClick={() => {
               dispatch(reset());

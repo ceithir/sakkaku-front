@@ -2,14 +2,14 @@ import React from "react";
 import { Button, message } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const DirectLink = ({ id }) => {
+const CopyLink = ({ disabled }) => {
   const buttonText = `Copy link`;
 
-  if (!id) {
+  if (disabled) {
     return <Button disabled>{buttonText}</Button>;
   }
 
-  const text = `${window.location.origin}/rolls/${id}`;
+  const text = `${window.location.origin}${window.location.pathname}`;
 
   return (
     <CopyToClipboard
@@ -21,4 +21,4 @@ const DirectLink = ({ id }) => {
   );
 };
 
-export default DirectLink;
+export default CopyLink;
