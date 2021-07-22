@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Typography, AutoComplete, Select, Collapse } from "antd";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router-dom";
@@ -31,13 +31,18 @@ const arrayToAutoCompleteOptions = (values) => {
   });
 };
 
-const StaticSearch = ({ initialValues, onFinish, campaigns, characters }) => {
-  const shouldOpenAdvanced = !!initialValues.type;
-
+const StaticSearch = ({
+  onFinish,
+  campaigns,
+  characters,
+  form,
+  activeKeys,
+  setActiveKeys,
+}) => {
   return (
     <div className={styles.container}>
       <Title level={2}>{`Search`}</Title>
-      <Form onFinish={onFinish} initialValues={initialValues}>
+      <Form onFinish={onFinish} form={form}>
         <fieldset>
           <Form.Item label={`Campaign`} name="campaign">
             <AutoComplete options={arrayToAutoCompleteOptions(campaigns)} />
@@ -51,7 +56,7 @@ const StaticSearch = ({ initialValues, onFinish, campaigns, characters }) => {
             </Button>
           </Form.Item>
         </fieldset>
-        <Collapse ghost defaultActiveKey={shouldOpenAdvanced ? 1 : undefined}>
+        <Collapse ghost activeKey={activeKeys} onChange={setActiveKeys}>
           <Panel header="Advanced" key="1">
             <fieldset>
               <Form.Item label={`Type`} name="type">
@@ -71,8 +76,28 @@ const StaticSearch = ({ initialValues, onFinish, campaigns, characters }) => {
   );
 };
 
-const Search = () => {
+const LocationSearch = (props) => {
+  const [form] = Form.useForm();
   const location = useLocation();
+  const [activeKeys, setActiveKeys] = useState([]);
+
+  useEffect(() => {
+    const { character, campaign, type } = queryString.parse(location.search);
+    form.setFieldsValue({ character, campaign, type });
+    !!type && setActiveKeys(["1"]);
+  }, [form, location, setActiveKeys]);
+
+  return (
+    <StaticSearch
+      form={form}
+      activeKeys={activeKeys}
+      setActiveKeys={setActiveKeys}
+      {...props}
+    />
+  );
+};
+
+const Search = () => {
   const history = useHistory();
 
   const campaigns = useSelector(selectCampaigns);
@@ -82,11 +107,8 @@ const Search = () => {
     history.push(`/rolls?${queryString.stringify(trim(data))}`);
   };
 
-  const initialValues = queryString.parse(location.search);
-
   return (
-    <StaticSearch
-      initialValues={initialValues}
+    <LocationSearch
       onFinish={onFinish}
       campaigns={campaigns}
       characters={characters}
