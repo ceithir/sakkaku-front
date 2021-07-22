@@ -1,10 +1,11 @@
 import React from "react";
 import { Spin } from "antd";
 import styles from "./Loader.module.css";
+import classNames from "classnames";
 
-const Loader = () => {
+const Loader = ({ className }) => {
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, { [className]: !!className })}>
       <Spin className={styles.loader} size="large" />
     </div>
   );

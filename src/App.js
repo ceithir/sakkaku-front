@@ -12,6 +12,7 @@ import HeritageRoll from "./features/heritage/Roll";
 import HeritageRollLoader from "./features/heritage/RollLoader";
 import Calculator from "./features/probabilities/Calculator";
 import Homepage from "./features/navigation/Homepage";
+import Search from "./features/browse/Search";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ const App = () => {
           </Route>
           <Route path="/rolls">
             <List />
+            <Search />
           </Route>
           <Route path="/roll">
             <Roller />

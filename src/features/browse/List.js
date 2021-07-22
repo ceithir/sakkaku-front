@@ -10,7 +10,6 @@ import Loader from "../navigation/Loader";
 import Pagination from "../../Pagination";
 import HeritageResult from "./HeritageResult";
 import heritageTables from "../heritage/data/heritage";
-import Search from "./Search";
 
 const { Text } = Typography;
 
@@ -209,7 +208,7 @@ const List = () => {
   }, [uri]);
 
   if (loading) {
-    return <Loader />;
+    return <Loader className={styles.loader} />;
   }
 
   if (error) {
@@ -253,12 +252,12 @@ const List = () => {
   return (
     <>
       <Table columns={columns} dataSource={dataSource} pagination={false} />
+      <div className={styles["blank-filler"]} />
       <Pagination
         pageSize={data["per_page"]}
         current={page}
         total={data["total"]}
       />
-      <Search />
     </>
   );
 };

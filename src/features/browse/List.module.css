@@ -7,3 +7,11 @@ a.see-more {
     display: none;
   }
 }
+
+.loader {
+  flex: 1;
+}
+
+.blank-filler {
+  flex: 1;
+}
