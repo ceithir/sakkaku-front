@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Form, Button, Typography, AutoComplete, Select, Collapse } from "antd";
+import {
+  Form,
+  Button,
+  Typography,
+  AutoComplete,
+  Select,
+  Collapse,
+  Affix,
+} from "antd";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router-dom";
 import styles from "./Search.module.less";
 import { useSelector } from "react-redux";
 import { selectCampaigns, selectCharacters } from "../user/reducer";
+import { LockOutlined, UnlockOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 const { Panel } = Collapse;
+
+const anchor = "search";
 
 const trim = (obj) => {
   let newObj = {};
@@ -38,10 +49,16 @@ const StaticSearch = ({
   form,
   activeKeys,
   setActiveKeys,
+  affix,
 }) => {
   return (
     <div className={styles.container}>
-      <Title level={2}>{`Search`}</Title>
+      <Title level={2} id={anchor}>
+        {`Search`}
+        <a href={`#${!affix ? anchor : ""}`} className={styles.anchor}>
+          {affix ? <LockOutlined /> : <UnlockOutlined />}
+        </a>
+      </Title>
       <Form onFinish={onFinish} form={form}>
         <fieldset>
           <Form.Item label={`Campaign`} name="campaign">
@@ -86,20 +103,28 @@ const LocationSearch = (props) => {
   const [form] = Form.useForm();
   const location = useLocation();
   const [activeKeys, setActiveKeys] = useState([]);
+  const [affix, setAffix] = useState(false);
 
   useEffect(() => {
     const { character, campaign, type } = queryString.parse(location.search);
     form.setFieldsValue({ character, campaign, type });
     !!type && setActiveKeys(["1"]);
+    setAffix(location.hash === `#${anchor}`);
   }, [form, location, setActiveKeys]);
 
+  const Container = ({ children }) =>
+    affix ? <Affix offsetBottom={0}>{children}</Affix> : <>{children}</>;
+
   return (
-    <StaticSearch
-      form={form}
-      activeKeys={activeKeys}
-      setActiveKeys={setActiveKeys}
-      {...props}
-    />
+    <Container>
+      <StaticSearch
+        form={form}
+        activeKeys={activeKeys}
+        setActiveKeys={setActiveKeys}
+        affix={affix}
+        {...props}
+      />
+    </Container>
   );
 };
 
@@ -110,7 +135,7 @@ const Search = () => {
   const characters = useSelector(selectCharacters);
 
   const onFinish = (data) => {
-    history.push(`/rolls?${queryString.stringify(trim(data))}`);
+    history.push(`/rolls?${queryString.stringify(trim(data))}#${anchor}`);
   };
 
   return (
