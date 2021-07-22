@@ -6,10 +6,9 @@ import Context from "./Context";
 
 const { Title } = Typography;
 
-const Layout = ({ children, dices, context, instruction, alert }) => {
+const Layout = ({ children, dices, context, instruction }) => {
   return (
     <>
-      {alert}
       <div
         className={styles.layout}
         style={{

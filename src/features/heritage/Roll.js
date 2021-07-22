@@ -13,6 +13,17 @@ import AnonymousAlert from "../../AnonymousAlert";
 import CopyLink from "../trinket/CopyLink";
 import { useHistory } from "react-router-dom";
 
+const CustomLayout = ({ children, ...props }) => {
+  const user = useSelector(selectUser);
+
+  return (
+    <>
+      {!user && <AnonymousAlert />}
+      <Layout {...props}>{children}</Layout>
+    </>
+  );
+};
+
 const Roll = () => {
   const error = useSelector(selectError);
   const dispatch = useDispatch();
@@ -29,9 +40,9 @@ const Roll = () => {
 
   if (!dices.length) {
     return (
-      <Layout alert={!user && <AnonymousAlert />}>
+      <CustomLayout>
         <Form />
-      </Layout>
+      </CustomLayout>
     );
   }
 
@@ -39,7 +50,7 @@ const Roll = () => {
 
   if (dices.some(({ status }) => status === "pending")) {
     return (
-      <Layout
+      <CustomLayout
         dices={dices}
         context={context}
         instruction={`Choose one of those two options as the relative for whom your character is named.`}
@@ -63,12 +74,12 @@ const Roll = () => {
             })}
           table={table}
         ></SummaryList>
-      </Layout>
+      </CustomLayout>
     );
   }
 
   return (
-    <Layout dices={dices} context={context}>
+    <CustomLayout dices={dices} context={context}>
       <div className={styles.expandable}>
         <Summary
           table={table}
@@ -94,7 +105,7 @@ const Roll = () => {
           >{`Roll another heritage`}</Button>
         </div>
       </div>
-    </Layout>
+    </CustomLayout>
   );
 };
 
