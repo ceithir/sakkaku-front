@@ -10,6 +10,7 @@ import Loader from "../navigation/Loader";
 import Pagination from "../../Pagination";
 import HeritageResult from "./HeritageResult";
 import heritageTables from "../heritage/data/heritage";
+import Search from "./Search";
 
 const { Text } = Typography;
 
@@ -257,6 +258,7 @@ const List = () => {
         current={page}
         total={data["total"]}
       />
+      <Search />
     </>
   );
 };
