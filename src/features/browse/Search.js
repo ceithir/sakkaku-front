@@ -45,10 +45,16 @@ const StaticSearch = ({
       <Form onFinish={onFinish} form={form}>
         <fieldset>
           <Form.Item label={`Campaign`} name="campaign">
-            <AutoComplete options={arrayToAutoCompleteOptions(campaigns)} />
+            <AutoComplete
+              options={arrayToAutoCompleteOptions(campaigns)}
+              allowClear={true}
+            />
           </Form.Item>
           <Form.Item label={`Character`} name="character">
-            <AutoComplete options={arrayToAutoCompleteOptions(characters)} />
+            <AutoComplete
+              options={arrayToAutoCompleteOptions(characters)}
+              allowClear={true}
+            />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
