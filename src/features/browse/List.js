@@ -10,6 +10,7 @@ import Loader from "../navigation/Loader";
 import Pagination from "../../Pagination";
 import HeritageResult from "./HeritageResult";
 import heritageTables from "../heritage/data/heritage";
+import { CharacterLink, CampaignLink, PlayerLink } from "../navigation/Links";
 
 const { Text } = Typography;
 
@@ -52,11 +53,7 @@ const columns = [
     dataIndex: "campaign",
     key: "campaign",
     render: (campaign) => {
-      return (
-        <Link to={`/rolls?${queryString.stringify({ campaign })}`}>
-          {campaign}
-        </Link>
-      );
+      return <CampaignLink campaign={campaign} />;
     },
   },
   {
@@ -64,11 +61,7 @@ const columns = [
     dataIndex: "character",
     key: "character",
     render: ({ character, campaign }) => {
-      return (
-        <Link to={`/rolls?${queryString.stringify({ campaign, character })}`}>
-          {character}
-        </Link>
-      );
+      return <CharacterLink campaign={campaign} character={character} />;
     },
   },
   {
@@ -76,15 +69,7 @@ const columns = [
     dataIndex: "player",
     key: "player",
     render: (player) => {
-      if (!player) {
-        return <Text delete>Deleted account</Text>;
-      }
-
-      return (
-        <Link to={`/rolls?${queryString.stringify({ player: player.id })}`}>
-          {player.name}
-        </Link>
-      );
+      return <PlayerLink player={player} />;
     },
     responsive: ["md"],
   },

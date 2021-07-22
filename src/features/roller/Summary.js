@@ -1,11 +1,11 @@
 import React from "react";
 import { Typography } from "antd";
-import { Link } from "react-router-dom";
 import Dice from "./Dice";
 import styles from "./Summary.module.less";
 import { orderDices, isSpecialReroll, isSpecialAlteration } from "./utils";
 import ABILITIES from "./data/abilities";
 import CharacterSheet from "../display/CharacterSheet";
+import { CharacterLink, CampaignLink, PlayerLink } from "../navigation/Links";
 
 const { Text } = Typography;
 
@@ -68,19 +68,15 @@ const Summary = ({
       content: [
         {
           label: `Campaign`,
-          content: <Link to={`/rolls?campaign=${campaign}`}>{campaign}</Link>,
+          content: <CampaignLink campaign={campaign} />,
         },
         {
           label: `Character`,
-          content: (
-            <Link to={`/rolls?campaign=${campaign}&character=${character}`}>
-              {character}
-            </Link>
-          ),
+          content: <CharacterLink campaign={campaign} character={character} />,
         },
         {
           label: `Player`,
-          content: <Link to={`/rolls?player=${player.id}`}>{player.name}</Link>,
+          content: <PlayerLink player={player} />,
         },
       ],
     },
