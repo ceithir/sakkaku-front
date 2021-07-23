@@ -6,12 +6,11 @@ const REROLL_TYPES = [
   "manipulator",
   "ishiken",
   "2heavens",
-  "sailor",
   "wandering",
   "offering",
 ];
 
-const DEPRECATED_REROLL_TYPES = ["ruthless"];
+const DEPRECATED_REROLL_TYPES = ["ruthless", "sailor"];
 
 export const isReroll = (modifier) => {
   if (isSpecialReroll(modifier) || isSpecialAlteration(modifier)) {
@@ -293,6 +292,12 @@ export const bestDiceToReroll = ({ roll, max, restrictFunc }) => {
 };
 
 export const getMysteriousModifierLabel = ({ modifier, metadata }) => {
+  if (DEPRECATED_REROLL_TYPES.includes(modifier)) {
+    if (modifier === "sailor") {
+      return `Storm Fleet Sailor School Ability`;
+    }
+  }
+
   const isReroll = isSpecialReroll(modifier);
   const isAlteration = isSpecialAlteration(modifier);
 

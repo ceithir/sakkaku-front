@@ -63,7 +63,6 @@ const Resolve = ({
           <CopyLink disabled={!id} />
           <BbCode
             id={id}
-            dices={dices}
             tn={tn}
             description={description}
             modifiers={rerollTypes}

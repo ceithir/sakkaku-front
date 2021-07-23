@@ -4,14 +4,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { countDices } from "../utils";
 import { diceToImageSrc } from "../Dice";
 
-const BbCode = ({
-  id,
-  description,
-  tn,
-  dices,
-  modifiers = [],
-  cleanedUpDice,
-}) => {
+const BbCode = ({ id, description, tn, modifiers = [], cleanedUpDice }) => {
   const buttonText = `Copy as BBCode`;
 
   if (!id) {
@@ -32,11 +25,7 @@ const BbCode = ({
     },
     {
       label: "Strife",
-      value: dices.some(({ metadata }) => metadata?.source === "sailor")
-        ? `${strifeCount} + ${
-            dices.filter(({ metadata }) => metadata?.source === "sailor").length
-          }`
-        : strifeCount,
+      value: strifeCount,
     },
   ];
 

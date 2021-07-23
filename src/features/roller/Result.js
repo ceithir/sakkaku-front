@@ -11,12 +11,8 @@ const Result = ({ dices, tn, extra, className, modifiers = [] }) => {
     return status === "kept" || (extra && extra.includes(index));
   });
 
-  const {
-    successCount,
-    opportunityCount,
-    strifeCount,
-    blankCount,
-  } = countDices(keptDices);
+  const { successCount, opportunityCount, strifeCount, blankCount } =
+    countDices(keptDices);
 
   const data = [
     {
@@ -73,19 +69,6 @@ const Result = ({ dices, tn, extra, className, modifiers = [] }) => {
       count: honorLoss,
       color: honorLoss > 0 && "danger",
     });
-  }
-
-  if (modifiers.includes("sailor")) {
-    const sailorDiceCount = dices.filter(
-      ({ metadata }) => metadata?.source === "sailor"
-    ).length;
-    if (sailorDiceCount > 0) {
-      data.push({
-        type: "Strife from Ability",
-        count: sailorDiceCount,
-        color: "danger",
-      });
-    }
   }
 
   if (modifiers.includes("wandering")) {

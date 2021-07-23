@@ -10,7 +10,6 @@ import Adversity from "./reroll/Adversity";
 import Ability from "./reroll/Ability";
 import Ishiken from "./reroll/Ishiken";
 import DragonWard from "./reroll/DragonWard";
-import Sailor from "./reroll/Sailor";
 import Alter from "./reroll/Alter";
 import {
   isSpecialReroll,
@@ -26,7 +25,6 @@ import Offering from "./reroll/Offering";
 const Modifier = ({ roll, dispatch }) => {
   const { dices, modifiers, metadata, mode } = roll;
 
-  const compromised = modifiers.includes("compromised");
   const basePool = rolledDicesCount(roll);
   const rerollTypes = metadata?.rerolls || [];
 
@@ -133,18 +131,6 @@ const Modifier = ({ roll, dispatch }) => {
       <AbilityReroll
         name={"shadow"}
         text={`Thanks to your School Ability, you can stake honor up to your school rank to re-roll a number of dice equal to twice the amount of honor staked.`}
-      />
-    );
-  }
-
-  if (shouldShow("sailor")) {
-    return (
-      <Sailor
-        dices={dices}
-        onFinish={(positions) => dispatch(reroll(roll, positions, "sailor"))}
-        basePool={basePool}
-        rerollTypes={rerollTypes}
-        compromised={compromised}
       />
     );
   }

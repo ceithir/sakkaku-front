@@ -3,13 +3,11 @@ import manipulatorImage from "./images/abilities/manipulator.png";
 import shadowImage from "./images/abilities/shadow.png";
 import deathdealerImage from "./images/abilities/deathdealer.jpg";
 import ishikenImage from "./images/abilities/ishiken.png";
-import sailorImage from "./images/abilities/sailor.png";
 import wanderingImage from "./images/abilities/wandering.jpg";
 import { Opportunity } from "../../display/Symbol";
 import deathdealerImage240 from "./images/abilities/deathdealer-240w.jpg";
 import ishikenImage240 from "./images/abilities/ishiken-240w.png";
 import manipulatorImage240 from "./images/abilities/manipulator-240w.png";
-import sailorImage240 from "./images/abilities/sailor-240w.png";
 import shadowImage240 from "./images/abilities/shadow-240w.png";
 import wanderingImage240 from "./images/abilities/wandering-240w.jpg";
 
@@ -76,16 +74,6 @@ const ABILITIES = {
     images: [
       { src: ishikenImage240, width: 240 },
       { src: ishikenImage, width: 468 },
-    ],
-  },
-  sailor: {
-    school: "Storm Fleet Sailor",
-    name: `Sailor’s Fortune`,
-    effect: `Once per round when making a Trade skill check, if you are not Compromised, you may receive a number of strife up to your school rank to reroll that many rolled dice. [The Mantis Clan DLC, page 5]`,
-    image: sailorImage,
-    images: [
-      { src: sailorImage240, width: 240 },
-      { src: sailorImage, width: 800 },
     ],
   },
   wandering: {
