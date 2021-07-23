@@ -178,14 +178,18 @@ const List = () => {
   })}`;
 
   useEffect(() => {
-    setLoading(true);
+    const timeoutID = setTimeout(() => {
+      setLoading(true);
+    }, 100);
     getOnServer({
       uri,
       success: (data) => {
+        clearTimeout(timeoutID);
         setData(data);
         setLoading(false);
       },
       error: (_) => {
+        clearTimeout(timeoutID);
         setError(true);
         setLoading(false);
       },
