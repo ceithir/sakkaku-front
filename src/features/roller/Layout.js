@@ -4,14 +4,22 @@ import { selectUser } from "../user/reducer";
 import AnonymousAlert from "../../AnonymousAlert";
 import Title from "../display/Title";
 
+export const CommonLayout = ({ children }) => {
+  return (
+    <>
+      <Title>{`Legend of the Five Rings – Check Roll`}</Title>
+      <>{children}</>
+    </>
+  );
+};
+
 const Layout = ({ children }) => {
   const user = useSelector(selectUser);
 
   return (
     <>
       {!user && <AnonymousAlert />}
-      <Title>{`Legend of the Five Rings – Check Roll`}</Title>
-      <>{children}</>
+      <CommonLayout>{children}</CommonLayout>
     </>
   );
 };
