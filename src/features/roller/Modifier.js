@@ -28,6 +28,17 @@ const Modifier = ({ roll, dispatch }) => {
   const shouldShow = (modifier) =>
     modifiers.includes(modifier) && !rerollTypes.includes(modifier);
 
+  if (shouldShow("adversity")) {
+    return (
+      <Adversity
+        dices={dices}
+        onFinish={(positions) => dispatch(reroll(roll, positions, "adversity"))}
+        modifiers={modifiers}
+        mode={mode}
+      />
+    );
+  }
+
   if (shouldShow("offering")) {
     return (
       <Offering
@@ -54,16 +65,6 @@ const Modifier = ({ roll, dispatch }) => {
     );
   }
 
-  if (shouldShow("adversity")) {
-    return (
-      <Adversity
-        dices={dices}
-        onFinish={(positions) => dispatch(reroll(roll, positions, "adversity"))}
-        modifiers={modifiers}
-        mode={mode}
-      />
-    );
-  }
   const AbilityReroll = ({ name, text, ...props }) => {
     return (
       <Ability
