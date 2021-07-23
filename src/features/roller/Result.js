@@ -49,28 +49,6 @@ const Result = ({ dices, tn, extra, className, modifiers = [] }) => {
     }
   }
 
-  if (
-    modifiers.includes("shadow") &&
-    dices.some(({ metadata }) => metadata?.source === "shadow")
-  ) {
-    const shadowRerollDices = dices.filter(
-      ({ metadata }) => metadata?.source === "shadow"
-    );
-    const shadowCount = shadowRerollDices.length;
-    const honorStaked = Math.ceil(shadowCount / 2);
-    const honorLoss = Math.min(
-      honorStaked,
-      shadowRerollDices.filter(
-        ({ value: { success, explosion } }) => success === 0 && explosion === 0
-      ).length
-    );
-    data.push({
-      type: "Honor Loss from Ability",
-      count: honorLoss,
-      color: honorLoss > 0 && "danger",
-    });
-  }
-
   if (modifiers.includes("wandering")) {
     const diceCount = dices.filter(
       ({ metadata }) => metadata?.source === "wandering"

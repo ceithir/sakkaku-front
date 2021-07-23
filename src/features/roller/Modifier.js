@@ -126,15 +126,6 @@ const Modifier = ({ roll, dispatch }) => {
     );
   }
 
-  if (shouldShow("shadow")) {
-    return (
-      <AbilityReroll
-        name={"shadow"}
-        text={`Thanks to your School Ability, you can stake honor up to your school rank to re-roll a number of dice equal to twice the amount of honor staked.`}
-      />
-    );
-  }
-
   const specialReroll = modifiers.find(
     (modifier) => isSpecialReroll(modifier) && shouldShow(modifier)
   );

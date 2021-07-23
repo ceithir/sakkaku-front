@@ -1,7 +1,6 @@
 const REROLL_TYPES = [
   "adversity",
   "distinction",
-  "shadow",
   "deathdealer",
   "manipulator",
   "ishiken",
@@ -10,7 +9,7 @@ const REROLL_TYPES = [
   "offering",
 ];
 
-const DEPRECATED_REROLL_TYPES = ["ruthless", "sailor"];
+const DEPRECATED_REROLL_TYPES = ["ruthless", "sailor", "shadow"];
 
 export const isReroll = (modifier) => {
   if (isSpecialReroll(modifier) || isSpecialAlteration(modifier)) {
@@ -295,6 +294,9 @@ export const getMysteriousModifierLabel = ({ modifier, metadata }) => {
   if (DEPRECATED_REROLL_TYPES.includes(modifier)) {
     if (modifier === "sailor") {
       return `Storm Fleet Sailor School Ability`;
+    }
+    if (modifier === "shadow") {
+      return `Ikoma Shadow School Ability`;
     }
   }
 

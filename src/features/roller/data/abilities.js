@@ -1,6 +1,5 @@
 import React from "react";
 import manipulatorImage from "./images/abilities/manipulator.png";
-import shadowImage from "./images/abilities/shadow.png";
 import deathdealerImage from "./images/abilities/deathdealer.jpg";
 import ishikenImage from "./images/abilities/ishiken.png";
 import wanderingImage from "./images/abilities/wandering.jpg";
@@ -8,7 +7,6 @@ import { Opportunity } from "../../display/Symbol";
 import deathdealerImage240 from "./images/abilities/deathdealer-240w.jpg";
 import ishikenImage240 from "./images/abilities/ishiken-240w.png";
 import manipulatorImage240 from "./images/abilities/manipulator-240w.png";
-import shadowImage240 from "./images/abilities/shadow-240w.png";
 import wanderingImage240 from "./images/abilities/wandering-240w.jpg";
 
 const ABILITIES = {
@@ -20,16 +18,6 @@ const ABILITIES = {
     images: [
       { src: manipulatorImage240, width: 240 },
       { src: manipulatorImage, width: 500 },
-    ],
-  },
-  shadow: {
-    school: "Ikoma Shadow",
-    name: `Victory before Honor`,
-    effect: `Once per scene when performing a check, you may stake an amount of honor no greater than your school rank to re-roll a number of dice equal to twice the amount of honor staked. For each re-rolled die result that does not contain a (success) or (explosion), you forfeit one staked honor. [Court of Stones, page 92]`,
-    image: shadowImage,
-    images: [
-      { src: shadowImage240, width: 240 },
-      { src: shadowImage, width: 746 },
     ],
   },
   deathdealer: {
