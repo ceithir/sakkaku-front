@@ -17,6 +17,7 @@ const initialState = {
   addkept: [],
   channelInsteadOfKeeping: false,
   mode: "semiauto",
+  delayAfterDistinction: false,
 };
 
 const slice = createSlice({
@@ -35,6 +36,7 @@ const slice = createSlice({
       state.channeled = [];
       state.addkept = [];
       state.channelInsteadOfKeeping = false;
+      state.delayAfterDistinction = false;
 
       state.id = null;
       window.history.pushState(null, null, "/roll");
@@ -110,6 +112,9 @@ const slice = createSlice({
     setMode: (state, action) => {
       state.mode = action.payload;
     },
+    setDelayAfterDistinction: (state, action) => {
+      state.delayAfterDistinction = action.payload;
+    },
   },
 });
 
@@ -124,6 +129,7 @@ export const {
   channelInsteadOfKeeping,
   keepInsteadOfChanneling,
   setMode,
+  setDelayAfterDistinction,
 } = slice.actions;
 
 const { update, setError, setModifiers } = slice.actions;
@@ -477,5 +483,8 @@ const defaultToKeep = (roll) => {
 
   return bestKeepableDice(roll);
 };
+
+export const selectDelayAfterDistinction = (state) =>
+  state.roll.delayAfterDistinction;
 
 export default slice.reducer;

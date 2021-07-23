@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import NextButton from "../NextButton";
 import RerollDiceBox from "./RerollDiceBox";
 import { bestDiceToReroll } from "../utils";
+import { Button } from "antd";
+import styles from "./Offering.module.less";
 
 const Offering = ({
   dices,
@@ -10,6 +12,7 @@ const Offering = ({
   rerollTypes,
   modifiers,
   mode,
+  delay,
 }) => {
   const max = 3;
   const isBlank = ({ value: { opportunity, success, explosion, strife } }) =>
@@ -62,12 +65,17 @@ const Offering = ({
       basePool={basePool}
       rerollTypes={rerollTypes}
       footer={
-        <NextButton
-          disabled={toReroll.length > max}
-          onClick={() => onFinish(toReroll)}
-        >
-          {`Continue`}
-        </NextButton>
+        <div className={styles.buttons}>
+          {delay && (
+            <Button onClick={delay}>{`Resolve after Distinction`}</Button>
+          )}
+          <NextButton
+            disabled={toReroll.length > max}
+            onClick={() => onFinish(toReroll)}
+          >
+            {`Continue`}
+          </NextButton>
+        </div>
       }
     />
   );

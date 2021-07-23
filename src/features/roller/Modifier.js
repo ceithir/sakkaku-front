@@ -1,5 +1,10 @@
 import React from "react";
-import { reroll, alter, removeModifiers } from "./reducer";
+import {
+  reroll,
+  alter,
+  removeModifiers,
+  setDelayAfterDistinction,
+} from "./reducer";
 import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Ability from "./reroll/Ability";
@@ -39,7 +44,14 @@ const Modifier = ({ roll, dispatch }) => {
     );
   }
 
-  if (shouldShow("offering")) {
+  const shouldShowDistinction = shouldShow("distinction");
+  const { delayAfterDistinction } = roll;
+  if (
+    shouldShow("offering") &&
+    (!delayAfterDistinction || !shouldShowDistinction)
+  ) {
+    const delay = () => dispatch(setDelayAfterDistinction(true));
+
     return (
       <Offering
         dices={dices}
@@ -48,11 +60,12 @@ const Modifier = ({ roll, dispatch }) => {
         rerollTypes={rerollTypes}
         modifiers={modifiers}
         mode={mode}
+        delay={shouldShowDistinction && delay}
       />
     );
   }
 
-  if (shouldShow("distinction")) {
+  if (shouldShowDistinction) {
     return (
       <Distinction
         dices={dices}
