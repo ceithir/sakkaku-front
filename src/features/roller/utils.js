@@ -11,6 +11,8 @@ const REROLL_TYPES = [
   "offering",
 ];
 
+const DEPRECATED_REROLL_TYPES = ["ruthless"];
+
 export const isReroll = (modifier) => {
   if (isSpecialReroll(modifier) || isSpecialAlteration(modifier)) {
     return true;
@@ -20,7 +22,10 @@ export const isReroll = (modifier) => {
 };
 
 export const isSpecialReroll = (modifier) => {
-  return /^ruleless([0-9]{2})?$/.test(modifier);
+  return (
+    /^ruleless([0-9]{2})?$/.test(modifier) ||
+    DEPRECATED_REROLL_TYPES.includes(modifier)
+  );
 };
 
 export const isSpecialAlteration = (modifier) => {
