@@ -9,7 +9,7 @@ a.see-more {
 }
 
 .loader {
-  flex: 1;
+  height: 100vh;
 }
 
 .blank-filler {
