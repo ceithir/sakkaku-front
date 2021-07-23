@@ -55,7 +55,7 @@ const StaticSearch = ({
     <div className={styles.container}>
       <Title level={2} id={anchor}>
         {`Search`}
-        <a href={`#${!affix ? anchor : ""}`} className={styles.anchor}>
+        <a href={`#${!affix ? anchor : "0"}`} className={styles.anchor}>
           {affix ? <LockOutlined /> : <UnlockOutlined />}
         </a>
       </Title>
