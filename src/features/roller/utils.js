@@ -291,3 +291,36 @@ export const bestDiceToReroll = ({ roll, max, restrictFunc }) => {
     .map(({ index }) => index)
     .slice(0, max);
 };
+
+export const getMysteriousModifierLabel = ({ modifier, metadata }) => {
+  const isReroll = isSpecialReroll(modifier);
+  const isAlteration = isSpecialAlteration(modifier);
+
+  if (!isReroll && !isAlteration) {
+    return `???`;
+  }
+
+  const searchCustomLabel = () => {
+    if (!metadata?.labels?.length) {
+      return;
+    }
+    const lab = metadata.labels.find(({ key }) => key === modifier);
+    if (!lab) {
+      return;
+    }
+    return lab.label;
+  };
+  const customLabel = searchCustomLabel();
+
+  if (!customLabel) {
+    if (isAlteration) {
+      return `Custom alteration`;
+    }
+    return `Custom reroll`;
+  }
+
+  if (isAlteration) {
+    return `Custom alteration: ${customLabel}`;
+  }
+  return `Custom reroll: ${customLabel}`;
+};

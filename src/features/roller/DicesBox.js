@@ -5,7 +5,7 @@ import styles from "./DicesBox.module.less";
 
 const { Paragraph, Title } = Typography;
 
-const DicesBox = ({ dices, text, footer, title }) => {
+const DicesBox = ({ dices, text, footer, title, content }) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -16,6 +16,7 @@ const DicesBox = ({ dices, text, footer, title }) => {
         )}
         {text && <Paragraph className={styles.text}>{text}</Paragraph>}
         <Dices dices={dices} />
+        {content}
       </div>
       {footer && <div>{footer}</div>}
     </div>

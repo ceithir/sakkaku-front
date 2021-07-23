@@ -2,7 +2,12 @@ import React from "react";
 import { Typography } from "antd";
 import Dice from "./Dice";
 import styles from "./Summary.module.less";
-import { orderDices, isSpecialReroll, isSpecialAlteration } from "./utils";
+import {
+  orderDices,
+  isSpecialReroll,
+  isSpecialAlteration,
+  getMysteriousModifierLabel,
+} from "./utils";
 import ABILITIES from "./data/abilities";
 import CharacterSheet from "../display/CharacterSheet";
 
@@ -19,6 +24,7 @@ const Summary = ({
   player,
   channeled,
   addkept,
+  metadata,
 }) => {
   const modifierToAssist = (modifier) => {
     if (!modifier) {
@@ -47,16 +53,17 @@ const Summary = ({
       skilledAssist > 0 && `Skilled Assistance x${skilledAssist}`,
       unskilledAssist > 0 && `Unskilled Assistance x${unskilledAssist}`,
       modifiers.includes("stirring") && "Shūji — Stirring the Embers",
+      modifiers.includes("2heavens") &&
+        "Attacking a warding Mirumoto Two-Heavens Adept",
     ],
     ...modifiers
       .filter((modifier) => !!ABILITIES[modifier])
       .map((modifier) => `${ABILITIES[modifier]["school"]} School Ability`),
-    ...[
-      modifiers.includes("2heavens") &&
-        "Attacking a warding Mirumoto Two-Heavens Adept",
-      modifiers.some(isSpecialReroll) && "Custom reroll",
-      modifiers.some(isSpecialAlteration) && "Custom alteration",
-    ],
+    ...modifiers
+      .filter(
+        (modifier) => isSpecialReroll(modifier) || isSpecialAlteration(modifier)
+      )
+      .map((modifier) => getMysteriousModifierLabel({ modifier, metadata })),
   ]
     .filter(Boolean)
     .join(" / ");

@@ -50,7 +50,7 @@ const IdentifiedRoll = () => {
   }
 
   const { roll, user: player, result } = data;
-  const { dices, parameters } = roll;
+  const { dices, parameters, metadata } = roll;
 
   if (!result && user && player && user.id === player.id) {
     return <Roller save={data} />;
@@ -65,10 +65,16 @@ const IdentifiedRoll = () => {
           intent={parameters}
           context={data}
           player={player}
+          metadata={metadata}
         />
       ) : (
         <div className={styles.ongoing}>
-          <Summary player={player} {...data} {...parameters} />
+          <Summary
+            player={player}
+            {...data}
+            {...parameters}
+            metadata={metadata}
+          />
           <DicesBox
             text={`Check in progress. Current dice pool:`}
             dices={orderDices(

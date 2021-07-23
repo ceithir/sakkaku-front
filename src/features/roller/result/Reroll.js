@@ -6,9 +6,8 @@ import {
   replaceRerollsOfType,
   isRerollOfType,
   isFromRerollOfType,
-  isSpecialReroll,
-  isSpecialAlteration,
   isAlteration,
+  getMysteriousModifierLabel,
 } from "../utils";
 import ABILITIES from "../data/abilities";
 import classNames from "classnames";
@@ -22,20 +21,14 @@ const TITLES = {
   offering: "Proper Offerings",
 };
 
-const getTitle = (name) => {
-  if (isSpecialReroll(name)) {
-    return "Custom reroll";
-  }
-
-  if (isSpecialAlteration(name)) {
-    return "Custom alteration";
-  }
-
+const getTitle = (name, metadata) => {
   if (!!ABILITIES[name]) {
     return `${ABILITIES[name]["school"]} School Ability`;
   }
 
-  return TITLES[name];
+  return (
+    TITLES[name] || getMysteriousModifierLabel({ modifier: name, metadata })
+  );
 };
 
 const getEmptyMessage = (rerollType) => {
@@ -50,7 +43,13 @@ const getEmptyMessage = (rerollType) => {
   return "No dice were rerolled.";
 };
 
-const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
+const SingleReroll = ({
+  dices,
+  basePool,
+  rerollType,
+  rerollTypes,
+  metadata,
+}) => {
   if (
     (rerollType === "deathdealer" || rerollType === "manipulator") &&
     rerollTypes.includes("distinction")
@@ -58,7 +57,7 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
     return null;
   }
 
-  const title = getTitle(rerollType);
+  const title = getTitle(rerollType, metadata);
 
   if (!dices.some((dice) => isRerollOfType(dice, rerollType))) {
     return (
@@ -136,7 +135,7 @@ const SingleReroll = ({ dices, basePool, rerollType, rerollTypes }) => {
   );
 };
 
-const Reroll = ({ dices, basePool, rerollTypes, className }) => {
+const Reroll = ({ dices, basePool, rerollTypes, className, metadata }) => {
   if (rerollTypes.length === 0) {
     return null;
   }
@@ -151,6 +150,7 @@ const Reroll = ({ dices, basePool, rerollTypes, className }) => {
               basePool={basePool}
               rerollType={rerollType}
               rerollTypes={rerollTypes}
+              metadata={metadata}
             />
             {i < rerollTypes.length - 1 && <Divider />}
           </React.Fragment>

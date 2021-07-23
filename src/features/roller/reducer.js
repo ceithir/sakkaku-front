@@ -193,7 +193,7 @@ export const create = (request, user) => (dispatch) => {
   });
 };
 
-export const reroll = (roll, positions, modifier) => (dispatch) => {
+export const reroll = (roll, positions, modifier, label) => (dispatch) => {
   dispatch(setLoading(true));
 
   const success = (data) => {
@@ -210,6 +210,7 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
       body: {
         positions,
         modifier,
+        label,
       },
       success,
       error,
@@ -228,13 +229,14 @@ export const reroll = (roll, positions, modifier) => (dispatch) => {
       },
       positions,
       modifier,
+      label,
     },
     success,
     error,
   });
 };
 
-export const alter = (roll, alterations, modifier) => (dispatch) => {
+export const alter = (roll, alterations, modifier, label) => (dispatch) => {
   dispatch(setLoading(true));
 
   const success = (data) => {
@@ -251,6 +253,7 @@ export const alter = (roll, alterations, modifier) => (dispatch) => {
       body: {
         alterations,
         modifier,
+        label,
       },
       success,
       error,
@@ -269,6 +272,7 @@ export const alter = (roll, alterations, modifier) => (dispatch) => {
       },
       alterations,
       modifier,
+      label,
     },
     success,
     error,

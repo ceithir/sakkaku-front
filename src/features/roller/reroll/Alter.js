@@ -4,6 +4,7 @@ import DiceSideSelector from "../DiceSideSelector";
 import styles from "./Alter.module.less";
 import { Button } from "antd";
 import RerollDiceBox from "./RerollDiceBox";
+import AddLabel from "./AddLabel";
 
 const AVAILABLE_FACETS = {
   ring: [
@@ -25,9 +26,18 @@ const AVAILABLE_FACETS = {
   ],
 };
 
-const Alter = ({ text, dices, onFinish, basePool, rerollTypes, cancel }) => {
+const Alter = ({
+  text,
+  dices,
+  onFinish,
+  basePool,
+  rerollTypes,
+  cancel,
+  showLabelInput,
+}) => {
   const [alterations, setAlterations] = useState([]);
   const positions = alterations.map(({ position }) => position);
+  const [label, setLabel] = useState();
 
   const toggle = (index) => {
     if (alterations.some(({ position }) => position === index)) {
@@ -61,6 +71,7 @@ const Alter = ({ text, dices, onFinish, basePool, rerollTypes, cancel }) => {
       })}
       basePool={basePool}
       rerollTypes={rerollTypes}
+      content={showLabelInput ? <AddLabel onChange={setLabel} /> : <></>}
       footer={
         <>
           <div className={styles.list}>
@@ -89,7 +100,7 @@ const Alter = ({ text, dices, onFinish, basePool, rerollTypes, cancel }) => {
           <div className={styles.buttons}>
             {cancel && <Button onClick={cancel}>{`Cancel`}</Button>}
             <NextButton
-              onClick={() => onFinish(alterations)}
+              onClick={() => onFinish(alterations, label)}
               disabled={cancel && alterations.length === 0}
             >
               {buttonText()}

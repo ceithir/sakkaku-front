@@ -8,7 +8,7 @@ import { rolledDicesCount } from "./utils";
 
 const { Panel } = Collapse;
 
-const Complete = ({ dices, button, intent, context, player }) => {
+const Complete = ({ dices, button, intent, context, player, metadata }) => {
   const { tn } = intent;
   const { id, description } = context;
 
@@ -18,7 +18,7 @@ const Complete = ({ dices, button, intent, context, player }) => {
   return (
     <Collapse defaultActiveKey={["declare", "resolve"]}>
       <Panel header="Declare" key="declare">
-        <Summary {...context} {...intent} player={player} />
+        <Summary {...context} {...intent} player={player} metadata={metadata} />
       </Panel>
 
       <Panel
@@ -26,7 +26,12 @@ const Complete = ({ dices, button, intent, context, player }) => {
         key="modify"
         collapsible={rerollTypes.length === 0 ? "disabled" : "header"}
       >
-        <Reroll dices={dices} basePool={basePool} rerollTypes={rerollTypes} />
+        <Reroll
+          dices={dices}
+          basePool={basePool}
+          rerollTypes={rerollTypes}
+          metadata={metadata}
+        />
       </Panel>
 
       <Panel header="Keep" key="keep">

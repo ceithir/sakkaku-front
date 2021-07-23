@@ -82,7 +82,9 @@ const Modifier = ({ roll, dispatch }) => {
     return (
       <Ability
         dices={dices}
-        onFinish={(positions) => dispatch(reroll(roll, positions, name))}
+        onFinish={(positions, label) =>
+          dispatch(reroll(roll, positions, name, label))
+        }
         text={text}
         basePool={basePool}
         rerollTypes={rerollTypes}
@@ -156,6 +158,7 @@ const Modifier = ({ roll, dispatch }) => {
         name={specialReroll}
         text={`Custom reroll: Select the dice you want/have to reroll.`}
         cancel={() => dispatch(removeModifiers(roll, [specialReroll]))}
+        showLabelInput={true}
       />
     );
   }
@@ -193,13 +196,14 @@ const Modifier = ({ roll, dispatch }) => {
     return (
       <Alter
         dices={dices}
-        onFinish={(alterations) =>
-          dispatch(alter(roll, alterations, specialAlteration))
+        onFinish={(alterations, label) =>
+          dispatch(alter(roll, alterations, specialAlteration, label))
         }
         basePool={basePool}
         rerollTypes={rerollTypes}
         text={`Custom alteration: Change the result as you want/have to.`}
         cancel={() => dispatch(removeModifiers(roll, [specialAlteration]))}
+        showLabelInput={true}
       />
     );
   }
@@ -220,6 +224,7 @@ const WrappedModifier = ({ roll, dispatch }) => {
           basePool={basePool}
           rerollTypes={rerollTypes}
           className={styles["previous-rolls"]}
+          metadata={metadata}
         />
       )}
       <Modifier roll={roll} dispatch={dispatch} />

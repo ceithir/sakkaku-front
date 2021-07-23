@@ -204,6 +204,7 @@ const Roller = ({ save }) => {
           dices={dices}
           basePool={basePool}
           rerollTypes={rerollTypes}
+          metadata={metadata}
         />
       );
     }
@@ -225,7 +226,7 @@ const Roller = ({ save }) => {
               values={roll}
             />
           ) : (
-            <Summary {...intent} />
+            <Summary {...intent} metadata={metadata} />
           )}
         </Panel>
         <Panel
