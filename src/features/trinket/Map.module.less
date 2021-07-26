@@ -1,10 +1,14 @@
 .container {
   padding: 12px;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: calc(~"100vh - 64px");
+}
 
-  .image-container {
-    width: 100%;
-    overflow: scroll;
-  }
+.scroll-container {
+  cursor: grab;
+  flex: 1;
 }
 
 .legend {
@@ -14,6 +18,7 @@
     color: white;
   }
   margin: 0 -12px;
+  margin-top: 12px;
 
   :global(.ant-list-pagination) {
     margin-top: 12px;

@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Map.module.less";
 import legend from "./map-data";
-import { List, Affix } from "antd";
+import { List } from "antd";
+import ScrollContainer from "react-indiana-drag-scroll";
 
 const Legend = () => {
   return (
@@ -34,12 +35,13 @@ const Map = () => {
         <a href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</a>
         {` at a more web-friendly resolution. See link for details.`}
       </p>
-      <div className={styles["image-container"]}>
+      <ScrollContainer
+        className={styles["scroll-container"]}
+        hideScrollbars={false}
+      >
         <img src={url} alt="Rokugan map (5th ed)" />
-      </div>
-      <Affix offsetBottom={0}>
-        <Legend />
-      </Affix>
+      </ScrollContainer>
+      <Legend />
     </div>
   );
 };
