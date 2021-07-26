@@ -65,12 +65,14 @@ const StaticSearch = ({
             <AutoComplete
               options={arrayToAutoCompleteOptions(campaigns)}
               allowClear={true}
+              filterOption={true}
             />
           </Form.Item>
           <Form.Item label={`Character`} name="character">
             <AutoComplete
               options={arrayToAutoCompleteOptions(characters)}
               allowClear={true}
+              filterOption={true}
             />
           </Form.Item>
           <Form.Item>

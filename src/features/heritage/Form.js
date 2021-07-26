@@ -88,6 +88,7 @@ const CustomForm = () => {
             <AutoComplete
               options={arrayToAutoCompleteOptions(campaigns)}
               placeholder={"The Dead of Winter"}
+              filterOption={true}
             />
           </Form.Item>
           <Form.Item
@@ -98,6 +99,7 @@ const CustomForm = () => {
             <AutoComplete
               options={arrayToAutoCompleteOptions(characters)}
               placeholder={"Doji Sakura"}
+              filterOption={true}
             />
           </Form.Item>
           <Form.Item label="Description" name="description">

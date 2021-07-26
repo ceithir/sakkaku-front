@@ -296,12 +296,14 @@ const Intent = ({ onFinish, values, onComplete }) => {
               <AutoComplete
                 options={arrayToAutoCompleteOptions(campaigns)}
                 placeholder={"The Dead of Winter"}
+                filterOption={true}
               />
             </Form.Item>
             <Form.Item label="Character" name="character" rules={defaultRules}>
               <AutoComplete
                 options={arrayToAutoCompleteOptions(characters)}
                 placeholder={"Doji Sakura"}
+                filterOption={true}
               />
             </Form.Item>
           </fieldset>
