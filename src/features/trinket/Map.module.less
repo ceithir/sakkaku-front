@@ -1,0 +1,26 @@
+.container {
+  padding: 12px;
+
+  .image-container {
+    width: 100%;
+    overflow: scroll;
+  }
+}
+
+.legend {
+  padding: 18px;
+  background-color: #1d2553;
+  :global(.ant-list-item) {
+    color: white;
+  }
+  margin: 0 -12px;
+
+  :global(.ant-list-pagination) {
+    margin-top: 12px;
+
+    & > ul {
+      display: inline-block;
+      background-color: white;
+    }
+  }
+}

@@ -136,6 +136,11 @@ const Homepage = () => {
             label: `Paper Blossoms`,
             description: `A free character generator available on Windows, OSX, and Linux.`,
           },
+          {
+            uri: "/resources/rokugan-map",
+            label: `Rokugan map`,
+            description: `Fan-enhanced L5R 5th ed map, reuploaded here for convenience.`,
+          },
         ]}
       />
     </div>

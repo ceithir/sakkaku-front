@@ -13,6 +13,7 @@ import HeritageRollLoader from "./features/heritage/RollLoader";
 import Calculator from "./features/probabilities/Calculator";
 import Homepage from "./features/navigation/Homepage";
 import Search from "./features/browse/Search";
+import Map from "./features/trinket/Map";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,9 @@ const App = () => {
     <Router>
       <Layout>
         <Switch>
+          <Route path="/resources/rokugan-map">
+            <Map />
+          </Route>
           <Route path="/probabilities">
             <Calculator />
           </Route>
