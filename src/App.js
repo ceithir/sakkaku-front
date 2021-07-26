@@ -14,6 +14,7 @@ import Calculator from "./features/probabilities/Calculator";
 import Homepage from "./features/navigation/Homepage";
 import Search from "./features/browse/Search";
 import Map from "./features/trinket/Map";
+import ScrollToTop from "./features/navigation/ScrollToTop";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const App = () => {
 
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <Switch>
           <Route path="/resources/rokugan-map">
