@@ -39,7 +39,7 @@ const Map = () => {
       <p>
         {`A simple reupload of `}
         <a href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</a>
-        {` at a more web-friendly resolution. See link for details.`}
+        {` at a more web-friendly resolution. Follow link for full credits and information.`}
       </p>
       <Search />
       <ScrollContainer
