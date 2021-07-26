@@ -1,27 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Map.module.less";
-import legend from "./map-data";
-import { List } from "antd";
+import mapData from "./map-data";
+import { AutoComplete, Typography } from "antd";
 import ScrollContainer from "react-indiana-drag-scroll";
 
-const Legend = () => {
+const { Text } = Typography;
+
+const Search = () => {
+  const [search, setSearch] = useState();
+
   return (
-    <List
-      dataSource={legend.map((item, i) => {
-        return { ...item, position: i + 1 };
-      })}
-      renderItem={({ label, x, y, position }) => (
-        <List.Item>{`${position}. ${label} x${x}/y${y}`}</List.Item>
+    <div className={styles.search}>
+      <AutoComplete
+        options={mapData.map(({ label }) => {
+          return { value: label };
+        })}
+        placeholder={`Search location`}
+        onChange={(value) => {
+          setSearch(mapData.find(({ label }) => label === value));
+        }}
+        filterOption={true}
+        allowClear={true}
+      />
+      {search && (
+        <Text
+          strong={true}
+        >{`${search.label}: x${search.x} / y${search.y}`}</Text>
       )}
-      grid={{ gutter: 12, column: 6, xs: 3, sm: 3 }}
-      pagination={{
-        defaultPageSize: 6,
-        size: "small",
-        pageSizeOptions: [6, 12, 24],
-      }}
-      className={styles.legend}
-      size="small"
-    />
+    </div>
   );
 };
 
@@ -35,13 +41,13 @@ const Map = () => {
         <a href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</a>
         {` at a more web-friendly resolution. See link for details.`}
       </p>
+      <Search />
       <ScrollContainer
         className={styles["scroll-container"]}
         hideScrollbars={false}
       >
         <img src={url} alt="Rokugan map (5th ed)" />
       </ScrollContainer>
-      <Legend />
     </div>
   );
 };
