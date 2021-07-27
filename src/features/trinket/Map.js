@@ -179,6 +179,9 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
     const loc = fetchLocation(value);
 
     if (!loc) {
+      // TODO: Some kind of message that the search did not end up on anything
+      setSearch(null);
+      history.push({ hash: null });
       return;
     }
 
