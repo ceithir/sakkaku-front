@@ -5,6 +5,7 @@ import { AutoComplete, Typography } from "antd";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Animate from "rc-animate";
 import { useLocation, useHistory } from "react-router-dom";
+import ExternalLink from "../navigation/ExternalLink";
 
 const mapUrl = "/media/maps/rokugan-map-1800.jpg";
 const mapMaxX = 65 + 2;
@@ -200,7 +201,7 @@ const Map = () => {
       <div className={styles.text}>
         <p>
           {`A simple reupload of `}
-          <a href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</a>
+          <ExternalLink href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</ExternalLink>
           {` at a more web-friendly resolution. Follow link for full credits and information.`}
         </p>
         <Search

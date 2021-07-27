@@ -2,6 +2,7 @@ import React from "react";
 import { Layout } from "antd";
 import styles from "./Layout.module.less";
 import Menu from "./Menu";
+import ExternalLink from "./ExternalLink";
 
 const { Header, Content, Footer } = Layout;
 
@@ -14,9 +15,9 @@ const CustomLayout = ({ children }) => {
       <Content>{children}</Content>
       <Footer className={styles.footer}>
         {`A dice roller for the `}
-        <a href="https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/">
+        <ExternalLink href="https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/">
           {`Legend of the Five Rings Roleplaying Game (5th edition)`}
-        </a>
+        </ExternalLink>
         {` – ©FFG for all quoted texts and images`}
         <br />
         {`This website is not affiliated in any way with Fantasy Flight Games or EDGE Studio.`}
