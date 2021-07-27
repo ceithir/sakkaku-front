@@ -179,6 +179,7 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
           }}
           filterOption={true}
           allowClear={true}
+          value={search?.label}
         />
         {search && <Text strong={true}>{`x${search.x} / y${search.y}`}</Text>}
       </div>
