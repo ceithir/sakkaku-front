@@ -4,6 +4,7 @@ import mapData from "./map-data";
 import { AutoComplete, Typography } from "antd";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Animate from "rc-animate";
+import { useLocation } from "react-router-dom";
 
 const mapUrl = "/media/maps/rokugan-map-1800.jpg";
 const mapMaxX = 65 + 2;
@@ -116,11 +117,12 @@ const PositionalCross = ({ scrollContainerRef, search }) => {
   );
 };
 
-const Search = ({ scrollContainerRef }) => {
+const Search = ({ scrollContainerRef, imageLoaded }) => {
   const [search, setSearch] = useState();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!search || !scrollContainerRef.current) {
+    if (!search || !scrollContainerRef.current || !imageLoaded) {
       return;
     }
 
@@ -145,7 +147,18 @@ const Search = ({ scrollContainerRef }) => {
       behavior: "smooth",
     };
     container.scrollTo(scrollConfig);
-  }, [search, scrollContainerRef]);
+  }, [search, scrollContainerRef, imageLoaded]);
+
+  useEffect(() => {
+    if (!imageLoaded) {
+      return;
+    }
+
+    if (location.hash) {
+      const hash = decodeURI(location.hash.slice(1));
+      setSearch(mapData.find(({ label }) => label === hash));
+    }
+  }, [location, setSearch, imageLoaded]);
 
   return (
     <>
@@ -177,6 +190,7 @@ const Search = ({ scrollContainerRef }) => {
 
 const Map = () => {
   const scrollContainerRef = useRef(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -185,13 +199,22 @@ const Map = () => {
         <a href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</a>
         {` at a more web-friendly resolution. Follow link for full credits and information.`}
       </p>
-      <Search scrollContainerRef={scrollContainerRef} />
+      <Search
+        scrollContainerRef={scrollContainerRef}
+        imageLoaded={imageLoaded}
+      />
       <ScrollContainer
         className={styles["scroll-container"]}
         hideScrollbars={false}
         innerRef={scrollContainerRef}
       >
-        <img src={mapUrl} alt="Rokugan map (5th ed)" />
+        <img
+          src={mapUrl}
+          alt="Rokugan map (5th ed)"
+          onLoad={() => {
+            setImageLoaded(true);
+          }}
+        />
       </ScrollContainer>
     </div>
   );
