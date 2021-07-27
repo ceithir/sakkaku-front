@@ -201,7 +201,7 @@ const Map = () => {
       <div className={styles.text}>
         <p>
           {`A simple reupload of `}
-          <ExternalLink href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</ExternalLink>
+          <ExternalLink href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor "Kakita Onimaru" Cuba's work`}</ExternalLink>
           {` at a more web-friendly resolution. Follow link for full credits and information.`}
         </p>
         <Search
