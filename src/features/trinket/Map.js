@@ -40,6 +40,7 @@ const Search = ({ scrollContainerRef }) => {
         min: 0,
         max: imageHeight,
       }),
+      behavior: "smooth",
     };
     container.scrollTo(scrollConfig);
   }, [search, scrollContainerRef]);
