@@ -105,7 +105,7 @@ const data = [
   { label: "Twilight Mountains", x: 4, y: 66 },
   { label: "Twin Blessing Village", x: 44, y: 37 },
   { label: "Uebe Marshes", x: 32, y: 51 },
-  { label: "Violence Gehind Courtliness City", x: 39, y: 24 },
+  { label: "Violence Behind Courtliness City", x: 39, y: 24 },
   { label: "Wall Above the Ocean Village", x: 43, y: 60 },
   { label: "Water Music Village", x: 41, y: 66 },
   { label: "West Mountain Village", x: 21, y: 73 },
