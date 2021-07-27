@@ -13,6 +13,10 @@
 .scroll-container {
   cursor: grab;
   flex: 1;
+
+  &:global(.indiana-scroll-container--dragging) {
+    cursor: grabbing;
+  }
 }
 
 .search {
