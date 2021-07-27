@@ -4,7 +4,7 @@ import mapData from "./map-data";
 import { AutoComplete, Typography } from "antd";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Animate from "rc-animate";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 const mapUrl = "/media/maps/rokugan-map-1800.jpg";
 const mapMaxX = 65 + 2;
@@ -120,6 +120,7 @@ const PositionalCross = ({ scrollContainerRef, search }) => {
 const Search = ({ scrollContainerRef, imageLoaded }) => {
   const [search, setSearch] = useState();
   const location = useLocation();
+  let history = useHistory();
 
   useEffect(() => {
     if (!search || !scrollContainerRef.current || !imageLoaded) {
@@ -154,6 +155,11 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
       return;
     }
 
+    if (!location.hash) {
+      setSearch(null);
+      return;
+    }
+
     if (location.hash) {
       const hash = decodeURI(location.hash.slice(1));
       setSearch(mapData.find(({ label }) => label === hash));
@@ -169,7 +175,7 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
           })}
           placeholder={`Search location`}
           onChange={(value) => {
-            setSearch(mapData.find(({ label }) => label === value));
+            history.push({ hash: value });
           }}
           filterOption={true}
           allowClear={true}
