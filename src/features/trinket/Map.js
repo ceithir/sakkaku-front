@@ -180,11 +180,7 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
           filterOption={true}
           allowClear={true}
         />
-        {search && (
-          <Text
-            strong={true}
-          >{`${search.label}: x${search.x} / y${search.y}`}</Text>
-        )}
+        {search && <Text strong={true}>{`x${search.x} / y${search.y}`}</Text>}
       </div>
       <PositionalCross
         scrollContainerRef={scrollContainerRef}
