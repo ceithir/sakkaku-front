@@ -2,22 +2,17 @@ import React from "react";
 import { Typography } from "antd";
 import { Link as InternalLink } from "react-router-dom";
 import styles from "./Homepage.module.less";
-import { ReactComponent as ExternalLinkIcon } from "./external-link.svg";
 import MainTitle from "../display/Title";
+import ExternalLink from "./ExternalLink";
 
-const { Title, Link: AntdLink } = Typography;
+const { Title } = Typography;
 
 const Link = ({ uri, children }) => {
   if (uri.startsWith("/")) {
     return <InternalLink to={uri}>{children}</InternalLink>;
   }
 
-  return (
-    <AntdLink href={uri}>
-      {children}
-      <ExternalLinkIcon />
-    </AntdLink>
-  );
+  return <ExternalLink href={uri}>{children}</ExternalLink>;
 };
 
 const Section = ({ title, text, links = [] }) => {
