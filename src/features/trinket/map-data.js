@@ -60,7 +60,6 @@ const data = [
   { label: "Kyuden Shika", x: 39, y: 36 },
   { label: "Lake of Sorrows", x: 39, y: 43 },
   { label: "Last Breath Castle", x: 37, y: 37 },
-  { label: "Buzzing Fly Village", x: 34, y: 30 },
   { label: "Last Step Castle", x: 32, y: 18 },
   { label: "Loyalty Castle", x: 43, y: 34 },
   { label: "Maemikake", x: 29, y: 65 },
