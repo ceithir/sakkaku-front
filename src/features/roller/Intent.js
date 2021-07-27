@@ -31,6 +31,7 @@ import ABILITIES, { longname } from "./data/abilities";
 import ExplainOptions from "./glitter/ExplainOptions";
 import { Strife, Success, Explosion } from "../display/Symbol";
 import Dice from "./Dice";
+import backgroundImage from "../../background.jpg";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -109,11 +110,33 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
     const {
       common_modifiers: commonModifiers = [],
-      school,
       misc = [],
       unskilled_assist: unskilledAssist,
       skilled_assist: skilledAssist,
     } = data;
+    const metadata = {};
+
+    let { school } = data;
+
+    if (school === "custom") {
+      school = undefined;
+      const modifierId = () => {
+        if (data["school_ability"] === "reroll") {
+          return `ruleless01`;
+        }
+        if (data["school_ability"] === "alter") {
+          return `reasonless01`;
+        }
+        return undefined;
+      };
+      const modId = modifierId();
+      if (modId) {
+        misc.push(modId);
+        metadata["labels"] = [
+          { key: modId, label: `${data["school_name"]} School Ability` },
+        ];
+      }
+    }
 
     if (misc.includes("ringless")) {
       return onFinish({
@@ -125,6 +148,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
           ...misc.filter((x) => x !== "ringless"),
           school,
         ].filter(Boolean),
+        metadata,
       });
     }
 
@@ -140,6 +164,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
       modifiers: [...commonModifiers, school, ...assist, ...misc].filter(
         Boolean
       ),
+      metadata,
     });
   };
 
@@ -405,24 +430,64 @@ const Intent = ({ onFinish, values, onComplete }) => {
       <Divider />
       <Collapse ghost>
         <Panel header={"Schools, techniques, magic…"}>
-          <Form.Item label="School Ability" name="school">
+          <Form.Item label={`School Ability`} name="school">
             <Select
               showSearch
               allowClear
-              options={Object.keys(ABILITIES)
-                .map((key) => {
-                  return {
-                    value: key,
-                    label: longname(key),
-                  };
-                })
-                .sort(({ label: a }, { label: b }) => b < a)}
+              options={[
+                ...Object.keys(ABILITIES)
+                  .map((key) => {
+                    return {
+                      value: key,
+                      label: longname(key),
+                    };
+                  })
+                  .sort(({ label: a }, { label: b }) => a.localeCompare(b)),
+                {
+                  value: "custom",
+                  label: `Any other School — Any other School Ability`,
+                },
+              ]}
               optionFilterProp="label"
             />
           </Form.Item>
-          {school && (
-            <AbilityDescription ability={school} className={styles.school} />
-          )}
+          {school &&
+            (school === "custom" ? (
+              <div
+                className={styles["custom-school"]}
+                style={{
+                  backgroundImage: `url(${backgroundImage})`,
+                }}
+              >
+                <Form.Item
+                  label="School Name"
+                  name="school_name"
+                  rules={defaultRules}
+                >
+                  <Input placeholder={`Ikoma Shadow`} />
+                </Form.Item>
+                <Form.Item
+                  label={`Its School Ability allows you to…`}
+                  name="school_ability"
+                  initialValue="reroll"
+                >
+                  <Select
+                    options={[
+                      {
+                        value: "reroll",
+                        label: `Reroll one or more dice.`,
+                      },
+                      {
+                        value: "alter",
+                        label: `Alter (change the value) of one or more dice.`,
+                      },
+                    ]}
+                  />
+                </Form.Item>
+              </div>
+            ) : (
+              <AbilityDescription ability={school} className={styles.school} />
+            ))}
           <Form.List
             name="channeled"
             rules={[

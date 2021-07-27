@@ -152,6 +152,7 @@ export const create = (request, user) => (dispatch) => {
     description,
     channeled,
     addkept,
+    metadata,
   } = request;
 
   if (user) {
@@ -167,6 +168,7 @@ export const create = (request, user) => (dispatch) => {
         description,
         channeled,
         addkept,
+        metadata,
       },
       success: (data) => {
         dispatch(load({ ...data, player: user }));
@@ -185,6 +187,7 @@ export const create = (request, user) => (dispatch) => {
       modifiers,
       channeled,
       addkept,
+      metadata,
     },
     success: (data) => {
       dispatch(update(data));
