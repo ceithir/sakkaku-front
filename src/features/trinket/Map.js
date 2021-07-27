@@ -196,15 +196,17 @@ const Map = () => {
 
   return (
     <div className={styles.container}>
-      <p>
-        {`A simple reupload of `}
-        <a href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</a>
-        {` at a more web-friendly resolution. Follow link for full credits and information.`}
-      </p>
-      <Search
-        scrollContainerRef={scrollContainerRef}
-        imageLoaded={imageLoaded}
-      />
+      <div className={styles.text}>
+        <p>
+          {`A simple reupload of `}
+          <a href="https://craneclan.weebly.com/map-of-rokugan.html">{`Trevor Cuba (Kakita Onimaru) work`}</a>
+          {` at a more web-friendly resolution. Follow link for full credits and information.`}
+        </p>
+        <Search
+          scrollContainerRef={scrollContainerRef}
+          imageLoaded={imageLoaded}
+        />
+      </div>
       <ScrollContainer
         className={styles["scroll-container"]}
         hideScrollbars={false}
