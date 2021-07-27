@@ -3,6 +3,7 @@ import styles from "./Map.module.less";
 import mapData from "./map-data";
 import { AutoComplete, Typography } from "antd";
 import ScrollContainer from "react-indiana-drag-scroll";
+import Animate from "rc-animate";
 
 const mapUrl = "/media/maps/rokugan-map-1800.jpg";
 const mapMaxX = 65 + 2;
@@ -14,12 +15,7 @@ const bound = ({ value, min, max }) => {
   return Math.max(min, Math.min(Math.round(value), max));
 };
 
-const HorizontalBar = ({ scrollContainerRef, search }) => {
-  if (!scrollContainerRef.current || !search) {
-    return null;
-  }
-
-  const container = scrollContainerRef.current;
+const HorizontalBar = ({ container, search }) => {
   const imageHeight = container.children[0].clientHeight;
   const containerHeight = container.clientHeight;
 
@@ -53,12 +49,7 @@ const HorizontalBar = ({ scrollContainerRef, search }) => {
   );
 };
 
-const VerticalBar = ({ scrollContainerRef, search }) => {
-  if (!scrollContainerRef.current || !search) {
-    return null;
-  }
-
-  const container = scrollContainerRef.current;
+const VerticalBar = ({ container, search }) => {
   const imageWidth = container.children[0].clientWidth;
   const containerWidth = container.clientWidth;
 
@@ -89,6 +80,39 @@ const VerticalBar = ({ scrollContainerRef, search }) => {
         height: container.clientHeight,
       }}
     />
+  );
+};
+
+const PositionalCross = ({ scrollContainerRef, search }) => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (!scrollContainerRef.current || !search) {
+      return;
+    }
+    setTimeout(() => {
+      setShow(false);
+    }, 1000 * 0.25);
+    setShow(true);
+  }, [scrollContainerRef, search]);
+
+  return (
+    <Animate
+      transitionName="fade"
+      transitionAppear={false}
+      transitionEnter={false}
+      transitionLeave={true}
+    >
+      {show && (
+        <>
+          <HorizontalBar
+            container={scrollContainerRef.current}
+            search={search}
+          />
+          <VerticalBar container={scrollContainerRef.current} search={search} />
+        </>
+      )}
+    </Animate>
   );
 };
 
@@ -143,8 +167,10 @@ const Search = ({ scrollContainerRef }) => {
           >{`${search.label}: x${search.x} / y${search.y}`}</Text>
         )}
       </div>
-      <HorizontalBar scrollContainerRef={scrollContainerRef} search={search} />
-      <VerticalBar scrollContainerRef={scrollContainerRef} search={search} />
+      <PositionalCross
+        scrollContainerRef={scrollContainerRef}
+        search={search}
+      />
     </>
   );
 };
