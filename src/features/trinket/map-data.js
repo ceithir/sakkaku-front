@@ -8,7 +8,7 @@ const data = [
   { label: "Black Crane Estates", x: 28, y: 74 },
   { label: "Black Tear Peak", x: 8, y: 75 },
   { label: "Buzzing Fly Village", x: 34, y: 30 },
-  { label: "Carpenter Castle", x: 23, y: 64 },
+  { label: "Carpenter Castle", x: 13, y: 64 },
   { label: "Castle of Learning", x: 31, y: 39 },
   { label: "Castle of Organization", x: 26, y: 33 },
   { label: "Castle of Pretending", x: 29, y: 43 },
