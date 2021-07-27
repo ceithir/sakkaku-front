@@ -5,10 +5,92 @@ import { AutoComplete, Typography } from "antd";
 import ScrollContainer from "react-indiana-drag-scroll";
 
 const mapUrl = "/media/maps/rokugan-map-1800.jpg";
-const mapMaxX = 65;
-const mapMaxY = 99;
+const mapMaxX = 65 + 2;
+const mapMaxY = 99 + 2;
 
 const { Text } = Typography;
+
+const bound = ({ value, min, max }) => {
+  return Math.max(min, Math.min(Math.round(value), max));
+};
+
+const HorizontalBar = ({ scrollContainerRef, search }) => {
+  if (!scrollContainerRef.current || !search) {
+    return null;
+  }
+
+  const container = scrollContainerRef.current;
+  const imageHeight = container.children[0].clientHeight;
+  const containerHeight = container.clientHeight;
+
+  const y = () => {
+    const imageY = (search.y / mapMaxY) * imageHeight;
+    const centerY = containerHeight / 2;
+    if (imageY < centerY) {
+      return imageY;
+    }
+    if (imageHeight - imageY < centerY) {
+      return containerHeight - (imageHeight - imageY);
+    }
+    return centerY;
+  };
+
+  const top = bound({
+    value: container.getBoundingClientRect().top + y(),
+    min: 0,
+    max: containerHeight,
+  });
+
+  return (
+    <div
+      className={styles["horizontal-bar"]}
+      style={{
+        top,
+        left: container.getBoundingClientRect().left,
+        width: container.clientWidth,
+      }}
+    />
+  );
+};
+
+const VerticalBar = ({ scrollContainerRef, search }) => {
+  if (!scrollContainerRef.current || !search) {
+    return null;
+  }
+
+  const container = scrollContainerRef.current;
+  const imageWidth = container.children[0].clientWidth;
+  const containerWidth = container.clientWidth;
+
+  const x = () => {
+    const imageX = (search.x / mapMaxX) * imageWidth;
+    const centerX = containerWidth / 2;
+    if (imageX < centerX) {
+      return imageX;
+    }
+    if (imageWidth - imageX < centerX) {
+      return containerWidth - (imageWidth - imageX);
+    }
+    return centerX;
+  };
+
+  const left = bound({
+    value: container.getBoundingClientRect().left + x(),
+    min: 0,
+    max: containerWidth,
+  });
+
+  return (
+    <div
+      className={styles["vertical-bar"]}
+      style={{
+        left,
+        top: container.getBoundingClientRect().top,
+        height: container.clientHeight,
+      }}
+    />
+  );
+};
 
 const Search = ({ scrollContainerRef }) => {
   const [search, setSearch] = useState();
@@ -24,10 +106,6 @@ const Search = ({ scrollContainerRef }) => {
     const imageHeight = container.children[0].clientHeight;
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;
-
-    const bound = ({ value, min, max }) => {
-      return Math.max(min, Math.min(Math.round(value), max));
-    };
 
     const scrollConfig = {
       left: bound({
@@ -46,24 +124,28 @@ const Search = ({ scrollContainerRef }) => {
   }, [search, scrollContainerRef]);
 
   return (
-    <div className={styles.search}>
-      <AutoComplete
-        options={mapData.map(({ label }) => {
-          return { value: label };
-        })}
-        placeholder={`Search location`}
-        onChange={(value) => {
-          setSearch(mapData.find(({ label }) => label === value));
-        }}
-        filterOption={true}
-        allowClear={true}
-      />
-      {search && (
-        <Text
-          strong={true}
-        >{`${search.label}: x${search.x} / y${search.y}`}</Text>
-      )}
-    </div>
+    <>
+      <div className={styles.search}>
+        <AutoComplete
+          options={mapData.map(({ label }) => {
+            return { value: label };
+          })}
+          placeholder={`Search location`}
+          onChange={(value) => {
+            setSearch(mapData.find(({ label }) => label === value));
+          }}
+          filterOption={true}
+          allowClear={true}
+        />
+        {search && (
+          <Text
+            strong={true}
+          >{`${search.label}: x${search.x} / y${search.y}`}</Text>
+        )}
+      </div>
+      <HorizontalBar scrollContainerRef={scrollContainerRef} search={search} />
+      <VerticalBar scrollContainerRef={scrollContainerRef} search={search} />
+    </>
   );
 };
 
