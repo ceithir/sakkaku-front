@@ -87,7 +87,7 @@ const VerticalBar = ({ container, search }) => {
   );
 };
 
-const PositionalCross = ({ scrollContainerRef, search }) => {
+const PositionalCross = ({ scrollContainerRef, search, forceRefresh }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -98,7 +98,7 @@ const PositionalCross = ({ scrollContainerRef, search }) => {
       setShow(false);
     }, 1000 * 0.25);
     setShow(true);
-  }, [scrollContainerRef, search]);
+  }, [scrollContainerRef, search, forceRefresh]);
 
   return (
     <Animate
@@ -125,6 +125,7 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
   const location = useLocation();
   let history = useHistory();
   const [autocompleteValue, setAutocompleteValue] = useState();
+  const [forceRefresh, setForceRefresh] = useState();
 
   useEffect(() => {
     if (!search || !scrollContainerRef.current || !imageLoaded) {
@@ -152,7 +153,7 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
       behavior: "smooth",
     };
     container.scrollTo(scrollConfig);
-  }, [search, scrollContainerRef, imageLoaded]);
+  }, [search, scrollContainerRef, imageLoaded, forceRefresh]);
 
   useEffect(() => {
     if (!imageLoaded) {
@@ -185,6 +186,11 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
       return;
     }
 
+    if (loc.label === search?.label) {
+      setForceRefresh(Date.now());
+      return;
+    }
+
     setSearch(loc);
     history.push({ hash: loc.label });
   };
@@ -212,6 +218,7 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
       <PositionalCross
         scrollContainerRef={scrollContainerRef}
         search={search}
+        forceRefresh={forceRefresh}
       />
     </>
   );
