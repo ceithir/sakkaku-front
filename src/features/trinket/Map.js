@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./Map.module.less";
 import mapData from "./map-data";
-import { AutoComplete, Typography } from "antd";
+import { AutoComplete, Typography, Input } from "antd";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Animate from "rc-animate";
 import { useLocation, useHistory } from "react-router-dom";
@@ -16,6 +16,8 @@ const { Text } = Typography;
 const bound = ({ value, min, max }) => {
   return Math.max(min, Math.min(Math.round(value), max));
 };
+
+const fetchLocation = (name) => mapData.find(({ label }) => label === name);
 
 const HorizontalBar = ({ container, search }) => {
   const imageHeight = container.children[0].clientHeight;
@@ -122,6 +124,7 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
   const [search, setSearch] = useState();
   const location = useLocation();
   let history = useHistory();
+  const [autocompleteValue, setAutocompleteValue] = useState();
 
   useEffect(() => {
     if (!search || !scrollContainerRef.current || !imageLoaded) {
@@ -157,15 +160,31 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
     }
 
     if (!location.hash) {
-      setSearch(null);
       return;
     }
 
-    if (location.hash) {
-      const hash = decodeURI(location.hash.slice(1));
-      setSearch(mapData.find(({ label }) => label === hash));
+    if (search) {
+      return;
     }
-  }, [location, setSearch, imageLoaded]);
+
+    const hash = decodeURI(location.hash.slice(1));
+    const loc = fetchLocation(hash);
+    if (loc) {
+      setSearch(loc);
+      setAutocompleteValue(loc.label);
+    }
+  }, [location, setSearch, imageLoaded, search]);
+
+  const onSearch = (value) => {
+    const loc = fetchLocation(value);
+
+    if (!loc) {
+      return;
+    }
+
+    setSearch(loc);
+    history.push({ hash: loc.label });
+  };
 
   return (
     <>
@@ -174,14 +193,17 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
           options={mapData.map(({ label }) => {
             return { value: label };
           })}
-          placeholder={`Search location`}
-          onChange={(value) => {
-            history.push({ hash: value });
-          }}
+          onSelect={onSearch}
           filterOption={true}
-          allowClear={true}
-          value={search?.label}
-        />
+          value={autocompleteValue}
+          onChange={setAutocompleteValue}
+        >
+          <Input.Search
+            placeholder={`Search location`}
+            allowClear={true}
+            onSearch={onSearch}
+          />
+        </AutoComplete>
         {search && <Text strong={true}>{`x${search.x} / y${search.y}`}</Text>}
       </div>
       <PositionalCross
