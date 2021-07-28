@@ -13,6 +13,20 @@ import CharacterSheet from "../display/CharacterSheet";
 
 const { Text } = Typography;
 
+const Modifiers = ({ modifiers }) => {
+  if (!modifiers?.length) {
+    return null;
+  }
+
+  return (
+    <ol className={styles["other-modifiers"]}>
+      {modifiers.map((modifier, index) => {
+        return <li key={index.toString()}>{modifier}</li>;
+      })}
+    </ol>
+  );
+};
+
 const Summary = ({
   campaign,
   character,
@@ -64,9 +78,7 @@ const Summary = ({
         (modifier) => isSpecialReroll(modifier) || isSpecialAlteration(modifier)
       )
       .map((modifier) => getMysteriousModifierLabel({ modifier, metadata })),
-  ]
-    .filter(Boolean)
-    .join(" / ");
+  ].filter(Boolean);
 
   const data = [
     description && {
@@ -109,7 +121,7 @@ const Summary = ({
     },
     special && {
       label: `Modifiers`,
-      content: special,
+      content: <Modifiers modifiers={special} />,
     },
     channeled?.length && {
       label: `Channeled Dice Used`,
