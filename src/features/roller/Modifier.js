@@ -132,13 +132,14 @@ const Modifier = ({ roll, dispatch }) => {
   );
   if (specialReroll) {
     const name = getCustomLabel({ modifier: specialReroll, metadata });
+    const cancel = () => dispatch(removeModifiers(roll, [specialReroll]));
 
     return (
       <AbilityReroll
         name={specialReroll}
         title={name || `Custom Reroll`}
         text={`Select the dice you want/have to reroll.`}
-        cancel={() => dispatch(removeModifiers(roll, [specialReroll]))}
+        cancel={!name && cancel}
         showLabelInput={!name}
       />
     );
@@ -175,6 +176,7 @@ const Modifier = ({ roll, dispatch }) => {
   );
   if (specialAlteration) {
     const name = getCustomLabel({ modifier: specialAlteration, metadata });
+    const cancel = () => dispatch(removeModifiers(roll, [specialAlteration]));
 
     return (
       <Alter
@@ -185,7 +187,7 @@ const Modifier = ({ roll, dispatch }) => {
         basePool={basePool}
         rerollTypes={rerollTypes}
         text={`Change the result as you want/have to.`}
-        cancel={() => dispatch(removeModifiers(roll, [specialAlteration]))}
+        cancel={!name && cancel}
         showLabelInput={!name}
         title={name || `Custom Alteration`}
       />
