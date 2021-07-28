@@ -35,15 +35,17 @@ const DynamicDiceSelector = ({
             <UncontrolledDiceSideSelector
               initialValue={values[index] || defaultValue}
               button={
-                <div
-                  className={classNames(
-                    "ant-radio-button-wrapper",
-                    styles["pseudo-radio"]
-                  )}
-                  onClick={() => remove(field.name)}
-                >
-                  <MinusCircleOutlined className={"dynamic-delete-button"} />
-                </div>
+                !!remove && (
+                  <div
+                    className={classNames(
+                      "ant-radio-button-wrapper",
+                      styles["pseudo-radio"]
+                    )}
+                    onClick={() => remove(field.name)}
+                  >
+                    <MinusCircleOutlined className={"dynamic-delete-button"} />
+                  </div>
+                )
               }
               facets={facets}
             />

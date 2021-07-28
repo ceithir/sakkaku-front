@@ -100,6 +100,8 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [unskilledAssist, setUnskilledAssist] = useState(0);
   const [commonModifiers, setCommonModifiers] = useState([]);
   const [channeled, setChanneled] = useState([]);
+  const [addkept, setAddkept] = useState([]);
+  const [schoolAbility, setSchoolAbility] = useState();
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -117,24 +119,32 @@ const Intent = ({ onFinish, values, onComplete }) => {
     const metadata = {};
 
     let { school } = data;
+    let addkept = [];
 
     if (school === "custom") {
       school = undefined;
-      const modifierId = () => {
-        if (data["school_ability"] === "reroll") {
-          return `ruleless`;
+
+      const { school_ability, school_name } = data;
+
+      if (school_ability === "addkept") {
+        addkept = data["addkept"];
+      } else {
+        const modifierId = () => {
+          if (school_ability === "reroll") {
+            return `ruleless`;
+          }
+          if (school_ability === "alter") {
+            return `reasonless`;
+          }
+          return undefined;
+        };
+        const modId = modifierId();
+        if (modId) {
+          misc.push(modId);
+          metadata["labels"] = [
+            { key: modId, label: `${school_name} School Ability` },
+          ];
         }
-        if (data["school_ability"] === "alter") {
-          return `reasonless`;
-        }
-        return undefined;
-      };
-      const modId = modifierId();
-      if (modId) {
-        misc.push(modId);
-        metadata["labels"] = [
-          { key: modId, label: `${data["school_name"]} School Ability` },
-        ];
       }
     }
 
@@ -149,6 +159,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
           school,
         ].filter(Boolean),
         metadata,
+        addkept,
       });
     }
 
@@ -165,6 +176,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
         Boolean
       ),
       metadata,
+      addkept,
     });
   };
 
@@ -251,6 +263,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
       value: "alter",
       label: `Alter (change the value) of one or more dice (ex: Kuni Purifier).`,
     },
+    {
+      value: "addkept",
+      label: `Add one or more kept dice set to a particular value (ex: Doji Diplomat).`,
+    },
   ];
 
   return (
@@ -322,6 +338,34 @@ const Intent = ({ onFinish, values, onComplete }) => {
           )
         ) {
           form.validateFields(["misc"]);
+        }
+        if (
+          Object.keys(changedValues).some((name) => ["addkept"].includes(name))
+        ) {
+          setAddkept(form.getFieldValue("addkept"));
+        }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["school_ability"].includes(name)
+          )
+        ) {
+          const schoolAbility = form.getFieldValue("school_ability");
+          setSchoolAbility(schoolAbility);
+          if (
+            schoolAbility === "addkept" &&
+            form.getFieldValue("addkept").length === 0
+          ) {
+            const addkept = [
+              {
+                type: "ring",
+                value: { opportunity: 1 },
+              },
+            ];
+            form.setFieldsValue({
+              addkept,
+            });
+            setAddkept(addkept);
+          }
         }
       }}
     >
@@ -484,6 +528,34 @@ const Intent = ({ onFinish, values, onComplete }) => {
                 >
                   <Select options={customSchoolOptions} />
                 </Form.Item>
+                {schoolAbility === "addkept" && (
+                  <>
+                    <p className={styles["addkept-summary"]}>
+                      {`The following dice will be added as kept dice:`}
+                      {addkept.map((dice, i) => {
+                        return <Dice key={i.toString()} dice={dice} />;
+                      })}
+                    </p>
+                    <Form.List name="addkept">
+                      {(fields, { add, remove }, { errors }) => {
+                        return (
+                          <DynamicDiceSelector
+                            fields={fields}
+                            defaultValue={{
+                              type: "ring",
+                              value: { opportunity: 1 },
+                            }}
+                            errors={errors}
+                            buttonText={"Add another die"}
+                            add={add}
+                            remove={addkept.length > 1 && remove}
+                            className={styles.addkept}
+                          />
+                        );
+                      }}
+                    </Form.List>
+                  </>
+                )}
               </div>
             ) : (
               <AbilityDescription ability={school} className={styles.school} />
