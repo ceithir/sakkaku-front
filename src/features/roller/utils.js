@@ -290,7 +290,7 @@ export const bestDiceToReroll = ({ roll, max, restrictFunc }) => {
     .slice(0, max);
 };
 
-export const getMysteriousModifierLabel = ({ modifier, metadata }) => {
+export const getCustomLabel = ({ modifier, metadata }) => {
   if (DEPRECATED_REROLL_TYPES.includes(modifier)) {
     if (modifier === "sailor") {
       return `Storm Fleet Sailor School Ability`;
@@ -300,6 +300,10 @@ export const getMysteriousModifierLabel = ({ modifier, metadata }) => {
     }
   }
 
+  return metadata?.labels?.find(({ key }) => key === modifier)?.label;
+};
+
+export const getMysteriousModifierLabel = ({ modifier, metadata }) => {
   const isReroll = isSpecialReroll(modifier);
   const isAlteration = isSpecialAlteration(modifier);
 
@@ -307,17 +311,7 @@ export const getMysteriousModifierLabel = ({ modifier, metadata }) => {
     return `???`;
   }
 
-  const searchCustomLabel = () => {
-    if (!metadata?.labels?.length) {
-      return;
-    }
-    const lab = metadata.labels.find(({ key }) => key === modifier);
-    if (!lab) {
-      return;
-    }
-    return lab.label;
-  };
-  const customLabel = searchCustomLabel();
+  const customLabel = getCustomLabel({ modifier, metadata });
 
   if (!customLabel) {
     if (isAlteration) {

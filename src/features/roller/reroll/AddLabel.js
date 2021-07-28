@@ -6,7 +6,7 @@ const AddLabel = ({ onChange }) => {
     <Form>
       <Form.Item label={`Label`}>
         <Input
-          placeholder={`Kolat Saboteur reroll – Rank 2`}
+          placeholder={`Kolat Saboteur – Rank 2`}
           onChange={(e) => onChange(e.target.value.trim() || undefined)}
         />
       </Form.Item>

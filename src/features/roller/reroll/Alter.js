@@ -34,6 +34,7 @@ const Alter = ({
   rerollTypes,
   cancel,
   showLabelInput,
+  title,
 }) => {
   const [alterations, setAlterations] = useState([]);
   const positions = alterations.map(({ position }) => position);
@@ -58,6 +59,7 @@ const Alter = ({
 
   return (
     <RerollDiceBox
+      title={title}
       text={text}
       dices={dices.map((dice, index) => {
         const selected = positions.includes(index);

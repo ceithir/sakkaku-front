@@ -15,6 +15,7 @@ import {
   isSpecialReroll,
   rolledDicesCount,
   isSpecialAlteration,
+  getCustomLabel,
 } from "./utils";
 import Result from "./result/Reroll";
 import { longname } from "./data/abilities";
@@ -130,12 +131,15 @@ const Modifier = ({ roll, dispatch }) => {
     (modifier) => isSpecialReroll(modifier) && shouldShow(modifier)
   );
   if (specialReroll) {
+    const name = getCustomLabel({ modifier: specialReroll, metadata });
+
     return (
       <AbilityReroll
         name={specialReroll}
-        text={`Custom reroll: Select the dice you want/have to reroll.`}
+        title={name || `Custom Reroll`}
+        text={`Select the dice you want/have to reroll.`}
         cancel={() => dispatch(removeModifiers(roll, [specialReroll]))}
-        showLabelInput={true}
+        showLabelInput={!name}
       />
     );
   }
@@ -170,6 +174,8 @@ const Modifier = ({ roll, dispatch }) => {
     (modifier) => isSpecialAlteration(modifier) && shouldShow(modifier)
   );
   if (specialAlteration) {
+    const name = getCustomLabel({ modifier: specialAlteration, metadata });
+
     return (
       <Alter
         dices={dices}
@@ -178,9 +184,10 @@ const Modifier = ({ roll, dispatch }) => {
         }
         basePool={basePool}
         rerollTypes={rerollTypes}
-        text={`Custom alteration: Change the result as you want/have to.`}
+        text={`Change the result as you want/have to.`}
         cancel={() => dispatch(removeModifiers(roll, [specialAlteration]))}
-        showLabelInput={true}
+        showLabelInput={!name}
+        title={name || `Custom Alteration`}
       />
     );
   }
