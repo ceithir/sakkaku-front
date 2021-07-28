@@ -263,15 +263,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const customSchoolOptions = [
     {
       value: "reroll",
-      label: `Reroll one or more dice (ex: Ikoma Shadow).`,
+      label: `Reroll one or more dice (ex: Ikoma Shadow)`,
     },
     {
       value: "alter",
-      label: `Alter (change the value) of one or more dice (ex: Kuni Purifier).`,
+      label: `Alter (change the value) of one or more dice (ex: Kuni Purifier)`,
     },
     {
       value: "addkept",
-      label: `Add one or more kept dice set to a particular value (ex: Doji Diplomat).`,
+      label: `Add one or more kept dice set to a particular value (ex: Doji Diplomat)`,
     },
   ];
 
