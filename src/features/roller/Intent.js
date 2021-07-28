@@ -373,6 +373,13 @@ const Intent = ({ onFinish, values, onComplete }) => {
             setAddkept(addkept);
           }
         }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["common_modifiers", "addkept"].includes(name)
+          )
+        ) {
+          form.validateFields(["addkept"]);
+        }
       }}
     >
       {!!user && (
@@ -542,7 +549,30 @@ const Intent = ({ onFinish, values, onComplete }) => {
                         return <Dice key={i.toString()} dice={dice} />;
                       })}
                     </p>
-                    <Form.List name="addkept">
+                    <Form.List
+                      name="addkept"
+                      rules={[
+                        {
+                          validator: async (_, dices) => {
+                            const compromised = form
+                              .getFieldValue("common_modifiers")
+                              ?.includes("compromised");
+                            if (
+                              compromised &&
+                              dices.some(({ value: { strife = 0 } }) => {
+                                return strife >= 1;
+                              })
+                            ) {
+                              return Promise.reject(
+                                new Error(
+                                  "Cannot add kept dice with strife if compromised."
+                                )
+                              );
+                            }
+                          },
+                        },
+                      ]}
+                    >
                       {(fields, { add, remove }, { errors }) => {
                         return (
                           <DynamicDiceSelector
