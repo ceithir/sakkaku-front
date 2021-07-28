@@ -464,7 +464,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   name="school_name"
                   rules={defaultRules}
                 >
-                  <Input placeholder={`Ikoma Shadow`} />
+                  <Input placeholder={`Cat Shinobi`} />
                 </Form.Item>
                 <Form.Item
                   label={`This School Ability allows you to…`}
