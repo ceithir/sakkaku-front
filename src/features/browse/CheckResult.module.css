@@ -1,5 +1,4 @@
-.result img {
-  display: inline-block;
+.result svg {
   height: 20px;
   margin-left: 4px;
 }

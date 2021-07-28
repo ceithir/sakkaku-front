@@ -1,26 +1,25 @@
 import React from "react";
 import styles from "./Symbol.module.less";
-import strifeImg from "./images/symbols/strife.png";
-import successImg from "./images/symbols/success.png";
-import explosionImg from "./images/symbols/explosion.png";
-import opportunityImg from "./images/symbols/opportunity.png";
+import { ReactComponent as SvgExplosion } from "./images/symbols/explosion.svg";
+import { ReactComponent as SvgOpportunity } from "./images/symbols/opportunity.svg";
+import { ReactComponent as SvgStrife } from "./images/symbols/strife.svg";
+import { ReactComponent as SvgSuccess } from "./images/symbols/success.svg";
 
-const Icon = ({ src, alt }) => {
-  return <img src={src} alt={alt} className={styles.image} />;
-};
+// Role and title as per https://css-tricks.com/accessible-svgs/
+const defaultProps = { className: styles.image, role: "img" };
 
 export const Strife = () => {
-  return <Icon src={strifeImg} alt={"(Strife)"} />;
+  return <SvgStrife {...defaultProps} />;
 };
 
 export const Success = () => {
-  return <Icon src={successImg} alt={"(Success)"} />;
+  return <SvgSuccess {...defaultProps} />;
 };
 
 export const Explosion = () => {
-  return <Icon src={explosionImg} alt={"(Explosion)"} />;
+  return <SvgExplosion {...defaultProps} />;
 };
 
 export const Opportunity = () => {
-  return <Icon src={opportunityImg} alt={"(Opportunity)"} />;
+  return <SvgOpportunity {...defaultProps} />;
 };
