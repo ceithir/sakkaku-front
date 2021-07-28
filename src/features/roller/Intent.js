@@ -122,10 +122,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
       school = undefined;
       const modifierId = () => {
         if (data["school_ability"] === "reroll") {
-          return `ruleless01`;
+          return `ruleless`;
         }
         if (data["school_ability"] === "alter") {
-          return `reasonless01`;
+          return `reasonless`;
         }
         return undefined;
       };
