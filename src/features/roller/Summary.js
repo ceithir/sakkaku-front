@@ -14,10 +14,6 @@ import CharacterSheet from "../display/CharacterSheet";
 const { Text } = Typography;
 
 const Modifiers = ({ modifiers }) => {
-  if (!modifiers?.length) {
-    return null;
-  }
-
   return (
     <ol className={styles["other-modifiers"]}>
       {modifiers.map((modifier, index) => {
@@ -119,7 +115,7 @@ const Summary = ({
       label: `TN`,
       content: <Text className={styles.center}>{tn}</Text>,
     },
-    special && {
+    special.length > 0 && {
       label: `Modifiers`,
       content: <Modifiers modifiers={special} />,
     },
