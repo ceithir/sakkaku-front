@@ -6,6 +6,7 @@ import DiceSideSelector from "../DiceSideSelector";
 import { longname } from "../data/abilities";
 import Dices from "../Dices";
 import { diceWrapper } from "./RerollDiceBox";
+import AlterationResult from "./AlterationResult";
 
 const { Text, Paragraph, Title } = Typography;
 
@@ -111,6 +112,12 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
           })}
         />
       </div>
+      <AlterationResult
+        dices={dices}
+        basePool={basePool}
+        rerollTypes={rerollTypes}
+        alterations={alterations}
+      />
       <div className={styles.footer}>
         {onlyBlanks && (
           <div className={styles.alterators}>

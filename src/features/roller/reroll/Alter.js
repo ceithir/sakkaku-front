@@ -5,6 +5,7 @@ import styles from "./Alter.module.less";
 import { Button } from "antd";
 import RerollDiceBox from "./RerollDiceBox";
 import AddLabel from "./AddLabel";
+import AlterationResult from "./AlterationResult";
 
 const AVAILABLE_FACETS = {
   ring: [
@@ -73,7 +74,17 @@ const Alter = ({
       })}
       basePool={basePool}
       rerollTypes={rerollTypes}
-      content={showLabelInput ? <AddLabel onChange={setLabel} /> : <></>}
+      content={
+        <>
+          <AlterationResult
+            dices={dices}
+            rerollTypes={rerollTypes}
+            basePool={basePool}
+            alterations={alterations}
+          />
+          {showLabelInput && <AddLabel onChange={setLabel} />}
+        </>
+      }
       footer={
         <>
           <div className={styles.list}>
