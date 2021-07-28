@@ -123,11 +123,16 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
     if (school === "custom") {
       school = undefined;
+      metadata["labels"] = [];
 
       const { school_ability, school_name } = data;
 
       if (school_ability === "addkept") {
         addkept = data["addkept"];
+        metadata["labels"].push({
+          key: "addkept",
+          label: `${school_name} School Ability`,
+        });
       } else {
         const modifierId = () => {
           if (school_ability === "reroll") {
@@ -141,9 +146,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
         const modId = modifierId();
         if (modId) {
           misc.push(modId);
-          metadata["labels"] = [
-            { key: modId, label: `${school_name} School Ability` },
-          ];
+          metadata["labels"].push({
+            key: modId,
+            label: `${school_name} School Ability`,
+          });
         }
       }
     }

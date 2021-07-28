@@ -7,6 +7,7 @@ import {
   isSpecialReroll,
   isSpecialAlteration,
   getMysteriousModifierLabel,
+  getCustomLabel,
 } from "./utils";
 import ABILITIES from "./data/abilities";
 import CharacterSheet from "../display/CharacterSheet";
@@ -74,6 +75,7 @@ const Summary = ({
         (modifier) => isSpecialReroll(modifier) || isSpecialAlteration(modifier)
       )
       .map((modifier) => getMysteriousModifierLabel({ modifier, metadata })),
+    addkept.length > 0 && getCustomLabel({ modifier: "addkept", metadata }),
   ].filter(Boolean);
 
   const data = [
