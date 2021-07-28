@@ -467,7 +467,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   <Input placeholder={`Ikoma Shadow`} />
                 </Form.Item>
                 <Form.Item
-                  label={`Its School Ability allows you to…`}
+                  label={`This School Ability allows you to…`}
                   name="school_ability"
                   initialValue="reroll"
                 >
