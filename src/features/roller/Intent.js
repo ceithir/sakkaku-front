@@ -498,6 +498,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
       <Divider />
       <Collapse ghost>
         <Panel header={"Schools, techniques, magic…"}>
+          <p>{`Regardless of the options you set or do not set here, you will still be able to manually add any missing rerolls and similar dice modifications as the roll goes.`}</p>
           <Form.Item label={`School Ability`} name="school">
             <Select
               showSearch
