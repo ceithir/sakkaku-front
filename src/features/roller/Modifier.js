@@ -135,7 +135,7 @@ const Modifier = ({ roll, dispatch }) => {
         name={specialReroll}
         text={`Custom reroll: Select the dice you want/have to reroll.`}
         cancel={() => dispatch(removeModifiers(roll, [specialReroll]))}
-        showLabelInput={!!roll.id}
+        showLabelInput={true}
       />
     );
   }
@@ -180,7 +180,7 @@ const Modifier = ({ roll, dispatch }) => {
         rerollTypes={rerollTypes}
         text={`Custom alteration: Change the result as you want/have to.`}
         cancel={() => dispatch(removeModifiers(roll, [specialAlteration]))}
-        showLabelInput={!!roll.id}
+        showLabelInput={true}
       />
     );
   }
