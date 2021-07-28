@@ -75,11 +75,10 @@ const Summary = ({
         (modifier) => isSpecialReroll(modifier) || isSpecialAlteration(modifier)
       )
       .map((modifier) => getMysteriousModifierLabel({ modifier, metadata })),
-    addkept.length > 0 &&
-      (() => {
-        const name = getCustomLabel({ modifier: "addkept", metadata });
-        return name && `“${name}”`;
-      })(),
+    (() => {
+      const name = getCustomLabel({ modifier: "addkept", metadata });
+      return name && `“${name}”`;
+    })(),
   ].filter(Boolean);
 
   const data = [
