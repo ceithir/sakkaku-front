@@ -321,13 +321,13 @@ export const getMysteriousModifierLabel = ({ modifier, metadata }) => {
 
   if (!customLabel) {
     if (isAlteration) {
-      return `Custom alteration`;
+      return `Unspecified Alteration`;
     }
-    return `Custom reroll`;
+    return `Unspecified Reroll`;
   }
 
   if (isAlteration) {
-    return `Custom alteration: ${customLabel}`;
+    return `“${customLabel}” Alteration`;
   }
-  return `Custom reroll: ${customLabel}`;
+  return `“${customLabel}” Reroll`;
 };
