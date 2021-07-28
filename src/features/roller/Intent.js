@@ -242,6 +242,17 @@ const Intent = ({ onFinish, values, onComplete }) => {
     },
   ];
 
+  const customSchoolOptions = [
+    {
+      value: "reroll",
+      label: `Reroll one or more dice (ex: Ikoma Shadow).`,
+    },
+    {
+      value: "alter",
+      label: `Alter (change the value) of one or more dice (ex: Kuni Purifier).`,
+    },
+  ];
+
   return (
     <Form
       className={styles.form}
@@ -471,18 +482,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   name="school_ability"
                   initialValue="reroll"
                 >
-                  <Select
-                    options={[
-                      {
-                        value: "reroll",
-                        label: `Reroll one or more dice.`,
-                      },
-                      {
-                        value: "alter",
-                        label: `Alter (change the value) of one or more dice.`,
-                      },
-                    ]}
-                  />
+                  <Select options={customSchoolOptions} />
                 </Form.Item>
               </div>
             ) : (
