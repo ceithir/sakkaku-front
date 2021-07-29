@@ -7,10 +7,15 @@ import Summary from "./Summary";
 import { rolledDicesCount } from "./utils";
 import ConfigOpener from "./config/Opener";
 import styles from "./Complete.module.less";
+import { useSelector } from "react-redux";
+import { selectDisplayMode } from "./config/reducer";
+import classNames from "classnames";
 
 const { Panel } = Collapse;
 
 const Complete = ({ dices, button, intent, context, player, metadata }) => {
+  const displayMode = useSelector(selectDisplayMode);
+
   const { tn } = intent;
   const { id, description } = context;
 
@@ -36,10 +41,19 @@ const Complete = ({ dices, button, intent, context, player, metadata }) => {
         />
       </Panel>
 
-      <Panel header="Keep" key="keep">
+      <Panel
+        header="Keep"
+        key="keep"
+        className={classNames({ [styles.extended]: displayMode === "verbose" })}
+      >
         <Keep dices={dices} basePool={basePool} rerollTypes={rerollTypes} />
       </Panel>
-      <Panel header="Resolve" key="resolve" collapsible="disabled">
+      <Panel
+        header="Resolve"
+        key="resolve"
+        collapsible="disabled"
+        className={classNames({ [styles.extended]: displayMode === "verbose" })}
+      >
         <ConfigOpener className={styles["config-opener"]} />
         <Resolve
           dices={dices}

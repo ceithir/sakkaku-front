@@ -1,3 +1,15 @@
+@import (reference) "~antd/dist/antd.less";
+
 .config-opener {
   float: right;
+}
+
+.extended {
+  :global(.ant-collapse-content-box) > div {
+    max-width: @screen-lg;
+
+    form {
+      max-width: @screen-lg;
+    }
+  }
 }
