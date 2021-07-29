@@ -238,7 +238,9 @@ const Roller = ({ save }) => {
             disabled(REROLL) || currentStep === REROLL ? "disabled" : "header"
           }
         >
-          <HelpButton className={styles["help-button"]} />
+          {currentStep === REROLL && (
+            <HelpButton className={styles["help-button"]} />
+          )}
           <PanelContent name={REROLL} />
         </Panel>
         <Panel
@@ -248,7 +250,9 @@ const Roller = ({ save }) => {
             disabled(KEEP) || currentStep === KEEP ? "disabled" : "header"
           }
         >
-          <HelpButton className={styles["help-button"]} />
+          {currentStep === KEEP && (
+            <HelpButton className={styles["help-button"]} />
+          )}
           <PanelContent name={KEEP} />
         </Panel>
         <Panel
