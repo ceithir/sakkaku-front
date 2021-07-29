@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Dice from "./Dice";
 import TextDice from "./glitter/TextDice";
 import { useSelector } from "react-redux";
-import { selectHelp } from "./config/reducer";
+import { selectDisplayMode } from "./config/reducer";
 
 const buildClassNames = ({ dice }) => {
   const { selected, disabled, className } = dice;
@@ -25,7 +25,8 @@ const StaticDice = ({ dice }) => {
 };
 
 const Dices = ({ dices, className }) => {
-  const extended = useSelector(selectHelp);
+  const displayMode = useSelector(selectDisplayMode);
+  const extended = displayMode === "verbose";
 
   if (!dices?.length) {
     return null;

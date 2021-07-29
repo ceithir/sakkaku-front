@@ -4,7 +4,7 @@ import { replaceRerolls } from "../utils";
 import classNames from "classnames";
 import styles from "./RerollDiceBox.module.less";
 import { useSelector } from "react-redux";
-import { selectHelp } from "../config/reducer";
+import { selectDisplayMode } from "../config/reducer";
 
 export const diceWrapper = ({ dices, basePool, rerollTypes }) => {
   return replaceRerolls({
@@ -31,7 +31,7 @@ const RerollDiceBox = ({
   className,
   ...props
 }) => {
-  const help = useSelector(selectHelp);
+  const displayMode = useSelector(selectDisplayMode);
 
   return (
     <DicesBox
@@ -41,7 +41,7 @@ const RerollDiceBox = ({
         rerollTypes,
       })}
       className={classNames({
-        [styles.extended]: help,
+        [styles.extended]: displayMode === "verbose",
         [className]: !!className,
       })}
       {...props}

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   mode: "semiauto",
-  help: false,
+  displayMode: "compact",
 };
 
 const slice = createSlice({
@@ -20,7 +20,7 @@ const slice = createSlice({
 export const { updateConfig } = slice.actions;
 
 export const selectMode = (state) => state.rollConfig.mode;
-export const selectHelp = (state) => state.rollConfig.help;
+export const selectDisplayMode = (state) => state.rollConfig.displayMode;
 export const selectConfig = (state) => state.rollConfig;
 
 export default slice.reducer;

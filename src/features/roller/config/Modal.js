@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal as AntdModal, Form, Radio, Switch } from "antd";
+import { Modal as AntdModal, Form, Radio } from "antd";
 import ExplainOptions from "../glitter/ExplainOptions";
 import { useSelector, useDispatch } from "react-redux";
 import { selectConfig, updateConfig } from "./reducer";
@@ -15,6 +15,11 @@ const behaviorOptions = [
     label: `Manual`,
     description: `All dice must be picked by hand.`,
   },
+];
+
+const displayOptions = [
+  { value: "compact", label: "Compact" },
+  { value: "verbose", label: "Extended" },
 ];
 
 const Modal = ({ visible, hide }) => {
@@ -35,8 +40,8 @@ const Modal = ({ visible, hide }) => {
           dispatch(updateConfig(changedValues));
         }}
       >
-        <Form.Item name="help" valuePropName="checked" label={`Display`}>
-          <Switch />
+        <Form.Item name="displayMode" label={`Display mode`}>
+          <Radio.Group options={displayOptions} optionType="button" />
         </Form.Item>
         <Form.Item name="mode" label={`Picking strategy`}>
           <Radio.Group options={behaviorOptions} optionType="button" />
