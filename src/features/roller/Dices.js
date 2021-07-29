@@ -2,6 +2,9 @@ import React from "react";
 import styles from "./Dices.module.less";
 import classNames from "classnames";
 import Dice from "./Dice";
+import TextDice from "./glitter/TextDice";
+import { useSelector } from "react-redux";
+import { selectHelp } from "./reducer";
 
 const buildClassNames = ({ dice }) => {
   const { selected, disabled, className } = dice;
@@ -22,6 +25,8 @@ const StaticDice = ({ dice }) => {
 };
 
 const Dices = ({ dices, className }) => {
+  const extended = useSelector(selectHelp);
+
   if (!dices?.length) {
     return null;
   }
@@ -36,6 +41,24 @@ const Dices = ({ dices, className }) => {
           const { selectable, selected, toggle } = dice;
 
           if (!selectable) {
+            if (extended) {
+              return (
+                <div
+                  key={key}
+                  className={classNames(
+                    styles.dice,
+                    styles.extended,
+                    buildClassNames({ dice })
+                  )}
+                >
+                  <div>
+                    <Dice dice={dice} />
+                    <TextDice {...dice.value} />
+                  </div>
+                </div>
+              );
+            }
+
             return <StaticDice key={key} dice={dice} />;
           }
 
@@ -44,10 +67,18 @@ const Dices = ({ dices, className }) => {
               key={key}
               className={classNames(styles.dice, {
                 [styles.selectable]: true,
+                [styles.extended]: extended,
                 ...buildClassNames({ dice }),
               })}
             >
-              <Dice dice={dice} />
+              {extended ? (
+                <div>
+                  <Dice dice={dice} />
+                  <TextDice {...dice.value} />
+                </div>
+              ) : (
+                <Dice dice={dice} />
+              )}
               <input type="checkbox" checked={selected} onChange={toggle} />
             </label>
           );
