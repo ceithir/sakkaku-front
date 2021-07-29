@@ -8,7 +8,6 @@ import {
   Select,
   Collapse,
   Checkbox,
-  Radio,
 } from "antd";
 import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
@@ -20,7 +19,6 @@ import {
   addCharacter,
   selectUser,
 } from "../user/reducer";
-import { selectMode, setMode } from "./config/reducer";
 import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
@@ -102,14 +100,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [channeled, setChanneled] = useState([]);
   const [addkept, setAddkept] = useState([]);
   const [schoolAbility, setSchoolAbility] = useState();
-  const mode = useSelector(selectMode);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
 
     dispatch(addCampaign(data["campaign"]));
     dispatch(addCharacter(data["character"]));
-    !!data["mode"] && dispatch(setMode(data["mode"]));
 
     const {
       common_modifiers: commonModifiers = [],
@@ -280,7 +276,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
     <Form
       className={styles.form}
       layout="vertical"
-      initialValues={{ mode, ...values }}
+      initialValues={values}
       onFinish={wrappedOnFinish}
       scrollToFirstError
       form={form}
@@ -710,27 +706,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
             />
           </Form.Item>
           <ExplainOptions options={miscOptions} />
-          <Form.Item name="mode" label={`Roller behavior`}>
-            <Radio.Group
-              options={[
-                { label: "Semi-automatic", value: "semiauto" },
-                { label: "Manual", value: "manual" },
-              ]}
-              optionType="button"
-            />
-          </Form.Item>
-          <ExplainOptions
-            options={[
-              {
-                label: `Semi-automatic`,
-                description: `The roller will try to preselect the best dice to reroll/keep.`,
-              },
-              {
-                label: `Manual`,
-                description: `All dice must be picked by hand.`,
-              },
-            ]}
-          />
         </Panel>
       </Collapse>
       <Divider />

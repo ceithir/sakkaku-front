@@ -29,11 +29,21 @@ import { isReroll, rolledDicesCount } from "./utils";
 import Modifier from "./Modifier";
 import Channel from "./Channel";
 import Layout from "./Layout";
-import HelpButton from "./glitter/HelpButton";
 import styles from "./index.module.less";
 import { selectMode } from "./config/reducer";
+import ConfigOpener from "./config/Opener";
 
 const { Panel } = Collapse;
+
+const ConfigButton = ({ step }) => {
+  const currentStep = useSelector(selectStep);
+
+  if (step !== currentStep) {
+    return null;
+  }
+
+  return <ConfigOpener className={styles["config-opener"]} />;
+};
 
 const Roller = ({ save }) => {
   const roll = useSelector(selectAll);
@@ -232,6 +242,7 @@ const Roller = ({ save }) => {
           key="declare"
           collapsible={currentStep === DECLARE ? "disabled" : "header"}
         >
+          <ConfigButton step={DECLARE} />
           {currentStep === DECLARE ? (
             <Intent
               onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
@@ -248,9 +259,7 @@ const Roller = ({ save }) => {
             disabled(REROLL) || currentStep === REROLL ? "disabled" : "header"
           }
         >
-          {currentStep === REROLL && (
-            <HelpButton className={styles["help-button"]} />
-          )}
+          <ConfigButton step={REROLL} />
           <PanelContent name={REROLL} />
         </Panel>
         <Panel
@@ -260,9 +269,7 @@ const Roller = ({ save }) => {
             disabled(KEEP) || currentStep === KEEP ? "disabled" : "header"
           }
         >
-          {currentStep === KEEP && (
-            <HelpButton className={styles["help-button"]} />
-          )}
+          <ConfigButton step={KEEP} />
           <PanelContent name={KEEP} />
         </Panel>
         <Panel
@@ -272,6 +279,7 @@ const Roller = ({ save }) => {
             disabled(RESOLVE) || currentStep === RESOLVE ? "disabled" : "header"
           }
         >
+          <ConfigButton step={RESOLVE} />
           <PanelContent name={RESOLVE} />
         </Panel>
       </Collapse>
