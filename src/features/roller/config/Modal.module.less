@@ -1,0 +1,32 @@
+.compact-dice {
+  & > * {
+    margin-right: 12px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.captioned-dice {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > div {
+    border: 1px dashed black;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 12px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+
+      margin-left: 12px;
+    }
+  }
+}

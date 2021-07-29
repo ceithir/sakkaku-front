@@ -3,6 +3,9 @@ import { Modal as AntdModal, Form, Radio } from "antd";
 import ExplainOptions from "../glitter/ExplainOptions";
 import { useSelector, useDispatch } from "react-redux";
 import { selectConfig, updateConfig } from "./reducer";
+import Dice from "../Dice";
+import styles from "./Modal.module.less";
+import TextDice from "../glitter/TextDice";
 
 const behaviorOptions = [
   {
@@ -18,8 +21,42 @@ const behaviorOptions = [
 ];
 
 const displayOptions = [
-  { value: "compact", label: "Compact" },
-  { value: "verbose", label: "Extended" },
+  {
+    value: "compact",
+    label: "Compact",
+    description: (
+      <>
+        {`Dice will be shown as:`}
+        <div className={styles["compact-dice"]}>
+          <Dice dice={{ type: "ring", value: { explosion: 1, strife: 1 } }} />
+          <Dice
+            dice={{ type: "skill", value: { opportunity: 1, success: 1 } }}
+          />
+        </div>
+      </>
+    ),
+  },
+  {
+    value: "verbose",
+    label: "Captioned",
+    description: (
+      <>
+        {`Dice will be shown as:`}
+        <div className={styles["captioned-dice"]}>
+          <div>
+            <Dice dice={{ type: "ring", value: { explosion: 1, strife: 1 } }} />
+            <TextDice explosion={1} strife={1} />
+          </div>
+          <div>
+            <Dice
+              dice={{ type: "skill", value: { opportunity: 1, success: 1 } }}
+            />
+            <TextDice opportunity={1} success={1} />
+          </div>
+        </div>
+      </>
+    ),
+  },
 ];
 
 const Modal = ({ visible, hide }) => {
@@ -43,6 +80,7 @@ const Modal = ({ visible, hide }) => {
         <Form.Item name="displayMode" label={`Display mode`}>
           <Radio.Group options={displayOptions} optionType="button" />
         </Form.Item>
+        <ExplainOptions options={displayOptions} />
         <Form.Item name="mode" label={`Picking strategy`}>
           <Radio.Group options={behaviorOptions} optionType="button" />
         </Form.Item>
