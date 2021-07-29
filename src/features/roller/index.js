@@ -29,6 +29,8 @@ import { isReroll, rolledDicesCount } from "./utils";
 import Modifier from "./Modifier";
 import Channel from "./Channel";
 import Layout from "./Layout";
+import HelpButton from "./glitter/HelpButton";
+import styles from "./index.module.less";
 
 const { Panel } = Collapse;
 
@@ -236,6 +238,7 @@ const Roller = ({ save }) => {
             disabled(REROLL) || currentStep === REROLL ? "disabled" : "header"
           }
         >
+          <HelpButton className={styles["help-button"]} />
           <PanelContent name={REROLL} />
         </Panel>
         <Panel
@@ -245,6 +248,7 @@ const Roller = ({ save }) => {
             disabled(KEEP) || currentStep === KEEP ? "disabled" : "header"
           }
         >
+          <HelpButton className={styles["help-button"]} />
           <PanelContent name={KEEP} />
         </Panel>
         <Panel

@@ -1,0 +1,13 @@
+@import (reference) "~antd/dist/antd.less";
+
+.button {
+  &:not(.active) {
+    color: @text-color;
+    border-color: @border-color-base;
+  }
+
+  &.active {
+    color: @primary-color;
+    border-color: @primary-color;
+  }
+}

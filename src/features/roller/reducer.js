@@ -18,6 +18,7 @@ const initialState = {
   channelInsteadOfKeeping: false,
   mode: "semiauto",
   delayAfterDistinction: false,
+  help: false,
 };
 
 const slice = createSlice({
@@ -115,6 +116,9 @@ const slice = createSlice({
     setDelayAfterDistinction: (state, action) => {
       state.delayAfterDistinction = action.payload;
     },
+    setHelp: (state, action) => {
+      state.help = action.payload;
+    },
   },
 });
 
@@ -130,6 +134,7 @@ export const {
   keepInsteadOfChanneling,
   setMode,
   setDelayAfterDistinction,
+  setHelp,
 } = slice.actions;
 
 const { update, setError, setModifiers } = slice.actions;
@@ -493,5 +498,7 @@ const defaultToKeep = (roll) => {
 
 export const selectDelayAfterDistinction = (state) =>
   state.roll.delayAfterDistinction;
+
+export const selectHelp = (state) => state.roll.help;
 
 export default slice.reducer;
