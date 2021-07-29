@@ -30,8 +30,9 @@ import Modifier from "./Modifier";
 import Channel from "./Channel";
 import Layout from "./Layout";
 import styles from "./index.module.less";
-import { selectMode } from "./config/reducer";
+import { selectDisplayMode, selectMode } from "./config/reducer";
 import ConfigOpener from "./config/Opener";
+import classNames from "classnames";
 
 const { Panel } = Collapse;
 
@@ -52,6 +53,7 @@ const Roller = ({ save }) => {
   const intent = useSelector(selectIntent);
   const dispatch = useDispatch();
   const mode = useSelector(selectMode);
+  const displayMode = useSelector(selectDisplayMode);
 
   useEffect(() => {
     if (!save || !dispatch) {
@@ -234,6 +236,10 @@ const Roller = ({ save }) => {
     return null;
   };
 
+  const defaultClassName = classNames({
+    [styles.extended]: displayMode === "verbose",
+  });
+
   return (
     <Layout>
       <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
@@ -258,6 +264,7 @@ const Roller = ({ save }) => {
           collapsible={
             disabled(REROLL) || currentStep === REROLL ? "disabled" : "header"
           }
+          className={defaultClassName}
         >
           <ConfigButton step={REROLL} />
           <PanelContent name={REROLL} />
@@ -268,6 +275,7 @@ const Roller = ({ save }) => {
           collapsible={
             disabled(KEEP) || currentStep === KEEP ? "disabled" : "header"
           }
+          className={defaultClassName}
         >
           <ConfigButton step={KEEP} />
           <PanelContent name={KEEP} />
@@ -278,6 +286,7 @@ const Roller = ({ save }) => {
           collapsible={
             disabled(RESOLVE) || currentStep === RESOLVE ? "disabled" : "header"
           }
+          className={defaultClassName}
         >
           <ConfigButton step={RESOLVE} />
           <PanelContent name={RESOLVE} />

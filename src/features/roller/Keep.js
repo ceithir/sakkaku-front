@@ -9,8 +9,6 @@ import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import { FACETS } from "./DiceSideSelector";
 import { rolledDicesCount, keptDicesCount } from "./utils";
-import classNames from "classnames";
-import { selectDisplayMode } from "./config/reducer";
 
 const { Paragraph } = Typography;
 
@@ -67,7 +65,6 @@ const Keep = ({
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
-  const displayMode = useSelector(selectDisplayMode);
 
   const compromised = modifiers.includes("compromised");
 
@@ -207,11 +204,7 @@ const Keep = ({
   };
 
   return (
-    <div
-      className={classNames(styles.layout, {
-        [styles.extended]: displayMode === "verbose",
-      })}
-    >
+    <div className={styles.layout}>
       <div className={styles.content}>
         <ExplosionDices
           dices={wrapDices()}
