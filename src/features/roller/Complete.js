@@ -5,6 +5,8 @@ import Resolve from "./result/Resolve";
 import { Collapse } from "antd";
 import Summary from "./Summary";
 import { rolledDicesCount } from "./utils";
+import ConfigOpener from "./config/Opener";
+import styles from "./Complete.module.less";
 
 const { Panel } = Collapse;
 
@@ -38,6 +40,7 @@ const Complete = ({ dices, button, intent, context, player, metadata }) => {
         <Keep dices={dices} basePool={basePool} rerollTypes={rerollTypes} />
       </Panel>
       <Panel header="Resolve" key="resolve" collapsible="disabled">
+        <ConfigOpener className={styles["config-opener"]} />
         <Resolve
           dices={dices}
           tn={tn}
