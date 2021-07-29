@@ -3,6 +3,8 @@ import DicesBox from "../DicesBox";
 import { replaceRerolls } from "../utils";
 import classNames from "classnames";
 import styles from "./RerollDiceBox.module.less";
+import { useSelector } from "react-redux";
+import { selectHelp } from "../reducer";
 
 export const diceWrapper = ({ dices, basePool, rerollTypes }) => {
   return replaceRerolls({
@@ -22,13 +24,25 @@ export const diceWrapper = ({ dices, basePool, rerollTypes }) => {
   });
 };
 
-const RerollDiceBox = ({ dices, basePool, rerollTypes, ...props }) => {
+const RerollDiceBox = ({
+  dices,
+  basePool,
+  rerollTypes,
+  className,
+  ...props
+}) => {
+  const help = useSelector(selectHelp);
+
   return (
     <DicesBox
       dices={diceWrapper({
         dices,
         basePool,
         rerollTypes,
+      })}
+      className={classNames({
+        [styles.extended]: help,
+        [className]: !!className,
       })}
       {...props}
     />

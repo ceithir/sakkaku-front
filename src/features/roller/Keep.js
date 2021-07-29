@@ -5,10 +5,11 @@ import { Typography, Form, Button } from "antd";
 import ExplosionDices from "./ExplosionDices";
 import styles from "./Keep.module.less";
 import { useSelector, useDispatch } from "react-redux";
-import { selectToKeep, setToKeep } from "./reducer";
+import { selectToKeep, setToKeep, selectHelp } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import { FACETS } from "./DiceSideSelector";
 import { rolledDicesCount, keptDicesCount } from "./utils";
+import classNames from "classnames";
 
 const { Paragraph } = Typography;
 
@@ -65,6 +66,7 @@ const Keep = ({
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
+  const help = useSelector(selectHelp);
 
   const compromised = modifiers.includes("compromised");
 
@@ -204,7 +206,7 @@ const Keep = ({
   };
 
   return (
-    <div className={styles.layout}>
+    <div className={classNames(styles.layout, { [styles.extended]: help })}>
       <div className={styles.content}>
         <ExplosionDices
           dices={wrapDices()}
