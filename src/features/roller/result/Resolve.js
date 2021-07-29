@@ -39,38 +39,34 @@ const Resolve = ({
   const setDice = dices.filter(isRelevantDice).filter(isASetDice);
 
   return (
-    <div className={styles.layout}>
-      <div className={styles.container}>
-        <div className={styles.content}>
-          {isChannel && (
-            <Text
-              className={styles["channel-text"]}
-            >{`The following dice were channeled (reserved) for a later roll.`}</Text>
-          )}
-          <Dices dices={cleanedUpDice} />
-          {setDice.length > 0 && (
-            <Paragraph type="secondary">
-              {setDice.length > 1
-                ? `*These dice were not rolled but set to those values.`
-                : `*This die was not rolled but set to that value.`}
-            </Paragraph>
-          )}
-          {!isChannel && (
-            <Result dices={dices} tn={tn} modifiers={rerollTypes} />
-          )}
-        </div>
-        <LineContainer>
-          <CopyLink disabled={!id} />
-          <BbCode
-            id={id}
-            tn={tn}
-            description={description}
-            modifiers={rerollTypes}
-            cleanedUpDice={cleanedUpDice}
-          />
-          {button}
-        </LineContainer>
+    <div className={styles.container}>
+      <div className={styles.content}>
+        {isChannel && (
+          <Text
+            className={styles["channel-text"]}
+          >{`The following dice were channeled (reserved) for a later roll.`}</Text>
+        )}
+        <Dices dices={cleanedUpDice} />
+        {setDice.length > 0 && (
+          <Paragraph type="secondary">
+            {setDice.length > 1
+              ? `*These dice were not rolled but set to those values.`
+              : `*This die was not rolled but set to that value.`}
+          </Paragraph>
+        )}
+        {!isChannel && <Result dices={dices} tn={tn} modifiers={rerollTypes} />}
       </div>
+      <LineContainer>
+        <CopyLink disabled={!id} />
+        <BbCode
+          id={id}
+          tn={tn}
+          description={description}
+          modifiers={rerollTypes}
+          cleanedUpDice={cleanedUpDice}
+        />
+        {button}
+      </LineContainer>
     </div>
   );
 };
