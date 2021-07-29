@@ -5,11 +5,12 @@ import { Typography, Form, Button } from "antd";
 import ExplosionDices from "./ExplosionDices";
 import styles from "./Keep.module.less";
 import { useSelector, useDispatch } from "react-redux";
-import { selectToKeep, setToKeep, selectHelp } from "./reducer";
+import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import { FACETS } from "./DiceSideSelector";
 import { rolledDicesCount, keptDicesCount } from "./utils";
 import classNames from "classnames";
+import { selectHelp } from "./config/reducer";
 
 const { Paragraph } = Typography;
 

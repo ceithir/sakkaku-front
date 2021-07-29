@@ -20,7 +20,7 @@ import {
   addCharacter,
   selectUser,
 } from "../user/reducer";
-import { setMode } from "./reducer";
+import { selectMode, setMode } from "./config/reducer";
 import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
@@ -102,6 +102,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [channeled, setChanneled] = useState([]);
   const [addkept, setAddkept] = useState([]);
   const [schoolAbility, setSchoolAbility] = useState();
+  const mode = useSelector(selectMode);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -279,7 +280,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
     <Form
       className={styles.form}
       layout="vertical"
-      initialValues={values}
+      initialValues={{ mode, ...values }}
       onFinish={wrappedOnFinish}
       scrollToFirstError
       form={form}

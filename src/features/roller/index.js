@@ -17,7 +17,7 @@ import {
 import Keep from "./Keep";
 import Summary from "./Summary";
 import { Collapse } from "antd";
-import { setParameters, load } from "./reducer";
+import { setParameters, load, initToKeep } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import NextButton from "./NextButton";
 import { selectUser } from "../user/reducer";
@@ -31,6 +31,7 @@ import Channel from "./Channel";
 import Layout from "./Layout";
 import HelpButton from "./glitter/HelpButton";
 import styles from "./index.module.less";
+import { selectMode } from "./config/reducer";
 
 const { Panel } = Collapse;
 
@@ -40,6 +41,7 @@ const Roller = ({ save }) => {
   const currentStep = useSelector(selectStep);
   const intent = useSelector(selectIntent);
   const dispatch = useDispatch();
+  const mode = useSelector(selectMode);
 
   useEffect(() => {
     if (!save || !dispatch) {
@@ -65,6 +67,14 @@ const Roller = ({ save }) => {
     }
     setActiveKeys([currentStep]);
   }, [currentStep]);
+
+  // FIXME: Shouldn't probably be handled here and that way
+  useEffect(() => {
+    if (currentStep !== KEEP) {
+      return;
+    }
+    dispatch(initToKeep(mode));
+  }, [currentStep, mode, dispatch, roll.dices.length]);
 
   const {
     dices,

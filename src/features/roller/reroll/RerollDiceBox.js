@@ -4,7 +4,7 @@ import { replaceRerolls } from "../utils";
 import classNames from "classnames";
 import styles from "./RerollDiceBox.module.less";
 import { useSelector } from "react-redux";
-import { selectHelp } from "../reducer";
+import { selectHelp } from "../config/reducer";
 
 export const diceWrapper = ({ dices, basePool, rerollTypes }) => {
   return replaceRerolls({

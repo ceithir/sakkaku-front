@@ -22,9 +22,12 @@ import { longname } from "./data/abilities";
 import Wandering from "./reroll/Wandering";
 import styles from "./Modifier.module.less";
 import Offering from "./reroll/Offering";
+import { useSelector } from "react-redux";
+import { selectMode } from "./config/reducer";
 
 const Modifier = ({ roll, dispatch }) => {
-  const { dices, modifiers, metadata, mode } = roll;
+  const { dices, modifiers, metadata } = roll;
+  const mode = useSelector(selectMode);
 
   const basePool = rolledDicesCount(roll);
   const rerollTypes = metadata?.rerolls || [];

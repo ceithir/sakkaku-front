@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Dice from "./Dice";
 import TextDice from "./glitter/TextDice";
 import { useSelector } from "react-redux";
-import { selectHelp } from "./reducer";
+import { selectHelp } from "./config/reducer";
 
 const buildClassNames = ({ dice }) => {
   const { selected, disabled, className } = dice;

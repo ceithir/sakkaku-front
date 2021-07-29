@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectHelp, setHelp } from "../reducer";
+import { selectHelp, setHelp } from "../config/reducer";
 import { Button } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import classNames from "classnames";

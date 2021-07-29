@@ -16,9 +16,7 @@ const initialState = {
   channeled: [],
   addkept: [],
   channelInsteadOfKeeping: false,
-  mode: "semiauto",
   delayAfterDistinction: false,
-  help: false,
 };
 
 const slice = createSlice({
@@ -85,7 +83,6 @@ const slice = createSlice({
 
       state.loading = false;
       window.history.pushState(null, null, `/rolls/${id}`);
-      state.toKeep = defaultToKeep(state);
     },
     update: (state, action) => {
       const { dices, metadata } = action.payload;
@@ -93,7 +90,6 @@ const slice = createSlice({
       state.metadata = metadata;
 
       state.loading = false;
-      state.toKeep = defaultToKeep(state);
     },
     setToKeep: (state, action) => {
       state.toKeep = action.payload;
@@ -110,14 +106,11 @@ const slice = createSlice({
     keepInsteadOfChanneling: (state) => {
       state.channelInsteadOfKeeping = false;
     },
-    setMode: (state, action) => {
-      state.mode = action.payload;
-    },
     setDelayAfterDistinction: (state, action) => {
       state.delayAfterDistinction = action.payload;
     },
-    setHelp: (state, action) => {
-      state.help = action.payload;
+    initToKeep: (state, { payload: mode }) => {
+      state.toKeep = mode === "semiauto" ? bestKeepableDice(state) : [];
     },
   },
 });
@@ -132,9 +125,8 @@ export const {
   setAddKept,
   channelInsteadOfKeeping,
   keepInsteadOfChanneling,
-  setMode,
   setDelayAfterDistinction,
-  setHelp,
+  initToKeep,
 } = slice.actions;
 
 const { update, setError, setModifiers } = slice.actions;
@@ -486,19 +478,7 @@ export const selectHidden = (state) =>
 
 export const selectToKeep = (state) => state.roll.toKeep;
 
-const defaultToKeep = (roll) => {
-  const { mode } = roll;
-
-  if (mode !== "semiauto") {
-    return [];
-  }
-
-  return bestKeepableDice(roll);
-};
-
 export const selectDelayAfterDistinction = (state) =>
   state.roll.delayAfterDistinction;
-
-export const selectHelp = (state) => state.roll.help;
 
 export default slice.reducer;
