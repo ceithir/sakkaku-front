@@ -58,14 +58,13 @@ const CustomForm = () => {
     <Form
       initialValues={{ table: "core" }}
       onFinish={(data) => {
-        const { campaign, character, description, table, gm_email } = data;
+        const { campaign, character, description, table } = data;
 
         dispatch(
           create({
             metadata: { table },
             context: { campaign, character, description },
             user,
-            gm_email,
           })
         );
 
