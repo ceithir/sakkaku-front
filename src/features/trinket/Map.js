@@ -7,9 +7,11 @@ import Animate from "rc-animate";
 import { useLocation, useHistory } from "react-router-dom";
 import ExternalLink from "../navigation/ExternalLink";
 
-const mapUrl = "/media/maps/rokugan-map-1800.jpg";
-const mapMaxX = 65 + 2;
-const mapMaxY = 99 + 2;
+const {
+  imgSrc,
+  captions,
+  grid: { columns: mapMaxX, rows: mapMaxY },
+} = mapData;
 
 const { Text } = Typography;
 
@@ -17,7 +19,7 @@ const bound = ({ value, min, max }) => {
   return Math.max(min, Math.min(Math.round(value), max));
 };
 
-const fetchLocation = (name) => mapData.find(({ label }) => label === name);
+const fetchLocation = (name) => captions.find(({ label }) => label === name);
 
 const HorizontalBar = ({ container, search }) => {
   const imageHeight = container.children[0].clientHeight;
@@ -199,7 +201,7 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
     <>
       <div className={styles.search}>
         <AutoComplete
-          options={mapData.map(({ label }) => {
+          options={captions.map(({ label }) => {
             return { value: label };
           })}
           onSelect={onSearch}
@@ -247,7 +249,7 @@ const Map = () => {
         innerRef={scrollContainerRef}
       >
         <img
-          src={mapUrl}
+          src={imgSrc}
           alt="Rokugan map (5th ed)"
           onLoad={() => {
             setImageLoaded(true);

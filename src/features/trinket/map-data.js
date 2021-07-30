@@ -1,4 +1,6 @@
-const data = [
+import imgSrc from "./images/rokugan-map-1800.jpg";
+
+const captions = [
   { label: "Aokami Forest", x: 41, y: 37 },
   { label: "Authorized City", x: 42, y: 27 },
   { label: "Barracks of the Damned", x: 19, y: 70 },
@@ -110,5 +112,14 @@ const data = [
   { label: "West Mountain Village", x: 21, y: 73 },
   { label: "Whirlpool of the Great Sea Spider", x: 38, y: 77 },
 ];
+
+const data = {
+  imgSrc,
+  captions,
+  grid: {
+    columns: 65 + 2,
+    rows: 99 + 2,
+  },
+};
 
 export default data;
