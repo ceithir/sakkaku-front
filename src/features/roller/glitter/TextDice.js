@@ -1,6 +1,11 @@
 import React from "react";
 import { Typography } from "antd";
-import { Explosion, Opportunity, Success, Strife } from "../../display/Symbol";
+import {
+  Explosion,
+  Opportunity,
+  Success,
+  Strife,
+} from "features/display/Symbol";
 
 const { Text } = Typography;
 
