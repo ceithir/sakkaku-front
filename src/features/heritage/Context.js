@@ -2,8 +2,16 @@ import React from "react";
 import CharacterSheet from "../display/CharacterSheet";
 import styles from "./Context.module.less";
 import classNames from "classnames";
+import TABLES from "./data/heritage";
 
-const Context = ({ character, campaign, user, description, dices = [] }) => {
+const Context = ({
+  character,
+  campaign,
+  user,
+  description,
+  dices = [],
+  metadata: { table } = {},
+}) => {
   const [firstDie, secondDie, thirdDie] = dices;
   const picked = dices.find(({ status }) => status === "kept");
 
@@ -20,6 +28,7 @@ const Context = ({ character, campaign, user, description, dices = [] }) => {
       ],
     },
     description && { label: `Description`, content: description },
+    table && { label: `Ref.`, content: TABLES[table]?.name },
   ].filter(Boolean);
 
   if (data.length === 0) {

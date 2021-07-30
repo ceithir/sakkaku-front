@@ -138,6 +138,8 @@ export const selectRoll = (state) => {
     metadata: state.heritage.metadata,
   };
 };
-export const selectContext = (state) => state.heritage.context;
+export const selectContext = (state) => {
+  return { ...state.heritage.context, metadata: state.heritage.metadata };
+};
 
 export default slice.reducer;

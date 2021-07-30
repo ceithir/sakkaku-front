@@ -49,18 +49,13 @@ const Summary = ({ table, rolls, className }) => {
         title={name}
         bordered
         layout="vertical"
-        column={{ xs: 1, sm: 1, md: 2, lg: 4 }}
+        column={1}
         size="small"
       >
-        <Descriptions.Item label="Result" className={styles.justify}>
-          {description}
-        </Descriptions.Item>
+        <Descriptions.Item label="Result">{description}</Descriptions.Item>
         <Descriptions.Item label="Modifier">{modifier}</Descriptions.Item>
-        <Descriptions.Item label="Other effects" className={styles.justify}>
+        <Descriptions.Item label="Other effects">
           <Effect effect={effect} roll={secondRoll} />
-        </Descriptions.Item>
-        <Descriptions.Item label="Ref.">
-          {TABLES[table]["name"]}
         </Descriptions.Item>
       </Descriptions>
     </div>

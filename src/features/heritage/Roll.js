@@ -80,7 +80,7 @@ const Roll = () => {
 
   return (
     <CustomLayout dices={dices} context={context}>
-      <div className={styles.expandable}>
+      <div>
         <Summary
           table={table}
           rolls={dices

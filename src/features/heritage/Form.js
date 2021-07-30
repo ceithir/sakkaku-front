@@ -3,7 +3,7 @@ import { Button, Form, Select, AutoComplete, Input } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { selectLoading, selectError, create } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
-import styles from "./Form.module.css";
+import styles from "./Form.module.less";
 import TABLES from "./data/heritage";
 import {
   selectCampaigns,

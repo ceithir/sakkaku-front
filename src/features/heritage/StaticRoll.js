@@ -17,7 +17,7 @@ const StaticRoll = ({ roll, context }) => {
 
   const CustomLayout = ({ children, ...props }) => {
     return (
-      <Layout dices={dices} context={context} {...props}>
+      <Layout dices={dices} context={{ ...context, metadata }} {...props}>
         {children}
         <div className={styles["go-back-container"]}>
           <CopyLink />
@@ -51,7 +51,6 @@ const StaticRoll = ({ roll, context }) => {
         rolls={dices
           .filter(({ status }) => status === "kept")
           .map(({ value }) => value)}
-        className={styles.expandable}
       />
     </CustomLayout>
   );
