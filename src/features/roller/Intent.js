@@ -29,7 +29,6 @@ import ABILITIES, { longname } from "./data/abilities";
 import ExplainOptions from "./glitter/ExplainOptions";
 import { Strife, Success, Explosion } from "../display/Symbol";
 import Dice from "./Dice";
-import backgroundImage from "../../background.jpg";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -519,12 +518,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
           </Form.Item>
           {school &&
             (school === "custom" ? (
-              <div
-                className={styles["custom-school"]}
-                style={{
-                  backgroundImage: `url(${backgroundImage})`,
-                }}
-              >
+              <div className={styles["custom-school"]}>
                 <Form.Item
                   label="School Name"
                   name="school_name"

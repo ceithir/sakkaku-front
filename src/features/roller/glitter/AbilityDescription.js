@@ -2,7 +2,6 @@ import React from "react";
 import { Card, Typography } from "antd";
 import styles from "./AbilityDescription.module.less";
 import classNames from "classnames";
-import backgroundImage from "../../../background.jpg";
 import ABILITIES from "../data/abilities";
 
 const Description = ({ name, effect, image, className, images = [] }) => {
@@ -22,9 +21,6 @@ const Description = ({ name, effect, image, className, images = [] }) => {
           }
         />
       }
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-      }}
     >
       <Typography className={styles.text}>
         {typeof effect === "string" ? (

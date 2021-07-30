@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
 import styles from "./Layout.module.less";
-import backgroundImage from "../../background.jpg";
 import Context from "./Context";
 
 const { Title } = Typography;
@@ -9,12 +8,7 @@ const { Title } = Typography;
 const Layout = ({ children, dices, context, instruction }) => {
   return (
     <>
-      <div
-        className={styles.layout}
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-        }}
-      >
+      <div className={styles.layout}>
         <Title>{`Legend of the Five Rings – Heritage Roll`}</Title>
         <Context {...context} dices={dices} />
         {instruction && (
