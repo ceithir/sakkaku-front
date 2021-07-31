@@ -70,6 +70,15 @@
     margin-top: 0;
   }
 
+  .school {
+    margin-bottom: 24px;
+
+    @media (max-width: @screen-sm) {
+      margin-left: -36px;
+      margin-right: -36px;
+    }
+  }
+
   .custom-school {
     .paper-background();
     padding: 24px;
@@ -119,13 +128,4 @@
 }
 .plus-12 :global(.ant-form-item-control-input-content):after {
   content: "+12";
-}
-
-.school {
-  margin-bottom: 24px;
-
-  @media (max-width: @screen-sm) {
-    margin-left: -36px;
-    margin-right: -36px;
-  }
 }
