@@ -1,24 +1,16 @@
-// Ref: https://github.com/DocSpring/craco-less/issues/45#issuecomment-692571756
+/**
+ * https://github.com/DocSpring/craco-antd
+ * https://github.com/DocSpring/craco-less/issues/45#issuecomment-692571756
+ */
 
+const CracoAntDesignPlugin = require("craco-antd");
 const CracoLessPlugin = require("craco-less");
-
-const modifiedTheme = {
-  "collapse-content-bg": "#efefe7",
-};
 
 module.exports = {
   plugins: [
-    // This plugin takes care of the .less files
+    // This plugin takes care of the .less files (and does a bit of magic on the side)
     {
-      plugin: CracoLessPlugin,
-      options: {
-        lessLoaderOptions: {
-          lessOptions: {
-            modifyVars: modifiedTheme,
-            javascriptEnabled: true,
-          },
-        },
-      },
+      plugin: CracoAntDesignPlugin,
     },
     // This plugin take scare of the .module.less files
     {
@@ -40,7 +32,6 @@ module.exports = {
               loader: "less-loader",
               options: {
                 lessOptions: {
-                  modifyVars: modifiedTheme,
                   javascriptEnabled: true,
                 },
               },
