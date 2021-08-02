@@ -99,6 +99,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [channeled, setChanneled] = useState([]);
   const [addkept, setAddkept] = useState([]);
   const [schoolAbility, setSchoolAbility] = useState();
+  const [helpMessages, setHelpMessages] = useState([]);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -111,11 +112,17 @@ const Intent = ({ onFinish, values, onComplete }) => {
       misc = [],
       unskilled_assist: unskilledAssist,
       skilled_assist: skilledAssist,
+      duel = [],
+      invocation = [],
     } = data;
     const metadata = {};
 
     let { school } = data;
     let addkept = [];
+
+    if (invocation.includes("offering")) {
+      misc.push("offering");
+    }
 
     if (school === "custom") {
       school = undefined;
@@ -150,14 +157,14 @@ const Intent = ({ onFinish, values, onComplete }) => {
       }
     }
 
-    if (misc.includes("ringless")) {
+    if (duel.includes("center-roll")) {
       return onFinish({
         ...data,
         ring: 0,
         tn: null,
         modifiers: [
           ...commonModifiers.filter((x) => x !== "void"),
-          ...misc.filter((x) => x !== "ringless"),
+          ...misc,
           school,
         ].filter(Boolean),
         metadata,
@@ -227,11 +234,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
   const miscOptions = [
     {
-      value: "offering",
-      label: "Invocation — Proper Offerings",
-      description: `A shugenja who makes a material offering alongside an invocation may reroll up to 3 rolled dice showing blank results. [Core, page 189]`,
-    },
-    {
       value: "stirring",
       label: "Affected by — Shūji — Stirring the Embers",
       description: `Until the end of the scene, when [chosen Distinction advantage] applies to a check, the target [of Stirring the Embers] may reroll up to three dice (instead of two). [Core, page 219]`,
@@ -249,11 +251,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
         </>
       ),
     },
-    {
-      value: "ringless",
-      label: "Ringless roll",
-      description: `Roll only skill dice. You won't be able to keep (and therefore explode) any die, only to reserve them for later. This is used for a few mechanics like the Center action in a duel. [Core, page 260]`,
-    },
   ];
 
   const customSchoolOptions = [
@@ -268,6 +265,41 @@ const Intent = ({ onFinish, values, onComplete }) => {
     {
       value: "addkept",
       label: `Add one or more kept dice set to a particular value (ex: Doji Diplomat)`,
+    },
+  ];
+
+  const invocationOptions = [
+    {
+      value: "offering",
+      label: "Proper Offerings",
+      description: `A shugenja who makes a material offering alongside an invocation may reroll up to 3 rolled dice showing blank results. [Core, page 189]`,
+    },
+    {
+      value: "tap",
+      label: `Tap into previously channeled dice`,
+      description: (
+        <>
+          <p>
+            {`When making a check to perform an invocation [...], the character may choose to channel any number of kept dice. Instead of resolving the rest of the check, the character reserves these dice, making sure to keep track of the faces they are showing. The check ends, and the character does not resolve any dice results or effects, including success or failure.`}
+          </p>
+          <p>
+            {`During the character’s next turn, if they perform an invocation of the same Element, they may tap into their channeled dice. [...] the character rolls one fewer Skill die for each reserved Skill die and one fewer Ring die for each reserved Ring die, then adds the channeled dice to the results (set to the results they were showing when channeled). [Core, page 190]`}
+          </p>
+        </>
+      ),
+    },
+  ];
+
+  const duelOptions = [
+    {
+      value: "center-roll",
+      label: `Center Stance — Roll only skill dice`,
+      description: `Roll a number of Skill dice up to your ranks in the skill you chose and reserve any number of those dice. If you do, the next time you make a check using the chosen skill (or use the Center action) this scene, after rolling dice, you may replace any number of rolled dice with the reserved dice (set to the results they were showing when reserved). You cannot reserve a number of dice greater than your ranks in the skill this way.[Core, page 260]`,
+    },
+    {
+      value: "center-consume",
+      label: `Replace rolled dice with previously reserved dice`,
+      description: `See previous.`,
     },
   ];
 
@@ -290,7 +322,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
               "school",
               "skilled_assist",
               "unskilled_assist",
-              "misc",
+              "duel",
             ].includes(name)
           )
         ) {
@@ -302,9 +334,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
           setSchool(form.getFieldValue("school"));
         }
         if (
-          Object.keys(changedValues).some((name) => ["misc"].includes(name))
+          Object.keys(changedValues).some((name) => ["duel"].includes(name))
         ) {
-          setRingless(form.getFieldValue("misc").includes("ringless"));
+          setRingless(form.getFieldValue("duel").includes("center-roll"));
         }
         if (
           Object.keys(changedValues).some((name) =>
@@ -375,6 +407,20 @@ const Intent = ({ onFinish, values, onComplete }) => {
           )
         ) {
           form.validateFields(["addkept"]);
+        }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["invocation", "duel"].includes(name)
+          )
+        ) {
+          setHelpMessages(
+            [
+              form.getFieldValue("invocation")?.includes("tap") &&
+                "channeling-tap",
+              form.getFieldValue("duel")?.includes("center-consume") &&
+                "center-consume",
+            ].filter(Boolean)
+          );
         }
       }}
     >
@@ -493,8 +539,8 @@ const Intent = ({ onFinish, values, onComplete }) => {
       </Collapse>
       <Divider />
       <Collapse ghost>
-        <Panel header={"Schools, techniques, magic…"}>
-          <p>{`Regardless of the options you set or do not set here, you will still be able to manually add any missing rerolls and similar dice modifications as the roll goes.`}</p>
+        <Panel header={"Schools, invocations, duels…"}>
+          <p>{`Regardless of the options you set or do not set here, you will still be able to manually reroll your dice, and tinker your roll in many ways in general, during the next steps of the roll.`}</p>
           <Form.Item label={`School Ability`} name="school">
             <Select
               showSearch
@@ -588,6 +634,29 @@ const Intent = ({ onFinish, values, onComplete }) => {
             ) : (
               <AbilityDescription ability={school} className={styles.school} />
             ))}
+
+          <Form.Item label={`Invocation-specific options`} name="invocation">
+            <Select allowClear options={invocationOptions} mode="multiple" />
+          </Form.Item>
+          {helpMessages.includes("channeling-tap") && (
+            <p
+              className={styles["help-message"]}
+            >{`To tap into your channeled dice,  use the "Force the value of some dice" option below.`}</p>
+          )}
+          <ExplainOptions options={invocationOptions} />
+
+          <Form.Item label={`Duel-specific options`} name="duel">
+            <Select allowClear options={duelOptions} mode="multiple" />
+          </Form.Item>
+          {helpMessages.includes("center-consume") && (
+            <p className={styles["help-message"]}>
+              {`To replace one or more rolled dice, first roll the dice normally, then use the "Alter some dice" option to set them to the appropriate values.`}
+            </p>
+          )}
+          <ExplainOptions options={duelOptions} />
+
+          <Divider />
+
           <Form.List
             name="channeled"
             rules={[
@@ -607,7 +676,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                     form.getFieldValue("skilled_assist") || 0;
                   const unskilledAssist =
                     form.getFieldValue("unskilled_assist") || 0;
-                  const misc = form.getFieldValue("misc") || [];
+                  const duel = form.getFieldValue("duel") || [];
 
                   if (
                     dices.filter(({ type }) => type === "ring").length >
@@ -627,10 +696,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
                     );
                   }
 
-                  if (misc.includes("ringless")) {
+                  if (duel.includes("center-roll")) {
                     if (dices.some(({ type }) => type === "ring")) {
                       return Promise.reject(
-                        new Error("Cannot force ring dice for a ringless roll")
+                        new Error(
+                          "Cannot force ring dice for a roll without ring dice"
+                        )
                       );
                     }
                   }
