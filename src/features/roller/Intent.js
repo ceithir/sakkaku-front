@@ -614,9 +614,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                     ring + (voided ? 1 : 0) + unskilledAssist
                   ) {
                     return Promise.reject(
-                      new Error(
-                        "More channeled ring dice than rolled ring dice"
-                      )
+                      new Error("More forced ring dice than rolled ring dice")
                     );
                   }
 
@@ -625,18 +623,14 @@ const Intent = ({ onFinish, values, onComplete }) => {
                     skill + (school === "wandering" ? 1 : 0) + skilledAssist
                   ) {
                     return Promise.reject(
-                      new Error(
-                        "More channeled skill dice than rolled skill dice"
-                      )
+                      new Error("More forced skill dice than rolled skill dice")
                     );
                   }
 
                   if (misc.includes("ringless")) {
                     if (dices.some(({ type }) => type === "ring")) {
                       return Promise.reject(
-                        new Error(
-                          "Cannot channel ring dice for a ringless roll"
-                        )
+                        new Error("Cannot force ring dice for a ringless roll")
                       );
                     }
                   }
@@ -650,7 +644,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   fields={fields}
                   defaultValue={{ type: "skill", value: { success: 1 } }}
                   errors={errors}
-                  buttonText={"Use Channeled Die"}
+                  buttonText={
+                    channeled.length > 0
+                      ? `Force the value of another die`
+                      : `Force the value of some die`
+                  }
                   add={add}
                   remove={remove}
                   className={styles.channel}
@@ -662,11 +660,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
             description={
               <>
                 <p>
-                  {`When making a check to perform an invocation [...], the character may choose to channel any number of kept dice. Instead of resolving the rest of the check, the character reserves these dice, making sure to keep track of the faces they are showing. The check ends, and the character does not resolve any dice results or effects, including success or failure.`}
+                  {`Sometimes, the rules allow you to roll less dice in exchange of adding some to your roll, like in the case of Channeling [Core, page 190] or the Kata Striking as Air [Core, page 177].`}
                 </p>
-                <p>
-                  {`During the character’s next turn, if they perform an invocation of the same Element, they may tap into their channeled dice. [...] the character rolls one fewer Skill die for each reserved Skill die and one fewer Ring die for each reserved Ring die, then adds the channeled dice to the results (set to the results they were showing when channeled). [Core, page 190]`}
-                </p>
+                <p>{`This option allows you to do just that.`}</p>
               </>
             }
           />
