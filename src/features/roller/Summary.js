@@ -125,7 +125,7 @@ const Summary = ({
       content: <Modifiers modifiers={special} />,
     },
     channeled?.length && {
-      label: `Forced Rolled Dice`,
+      label: `Rolled Dice Forced`,
       content: (
         <div className={styles.dices}>
           {orderDices(channeled).map((dice, index) => {

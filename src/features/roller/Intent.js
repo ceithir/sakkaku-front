@@ -641,7 +641,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
           {helpMessages.includes("channeling-tap") && (
             <p
               className={styles["help-message"]}
-            >{`To tap into your channeled dice,  use the "Force the value of some dice" option below.`}</p>
+            >{`To tap into your previously channeled dice, use the "Force the value of some dice" option below.`}</p>
           )}
           <ExplainOptions options={invocationOptions} />
 
