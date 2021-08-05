@@ -4,7 +4,14 @@
   margin: 0 auto;
   max-width: @screen-md;
   .torii-box();
+  padding-left: 8px;
+  padding-right: 8px;
   padding-bottom: 0;
+
+  @media (min-width: @screen-md) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 
   @media (min-width: @screen-lg) {
     @extra-space: 32;
