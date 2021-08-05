@@ -1,4 +1,4 @@
-@import (reference) "~antd/dist/antd.less";
+@import (reference) "common.less";
 
 .config-opener {
   float: right;
@@ -11,5 +11,22 @@
     form {
       max-width: @screen-lg;
     }
+  }
+}
+
+.intent-container {
+  .paper-background();
+  flex: 1;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 32px;
+
+  @media (min-width: @screen-md) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  h1 {
+    background: transparent;
   }
 }

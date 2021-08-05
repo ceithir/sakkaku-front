@@ -33,6 +33,8 @@ import styles from "./index.module.less";
 import { selectDisplayMode, selectMode } from "./config/reducer";
 import ConfigOpener from "./config/Opener";
 import classNames from "classnames";
+import Title from "features/display/Title";
+import AnonymousAlert from "AnonymousAlert";
 
 const { Panel } = Collapse;
 
@@ -240,6 +242,24 @@ const Roller = ({ save }) => {
     [styles.extended]: displayMode === "verbose",
   });
 
+  if (currentStep === DECLARE) {
+    return (
+      <>
+        {!user && <AnonymousAlert />}
+        <div className={styles["intent-container"]}>
+          <Title>{`Legend of the Five Rings – Check Roll`}</Title>
+          <div>
+            <ConfigButton step={DECLARE} />
+            <Intent
+              onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
+              values={roll}
+            />
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <Layout>
       <Collapse activeKey={activeKeys} onChange={setActiveKeys}>
@@ -248,15 +268,7 @@ const Roller = ({ save }) => {
           key="declare"
           collapsible={currentStep === DECLARE ? "disabled" : "header"}
         >
-          <ConfigButton step={DECLARE} />
-          {currentStep === DECLARE ? (
-            <Intent
-              onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
-              values={roll}
-            />
-          ) : (
-            <Summary {...intent} metadata={metadata} />
-          )}
+          <Summary {...intent} metadata={metadata} />
         </Panel>
         <Panel
           header="Modify"

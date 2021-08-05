@@ -6,6 +6,14 @@
   .torii-box();
   padding-bottom: 0;
 
+  @media (min-width: @screen-lg) {
+    @extra-space: 32;
+
+    max-width: @screen-md + 2 * @extra-space;
+    padding-left: 24px + @extra-space;
+    padding-right: 24px + @extra-space;
+  }
+
   fieldset {
     display: flex;
     justify-content: center;
