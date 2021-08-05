@@ -246,7 +246,7 @@ const Roller = ({ save }) => {
       <div className={styles["intent-container"]}>
         <Title>{`Legend of the Five Rings – Check Roll`}</Title>
         <div>
-          <ConfigButton step={DECLARE} />
+          <ConfigOpener />
           <Intent
             onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
             values={roll}
