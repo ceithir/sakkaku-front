@@ -12,7 +12,7 @@ import { selectUser } from "../user/reducer";
 import { orderDices } from "./utils";
 import styles from "./IdentifiedRoll.module.less";
 import GoBackButton from "../browse/GoBackButton";
-import { CommonLayout } from "./Layout";
+import Layout from "./Layout";
 
 const IdentifiedRoll = () => {
   const { id } = useParams();
@@ -57,7 +57,7 @@ const IdentifiedRoll = () => {
   }
 
   return (
-    <CommonLayout>
+    <Layout>
       {result ? (
         <Complete
           dices={dices}
@@ -84,7 +84,7 @@ const IdentifiedRoll = () => {
           />
         </div>
       )}
-    </CommonLayout>
+    </Layout>
   );
 };
 

@@ -34,7 +34,6 @@ import { selectDisplayMode, selectMode } from "./config/reducer";
 import ConfigOpener from "./config/Opener";
 import classNames from "classnames";
 import Title from "features/display/Title";
-import AnonymousAlert from "AnonymousAlert";
 
 const { Panel } = Collapse;
 
@@ -244,19 +243,16 @@ const Roller = ({ save }) => {
 
   if (currentStep === DECLARE) {
     return (
-      <>
-        {!user && <AnonymousAlert />}
-        <div className={styles["intent-container"]}>
-          <Title>{`Legend of the Five Rings – Check Roll`}</Title>
-          <div>
-            <ConfigButton step={DECLARE} />
-            <Intent
-              onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
-              values={roll}
-            />
-          </div>
+      <div className={styles["intent-container"]}>
+        <Title>{`Legend of the Five Rings – Check Roll`}</Title>
+        <div>
+          <ConfigButton step={DECLARE} />
+          <Intent
+            onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
+            values={roll}
+          />
         </div>
-      </>
+      </div>
     );
   }
 

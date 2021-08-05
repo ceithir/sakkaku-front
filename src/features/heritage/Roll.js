@@ -9,20 +9,8 @@ import Summary from "./Summary";
 import { selectUser } from "../user/reducer";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
-import AnonymousAlert from "../../AnonymousAlert";
 import CopyLink from "../trinket/CopyLink";
 import { useHistory } from "react-router-dom";
-
-const CustomLayout = ({ children, ...props }) => {
-  const user = useSelector(selectUser);
-
-  return (
-    <>
-      {!user && <AnonymousAlert />}
-      <Layout {...props}>{children}</Layout>
-    </>
-  );
-};
 
 const Roll = () => {
   const error = useSelector(selectError);
@@ -40,9 +28,9 @@ const Roll = () => {
 
   if (!dices.length) {
     return (
-      <CustomLayout>
+      <Layout>
         <Form />
-      </CustomLayout>
+      </Layout>
     );
   }
 
@@ -50,7 +38,7 @@ const Roll = () => {
 
   if (dices.some(({ status }) => status === "pending")) {
     return (
-      <CustomLayout
+      <Layout
         dices={dices}
         context={context}
         instruction={`Choose one of those two options as the relative for whom your character is named.`}
@@ -74,12 +62,12 @@ const Roll = () => {
             })}
           table={table}
         ></SummaryList>
-      </CustomLayout>
+      </Layout>
     );
   }
 
   return (
-    <CustomLayout dices={dices} context={context}>
+    <Layout dices={dices} context={context}>
       <div>
         <Summary
           table={table}
@@ -105,7 +93,7 @@ const Roll = () => {
           >{`Roll another heritage`}</Button>
         </div>
       </div>
-    </CustomLayout>
+    </Layout>
   );
 };
 

@@ -15,6 +15,7 @@ import Homepage from "./features/navigation/Homepage";
 import Search from "./features/browse/Search";
 import Map from "./features/trinket/Map";
 import ScrollToTop from "./features/navigation/ScrollToTop";
+import AnonymousAlertWrapper from "features/display/AnonymousAlertWrapper";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,9 @@ const App = () => {
             <HeritageRollLoader />
           </Route>
           <Route path="/heritage">
-            <HeritageRoll />
+            <AnonymousAlertWrapper>
+              <HeritageRoll />
+            </AnonymousAlertWrapper>
           </Route>
           <Route path="/rolls/:id">
             <IdentifiedRoll />
@@ -53,7 +56,9 @@ const App = () => {
             <Search />
           </Route>
           <Route path="/roll">
-            <Roller />
+            <AnonymousAlertWrapper>
+              <Roller />
+            </AnonymousAlertWrapper>
           </Route>
           <Route path="/">
             <Homepage />
