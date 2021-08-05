@@ -1,9 +1,7 @@
 import React from "react";
-import { Typography } from "antd";
 import styles from "./Layout.module.less";
 import Context from "./Context";
-
-const { Title } = Typography;
+import Title from "features/display/Title";
 
 const Layout = ({ children, dices, context, instruction }) => {
   return (

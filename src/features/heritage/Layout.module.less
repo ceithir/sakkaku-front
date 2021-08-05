@@ -2,20 +2,11 @@
 
 .layout {
   .paper-background();
-  padding-top: 24px;
   padding-bottom: 24px;
   flex: 1;
 
-  & > h1 {
-    text-align: center;
-    padding: 12px;
-  }
-
-  & > h1:global(.ant-typography) {
-    .red-title();
-  }
-
-  & > * {
+  & > form,
+  & > div {
     max-width: @screen-lg;
     margin: 0 auto;
     margin-bottom: 24px;
