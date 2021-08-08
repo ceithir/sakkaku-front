@@ -731,9 +731,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
             description={
               <>
                 <p>
-                  {`Sometimes, the rules allow you to roll less dice in exchange of adding some to your roll, like in the case of Channeling [Core, page 190] or the Kata Striking as Air [Core, page 177].`}
+                  {`Sometimes, the rules allow you to roll less dice then to add back `}
+                  <strong>{`rolled`}</strong>
+                  {` dice set to particular values, dice that you can them choose to modify and keep following normal rules.`}
                 </p>
-                <p>{`This option allows you to do just that.`}</p>
+                <p>{`The main examples of this are Channeling [Core, page 190] or the Kata Striking as Air [Core, page 177].`}</p>
+                <p>{`This option allows you to do just that. It can also be used to recreate a previous roll exactly as it was, in case you forgot to trigger your Adversity before keeping dice for example.`}</p>
               </>
             }
           />
