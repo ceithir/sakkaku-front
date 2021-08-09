@@ -95,7 +95,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [skilledAssist, setSkilledAssist] = useState(0);
   const [unskilledAssist, setUnskilledAssist] = useState(0);
   const [commonModifiers, setCommonModifiers] = useState([]);
-  const [channeled, setChanneled] = useState([]);
   const [addkept, setAddkept] = useState([]);
   const [schoolAbility, setSchoolAbility] = useState();
 
@@ -260,21 +259,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
       form={form}
       onValuesChange={(changedValues) => {
         if (
-          Object.keys(changedValues).some((name) =>
-            [
-              "ring",
-              "skill",
-              "common_modifiers",
-              "channeled",
-              "school",
-              "skilled_assist",
-              "unskilled_assist",
-            ].includes(name)
-          )
-        ) {
-          form.validateFields(["channeled"]);
-        }
-        if (
           Object.keys(changedValues).some((name) => ["school"].includes(name))
         ) {
           setSchool(form.getFieldValue("school"));
@@ -299,13 +283,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
           )
         ) {
           setCommonModifiers(form.getFieldValue("common_modifiers"));
-        }
-        if (
-          Object.keys(changedValues).some((name) =>
-            ["channeled"].includes(name)
-          )
-        ) {
-          setChanneled(form.getFieldValue("channeled"));
         }
         if (
           Object.keys(changedValues).some((name) =>
@@ -410,14 +387,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
           <InputNumber min={1} />
         </Form.Item>
       </fieldset>
-      {channeled.length > 0 && (
-        <p className={styles["channeled-summary"]}>
-          {`${channeled.length} of these dice won't be rolled but instead set to:`}
-          {channeled.map((dice, i) => {
-            return <Dice key={i.toString()} dice={dice} />;
-          })}
-        </p>
-      )}
       <Divider />
       <Collapse ghost>
         <Panel header={"Common modifiers"}>
@@ -553,81 +522,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
             ) : (
               <AbilityDescription ability={school} className={styles.school} />
             ))}
-
-          <Divider />
-
-          <Form.List
-            name="channeled"
-            rules={[
-              {
-                validator: async (_, dices) => {
-                  if (!dices?.length) {
-                    return;
-                  }
-
-                  const ring = form.getFieldValue("ring");
-                  const skill = form.getFieldValue("skill");
-                  const voided = (
-                    form.getFieldValue("common_modifiers") || []
-                  ).includes("void");
-                  const school = form.getFieldValue("school");
-                  const skilledAssist =
-                    form.getFieldValue("skilled_assist") || 0;
-                  const unskilledAssist =
-                    form.getFieldValue("unskilled_assist") || 0;
-
-                  if (
-                    dices.filter(({ type }) => type === "ring").length >
-                    ring + (voided ? 1 : 0) + unskilledAssist
-                  ) {
-                    return Promise.reject(
-                      new Error("More forced ring dice than rolled ring dice")
-                    );
-                  }
-
-                  if (
-                    dices.filter(({ type }) => type === "skill").length >
-                    skill + (school === "wandering" ? 1 : 0) + skilledAssist
-                  ) {
-                    return Promise.reject(
-                      new Error("More forced skill dice than rolled skill dice")
-                    );
-                  }
-                },
-              },
-            ]}
-          >
-            {(fields, { add, remove }, { errors }) => {
-              return (
-                <DynamicDiceSelector
-                  fields={fields}
-                  defaultValue={{ type: "skill", value: { success: 1 } }}
-                  errors={errors}
-                  buttonText={
-                    channeled.length > 0
-                      ? `Force the value of another die`
-                      : `Force the value of some die`
-                  }
-                  add={add}
-                  remove={remove}
-                  className={styles.channel}
-                />
-              );
-            }}
-          </Form.List>
-          <ExplainOptions
-            description={
-              <>
-                <p>
-                  {`Sometimes, the rules allow you to roll less dice then to add back `}
-                  <strong>{`rolled`}</strong>
-                  {` dice set to particular values, dice that you can them choose to modify and keep following normal rules.`}
-                </p>
-                <p>{`The main examples of this are Channeling [Core, page 190] or the Kata Striking as Air [Core, page 177].`}</p>
-                <p>{`This option allows you to do just that. It can also be used to recreate a previous roll exactly as it was, in case you forgot to trigger your Adversity before keeping dice for example.`}</p>
-              </>
-            }
-          />
           <Form.Item
             label={"Misc."}
             name="misc"
