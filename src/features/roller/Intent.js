@@ -4,7 +4,6 @@ import {
   Input,
   InputNumber,
   Divider,
-  AutoComplete,
   Select,
   Collapse,
   Checkbox,
@@ -13,13 +12,7 @@ import {
 import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectCampaigns,
-  selectCharacters,
-  addCampaign,
-  addCharacter,
-  selectUser,
-} from "../user/reducer";
+import { addCampaign, addCharacter } from "../user/reducer";
 import { setAnimatedStep, selectHidden } from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
@@ -31,23 +24,11 @@ import ExplainOptions from "./glitter/ExplainOptions";
 import { Strife, Success, Explosion } from "../display/Symbol";
 import Dice from "./Dice";
 import { ControlOutlined } from "@ant-design/icons";
+import UserContext from "./form/UserContext";
 
-const { TextArea } = Input;
 const { Panel } = Collapse;
 
 const defaultRules = [{ required: true, message: "Please fill this field" }];
-
-const arrayToAutoCompleteOptions = (values) => {
-  if (!values) {
-    return undefined;
-  }
-
-  return values.map((value) => {
-    return {
-      value,
-    };
-  });
-};
 
 const AnimatedIntent = ({ onFinish, values }) => {
   const [completed, setCompleted] = useState(false);
@@ -88,11 +69,8 @@ const AnimatedIntent = ({ onFinish, values }) => {
 };
 
 const Intent = ({ onFinish, values, onComplete }) => {
-  const campaigns = useSelector(selectCampaigns);
-  const characters = useSelector(selectCharacters);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const user = useSelector(selectUser);
   const [school, setSchool] = useState();
   const [skilledAssist, setSkilledAssist] = useState(0);
   const [unskilledAssist, setUnskilledAssist] = useState(0);
@@ -330,36 +308,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
         }
       }}
     >
-      {!!user && (
-        <>
-          <fieldset>
-            <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
-              <AutoComplete
-                options={arrayToAutoCompleteOptions(campaigns)}
-                placeholder={"The Dead of Winter"}
-                filterOption={true}
-              />
-            </Form.Item>
-            <Form.Item label="Character" name="character" rules={defaultRules}>
-              <AutoComplete
-                options={arrayToAutoCompleteOptions(characters)}
-                placeholder={"Doji Sakura"}
-                filterOption={true}
-              />
-            </Form.Item>
-          </fieldset>
-          <Form.Item
-            label="Description"
-            name="description"
-            rules={defaultRules}
-          >
-            <TextArea
-              placeholder={"Running at the foe! Fire, Fitness, Keen Balance"}
-            />
-          </Form.Item>
-          <Divider />
-        </>
-      )}
+      <UserContext />
       <fieldset>
         <Form.Item
           label="Ring"
