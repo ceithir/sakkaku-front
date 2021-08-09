@@ -92,14 +92,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [form] = Form.useForm();
   const user = useSelector(selectUser);
   const [school, setSchool] = useState();
-  const [ringless, setRingless] = useState(false);
   const [skilledAssist, setSkilledAssist] = useState(0);
   const [unskilledAssist, setUnskilledAssist] = useState(0);
   const [commonModifiers, setCommonModifiers] = useState([]);
   const [channeled, setChanneled] = useState([]);
   const [addkept, setAddkept] = useState([]);
   const [schoolAbility, setSchoolAbility] = useState();
-  const [helpMessages, setHelpMessages] = useState([]);
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -112,17 +110,11 @@ const Intent = ({ onFinish, values, onComplete }) => {
       misc = [],
       unskilled_assist: unskilledAssist,
       skilled_assist: skilledAssist,
-      duel = [],
-      invocation = [],
     } = data;
     const metadata = {};
 
     let { school } = data;
     let addkept = [];
-
-    if (invocation.includes("offering")) {
-      misc.push("offering");
-    }
 
     if (school === "custom") {
       school = undefined;
@@ -157,21 +149,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
       }
     }
 
-    if (duel.includes("center-roll")) {
-      return onFinish({
-        ...data,
-        ring: 0,
-        tn: null,
-        modifiers: [
-          ...commonModifiers.filter((x) => x !== "void"),
-          ...misc,
-          school,
-        ].filter(Boolean),
-        metadata,
-        addkept,
-      });
-    }
-
     const assist = [
       unskilledAssist &&
         `unskilledassist${unskilledAssist.toString().padStart(2, "0")}`,
@@ -194,7 +171,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const extraSkillDice = (school === "wandering" ? 1 : 0) + skilledAssist;
 
   const commonModifiersOptions = [
-    !ringless && {
+    {
       value: "void",
       label: `Seize the Moment`,
       description: `A character may spend 1 Void point to roll one additional Ring die and subsequently keep one additional die. [Core, page 36]`,
@@ -230,7 +207,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
         </>
       ),
     },
-  ].filter(Boolean);
+    {
+      value: "offering",
+      label: "Proper Offerings",
+      description: `A shugenja who makes a material offering alongside an invocation may reroll up to 3 rolled dice showing blank results. [Core, page 189]`,
+    },
+  ];
 
   const miscOptions = [
     {
@@ -268,41 +250,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
     },
   ];
 
-  const invocationOptions = [
-    {
-      value: "offering",
-      label: "Proper Offerings",
-      description: `A shugenja who makes a material offering alongside an invocation may reroll up to 3 rolled dice showing blank results. [Core, page 189]`,
-    },
-    {
-      value: "tap",
-      label: `Tap into previously channeled dice`,
-      description: (
-        <>
-          <p>
-            {`When making a check to perform an invocation [...], the character may choose to channel any number of kept dice. Instead of resolving the rest of the check, the character reserves these dice, making sure to keep track of the faces they are showing. The check ends, and the character does not resolve any dice results or effects, including success or failure.`}
-          </p>
-          <p>
-            {`During the character’s next turn, if they perform an invocation of the same Element, they may tap into their channeled dice. [...] the character rolls one fewer Skill die for each reserved Skill die and one fewer Ring die for each reserved Ring die, then adds the channeled dice to the results (set to the results they were showing when channeled). [Core, page 190]`}
-          </p>
-        </>
-      ),
-    },
-  ];
-
-  const duelOptions = [
-    {
-      value: "center-roll",
-      label: `Center Stance — Roll only skill dice`,
-      description: `Roll a number of Skill dice up to your ranks in the skill you chose and reserve any number of those dice. If you do, the next time you make a check using the chosen skill (or use the Center action) this scene, after rolling dice, you may replace any number of rolled dice with the reserved dice (set to the results they were showing when reserved). You cannot reserve a number of dice greater than your ranks in the skill this way.[Core, page 260]`,
-    },
-    {
-      value: "center-consume",
-      label: `Replace rolled dice with previously reserved dice`,
-      description: `See previous.`,
-    },
-  ];
-
   return (
     <Form
       className={styles.form}
@@ -322,7 +269,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
               "school",
               "skilled_assist",
               "unskilled_assist",
-              "duel",
             ].includes(name)
           )
         ) {
@@ -332,11 +278,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
           Object.keys(changedValues).some((name) => ["school"].includes(name))
         ) {
           setSchool(form.getFieldValue("school"));
-        }
-        if (
-          Object.keys(changedValues).some((name) => ["duel"].includes(name))
-        ) {
-          setRingless(form.getFieldValue("duel").includes("center-roll"));
         }
         if (
           Object.keys(changedValues).some((name) =>
@@ -408,20 +349,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           form.validateFields(["addkept"]);
         }
-        if (
-          Object.keys(changedValues).some((name) =>
-            ["invocation", "duel"].includes(name)
-          )
-        ) {
-          setHelpMessages(
-            [
-              form.getFieldValue("invocation")?.includes("tap") &&
-                "channeling-tap",
-              form.getFieldValue("duel")?.includes("center-consume") &&
-                "center-consume",
-            ].filter(Boolean)
-          );
-        }
       }}
     >
       {!!user && (
@@ -455,20 +382,18 @@ const Intent = ({ onFinish, values, onComplete }) => {
         </>
       )}
       <fieldset>
-        {!ringless && (
-          <Form.Item
-            label="Ring"
-            name="ring"
-            rules={defaultRules}
-            className={classNames({
-              [styles.plus]: extraRingDice > 0,
-              [styles[`plus-${extraRingDice.toString().padStart(2, "0")}`]]:
-                extraRingDice > 0,
-            })}
-          >
-            <InputNumber min={1} max={10} />
-          </Form.Item>
-        )}
+        <Form.Item
+          label="Ring"
+          name="ring"
+          rules={defaultRules}
+          className={classNames({
+            [styles.plus]: extraRingDice > 0,
+            [styles[`plus-${extraRingDice.toString().padStart(2, "0")}`]]:
+              extraRingDice > 0,
+          })}
+        >
+          <InputNumber min={1} max={10} />
+        </Form.Item>
         <Form.Item
           label="Skill"
           name="skill"
@@ -481,11 +406,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
         >
           <InputNumber min={0} max={10} />
         </Form.Item>
-        {!ringless && (
-          <Form.Item label="TN" name="tn">
-            <InputNumber min={1} />
-          </Form.Item>
-        )}
+        <Form.Item label="TN" name="tn">
+          <InputNumber min={1} />
+        </Form.Item>
       </fieldset>
       {channeled.length > 0 && (
         <p className={styles["channeled-summary"]}>
@@ -502,39 +425,35 @@ const Intent = ({ onFinish, values, onComplete }) => {
             <Checkbox.Group options={commonModifiersOptions} />
           </Form.Item>
           <ExplainOptions options={commonModifiersOptions} />
-          {!ringless && (
-            <>
-              <fieldset className={styles["assist-container"]}>
-                <Form.Item
-                  label="Assistance (unskilled)"
-                  name="unskilled_assist"
-                  initialValue={0}
-                >
-                  <InputNumber min={0} max={10} />
-                </Form.Item>
-                <Form.Item
-                  label="Assistance (skilled)"
-                  name="skilled_assist"
-                  initialValue={0}
-                >
-                  <InputNumber min={0} max={10} />
-                </Form.Item>
-              </fieldset>
-              <ExplainOptions
-                description={`If a character making a check receives assistance from one or more others, the character making the check rolls one additional Skill die per [skilled assistant], and one additional Ring die per [unskilled assistant]. Then [...] a character making a check with assistance may keep up to 1 additional die per assisting character. [Core, page 26]`}
-                options={[
-                  {
-                    label: `Assistance (unskilled)`,
-                    description: `Number of assisting characters who have 0 ranks in the skill in use.`,
-                  },
-                  {
-                    label: `Assistance (skilled)`,
-                    description: `Number of assisting characters who have 1 or more ranks of the skill in use.`,
-                  },
-                ]}
-              />
-            </>
-          )}
+          <fieldset className={styles["assist-container"]}>
+            <Form.Item
+              label="Assistance (unskilled)"
+              name="unskilled_assist"
+              initialValue={0}
+            >
+              <InputNumber min={0} max={10} />
+            </Form.Item>
+            <Form.Item
+              label="Assistance (skilled)"
+              name="skilled_assist"
+              initialValue={0}
+            >
+              <InputNumber min={0} max={10} />
+            </Form.Item>
+          </fieldset>
+          <ExplainOptions
+            description={`If a character making a check receives assistance from one or more others, the character making the check rolls one additional Skill die per [skilled assistant], and one additional Ring die per [unskilled assistant]. Then [...] a character making a check with assistance may keep up to 1 additional die per assisting character. [Core, page 26]`}
+            options={[
+              {
+                label: `Assistance (unskilled)`,
+                description: `Number of assisting characters who have 0 ranks in the skill in use.`,
+              },
+              {
+                label: `Assistance (skilled)`,
+                description: `Number of assisting characters who have 1 or more ranks of the skill in use.`,
+              },
+            ]}
+          />
         </Panel>
       </Collapse>
       <Divider />
@@ -635,26 +554,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
               <AbilityDescription ability={school} className={styles.school} />
             ))}
 
-          <Form.Item label={`Invocation-specific options`} name="invocation">
-            <Select allowClear options={invocationOptions} mode="multiple" />
-          </Form.Item>
-          {helpMessages.includes("channeling-tap") && (
-            <p
-              className={styles["help-message"]}
-            >{`To tap into your previously channeled dice, use the "Force the value of some dice" option below.`}</p>
-          )}
-          <ExplainOptions options={invocationOptions} />
-
-          <Form.Item label={`Duel-specific options`} name="duel">
-            <Select allowClear options={duelOptions} mode="multiple" />
-          </Form.Item>
-          {helpMessages.includes("center-consume") && (
-            <p className={styles["help-message"]}>
-              {`To replace one or more rolled dice, first roll the dice normally, then use the "Alter some dice" option to set them to the appropriate values.`}
-            </p>
-          )}
-          <ExplainOptions options={duelOptions} />
-
           <Divider />
 
           <Form.List
@@ -676,7 +575,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
                     form.getFieldValue("skilled_assist") || 0;
                   const unskilledAssist =
                     form.getFieldValue("unskilled_assist") || 0;
-                  const duel = form.getFieldValue("duel") || [];
 
                   if (
                     dices.filter(({ type }) => type === "ring").length >
@@ -694,16 +592,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
                     return Promise.reject(
                       new Error("More forced skill dice than rolled skill dice")
                     );
-                  }
-
-                  if (duel.includes("center-roll")) {
-                    if (dices.some(({ type }) => type === "ring")) {
-                      return Promise.reject(
-                        new Error(
-                          "Cannot force ring dice for a roll without ring dice"
-                        )
-                      );
-                    }
                   }
                 },
               },
