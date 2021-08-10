@@ -25,6 +25,7 @@ import { Strife, Success, Explosion } from "../display/Symbol";
 import Dice from "./Dice";
 import { ControlOutlined } from "@ant-design/icons";
 import UserContext from "./form/UserContext";
+import Advanced from "./form/Advanced";
 
 const { Panel } = Collapse;
 
@@ -77,6 +78,18 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [commonModifiers, setCommonModifiers] = useState([]);
   const [addkept, setAddkept] = useState([]);
   const [schoolAbility, setSchoolAbility] = useState();
+  const [advanced, setAdvanced] = useState(false);
+
+  if (advanced) {
+    return (
+      <Advanced
+        onFinish={onFinish}
+        initialValues={values}
+        onComplete={onComplete}
+        className={styles.form}
+      />
+    );
+  }
 
   const wrappedOnFinish = (data) => {
     onComplete && onComplete();
@@ -506,6 +519,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
           <Form.Item className={styles["advanced-button"]}>
             <Button
               icon={<ControlOutlined />}
+              onClick={() => setAdvanced(true)}
             >{`Advanced customization`}</Button>
           </Form.Item>
           <ExplainOptions
