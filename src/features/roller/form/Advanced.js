@@ -59,8 +59,6 @@ const Advanced = ({
   const [channeled, setChanneled] = useState([]);
 
   const wrappedOnFinish = (data) => {
-    console.log(data);
-
     onComplete && onComplete();
 
     dispatch(addCampaign(data["campaign"]));
