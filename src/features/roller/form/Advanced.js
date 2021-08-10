@@ -107,17 +107,20 @@ const Advanced = ({
       <Title level={2}>{`Fully custom roll`}</Title>
 
       <UserContext />
+      <Form.Item label={`TN`} name="tn">
+        <InputNumber />
+      </Form.Item>
 
       <Title level={3}>{`Parameters`}</Title>
       <Form.Item
-        label={`That many ring dice that will be rolled`}
+        label={`That many ring dice will be rolled`}
         name="ring"
         rules={defaultRules}
       >
         <InputNumber min={0} max={10} />
       </Form.Item>
       <Form.Item
-        label={`That many skill dice that will be rolled`}
+        label={`That many skill dice will be rolled`}
         name="skill"
         rules={defaultRules}
       >
@@ -144,7 +147,7 @@ const Advanced = ({
               fields={fields}
               defaultValue={{ type: "skill", value: { success: 1 } }}
               errors={errors}
-              buttonText={`Add a die set to specific value`}
+              buttonText={`Add a die set to a specific value`}
               add={add}
               remove={remove}
               className={styles.channeled}
@@ -152,10 +155,6 @@ const Advanced = ({
           );
         }}
       </Form.List>
-
-      <Form.Item label={`TN`} name="tn">
-        <InputNumber />
-      </Form.Item>
 
       <Title level={3}>{`Preview`}</Title>
       {diceList.length > 0 ? (
