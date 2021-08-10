@@ -66,6 +66,8 @@ const Keep = ({
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
 
+  const bypassCheck = modifiers.includes("unrestricted");
+
   const compromised = modifiers.includes("compromised");
 
   const max = keptDicesCount({ ring, modifiers });
@@ -95,6 +97,10 @@ const Keep = ({
 
     if (trulyCompromised) {
       return "Being compromised, you cannot keep any die with strife… Which, in this very specific case, means you cannot keep any die at all.";
+    }
+
+    if (bypassCheck) {
+      return `Select the dice you want/have to keep.`;
     }
 
     let defaultText =
@@ -149,7 +155,8 @@ const Keep = ({
       const selected = status === "kept" || toKeep.includes(index);
       const available = status === "pending" && (!compromised || !value.strife);
       const selectable =
-        available && (selected || keepingExplosions || max > toKeep.length);
+        bypassCheck ||
+        (available && (selected || keepingExplosions || max > toKeep.length));
       const disabled = (() => {
         if (status === "kept") {
           return false;
@@ -230,7 +237,8 @@ const Keep = ({
           onFinish(toKeep);
         }}
         disabled={
-          !(keepingExplosions || trulyCompromised) && toKeep.length === 0
+          !(keepingExplosions || trulyCompromised || bypassCheck) &&
+          toKeep.length === 0
         }
       >
         {buttonText()}

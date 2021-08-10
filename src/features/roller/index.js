@@ -180,13 +180,18 @@ const Roller = ({ save }) => {
             : null;
 
         if (channelInsteadOfKeeping) {
+          const cancel = () => dispatch(keepInsteadOfChanneling());
+          const allowCancel =
+            modifiers.includes("unrestricted") ||
+            dices.some(({ type }) => type === "ring");
+
           return (
             <Channel
               dices={dices}
               basePool={basePool}
               rerollTypes={rerollTypes}
               onFinish={(toChannel) => dispatch(channel(roll, toChannel))}
-              cancel={() => dispatch(keepInsteadOfChanneling())}
+              cancel={allowCancel && cancel}
               addReroll={addReroll}
               addAlteration={addAlteration}
             />

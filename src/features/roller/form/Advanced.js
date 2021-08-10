@@ -72,6 +72,7 @@ const Advanced = ({
       ...data,
       ring: ring + channeled.filter(({ type }) => type === "ring").length,
       skill: skill + channeled.filter(({ type }) => type === "skill").length,
+      modifiers: ["unrestricted"],
     });
   };
 
@@ -104,7 +105,7 @@ const Advanced = ({
         }
       }}
     >
-      <Title level={2}>{`Fully custom roll`}</Title>
+      <Title level={2}>{`Fully customized roll`}</Title>
 
       <UserContext />
       <Form.Item label={`TN`} name="tn">

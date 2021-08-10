@@ -543,7 +543,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
             <Button
               icon={<ControlOutlined />}
               onClick={() => setAdvanced(true)}
-            >{`Advanced customization`}</Button>
+            >{`Fully customized roll`}</Button>
           </Form.Item>
           <ExplainOptions
             description={

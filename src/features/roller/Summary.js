@@ -56,6 +56,7 @@ const Summary = ({
 
   const special = [
     ...[
+      modifiers.includes("unrestricted") && "Fully customized roll",
       modifiers.includes("void") && "Seize the Moment",
       modifiers.includes("compromised") && "Compromised",
       modifiers.includes("offering") && "Proper Offerings",

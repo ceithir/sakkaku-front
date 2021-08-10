@@ -55,7 +55,7 @@ const Channel = ({
       })}
       footer={
         <div className={styles.buttons}>
-          {dices.some(({ type }) => type === "ring") ? (
+          {!!cancel ? (
             <Button onClick={cancel}>{`Cancel`}</Button>
           ) : (
             <>
