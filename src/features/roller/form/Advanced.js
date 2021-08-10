@@ -109,7 +109,7 @@ const Advanced = ({
 
       <UserContext />
       <Form.Item label={`TN`} name="tn">
-        <InputNumber />
+        <InputNumber min={1} />
       </Form.Item>
 
       <Title level={3}>{`Parameters`}</Title>
