@@ -66,7 +66,7 @@ const Advanced = ({
     dispatch(addCampaign(data["campaign"]));
     dispatch(addCharacter(data["character"]));
 
-    const { ring, skill, channeled } = data;
+    const { ring, skill, channeled = [] } = data;
 
     onFinish({
       ...data,
