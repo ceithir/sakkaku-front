@@ -20,6 +20,7 @@ const AlterationResult = ({ dices, basePool, rerollTypes, alterations }) => {
 
             return {
               ...dice,
+              type: alteration?.type || dice.type,
               value: !!alteration ? alteration.value : dice.value,
               selectable: false,
               selected: !!alteration,

@@ -152,10 +152,23 @@ export const replaceRerollsOfType = ({
   );
   const ringResults = rerollResults.filter(({ type }) => type === "ring");
   const skillResults = rerollResults.filter(({ type }) => type === "skill");
+  const getAppropriateResults = (type) => {
+    if (type === "skill") {
+      if (skillResults.length === 0) {
+        return ringResults;
+      }
+      return skillResults;
+    }
+
+    if (ringResults.length === 0) {
+      return skillResults;
+    }
+    return ringResults;
+  };
 
   return previousDices().map((dice) => {
     if (isRerollOfRightType(dice)) {
-      return (dice.type === "skill" ? skillResults : ringResults).shift();
+      return getAppropriateResults(dice.type).shift();
     }
     return dice;
   });

@@ -193,6 +193,7 @@ const Modifier = ({ roll, dispatch }) => {
         cancel={!name && cancel}
         showLabelInput={!name}
         title={name || `Custom Alteration`}
+        modifiers={modifiers}
       />
     );
   }

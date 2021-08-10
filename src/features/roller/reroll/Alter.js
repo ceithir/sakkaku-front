@@ -36,10 +36,13 @@ const Alter = ({
   cancel,
   showLabelInput,
   title,
+  modifiers,
 }) => {
   const [alterations, setAlterations] = useState([]);
   const positions = alterations.map(({ position }) => position);
   const [label, setLabel] = useState();
+
+  const unrestricted = modifiers.includes("unrestricted");
 
   const toggle = (index) => {
     if (alterations.some(({ position }) => position === index)) {
@@ -50,7 +53,7 @@ const Alter = ({
 
     return setAlterations([
       ...alterations,
-      { position: index, value: { success: 1 } },
+      { position: index, type: dices[index]["type"], value: { success: 1 } },
     ]);
   };
 
@@ -88,24 +91,27 @@ const Alter = ({
       footer={
         <>
           <div className={styles.list}>
-            {alterations.map(({ position, value }) => {
-              const type = dices[position]["type"];
+            {alterations.map(({ position, value, type }) => {
+              const facets = unrestricted
+                ? undefined
+                : AVAILABLE_FACETS[type].map((value) => {
+                    return { type, value };
+                  });
 
               return (
                 <DiceSideSelector
                   key={position.toString()}
                   value={{ type, value }}
-                  onChange={({ value }) => {
+                  onChange={({ value, type }) => {
                     const alt = [...alterations];
                     const index = alt.findIndex(
                       ({ position: pos }) => pos === position
                     );
+                    alt[index]["type"] = type;
                     alt[index]["value"] = value;
                     setAlterations(alt);
                   }}
-                  facets={AVAILABLE_FACETS[type].map((value) => {
-                    return { type, value };
-                  })}
+                  facets={facets}
                 />
               );
             })}

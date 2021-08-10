@@ -674,6 +674,45 @@ describe("replaceRerolls", () => {
       },
     ]);
   });
+  test("it tries to mix dice types if it has no other choice", () => {
+    const roll = {
+      dices: [
+        {
+          type: "ring",
+          value: { strife: 0, success: 0, explosion: 0, opportunity: 0 },
+          status: "rerolled",
+          metadata: { end: "reasonless" },
+        },
+        {
+          type: "skill",
+          value: { strife: 0, success: 0, explosion: 1, opportunity: 0 },
+          status: "pending",
+          metadata: { source: "reasonless" },
+        },
+      ],
+      metadata: { rerolls: ["reasonless"] },
+      parameters: {
+        ring: 2,
+        skill: 0,
+        modifiers: ["unrestricted", "reasonless"],
+      },
+    };
+    const { dices } = roll;
+    expect(
+      replaceRerolls({
+        dices,
+        rerollTypes: ["reasonless"],
+        basePool: 1,
+      })
+    ).toStrictEqual([
+      {
+        type: "skill",
+        value: { strife: 0, success: 0, explosion: 1, opportunity: 0 },
+        status: "pending",
+        metadata: { source: "reasonless" },
+      },
+    ]);
+  });
   test("just hides all rerolls if no reroll type is provided", () => {
     const roll = {
       dices: [
