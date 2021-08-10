@@ -79,12 +79,13 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [addkept, setAddkept] = useState([]);
   const [schoolAbility, setSchoolAbility] = useState();
   const [advanced, setAdvanced] = useState(false);
+  const [advancedInitialValues, setAdvancedInitialValues] = useState(values);
 
   if (advanced) {
     return (
       <Advanced
         onFinish={onFinish}
-        initialValues={values}
+        initialValues={advancedInitialValues}
         onComplete={onComplete}
         className={styles.form}
         cancel={() => setAdvanced(false)}
@@ -319,6 +320,27 @@ const Intent = ({ onFinish, values, onComplete }) => {
           )
         ) {
           form.validateFields(["addkept"]);
+        }
+        if (
+          Object.keys(changedValues).some((name) =>
+            [
+              "ring",
+              "skill",
+              "tn",
+              "campaign",
+              "character",
+              "description",
+            ].includes(name)
+          )
+        ) {
+          setAdvancedInitialValues({
+            ring: form.getFieldValue("ring"),
+            skill: form.getFieldValue("skill"),
+            tn: form.getFieldValue("tn"),
+            campaign: form.getFieldValue("campaign"),
+            character: form.getFieldValue("character"),
+            description: form.getFieldValue("description"),
+          });
         }
       }}
     >
