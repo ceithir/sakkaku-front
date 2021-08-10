@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, InputNumber, Typography, Button } from "antd";
+import { Form, InputNumber, Typography, Button, Alert } from "antd";
 import styles from "./Advanced.module.less";
 import { useSelector, useDispatch } from "react-redux";
 import { addCampaign, addCharacter } from "features/user/reducer";
@@ -103,6 +103,21 @@ const Advanced = ({
         }
       }}
     >
+      <Alert
+        message={`With great powers…`}
+        description={
+          <>
+            <p>{`In this mode, the roller will grant you full control. You can roll anything, reroll anything, change any result to any other result, keep everything or nothing…`}</p>
+            <p>{`However, this also means you'll have to handle each step of the roll "by hand", without guidance and safeguard.`}</p>
+            <p>{`So, for the sake of your GM's sanity, please double-check the rules before proceeding.`}</p>
+          </>
+        }
+        type="warning"
+        showIcon
+        closable
+        className={styles.warning}
+      />
+
       <Title level={2}>{`Fully customized roll`}</Title>
 
       <UserContext />
