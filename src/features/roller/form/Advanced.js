@@ -44,7 +44,13 @@ const buildDiceList = ({ ring, skill, channeled }) => {
   return list;
 };
 
-const Advanced = ({ onFinish, initialValues, onComplete, className }) => {
+const Advanced = ({
+  onFinish,
+  initialValues,
+  onComplete,
+  className,
+  cancel,
+}) => {
   const loading = useSelector(selectLoading);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
@@ -165,7 +171,8 @@ const Advanced = ({ onFinish, initialValues, onComplete, className }) => {
       ) : (
         <Paragraph type="danger">{`You aren't rolling a single die at the moment.`}</Paragraph>
       )}
-      <Form.Item>
+      <div className={styles.buttons}>
+        <Button onClick={cancel}>{`Cancel`}</Button>
         <Button
           type="primary"
           htmlType="submit"
@@ -174,7 +181,7 @@ const Advanced = ({ onFinish, initialValues, onComplete, className }) => {
         >
           {`Roll`}
         </Button>
-      </Form.Item>
+      </div>
     </Form>
   );
 };

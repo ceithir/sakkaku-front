@@ -64,3 +64,16 @@
     justify-content: center;
   }
 }
+
+.buttons {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 18px;
+
+  & > * {
+    margin-right: 24px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
