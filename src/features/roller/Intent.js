@@ -547,13 +547,13 @@ const Intent = ({ onFinish, values, onComplete }) => {
           </Form.Item>
           <ExplainOptions
             description={
-              <>
+              <div className={styles["advanced-explanation"]}>
                 <span>{`For rolls that just follow their own rules, not much the default ones, and thus require a greater degree of customization. For example:`}</span>
                 <ul>
                   <li>{`Rolls modified with previously rolled dice, like Channeling [Core, page 190] or the Kata Striking as Air [Core, page 177].`}</li>
                   <li>{`Rolls without a ring value, like the Center stance of a duel [Core, page 260].`}</li>
                 </ul>
-              </>
+              </div>
             }
           />
         </Panel>
