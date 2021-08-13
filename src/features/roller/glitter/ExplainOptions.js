@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "./ExplainOptions.module.less";
+import classNames from "classnames";
 
-const ExplainOptions = ({ options, description }) => {
+const ExplainOptions = ({ options, description, className }) => {
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, { [className]: !!className })}>
       {description && <p>{description}</p>}
       {!!options?.length && (
         <dl>

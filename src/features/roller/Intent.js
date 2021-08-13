@@ -381,6 +381,8 @@ const Intent = ({ onFinish, values, onComplete }) => {
             <Checkbox.Group options={commonModifiersOptions} />
           </Form.Item>
           <ExplainOptions options={commonModifiersOptions} />
+        </Panel>
+        <Panel header={"Assistance"}>
           <fieldset className={styles["assist-container"]}>
             <Form.Item
               label="Assistance (unskilled)"
@@ -411,11 +413,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
             ]}
           />
         </Panel>
-      </Collapse>
-      <Divider />
-      <Collapse ghost>
-        <Panel header={"Schools, invocations, duels…"}>
-          <p>{`Regardless of the options you set or do not set here, you will still be able to manually reroll your dice, and tinker your roll in many ways in general, during the next steps of the roll.`}</p>
+        <Panel header={"School abilities, techniques"}>
           <Form.Item label={`School Ability`} name="school">
             <Select
               showSearch
@@ -539,6 +537,8 @@ const Intent = ({ onFinish, values, onComplete }) => {
             />
           </Form.Item>
           <ExplainOptions options={miscOptions} />
+        </Panel>
+        <Panel header={"Advanced options"}>
           <Form.Item className={styles["advanced-button"]}>
             <Button
               icon={<ControlOutlined />}

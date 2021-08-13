@@ -80,11 +80,17 @@ const Modal = ({ visible, hide }) => {
         <Form.Item name="displayMode" label={`Display mode`}>
           <Radio.Group options={displayOptions} optionType="button" />
         </Form.Item>
-        <ExplainOptions options={displayOptions} />
+        <ExplainOptions
+          options={displayOptions}
+          className={styles.description}
+        />
         <Form.Item name="mode" label={`Picking strategy`}>
           <Radio.Group options={behaviorOptions} optionType="button" />
         </Form.Item>
-        <ExplainOptions options={behaviorOptions} />
+        <ExplainOptions
+          options={behaviorOptions}
+          className={styles.description}
+        />
       </Form>
     </AntdModal>
   );
