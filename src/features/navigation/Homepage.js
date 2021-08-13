@@ -119,7 +119,12 @@ const Homepage = () => {
           {
             uri: "https://craneclan.weebly.com/rpg-tools.html",
             label: `The Winter Gardens of the Kakita`,
-            description: `Compilations of various resources otherwise spread through the books or the Internet.`,
+            description: `Compilations of various resources otherwise spread through the books or the Internet. Several of the links below are just shortcuts to tools available there.`,
+          },
+          {
+            uri: "https://craneclan.weebly.com/5th-edition-opportunity-table.html",
+            label: `Opportunity Table`,
+            description: `All the ways Opportunities can be used associated with each type of action.`,
           },
           {
             uri: "https://docs.google.com/spreadsheets/d/1jyzqW6j5rjqnhQONE7vYMshfhD6PPZyVHU9LED-Ksn4",
