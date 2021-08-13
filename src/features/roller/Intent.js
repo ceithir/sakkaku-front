@@ -553,6 +553,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   <li>{`Rolls modified with previously rolled dice, like Channeling [Core, page 190] or the Kata Striking as Air [Core, page 177].`}</li>
                   <li>{`Rolls without a ring value, like the Center stance of a duel [Core, page 260].`}</li>
                 </ul>
+                <span>{`This mode can also be used to recreate a previous roll result, then pick different dice. Can be useful if you misread a TN or forgot to trigger a disadvantage for example.`}</span>
               </div>
             }
           />
