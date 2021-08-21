@@ -1,0 +1,18 @@
+.test-mode {
+  float: right;
+  margin-bottom: 0;
+
+  &:global(.ant-form-item) {
+    flex-direction: row;
+    align-items: baseline;
+
+    :global(.ant-form-item-label) {
+      padding: 0;
+      margin-right: 8px;
+    }
+  }
+}
+
+.clear {
+  clear: both;
+}

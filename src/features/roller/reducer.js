@@ -147,9 +147,10 @@ export const create = (request, user) => (dispatch) => {
     channeled,
     addkept,
     metadata,
+    testMode,
   } = request;
 
-  if (user) {
+  if (user && !testMode) {
     authentifiedPostOnServer({
       uri: "/ffg/l5r/rolls/create",
       body: {
