@@ -29,8 +29,6 @@ import Advanced from "./form/Advanced";
 
 const { Panel } = Collapse;
 
-const defaultRules = [{ required: true, message: "Please fill this field" }];
-
 const AnimatedIntent = ({ onFinish, values }) => {
   const [completed, setCompleted] = useState(false);
   const dispatch = useDispatch();
@@ -446,7 +444,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
                 <Form.Item
                   label="School Name"
                   name="school_name"
-                  rules={defaultRules}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please specify your school name",
+                    },
+                  ]}
                 >
                   <Input placeholder={`Cat Shinobi`} />
                 </Form.Item>
