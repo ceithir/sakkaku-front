@@ -26,6 +26,7 @@ import Dice from "./Dice";
 import { ControlOutlined } from "@ant-design/icons";
 import UserContext from "./form/UserContext";
 import Advanced from "./form/Advanced";
+import Loader from "features/navigation/Loader";
 
 const { Panel } = Collapse;
 
@@ -46,7 +47,7 @@ const AnimatedIntent = ({ onFinish, values }) => {
   };
 
   if (hidden) {
-    return null;
+    return <Loader />;
   }
 
   return (
