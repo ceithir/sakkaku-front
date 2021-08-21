@@ -4,9 +4,6 @@ import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 import { isReroll, bestKeepableDice } from "./utils";
 
 const initialState = {
-  tn: 3,
-  ring: 3,
-  skill: 1,
   modifiers: [],
   dices: [],
   metadata: {},

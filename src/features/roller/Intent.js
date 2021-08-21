@@ -349,7 +349,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
         <Form.Item
           label="Ring"
           name="ring"
-          rules={defaultRules}
+          rules={[{ required: true, message: "Please enter your ring value" }]}
           className={classNames({
             [styles.plus]: extraRingDice > 0,
             [styles[`plus-${extraRingDice.toString().padStart(2, "0")}`]]:
@@ -361,7 +361,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
         <Form.Item
           label="Skill"
           name="skill"
-          rules={defaultRules}
+          rules={[
+            {
+              required: true,
+              message: "Please enter your skill value (can be zero)",
+            },
+          ]}
           className={classNames({
             [styles.plus]: extraSkillDice > 0,
             [styles[`plus-${extraSkillDice.toString().padStart(2, "0")}`]]:
