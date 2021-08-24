@@ -308,10 +308,10 @@ const HowMany = ({ count }) => {
     <>
       {[...Array(count)].map((_, index) => {
         return (
-          <>
-            <Opportunity key={index.toString()} />
+          <React.Fragment key={index.toString()}>
+            <Opportunity />
             {index + 1 < count ? ` ` : `: `}
-          </>
+          </React.Fragment>
         );
       })}
     </>
