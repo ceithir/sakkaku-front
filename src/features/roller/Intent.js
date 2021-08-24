@@ -27,6 +27,7 @@ import { ControlOutlined } from "@ant-design/icons";
 import UserContext from "./form/UserContext";
 import Advanced from "./form/Advanced";
 import Loader from "features/navigation/Loader";
+import ApproachSelector from "./form/ApproachSelector";
 
 const { Panel } = Collapse;
 
@@ -140,6 +141,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
           });
         }
       }
+    }
+
+    if (data["approach"]) {
+      metadata["approach"] = data["approach"];
     }
 
     const assist = [
@@ -379,6 +384,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
         </Form.Item>
       </fieldset>
       <Divider />
+      <ApproachSelector />
       <Collapse ghost>
         <Panel header={"Common modifiers"}>
           <Form.Item name="common_modifiers" className={styles.checkboxes}>
