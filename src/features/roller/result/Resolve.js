@@ -7,6 +7,7 @@ import { replaceRerolls, orderDices } from "../utils";
 import CopyLink from "../../trinket/CopyLink";
 import LineContainer from "../button/LineContainer";
 import { Typography } from "antd";
+import OppExamples from "./OppExamples";
 
 const { Text, Paragraph } = Typography;
 
@@ -23,6 +24,7 @@ const Resolve = ({
   button,
   basePool,
   rerollTypes,
+  approach,
 }) => {
   const isChannel = dices.some(({ status }) => status === "channeled");
 
@@ -56,6 +58,7 @@ const Resolve = ({
         )}
         {!isChannel && <Result dices={dices} tn={tn} modifiers={rerollTypes} />}
       </div>
+      {!!approach && !isChannel && <OppExamples approach={approach} />}
       <LineContainer>
         <CopyLink disabled={!id} />
         <BbCode
