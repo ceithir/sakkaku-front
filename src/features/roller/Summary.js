@@ -121,6 +121,15 @@ const Summary = ({
       label: `TN`,
       content: <Text className={styles.center}>{tn}</Text>,
     },
+    metadata["approach"] && {
+      label: `Approach`,
+      content:
+        metadata["approach"] &&
+        (() => {
+          const [ring, skill] = metadata["approach"].split("|");
+          return `${skill} (${ring})`;
+        })(),
+    },
     special.length > 0 && {
       label: `Modifiers`,
       content: <Modifiers modifiers={special} />,
