@@ -3,6 +3,7 @@ import { Opportunity } from "features/display/Symbol";
 import { skillGroup } from "../data/approaches";
 import ExternalLink from "features/navigation/ExternalLink";
 import styles from "./OppExamples.module.less";
+import { countDices } from "../utils";
 
 const opportunities = [
   {
@@ -16,6 +17,7 @@ const opportunities = [
         this way.
       </>
     ),
+    condition: ({ strifeCount }) => strifeCount > 0,
   },
   {
     text: `Provide assistance to the next character to attempt a check to accomplish something similar.`,
@@ -317,7 +319,23 @@ const HowMany = ({ count }) => {
   );
 };
 
-const OppExamples = ({ approach }) => {
+const OppExamples = ({ approach, dices }) => {
+  if (!approach) {
+    return null;
+  }
+
+  if (dices.some(({ status }) => status === "channeled")) {
+    return null;
+  }
+
+  const { opportunityCount, strifeCount } = countDices(
+    dices.filter(({ status }) => status === "kept")
+  );
+
+  if (opportunityCount === 0) {
+    return null;
+  }
+
   const [ring, skill] = approach.split("|");
 
   return (
@@ -340,8 +358,17 @@ const OppExamples = ({ approach }) => {
         {opportunities.map(({ text, count, condition, extraLabel }, index) => {
           if (
             condition &&
-            !condition({ ring, skill, skillGroup: skillGroup(skill) })
+            !condition({
+              ring,
+              skill,
+              skillGroup: skillGroup(skill),
+              strifeCount,
+            })
           ) {
+            return null;
+          }
+
+          if (count > opportunityCount) {
             return null;
           }
 
