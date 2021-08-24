@@ -69,7 +69,7 @@ const opportunities = [
     extraLabel: `Earth`,
   },
   {
-    text: `Reassure another character in the scene with your presence, allowing them to remove 2 strife.`,
+    text: `Inflame another character in the scene with your presence, causing them to receive 2 strife.`,
     count: 1,
     condition: ({ ring }) => ring === "Fire",
     extraLabel: `Fire`,
@@ -77,9 +77,8 @@ const opportunities = [
   {
     text: (
       <>
-        Act carefully to minimize consequences of failure or other dangers that
-        could arise from the task. Extra <Opportunity />
-        makes the attempt even safer.
+        Perform the task in a flashy way, drawing attention to yourself. Extra{" "}
+        <Opportunity /> attracts even more notice.
       </>
     ),
     condition: ({ ring }) => ring === "Fire",
@@ -146,7 +145,7 @@ const opportunities = [
     extraLabel: `Air, Artisan`,
   },
   {
-    text: `Learn a something about a character who created or used the item you are studying (such as one of their advantages or disadvantages of the GM’s choice that affected their creation or use of the item).`,
+    text: `Learn something about a character who created or used the item you are studying (such as one of their advantages or disadvantages of the GM’s choice that affected their creation or use of the item).`,
     count: 1,
     condition: ({ ring, skillGroup }) =>
       ring === "Air" && skillGroup === "Scholar",
