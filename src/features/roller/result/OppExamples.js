@@ -124,8 +124,8 @@ const opportunities = [
       <>
         Feel a chill down your spine, notice a sudden silence, or detect another
         sign of the supernatural if there is a spiritual disturbance in the
-        scene. Extra <Opportunity />
-        gives an increasingly precise location for the supernatural occurrence.
+        scene. Extra <Opportunity /> gives an increasingly precise location for
+        the supernatural occurrence.
       </>
     ),
     condition: ({ ring }) => ring === "Void",
