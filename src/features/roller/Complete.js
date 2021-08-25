@@ -63,7 +63,7 @@ const Complete = ({ dices, button, intent, context, player, metadata }) => {
           description={description}
           basePool={basePool}
           rerollTypes={rerollTypes}
-          approach={metadata["approach"]}
+          approach={metadata?.approach}
         />
       </Panel>
     </Collapse>

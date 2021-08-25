@@ -153,7 +153,7 @@ const Roller = ({ save }) => {
           description={description}
           basePool={basePool}
           rerollTypes={rerollTypes}
-          approach={metadata["approach"]}
+          approach={metadata?.approach}
         />
       );
     }
