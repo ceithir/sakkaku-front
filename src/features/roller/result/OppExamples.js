@@ -292,6 +292,25 @@ const opportunities = [
       ring === "Void" && skillGroup === "Trade",
     extraLabel: `Void, Trade`,
   },
+  {
+    text: (
+      <>
+        Add a kept dice set to an <Opportunity /> result to your next Martial
+        skill check.
+      </>
+    ),
+    count: 1,
+    condition: ({ ring, skillGroup }) =>
+      ring === "Air" && skillGroup === "Martial",
+    extraLabel: `Air, Martial`,
+  },
+  {
+    text: `Remove 1 fatigue.`,
+    count: 1,
+    condition: ({ ring, skillGroup }) =>
+      ring === "Water" && skillGroup === "Martial",
+    extraLabel: `Water, Martial`,
+  },
 ];
 
 const HowMany = ({ count }) => {
