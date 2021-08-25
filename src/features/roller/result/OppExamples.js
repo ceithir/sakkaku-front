@@ -56,8 +56,8 @@ const opportunities = [
     text: (
       <>
         Act carefully to minimize consequences of failure or other dangers that
-        could arise from the task. Extra <Opportunity />
-        makes the attempt even safer.
+        could arise from the task. Extra <Opportunity /> makes the attempt even
+        safer.
       </>
     ),
     condition: ({ ring }) => ring === "Earth",
