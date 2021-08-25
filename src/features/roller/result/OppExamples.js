@@ -343,10 +343,6 @@ const OppExamples = ({ approach, dices, tn }) => {
     return null;
   }
 
-  if (dices.some(({ status }) => status === "channeled")) {
-    return null;
-  }
-
   const { opportunityCount, strifeCount, successCount } = countDices(
     dices.filter(({ status }) => status === "kept")
   );
