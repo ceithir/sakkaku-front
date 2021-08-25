@@ -4,16 +4,14 @@ import { rings, skills } from "../data/approaches";
 
 const options = rings
   .map((ring) =>
-    skills.map(({ skills }) =>
-      skills.map((skill) => {
-        const value = `${ring}|${skill}`;
-        const label = `${skill} (${ring})`;
+    skills.map(({ name: skill }) => {
+      const value = `${ring}|${skill}`;
+      const label = `${skill} (${ring})`;
 
-        return { value, label };
-      })
-    )
+      return { value, label };
+    })
   )
-  .flat(2)
+  .flat(1)
   .sort(({ label: a }, { label: b }) => a.localeCompare(b));
 
 const ApproachSelector = () => {
