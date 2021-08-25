@@ -9,6 +9,7 @@ const opportunities = [
   {
     text: `If you failed, determine the easiest way to accomplish the task you were attempting (skill and approach).`,
     count: 1,
+    condition: ({ success }) => !success,
   },
   {
     text: (
@@ -337,7 +338,7 @@ const HowMany = ({ count }) => {
   );
 };
 
-const OppExamples = ({ approach, dices }) => {
+const OppExamples = ({ approach, dices, tn }) => {
   if (!approach) {
     return null;
   }
@@ -346,7 +347,7 @@ const OppExamples = ({ approach, dices }) => {
     return null;
   }
 
-  const { opportunityCount, strifeCount } = countDices(
+  const { opportunityCount, strifeCount, successCount } = countDices(
     dices.filter(({ status }) => status === "kept")
   );
 
@@ -355,6 +356,8 @@ const OppExamples = ({ approach, dices }) => {
   }
 
   const [ring, skill] = approach.split("|");
+
+  const success = !!tn && successCount >= tn;
 
   return (
     <div className={styles.container}>
@@ -381,6 +384,7 @@ const OppExamples = ({ approach, dices }) => {
               skill,
               skillGroup: skillGroup(skill),
               strifeCount,
+              success,
             })
           ) {
             return null;

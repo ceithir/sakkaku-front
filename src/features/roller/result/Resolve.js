@@ -58,7 +58,7 @@ const Resolve = ({
         )}
         {!isChannel && <Result dices={dices} tn={tn} modifiers={rerollTypes} />}
       </div>
-      <OppExamples approach={approach} dices={dices} />
+      <OppExamples approach={approach} dices={dices} tn={tn} />
       <LineContainer>
         <CopyLink disabled={!id} />
         <BbCode
