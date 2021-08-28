@@ -121,7 +121,9 @@ const Advanced = ({
       <Title level={2}>{`Fully customized roll`}</Title>
 
       <UserContext
-        descriptionPlaceholder={`Bind the Shadow, Theology (Earth), using two channeled dice from previous trun`}
+        description={{
+          placeholder: `Bind the Shadow, Theology (Earth), using two channeled dice from previous trun`,
+        }}
       />
       <Form.Item label={`TN`} name="tn">
         <InputNumber min={1} />

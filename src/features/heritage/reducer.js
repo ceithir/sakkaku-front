@@ -95,7 +95,7 @@ export const create =
   };
 
 export const keep =
-  ({ roll, position, user }) =>
+  ({ roll, position }) =>
   (dispatch) => {
     dispatch(setLoading(true));
 
@@ -103,8 +103,8 @@ export const keep =
       dispatch(setError(true));
     };
 
-    if (user) {
-      const { uuid } = roll;
+    const { uuid } = roll;
+    if (uuid) {
       authentifiedPostOnServer({
         uri: `/ffg/l5r/heritage-rolls/${uuid}/keep`,
         body: {

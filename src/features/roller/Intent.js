@@ -349,7 +349,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
       }}
     >
       <UserContext
-        descriptionPlaceholder={`Running at the foe! Fire, Fitness, Keen Balance`}
+        description={{
+          placeholder: `Running at the foe! Fire, Fitness, Keen Balance`,
+        }}
       />
       <fieldset>
         <Form.Item

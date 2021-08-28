@@ -24,7 +24,7 @@ const arrayToAutoCompleteOptions = (values) => {
   });
 };
 
-const UserContext = ({ descriptionPlaceholder }) => {
+const UserContext = ({ description = {} }) => {
   const campaigns = useSelector(selectCampaigns);
   const characters = useSelector(selectCharacters);
   const user = useSelector(selectUser);
@@ -48,7 +48,7 @@ const UserContext = ({ descriptionPlaceholder }) => {
       <div className={styles.clear} />
       {!testMode && (
         <>
-          <fieldset>
+          <fieldset className={styles.identifiers}>
             <Form.Item label={`Campaign`} name="campaign" rules={defaultRules}>
               <AutoComplete
                 options={arrayToAutoCompleteOptions(campaigns)}
@@ -71,9 +71,9 @@ const UserContext = ({ descriptionPlaceholder }) => {
           <Form.Item
             label={`Description`}
             name="description"
-            rules={defaultRules}
+            rules={description.rules || defaultRules}
           >
-            <TextArea placeholder={descriptionPlaceholder} />
+            <TextArea placeholder={description.placeholder} />
           </Form.Item>
         </>
       )}

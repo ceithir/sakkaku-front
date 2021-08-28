@@ -6,7 +6,6 @@ import DefaultErrorMessage from "../../DefaultErrorMessage";
 import styles from "./Roll.module.less";
 import Form from "./Form";
 import Summary from "./Summary";
-import { selectUser } from "../user/reducer";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
 import CopyLink from "../trinket/CopyLink";
@@ -17,7 +16,6 @@ const Roll = () => {
   const dispatch = useDispatch();
   const roll = useSelector(selectRoll);
   const context = useSelector(selectContext);
-  const user = useSelector(selectUser);
   const history = useHistory();
 
   const { dices, metadata } = roll;
@@ -52,9 +50,7 @@ const Roll = () => {
                 footer: (
                   <div className={styles.footer}>
                     <Button
-                      onClick={() =>
-                        dispatch(keep({ roll, position: index, user }))
-                      }
+                      onClick={() => dispatch(keep({ roll, position: index }))}
                     >{`Keep that result`}</Button>
                   </div>
                 ),

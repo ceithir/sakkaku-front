@@ -16,3 +16,18 @@
 .clear {
   clear: both;
 }
+
+.identifiers {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  & > * {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  :global(.ant-select-auto-complete) {
+    min-width: 240px;
+  }
+}
