@@ -27,16 +27,6 @@ const arrayToAutoCompleteOptions = (values) => {
   });
 };
 
-const layout = {
-  labelCol: { span: 6 },
-  wrapperCol: { span: 18 },
-};
-
-const tailLayout = {
-  labelCol: { span: 0 },
-  wrapperCol: { span: 24 },
-};
-
 const CustomForm = () => {
   const loading = useSelector(selectLoading);
   const error = useSelector(selectError);
@@ -72,7 +62,7 @@ const CustomForm = () => {
         dispatch(addCharacter(character));
       }}
       className={styles.form}
-      {...layout}
+      layout="vertical"
     >
       <Form.Item name="table" label="Book" rules={[{ required: true }]}>
         <Select
@@ -108,7 +98,7 @@ const CustomForm = () => {
           </Form.Item>
         </>
       )}
-      <Form.Item {...tailLayout} className={styles.footer}>
+      <Form.Item className={styles.footer}>
         <Button type="primary" htmlType="submit" loading={loading}>
           {`Roll`}
         </Button>
