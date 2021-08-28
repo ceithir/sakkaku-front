@@ -3,7 +3,7 @@ import { Form, InputNumber, Typography, Button, Alert } from "antd";
 import styles from "./Advanced.module.less";
 import { useSelector, useDispatch } from "react-redux";
 import { addCampaign, addCharacter } from "features/user/reducer";
-import UserContext from "./UserContext";
+import UserContext from "components/form/UserContext";
 import classNames from "classnames";
 import DynamicDiceSelector from "./DynamicDiceSelector";
 import Dice from "../Dice";
@@ -120,7 +120,9 @@ const Advanced = ({
 
       <Title level={2}>{`Fully customized roll`}</Title>
 
-      <UserContext />
+      <UserContext
+        descriptionPlaceholder={`Bind the Shadow, Theology (Earth), using two channeled dice from previous trun`}
+      />
       <Form.Item label={`TN`} name="tn">
         <InputNumber min={1} />
       </Form.Item>

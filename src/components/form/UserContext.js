@@ -24,7 +24,7 @@ const arrayToAutoCompleteOptions = (values) => {
   });
 };
 
-const UserContext = () => {
+const UserContext = ({ descriptionPlaceholder }) => {
   const campaigns = useSelector(selectCampaigns);
   const characters = useSelector(selectCharacters);
   const user = useSelector(selectUser);
@@ -49,29 +49,31 @@ const UserContext = () => {
       {!testMode && (
         <>
           <fieldset>
-            <Form.Item label="Campaign" name="campaign" rules={defaultRules}>
+            <Form.Item label={`Campaign`} name="campaign" rules={defaultRules}>
               <AutoComplete
                 options={arrayToAutoCompleteOptions(campaigns)}
-                placeholder={"The Dead of Winter"}
+                placeholder={`The Dead of Winter`}
                 filterOption={true}
               />
             </Form.Item>
-            <Form.Item label="Character" name="character" rules={defaultRules}>
+            <Form.Item
+              label={`Character`}
+              name="character"
+              rules={defaultRules}
+            >
               <AutoComplete
                 options={arrayToAutoCompleteOptions(characters)}
-                placeholder={"Doji Sakura"}
+                placeholder={`Doji Sakura`}
                 filterOption={true}
               />
             </Form.Item>
           </fieldset>
           <Form.Item
-            label="Description"
+            label={`Description`}
             name="description"
             rules={defaultRules}
           >
-            <TextArea
-              placeholder={"Running at the foe! Fire, Fitness, Keen Balance"}
-            />
+            <TextArea placeholder={descriptionPlaceholder} />
           </Form.Item>
         </>
       )}

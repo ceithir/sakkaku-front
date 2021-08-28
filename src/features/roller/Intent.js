@@ -24,7 +24,7 @@ import ExplainOptions from "./glitter/ExplainOptions";
 import { Strife, Success, Explosion } from "../display/Symbol";
 import Dice from "./Dice";
 import { ControlOutlined } from "@ant-design/icons";
-import UserContext from "./form/UserContext";
+import UserContext from "components/form/UserContext";
 import Advanced from "./form/Advanced";
 import Loader from "features/navigation/Loader";
 import ApproachSelector from "./form/ApproachSelector";
@@ -348,7 +348,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
         }
       }}
     >
-      <UserContext />
+      <UserContext
+        descriptionPlaceholder={`Running at the foe! Fire, Fitness, Keen Balance`}
+      />
       <fieldset>
         <Form.Item
           label="Ring"
