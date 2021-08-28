@@ -65,8 +65,6 @@ const Summary = ({
       skilledAssist > 0 && `Skilled Assistance x${skilledAssist}`,
       unskilledAssist > 0 && `Unskilled Assistance x${unskilledAssist}`,
       modifiers.includes("stirring") && "Shūji — Stirring the Embers",
-      modifiers.includes("2heavens") &&
-        "Attacking a warding Mirumoto Two-Heavens Adept",
     ],
     ...modifiers
       .filter((modifier) => !!ABILITIES[modifier])

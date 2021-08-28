@@ -4,12 +4,11 @@ const REROLL_TYPES = [
   "deathdealer",
   "manipulator",
   "ishiken",
-  "2heavens",
   "wandering",
   "offering",
 ];
 
-const DEPRECATED_REROLL_TYPES = ["ruthless", "sailor", "shadow"];
+const DEPRECATED_REROLL_TYPES = ["ruthless", "sailor", "shadow", "2heavens"];
 
 export const isReroll = (modifier) => {
   if (isSpecialReroll(modifier) || isSpecialAlteration(modifier)) {
@@ -310,6 +309,9 @@ export const getCustomLabel = ({ modifier, metadata }) => {
     }
     if (modifier === "shadow") {
       return `Ikoma Shadow School Ability`;
+    }
+    if (modifier === "2heavens") {
+      return `Attacking a warding Mirumoto Two-Heavens Adept`;
     }
   }
 

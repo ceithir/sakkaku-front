@@ -218,19 +218,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
       label: "Affected by — Shūji — Stirring the Embers",
       description: `Until the end of the scene, when [chosen Distinction advantage] applies to a check, the target [of Stirring the Embers] may reroll up to three dice (instead of two). [Core, page 219]`,
     },
-    {
-      value: "2heavens",
-      label: "Affected by — School Ability  — Way of the Dragon",
-      description: (
-        <>
-          {`When a [Mirumoto Two-Heavens Adept is] targeted by an Attack check with a melee weapon, [they] may [...] ward or trap. If [they] ward, the attacker must reroll dice containing `}
-          <Success />
-          {` or `}
-          <Explosion />
-          {` up to [the Mirumoto] school rank. [Core, page 68]`}
-        </>
-      ),
-    },
   ];
 
   const customSchoolOptions = [

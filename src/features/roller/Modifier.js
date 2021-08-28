@@ -9,7 +9,6 @@ import Distinction from "./reroll/Distinction";
 import Adversity from "./reroll/Adversity";
 import Ability from "./reroll/Ability";
 import Ishiken from "./reroll/Ishiken";
-import DragonWard from "./reroll/DragonWard";
 import Alter from "./reroll/Alter";
 import {
   isSpecialReroll,
@@ -113,19 +112,6 @@ const Modifier = ({ roll, dispatch }) => {
         name={"manipulator"}
         text={`Thanks to your School Ability, you may reroll dice up to your school rank.`}
         shouldPreselectDice={mode === "semiauto"}
-      />
-    );
-  }
-
-  if (shouldShow("2heavens")) {
-    return (
-      <DragonWard
-        dices={dices}
-        onFinish={(positions) => dispatch(reroll(roll, positions, "2heavens"))}
-        basePool={basePool}
-        rerollTypes={rerollTypes}
-        modifiers={modifiers}
-        mode={mode}
       />
     );
   }

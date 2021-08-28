@@ -17,7 +17,6 @@ const { Title, Paragraph } = Typography;
 const TITLES = {
   distinction: "Distinction",
   adversity: "Adversity",
-  "2heavens": "Enemy Mirumoto Two-Heavens Adept School Ability",
   offering: "Proper Offerings",
 };
 
@@ -32,7 +31,7 @@ const getTitle = (name, metadata) => {
 };
 
 const getEmptyMessage = (rerollType) => {
-  if (["adversity", "2heavens"].includes(rerollType)) {
+  if (["adversity"].includes(rerollType)) {
     return `Nothing was rerolled as there isn't a single die with a success or an explosion.`;
   }
 
