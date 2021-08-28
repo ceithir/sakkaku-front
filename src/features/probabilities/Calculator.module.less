@@ -1,12 +1,17 @@
-@import (reference) "../../common.less";
+@import (reference) "common.less";
 
 .layout {
-  background-color: @default-background-color;
+  .paper-background();
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .form {
   .torii-box();
-  margin: 24px auto;
+  margin: 0 12px;
+  margin-bottom: 24px;
   max-width: @screen-md;
   justify-content: center;
 
