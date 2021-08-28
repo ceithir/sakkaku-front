@@ -122,7 +122,7 @@ const Advanced = ({
 
       <UserContext
         description={{
-          placeholder: `Bind the Shadow, Theology (Earth), using two channeled dice from previous trun`,
+          placeholder: `Bind the Shadow, Theology (Earth), using two channeled dice from previous round`,
         }}
       />
       <Form.Item label={`TN`} name="tn">
