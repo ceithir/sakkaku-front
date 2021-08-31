@@ -234,6 +234,7 @@ const Keep = ({
           <Button
             className={styles["else-button"]}
             onClick={() => setShowAdvancedOptions(true)}
+            disabled={showAdvancedOptions}
           >{`Do something else`}</Button>
         )}
         <NextButton
