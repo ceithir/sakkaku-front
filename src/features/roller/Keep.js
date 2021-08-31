@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NextButton from "./NextButton";
 import Result from "./Result";
 import { Typography, Form, Button, Divider } from "antd";
@@ -66,6 +66,7 @@ const Keep = ({
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
   const bypassCheck = modifiers.includes("unrestricted");
 
@@ -228,23 +229,32 @@ const Keep = ({
           modifiers={rerollTypes}
         />
       </div>
-      <NextButton
-        onClick={() => {
-          if (!keepingExplosions && addkept?.length) {
-            onFinish(toKeep, addkept);
-            return;
-          }
+      <div className={styles["main-buttons"]}>
+        {!keepingExplosions && (
+          <Button
+            className={styles["else-button"]}
+            onClick={() => setShowAdvancedOptions(true)}
+          >{`Do something else`}</Button>
+        )}
+        <NextButton
+          onClick={() => {
+            if (!keepingExplosions && addkept?.length) {
+              onFinish(toKeep, addkept);
+              return;
+            }
 
-          onFinish(toKeep);
-        }}
-        disabled={
-          !(keepingExplosions || trulyCompromised || bypassCheck) &&
-          toKeep.length === 0
-        }
-      >
-        {buttonText()}
-      </NextButton>
-      {!keepingExplosions && (
+            onFinish(toKeep);
+          }}
+          disabled={
+            !(keepingExplosions || trulyCompromised || bypassCheck) &&
+            toKeep.length === 0
+          }
+        >
+          {buttonText()}
+        </NextButton>
+      </div>
+
+      {!keepingExplosions && showAdvancedOptions && (
         <>
           <Divider />
           <AddKeptDiceForm
