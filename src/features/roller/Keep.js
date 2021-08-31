@@ -1,7 +1,7 @@
 import React from "react";
 import NextButton from "./NextButton";
 import Result from "./Result";
-import { Typography, Form, Button } from "antd";
+import { Typography, Form, Button, Divider } from "antd";
 import ExplosionDices from "./ExplosionDices";
 import styles from "./Keep.module.less";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,6 +9,7 @@ import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import { FACETS } from "./DiceSideSelector";
 import { rolledDicesCount, keptDicesCount } from "./utils";
+import ExplainOptions from "./glitter/ExplainOptions";
 
 const { Paragraph } = Typography;
 
@@ -27,7 +28,7 @@ const AddKeptDiceForm = ({ dices, onChange, compromised }) => {
               fields={fields}
               defaultValue={{ type: "ring", value: { opportunity: 1 } }}
               errors={errors}
-              buttonText={"Add Kept Die"}
+              buttonText={"Add a kept die"}
               add={add}
               remove={remove}
               values={dices}
@@ -244,22 +245,45 @@ const Keep = ({
         {buttonText()}
       </NextButton>
       {!keepingExplosions && (
-        <div className={styles["additional-actions"]}>
-          <div className={styles.buttons}>
-            <Button disabled={!addReroll} onClick={addReroll}>
-              {`Reroll some dice`}
-            </Button>
-            <Button disabled={!addAlteration} onClick={addAlteration}>
-              {`Alter some dice`}
-            </Button>
-            <Button onClick={channel}>{`Channel`}</Button>
-          </div>
+        <>
+          <Divider />
           <AddKeptDiceForm
             dices={addkept}
             onChange={setAddKept}
             compromised={compromised}
           />
-        </div>
+          <div className={styles["additional-actions"]}>
+            <div className={styles.buttons}>
+              <Button disabled={!addReroll} onClick={addReroll}>
+                {`Reroll some dice`}
+              </Button>
+              <Button disabled={!addAlteration} onClick={addAlteration}>
+                {`Alter some dice`}
+              </Button>
+              <Button onClick={channel}>{`Reserve some dice`}</Button>
+            </div>
+            <ExplainOptions
+              options={[
+                {
+                  label: `Add a kept die`,
+                  description: `Add a kept die to your check result, set to a defined value. It will be kept in addition to your normal maximum, and can explode normally. Examples: Yari of Air Invocation [Core, page 196], Void Downtime Opportunity [Core, page 329].`,
+                },
+                {
+                  label: `Reroll some dice`,
+                  description: `Reroll one or more dice. Can be used to apply an Adversity, or any other modifier, you forgot to declare beforehand, as well as for all kinds of conditional rerolls. One example among many: The Rival Bond Ability [Paths of Wave, page 191].`,
+                },
+                {
+                  label: `Alter some dice`,
+                  description: `Set one or more dice to a different side, or substitute them with different dice altogether. Examples: The Yoriki Title Ability [Emerald Empire, page 253], the aftermath of a Duel Center Action.`,
+                },
+                {
+                  label: `Reserve some dice`,
+                  description: `Select one or more dice to reserve for a later roll. The chosen dice will be "frozen" in their current state and the roll will end there. Used to save dice for later, like with Channeling [Core, page 190], the Kata Striking as Air [Core, page 177], or the Duel Center Action [Core, page 260].`,
+                },
+              ]}
+            />
+          </div>
+        </>
       )}
     </div>
   );
