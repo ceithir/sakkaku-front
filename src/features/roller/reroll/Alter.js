@@ -7,26 +7,6 @@ import RerollDiceBox from "./RerollDiceBox";
 import AddLabel from "./AddLabel";
 import AlterationResult from "./AlterationResult";
 
-const AVAILABLE_FACETS = {
-  ring: [
-    {},
-    { opportunity: 1, strife: 1 },
-    { opportunity: 1 },
-    { success: 1, strife: 1 },
-    { success: 1 },
-    { explosion: 1, strife: 1 },
-  ],
-  skill: [
-    {},
-    { opportunity: 1 },
-    { success: 1, strife: 1 },
-    { success: 1 },
-    { explosion: 1, strife: 1 },
-    { success: 1, opportunity: 1 },
-    { explosion: 1 },
-  ],
-};
-
 const Alter = ({
   text,
   dices,
@@ -36,13 +16,10 @@ const Alter = ({
   cancel,
   showLabelInput,
   title,
-  modifiers,
 }) => {
   const [alterations, setAlterations] = useState([]);
   const positions = alterations.map(({ position }) => position);
   const [label, setLabel] = useState();
-
-  const unrestricted = modifiers.includes("unrestricted");
 
   const toggle = (index) => {
     if (alterations.some(({ position }) => position === index)) {
@@ -92,12 +69,6 @@ const Alter = ({
         <>
           <div className={styles.list}>
             {alterations.map(({ position, value, type }) => {
-              const facets = unrestricted
-                ? undefined
-                : AVAILABLE_FACETS[type].map((value) => {
-                    return { type, value };
-                  });
-
               return (
                 <DiceSideSelector
                   key={position.toString()}
@@ -111,7 +82,6 @@ const Alter = ({
                     alt[index]["value"] = value;
                     setAlterations(alt);
                   }}
-                  facets={facets}
                 />
               );
             })}
