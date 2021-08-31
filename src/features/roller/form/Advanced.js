@@ -11,7 +11,9 @@ import { selectLoading } from "../reducer";
 
 const { Paragraph, Title } = Typography;
 
-const defaultRules = [{ required: true, message: "Please fill this field" }];
+const defaultRules = [
+  { required: true, message: "Please enter a value (can be zero)." },
+];
 
 const buildDiceList = ({ ring, skill, channeled }) => {
   let list = [];
