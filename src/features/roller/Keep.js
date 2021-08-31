@@ -280,7 +280,7 @@ const Keep = ({
                 },
                 {
                   label: `Reroll some dice`,
-                  description: `Reroll one or more dice. Can be used to apply an Adversity, or any other modifier, you forgot to declare beforehand, as well as for all kinds of conditional rerolls. One example among many: The Rival Bond Ability [Paths of Wave, page 191].`,
+                  description: `Reroll one or more dice. Can be used to apply an Adversity you forgot to declare beforehand, or for any other reroll really. One example among many: The Rival Bond Ability [Paths of Wave, page 191].`,
                 },
                 {
                   label: `Alter some dice`,
@@ -288,7 +288,7 @@ const Keep = ({
                 },
                 {
                   label: `Reserve some dice`,
-                  description: `Select one or more dice to reserve for a later roll. The chosen dice will be "frozen" in their current state and the roll will end there. Used to save dice for later, like with Channeling [Core, page 190], the Kata Striking as Air [Core, page 177], or the Duel Center Action [Core, page 260].`,
+                  description: `Select one or more dice to reserve for a later roll. The chosen dice will be "frozen" in their current state and the roll will end there. Useful to save dice for later, like with Channeling [Core, page 190], the Kata Striking as Air [Core, page 177], or the Duel Center Action [Core, page 260].`,
                 },
               ]}
             />

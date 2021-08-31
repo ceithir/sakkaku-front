@@ -46,7 +46,7 @@ const Resolve = ({
         {isChannel && (
           <Text
             className={styles["channel-text"]}
-          >{`The following dice were channeled (reserved) for a later roll.`}</Text>
+          >{`The following dice were reserved for a later roll.`}</Text>
         )}
         <Dices dices={cleanedUpDice} />
         {setDice.length > 0 && (
