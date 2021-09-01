@@ -66,7 +66,9 @@ const Keep = ({
 }) => {
   const toKeep = useSelector(selectToKeep);
   const dispatch = useDispatch();
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(
+    !!addkept?.length
+  );
 
   const bypassCheck = modifiers.includes("unrestricted");
 
