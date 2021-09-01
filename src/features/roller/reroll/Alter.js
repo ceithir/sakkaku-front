@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import NextButton from "../NextButton";
-import DiceSideSelector from "../DiceSideSelector";
+import { SelectDieSide } from "../DiceSideSelector";
 import styles from "./Alter.module.less";
 import { Button } from "antd";
 import RerollDiceBox from "./RerollDiceBox";
 import AddLabel from "./AddLabel";
-import AlterationResult from "./AlterationResult";
+import { replaceRerolls } from "../utils";
+import Dice from "../Dice";
 
 const Alter = ({
   text,
@@ -18,84 +19,108 @@ const Alter = ({
   title,
 }) => {
   const [alterations, setAlterations] = useState([]);
-  const positions = alterations.map(({ position }) => position);
   const [label, setLabel] = useState();
 
-  const toggle = (index) => {
-    if (alterations.some(({ position }) => position === index)) {
+  const organizedDice = dices.map((dice, index) => {
+    return {
+      ...dice,
+      position: index,
+    };
+  });
+
+  const cleanedUpDice = replaceRerolls({
+    dices: organizedDice,
+    rerollTypes,
+    basePool,
+  });
+
+  const toggle = (pos) => {
+    if (alterations.some(({ position }) => position === pos)) {
       return setAlterations(
-        alterations.filter(({ position }) => position !== index)
+        alterations.filter(({ position }) => position !== pos)
       );
     }
 
     return setAlterations([
       ...alterations,
-      { position: index, type: dices[index]["type"], value: { success: 1 } },
+      { position: pos, type: dices[pos]["type"], value: { success: 1 } },
     ]);
   };
 
-  const buttonText = () => {
-    return "Continue";
-  };
+  const alter =
+    (pos) =>
+    ({ type, value }) => {
+      setAlterations(
+        alterations.map((alteration) => {
+          if (alteration.position === pos) {
+            return {
+              ...alteration,
+              type,
+              value,
+            };
+          }
+
+          return alteration;
+        })
+      );
+    };
 
   return (
     <RerollDiceBox
       title={title}
       text={text}
-      dices={dices.map((dice, index) => {
-        const selected = positions.includes(index);
+      dices={organizedDice.map(({ position, ...dice }) => {
+        const selected = alterations.some(
+          ({ position: pos }) => position === pos
+        );
         return {
           ...dice,
           selectable: true,
           selected,
           disabled: false,
-          toggle: () => toggle(index),
+          toggle: () => toggle(position),
         };
       })}
       basePool={basePool}
       rerollTypes={rerollTypes}
       content={
         <>
-          <AlterationResult
-            dices={dices}
-            rerollTypes={rerollTypes}
-            basePool={basePool}
-            alterations={alterations}
-          />
+          {alterations.length > 0 && (
+            <>
+              <div className={styles.arrow}>{"⇩"}</div>
+              <div className={styles["altered-dice"]}>
+                {cleanedUpDice.map(({ position, ...dice }) => {
+                  const alteration = alterations.find(
+                    ({ position: pos }) => position === pos
+                  );
+
+                  if (!!alteration) {
+                    return (
+                      <SelectDieSide
+                        value={alteration}
+                        onChange={alter(position)}
+                      />
+                    );
+                  }
+
+                  return <Dice dice={dice} />;
+                })}
+              </div>
+            </>
+          )}
           {showLabelInput && <AddLabel onChange={setLabel} />}
         </>
       }
       footer={
-        <>
-          <div className={styles.list}>
-            {alterations.map(({ position, value, type }) => {
-              return (
-                <DiceSideSelector
-                  key={position.toString()}
-                  value={{ type, value }}
-                  onChange={({ value, type }) => {
-                    const alt = [...alterations];
-                    const index = alt.findIndex(
-                      ({ position: pos }) => pos === position
-                    );
-                    alt[index]["type"] = type;
-                    alt[index]["value"] = value;
-                    setAlterations(alt);
-                  }}
-                />
-              );
-            })}
-          </div>
-          <div className={styles.buttons}>
-            {cancel && <Button onClick={cancel}>{`Cancel`}</Button>}
-            <NextButton
-              onClick={() => onFinish(alterations, label)}
-              disabled={cancel && alterations.length === 0}
-            >
-              {buttonText()}
-            </NextButton>
-          </div>
-        </>
+        <div className={styles.buttons}>
+          {cancel && <Button onClick={cancel}>{`Cancel`}</Button>}
+          <NextButton
+            onClick={() => onFinish(alterations, label)}
+            disabled={cancel && alterations.length === 0}
+          >
+            {`Continue`}
+          </NextButton>
+        </div>
       }
     />
   );

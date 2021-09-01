@@ -1,7 +1,7 @@
 import React from "react";
-import { Radio } from "antd";
+import { Radio, Select } from "antd";
 import Dice from "./Dice";
-import styles from "./DiceSideSelector.module.css";
+import styles from "./DiceSideSelector.module.less";
 const SEPARATOR = "-";
 
 const toString = ({
@@ -47,6 +47,22 @@ export const FACETS = [
   { type: "skill", value: { success: 1, opportunity: 1 } },
   { type: "skill", value: { explosion: 1 } },
 ];
+
+export const SelectDieSide = ({ value, onChange }) => {
+  return (
+    <Select
+      className={styles.select}
+      options={FACETS.map((die) => {
+        return {
+          value: toString(die),
+          label: <Dice dice={die} />,
+        };
+      })}
+      value={toString(value)}
+      onChange={(value) => onChange(toObject(value))}
+    />
+  );
+};
 
 const Loop = ({ facets, button }) => {
   return (
