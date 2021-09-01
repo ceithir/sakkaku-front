@@ -80,18 +80,6 @@ const Loop = ({ facets, button }) => {
   );
 };
 
-const DiceSideSelector = ({ value, onChange, facets = FACETS }) => {
-  return (
-    <Radio.Group
-      onChange={({ target: { value } }) => onChange(toObject(value))}
-      className={styles.group}
-      value={toString(value)}
-    >
-      <Loop facets={facets} />
-    </Radio.Group>
-  );
-};
-
 export const UncontrolledDiceSideSelector = ({
   initialValue,
   onChange,
@@ -108,5 +96,3 @@ export const UncontrolledDiceSideSelector = ({
     </Radio.Group>
   );
 };
-
-export default DiceSideSelector;
