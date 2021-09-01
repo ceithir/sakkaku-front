@@ -97,13 +97,14 @@ const Alter = ({
                   if (!!alteration) {
                     return (
                       <SelectDieSide
+                        key={position}
                         value={alteration}
                         onChange={alter(position)}
                       />
                     );
                   }
 
-                  return <Dice dice={dice} />;
+                  return <Dice dice={dice} key={position} />;
                 })}
               </div>
             </>
