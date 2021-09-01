@@ -48,11 +48,11 @@ export const FACETS = [
   { type: "skill", value: { explosion: 1 } },
 ];
 
-export const SelectDieSide = ({ value, onChange }) => {
+export const SelectDieSide = ({ value, onChange, facets = FACETS }) => {
   return (
     <Select
       className={styles.select}
-      options={FACETS.map((die) => {
+      options={facets.map((die) => {
         return {
           value: toString(die),
           label: <Dice dice={die} />,

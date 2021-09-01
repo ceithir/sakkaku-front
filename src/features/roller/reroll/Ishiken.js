@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import NextButton from "../NextButton";
 import { Typography } from "antd";
 import styles from "./Ishiken.module.less";
-import DiceSideSelector from "../DiceSideSelector";
+import { SelectDieSide } from "../DiceSideSelector";
 import { longname } from "../data/abilities";
 import Dices from "../Dices";
 import { diceWrapper } from "./RerollDiceBox";
-import AlterationResult from "./AlterationResult";
+import { replaceRerolls } from "../utils";
+import Dice from "../Dice";
 
 const { Text, Paragraph, Title } = Typography;
 
@@ -33,25 +34,62 @@ const AVAILABLE_FACETS = {
 
 const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
   const [alterations, setAlterations] = useState([]);
-  const positions = alterations.map(({ position }) => position);
 
-  const toggle = (index) => {
-    if (alterations.some(({ position }) => position === index)) {
+  const organizedDice = dices.map((dice, index) => {
+    return {
+      ...dice,
+      position: index,
+    };
+  });
+
+  const cleanedUpDice = replaceRerolls({
+    dices: organizedDice,
+    rerollTypes,
+    basePool,
+  });
+
+  const toggle = (pos) => {
+    if (alterations.some(({ position }) => position === pos)) {
       return setAlterations(
-        alterations.filter(({ position }) => position !== index)
+        alterations.filter(({ position }) => position !== pos)
       );
     }
 
-    const originalDice = dices[index];
+    const originalDice = dices[pos];
     return setAlterations([
       ...alterations,
-      { position: index, value: blank(originalDice) ? { success: 1 } : {} },
+      {
+        position: pos,
+        value: blank(originalDice) ? { success: 1 } : {},
+        type: originalDice.type,
+      },
     ]);
   };
 
+  const alter =
+    (pos) =>
+    ({ value }) => {
+      setAlterations(
+        alterations.map((alteration) => {
+          if (alteration.position === pos) {
+            return {
+              ...alteration,
+              value,
+            };
+          }
+
+          return alteration;
+        })
+      );
+    };
+
   const onlyBlanks =
     alterations.length > 0 &&
-    dices.filter((_, index) => positions.includes(index)).some(blank);
+    dices
+      .filter((_, index) =>
+        alterations.map(({ position }) => position).includes(index)
+      )
+      .some(blank);
   const onlyNonBlanks = alterations.length > 0 && !onlyBlanks;
 
   const text = (
@@ -93,8 +131,10 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
         <Paragraph className={styles.text}>{text}</Paragraph>
         <Dices
           dices={diceWrapper({
-            dices: dices.map((dice, index) => {
-              const selected = positions.includes(index);
+            dices: organizedDice.map(({ position, ...dice }) => {
+              const selected = alterations.some(
+                ({ position: pos }) => pos === position
+              );
               const selectable =
                 (!onlyBlanks && !onlyNonBlanks) ||
                 (onlyBlanks && blank(dice)) ||
@@ -104,7 +144,7 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
                 selectable,
                 selected,
                 disabled: !selectable,
-                toggle: () => toggle(index),
+                toggle: () => toggle(position),
               };
             }),
             basePool,
@@ -112,39 +152,34 @@ const Ishiken = ({ dices, onFinish, basePool, rerollTypes }) => {
           })}
         />
       </div>
-      <AlterationResult
-        dices={dices}
-        basePool={basePool}
-        rerollTypes={rerollTypes}
-        alterations={alterations}
-      />
       <div className={styles.footer}>
         {onlyBlanks && (
-          <div className={styles.alterators}>
-            <Text>{`Choose your desired non-blank result${
-              alterations.length > 1 ? "s" : ""
-            }:`}</Text>
-            {alterations.map(({ position, value }) => {
-              const type = dices[position]["type"];
+          <div>
+            <div className={styles.arrow}>{"⇩"}</div>
+            <div className={styles["altered-dice"]}>
+              {cleanedUpDice.map(({ position, ...dice }) => {
+                const alteration = alterations.find(
+                  ({ position: pos }) => position === pos
+                );
 
-              return (
-                <DiceSideSelector
-                  key={position.toString()}
-                  value={{ type, value }}
-                  onChange={({ value }) => {
-                    const alt = [...alterations];
-                    const index = alt.findIndex(
-                      ({ position: pos }) => pos === position
-                    );
-                    alt[index]["value"] = value;
-                    setAlterations(alt);
-                  }}
-                  facets={AVAILABLE_FACETS[type].map((value) => {
-                    return { type, value };
-                  })}
-                />
-              );
-            })}
+                if (!!alteration) {
+                  const type = dices[position]["type"];
+
+                  return (
+                    <SelectDieSide
+                      key={position}
+                      value={alteration}
+                      onChange={alter(position)}
+                      facets={AVAILABLE_FACETS[type].map((value) => {
+                        return { type, value };
+                      })}
+                    />
+                  );
+                }
+
+                return <Dice dice={dice} key={position} />;
+              })}
+            </div>
           </div>
         )}
         <NextButton onClick={() => onFinish(alterations)}>
