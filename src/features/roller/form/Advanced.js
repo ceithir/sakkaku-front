@@ -151,11 +151,9 @@ const Advanced = ({
       </p>
       {channeled.length > 0 ? (
         <div className={styles["dice-list"]}>
-          {channeled
-            .sort(({ type: a }, { type: b }) => a > b)
-            .map((dice, index) => {
-              return <Dice key={index.toString()} dice={dice} />;
-            })}
+          {channeled.map((dice, index) => {
+            return <Dice key={index.toString()} dice={dice} />;
+          })}
         </div>
       ) : (
         <Paragraph type="success">{`None at the moment.`}</Paragraph>
