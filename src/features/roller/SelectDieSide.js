@@ -52,7 +52,7 @@ const SelectDieSide = ({
   value,
   onChange,
   facets = FACETS,
-  defaultValue,
+  initialValue,
   ...props
 }) => {
   return (
@@ -69,7 +69,7 @@ const SelectDieSide = ({
       onChange={
         onChange ? (value) => !!value && onChange(toObject(value)) : undefined
       }
-      defaultValue={defaultValue ? toString(defaultValue) : undefined}
+      defaultValue={initialValue ? toString(initialValue) : undefined}
     />
   );
 };

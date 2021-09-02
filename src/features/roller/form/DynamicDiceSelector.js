@@ -34,7 +34,7 @@ const DynamicDiceSelector = ({
           <Form.Item required={false} key={field.key} label={labelText}>
             <Form.Item {...field} noStyle>
               <SelectDieSide
-                defaultValue={values[index] || defaultValue}
+                initialValue={values[index] || defaultValue}
                 facets={facets}
                 allowClear={!!remove}
                 onClear={() => remove(field.name)}
