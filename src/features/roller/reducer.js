@@ -69,6 +69,7 @@ const slice = createSlice({
       if (ring === 0) {
         state.channelInsteadOfKeeping = true;
       }
+      state.advanced = modifiers.includes("unrestricted");
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
