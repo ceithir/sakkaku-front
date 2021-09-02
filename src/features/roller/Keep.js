@@ -147,6 +147,10 @@ const Keep = ({
     }
 
     if (toKeep.length === 0) {
+      if (bypassCheck) {
+        return `Don't keep anything`;
+      }
+
       return "Must select at least one die";
     }
 
