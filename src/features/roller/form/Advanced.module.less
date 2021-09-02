@@ -1,16 +1,18 @@
 @import (reference) "common.less";
 
 .form {
+  margin: 0 auto;
+  max-width: @screen-md;
+  .torii-box();
+  padding-bottom: 0;
+
   h2 {
     .red-title();
     text-align: center;
   }
 
-  h3 {
-    .block-title();
-    &:global(.ant-typography) {
-      margin-top: 0;
-    }
+  label[for="testMode"] {
+    margin-bottom: 12px;
   }
 }
 
@@ -80,4 +82,11 @@
 
 .warning {
   margin-bottom: 24px;
+}
+
+fieldset.set-dice {
+  & > * {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }

@@ -4,7 +4,6 @@ import styles from "./Advanced.module.less";
 import { useSelector, useDispatch } from "react-redux";
 import { addCampaign, addCharacter } from "features/user/reducer";
 import UserContext from "components/form/UserContext";
-import classNames from "classnames";
 import DynamicDiceSelector from "./DynamicDiceSelector";
 import Dice from "../Dice";
 import { selectLoading } from "../reducer";
@@ -46,13 +45,7 @@ const buildDiceList = ({ ring, skill, channeled }) => {
   return list;
 };
 
-const Advanced = ({
-  onFinish,
-  initialValues,
-  onComplete,
-  className,
-  cancel,
-}) => {
+const Advanced = ({ onFinish, initialValues, onComplete, cancel }) => {
   const loading = useSelector(selectLoading);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
@@ -80,7 +73,7 @@ const Advanced = ({
 
   return (
     <Form
-      className={classNames(styles.form, { [className]: !!className })}
+      className={styles.form}
       initialValues={initialValues}
       onFinish={wrappedOnFinish}
       scrollToFirstError
@@ -119,9 +112,7 @@ const Advanced = ({
         closable
         className={styles.warning}
       />
-
       <Title level={2}>{`Fully customized roll`}</Title>
-
       <UserContext
         description={{
           placeholder: `Bind the Shadow, Theology (Earth), using two channeled dice from previous round`,
@@ -131,63 +122,71 @@ const Advanced = ({
         <InputNumber min={1} />
       </Form.Item>
 
-      <Title level={3}>{`Parameters`}</Title>
-      <Form.Item
-        label={`That many ring dice will be rolled`}
-        name="ring"
-        rules={defaultRules}
-      >
-        <InputNumber min={0} max={10} />
-      </Form.Item>
-      <Form.Item
-        label={`That many skill dice will be rolled`}
-        name="skill"
-        rules={defaultRules}
-      >
-        <InputNumber min={0} max={10} />
-      </Form.Item>
-      <p>
-        {`The following dice will be added to the result, without being randomly rolled but instead set to a specific value: `}
-      </p>
-      {channeled.length > 0 ? (
-        <div className={styles["dice-list"]}>
-          {channeled.map((dice, index) => {
-            return <Dice key={index.toString()} dice={dice} />;
-          })}
-        </div>
-      ) : (
-        <Paragraph type="success">{`None at the moment.`}</Paragraph>
-      )}
-      <Form.List name="channeled">
-        {(fields, { add, remove }, { errors }) => {
-          return (
-            <DynamicDiceSelector
-              fields={fields}
-              defaultValue={{ type: "skill", value: { success: 1 } }}
-              errors={errors}
-              buttonText={`Add a die set to a specific value`}
-              add={add}
-              remove={remove}
-              className={styles.channeled}
-            />
-          );
-        }}
-      </Form.List>
+      <fieldset>
+        <legend>{`Rolled Dice`}</legend>
+        <Form.Item
+          label={`Enter here the number of ring dice that'll actually be rolled`}
+          name="ring"
+          rules={defaultRules}
+        >
+          <InputNumber min={0} max={10} />
+        </Form.Item>
+        <Form.Item
+          label={`Enter here the number of skill dice that'll actually be rolled`}
+          name="skill"
+          rules={defaultRules}
+        >
+          <InputNumber min={0} max={10} />
+        </Form.Item>
+      </fieldset>
 
-      <Title level={3}>{`Preview`}</Title>
-      {diceList.length > 0 ? (
-        <div className={styles["dice-list"]}>
-          {diceList.map(({ dice, className }, index) => {
-            return (
-              <span key={index.toString()} className={className}>
-                <Dice dice={dice} />
-              </span>
-            );
-          })}
+      <fieldset>
+        <legend>{`Set Dice`}</legend>
+        <div>
+          <p>
+            {`You may also/instead add to your pool dice already set to a certain value. They'll be treated as rolled dice for the purpose of further mechanics, but won't really be rolled.`}
+          </p>
+          <p>
+            {`See "Add a Rolled Die", page 27 of the Core rulebook, for the base rule, and Choosing to Channel/Using Channeled Dice, page 190 of the same book, for a practical example.`}
+          </p>
+          <p>
+            {`Note that, by itself, the replacement effect from the Center action in a duel happens after rolling dice normally (it does not modify your normal dice pool).`}
+          </p>
         </div>
-      ) : (
-        <Paragraph type="danger">{`You aren't rolling a single die at the moment.`}</Paragraph>
-      )}
+        <Form.List name="channeled">
+          {(fields, { add, remove }, { errors }) => {
+            return (
+              <DynamicDiceSelector
+                fields={fields}
+                defaultValue={{ type: "skill", value: { success: 1 } }}
+                errors={errors}
+                buttonText={`Add a die set to a specific value`}
+                add={add}
+                remove={remove}
+                className={styles.channeled}
+              />
+            );
+          }}
+        </Form.List>
+      </fieldset>
+
+      <fieldset>
+        <legend>{`Full dice pool – Preview`}</legend>
+        {diceList.length > 0 ? (
+          <div className={styles["dice-list"]}>
+            {diceList.map(({ dice, className }, index) => {
+              return (
+                <span key={index.toString()} className={className}>
+                  <Dice dice={dice} />
+                </span>
+              );
+            })}
+          </div>
+        ) : (
+          <Paragraph type="danger">{`You aren't rolling a single die at the moment.`}</Paragraph>
+        )}
+      </fieldset>
+
       <div className={styles.buttons}>
         <Button onClick={cancel}>{`Cancel`}</Button>
         <Button

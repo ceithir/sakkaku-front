@@ -87,7 +87,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
         onFinish={onFinish}
         initialValues={advancedInitialValues}
         onComplete={onComplete}
-        className={styles.form}
         cancel={() => setAdvanced(false)}
       />
     );
