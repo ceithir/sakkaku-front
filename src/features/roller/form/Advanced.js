@@ -45,12 +45,12 @@ const buildDiceList = ({ ring, skill, channeled }) => {
   return list;
 };
 
-const Advanced = ({ onFinish, initialValues, onComplete, cancel }) => {
+const Advanced = ({ onFinish, onComplete, cancel }) => {
   const loading = useSelector(selectLoading);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const [ring, setRing] = useState(initialValues.ring);
-  const [skill, setSkill] = useState(initialValues.skill);
+  const [ring, setRing] = useState();
+  const [skill, setSkill] = useState();
   const [channeled, setChanneled] = useState([]);
 
   const wrappedOnFinish = (data) => {
@@ -74,7 +74,6 @@ const Advanced = ({ onFinish, initialValues, onComplete, cancel }) => {
   return (
     <Form
       className={styles.form}
-      initialValues={initialValues}
       onFinish={wrappedOnFinish}
       scrollToFirstError
       form={form}

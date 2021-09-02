@@ -13,7 +13,11 @@ import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
 import { useSelector, useDispatch } from "react-redux";
 import { addCampaign, addCharacter } from "../user/reducer";
-import { setAnimatedStep, selectHidden } from "../roller/reducer";
+import {
+  setAnimatedStep,
+  selectHidden,
+  selectAdvanced,
+} from "../roller/reducer";
 import Animate from "rc-animate";
 import { DECLARE } from "./Steps";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
@@ -27,6 +31,7 @@ import UserContext from "components/form/UserContext";
 import Advanced from "./form/Advanced";
 import Loader from "features/navigation/Loader";
 import ApproachSelector from "./form/ApproachSelector";
+import { useHistory } from "react-router-dom";
 
 const { Panel } = Collapse;
 
@@ -77,16 +82,17 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [commonModifiers, setCommonModifiers] = useState([]);
   const [addkept, setAddkept] = useState([]);
   const [schoolAbility, setSchoolAbility] = useState();
-  const [advanced, setAdvanced] = useState(false);
-  const [advancedInitialValues, setAdvancedInitialValues] = useState(values);
+  const advanced = useSelector(selectAdvanced);
+  let history = useHistory();
 
   if (advanced) {
     return (
       <Advanced
         onFinish={onFinish}
-        initialValues={advancedInitialValues}
         onComplete={onComplete}
-        cancel={() => setAdvanced(false)}
+        cancel={() => {
+          history.push("/roll");
+        }}
       />
     );
   }
@@ -310,27 +316,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           form.validateFields(["addkept"]);
         }
-        if (
-          Object.keys(changedValues).some((name) =>
-            [
-              "ring",
-              "skill",
-              "tn",
-              "campaign",
-              "character",
-              "description",
-            ].includes(name)
-          )
-        ) {
-          setAdvancedInitialValues({
-            ring: form.getFieldValue("ring"),
-            skill: form.getFieldValue("skill"),
-            tn: form.getFieldValue("tn"),
-            campaign: form.getFieldValue("campaign"),
-            character: form.getFieldValue("character"),
-            description: form.getFieldValue("description"),
-          });
-        }
       }}
     >
       <UserContext
@@ -544,7 +529,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
           <Form.Item className={styles["advanced-button"]}>
             <Button
               icon={<ControlOutlined />}
-              onClick={() => setAdvanced(true)}
+              onClick={() => {
+                history.push("roll-advanced");
+              }}
             >{`Fully customized roll`}</Button>
           </Form.Item>
           <ExplainOptions

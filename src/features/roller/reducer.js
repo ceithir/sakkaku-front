@@ -14,6 +14,7 @@ const initialState = {
   addkept: [],
   channelInsteadOfKeeping: false,
   delayAfterDistinction: false,
+  advanced: false,
 };
 
 const slice = createSlice({
@@ -21,6 +22,8 @@ const slice = createSlice({
   initialState,
   reducers: {
     softReset: (state) => {
+      const fromAdvancedForm = state.modifiers.includes("unrestricted");
+
       state.tn = initialState.tn;
       state.ring = initialState.ring;
       state.skill = initialState.skill;
@@ -35,7 +38,12 @@ const slice = createSlice({
       state.delayAfterDistinction = false;
 
       state.id = null;
-      window.history.pushState(null, null, "/roll");
+
+      window.history.pushState(
+        null,
+        null,
+        fromAdvancedForm ? "/roll-advanced" : "/roll"
+      );
     },
     setParameters: (state, action) => {
       const {
@@ -109,6 +117,9 @@ const slice = createSlice({
     initToKeep: (state, { payload: mode }) => {
       state.toKeep = mode === "semiauto" ? bestKeepableDice(state) : [];
     },
+    setAdvanced: (state, { payload: advanced }) => {
+      state.advanced = advanced;
+    },
   },
 });
 
@@ -124,6 +135,7 @@ export const {
   keepInsteadOfChanneling,
   setDelayAfterDistinction,
   initToKeep,
+  setAdvanced,
 } = slice.actions;
 
 const { update, setError, setModifiers } = slice.actions;
@@ -478,5 +490,7 @@ export const selectToKeep = (state) => state.roll.toKeep;
 
 export const selectDelayAfterDistinction = (state) =>
   state.roll.delayAfterDistinction;
+
+export const selectAdvanced = (state) => state.roll.advanced;
 
 export default slice.reducer;

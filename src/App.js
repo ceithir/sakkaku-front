@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.less";
-import Roller from "./features/roller";
+import { StandardRoller, AdvancedRoller } from "./features/roller";
 import Layout from "./features/navigation/Layout";
 import { getOnServer } from "./server";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -55,9 +55,14 @@ const App = () => {
             <List />
             <Search />
           </Route>
+          <Route path="/roll-advanced">
+            <AnonymousAlertWrapper>
+              <AdvancedRoller />
+            </AnonymousAlertWrapper>
+          </Route>
           <Route path="/roll">
             <AnonymousAlertWrapper>
-              <Roller />
+              <StandardRoller />
             </AnonymousAlertWrapper>
           </Route>
           <Route path="/">

@@ -17,7 +17,7 @@ import {
 import Keep from "./Keep";
 import Summary from "./Summary";
 import { Collapse } from "antd";
-import { setParameters, load, initToKeep } from "./reducer";
+import { setParameters, load, initToKeep, setAdvanced } from "./reducer";
 import DefaultErrorMessage from "../../DefaultErrorMessage";
 import NextButton from "./NextButton";
 import { selectUser } from "../user/reducer";
@@ -45,6 +45,30 @@ const ConfigButton = ({ step }) => {
   }
 
   return <ConfigOpener className={styles["config-opener"]} />;
+};
+
+export const StandardRoller = (props) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!dispatch) {
+      return;
+    }
+    dispatch(setAdvanced(false));
+  }, [dispatch]);
+
+  return <Roller {...props} />;
+};
+
+export const AdvancedRoller = (props) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!dispatch) {
+      return;
+    }
+    dispatch(setAdvanced(true));
+  }, [dispatch]);
+
+  return <Roller {...props} />;
 };
 
 const Roller = ({ save }) => {
