@@ -22,7 +22,6 @@ import AbilityDescription from "./glitter/AbilityDescription";
 import ABILITIES, { longname } from "./data/abilities";
 import ExplainOptions from "./glitter/ExplainOptions";
 import { Strife, Success, Explosion } from "../display/Symbol";
-import Dice from "./Dice";
 import { ControlOutlined } from "@ant-design/icons";
 import UserContext from "components/form/UserContext";
 import Advanced from "./form/Advanced";
@@ -461,9 +460,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
                   <>
                     <p className={styles["addkept-summary"]}>
                       {`The following dice will be added as kept dice:`}
-                      {addkept.map((dice, i) => {
-                        return <Dice key={i.toString()} dice={dice} />;
-                      })}
                     </p>
                     <Form.List
                       name="addkept"
@@ -499,6 +495,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
                             }}
                             errors={errors}
                             buttonText={"Add another die"}
+                            buttonPosition={"bottom"}
                             add={add}
                             remove={addkept.length > 1 && remove}
                             className={styles.addkept}

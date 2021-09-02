@@ -16,9 +16,10 @@ const DynamicDiceSelector = ({
   values = [],
   facets,
   className,
+  buttonPosition = "top",
 }) => {
-  return (
-    <div className={classNames(styles.container, className)}>
+  const AddButton = () => {
+    return (
       <Form.Item>
         <Button
           type="dashed"
@@ -29,6 +30,12 @@ const DynamicDiceSelector = ({
         </Button>
         <Form.ErrorList errors={errors} />
       </Form.Item>
+    );
+  };
+
+  return (
+    <div className={classNames(styles.container, className)}>
+      {buttonPosition !== "bottom" && <AddButton />}
       <div className={styles.selects}>
         {fields.map((field, index) => (
           <Form.Item required={false} key={field.key} label={labelText}>
@@ -43,6 +50,7 @@ const DynamicDiceSelector = ({
           </Form.Item>
         ))}
       </div>
+      {buttonPosition === "bottom" && <AddButton />}
     </div>
   );
 };
