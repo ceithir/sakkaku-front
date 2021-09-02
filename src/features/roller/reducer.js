@@ -66,7 +66,7 @@ const slice = createSlice({
       state.modifiers = modifiers;
       state.channeled = channeled;
       state.addkept = addkept;
-      if (!modifiers.includes("unrestricted") && ring === 0) {
+      if (ring === 0) {
         state.channelInsteadOfKeeping = true;
       }
     },

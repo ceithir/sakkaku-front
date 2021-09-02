@@ -206,9 +206,6 @@ const Roller = ({ save }) => {
 
         if (channelInsteadOfKeeping) {
           const cancel = () => dispatch(keepInsteadOfChanneling());
-          const allowCancel =
-            modifiers.includes("unrestricted") ||
-            dices.some(({ type }) => type === "ring");
 
           return (
             <Channel
@@ -216,9 +213,7 @@ const Roller = ({ save }) => {
               basePool={basePool}
               rerollTypes={rerollTypes}
               onFinish={(toChannel) => dispatch(channel(roll, toChannel))}
-              cancel={allowCancel && cancel}
-              addReroll={addReroll}
-              addAlteration={addAlteration}
+              cancel={cancel}
             />
           );
         }
