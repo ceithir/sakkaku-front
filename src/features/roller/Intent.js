@@ -545,7 +545,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
             <Button
               icon={<ControlOutlined />}
               onClick={() => {
-                history.push("roll-advanced");
+                history.push("/roll-advanced");
               }}
             >{`Fully customized roll`}</Button>
           </Form.Item>
