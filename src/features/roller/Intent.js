@@ -160,6 +160,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
 
     onFinish({
       ...data,
+      tn: Number.isInteger(data.tn) && data.tn > 0 ? data.tn : undefined,
       modifiers: [...commonModifiers, school, ...assist, ...misc].filter(
         Boolean
       ),
@@ -327,7 +328,15 @@ const Intent = ({ onFinish, values, onComplete }) => {
         <Form.Item
           label="Ring"
           name="ring"
-          rules={[{ required: true, message: "Please enter your ring value" }]}
+          rules={[
+            { required: true, message: "Please enter your ring value" },
+            {
+              type: "integer",
+              min: 1,
+              max: 10,
+              message: `Between 1 and 10 please.`,
+            },
+          ]}
           className={classNames({
             [styles.plus]: extraRingDice > 0,
             [styles[`plus-${extraRingDice.toString().padStart(2, "0")}`]]:
@@ -343,6 +352,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
             {
               required: true,
               message: "Please enter your skill value (can be zero)",
+            },
+            {
+              type: "integer",
+              min: 0,
+              max: 10,
+              message: `Between 0 and 10 please.`,
             },
           ]}
           className={classNames({

@@ -12,6 +12,12 @@ const { Paragraph, Title } = Typography;
 
 const defaultRules = [
   { required: true, message: "Please enter a value (can be zero)." },
+  {
+    type: "integer",
+    min: 0,
+    max: 10,
+    message: `Between 1 and 10 please.`,
+  },
 ];
 
 const buildDiceList = ({ ring, skill, channeled }) => {
@@ -63,6 +69,7 @@ const Advanced = ({ onFinish, onComplete, cancel }) => {
 
     onFinish({
       ...data,
+      tn: Number.isInteger(data.tn) && data.tn > 0 ? data.tn : undefined,
       ring: ring + channeled.filter(({ type }) => type === "ring").length,
       skill: skill + channeled.filter(({ type }) => type === "skill").length,
       modifiers: ["unrestricted"],
