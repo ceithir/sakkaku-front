@@ -264,12 +264,12 @@ const Keep = ({
       {!keepingExplosions && showAdvancedOptions && (
         <>
           <Divider />
-          <AddKeptDiceForm
-            dices={addkept}
-            onChange={setAddKept}
-            compromised={compromised}
-          />
           <div className={styles["additional-actions"]}>
+            <AddKeptDiceForm
+              dices={addkept}
+              onChange={setAddKept}
+              compromised={compromised}
+            />
             <div className={styles.buttons}>
               <Button disabled={!addReroll} onClick={addReroll}>
                 {`Reroll some dice`}
