@@ -34,38 +34,38 @@ const App = () => {
       <ScrollToTop />
       <Layout>
         <Switch>
-          <Route path="/resources/rokugan-map">
+          <Route path="/resources/rokugan-map" exact>
             <Map />
           </Route>
-          <Route path="/probabilities">
+          <Route path="/probabilities" exact>
             <Calculator />
           </Route>
-          <Route path="/heritage/:uuid">
+          <Route path="/heritage/:uuid" exact>
             <HeritageRollLoader />
           </Route>
-          <Route path="/heritage">
+          <Route path="/heritage" exact>
             <AnonymousAlertWrapper>
               <HeritageRoll />
             </AnonymousAlertWrapper>
           </Route>
-          <Route path="/rolls/:id">
+          <Route path="/rolls/:id" exact>
             <IdentifiedRoll />
           </Route>
-          <Route path="/rolls">
+          <Route path="/rolls" exact>
             <List />
             <Search />
           </Route>
-          <Route path="/roll-advanced">
+          <Route path="/roll-advanced" exact>
             <AnonymousAlertWrapper>
               <AdvancedRoller />
             </AnonymousAlertWrapper>
           </Route>
-          <Route path="/roll">
+          <Route path="/roll" exact>
             <AnonymousAlertWrapper>
               <StandardRoller />
             </AnonymousAlertWrapper>
           </Route>
-          <Route path="/">
+          <Route path="/" exact>
             <Homepage />
           </Route>
         </Switch>
