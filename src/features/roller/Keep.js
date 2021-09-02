@@ -7,7 +7,7 @@ import styles from "./Keep.module.less";
 import { useSelector, useDispatch } from "react-redux";
 import { selectToKeep, setToKeep } from "./reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
-import { FACETS } from "./DiceSideSelector";
+import { FACETS } from "./SelectDieSide";
 import { rolledDicesCount, keptDicesCount } from "./utils";
 import ExplainOptions from "./glitter/ExplainOptions";
 

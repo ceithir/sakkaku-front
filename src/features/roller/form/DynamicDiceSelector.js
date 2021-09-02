@@ -1,9 +1,9 @@
 import React from "react";
 import { Form, Button } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { UncontrolledDiceSideSelector } from "../DiceSideSelector";
+import { PlusOutlined } from "@ant-design/icons";
+import SelectDieSide from "../SelectDieSide";
 import classNames from "classnames";
-import styles from "./DynamicDiceSelector.module.css";
+import styles from "./DynamicDiceSelector.module.less";
 
 const DynamicDiceSelector = ({
   fields,
@@ -18,7 +18,7 @@ const DynamicDiceSelector = ({
   className,
 }) => {
   return (
-    <div className={className}>
+    <div className={classNames(styles.container, className)}>
       <Form.Item>
         <Button
           type="dashed"
@@ -29,29 +29,20 @@ const DynamicDiceSelector = ({
         </Button>
         <Form.ErrorList errors={errors} />
       </Form.Item>
-      {fields.map((field, index) => (
-        <Form.Item required={false} key={field.key} label={labelText}>
-          <Form.Item {...field} noStyle>
-            <UncontrolledDiceSideSelector
-              initialValue={values[index] || defaultValue}
-              button={
-                !!remove && (
-                  <div
-                    className={classNames(
-                      "ant-radio-button-wrapper",
-                      styles["pseudo-radio"]
-                    )}
-                    onClick={() => remove(field.name)}
-                  >
-                    <MinusCircleOutlined className={"dynamic-delete-button"} />
-                  </div>
-                )
-              }
-              facets={facets}
-            />
+      <div className={styles.selects}>
+        {fields.map((field, index) => (
+          <Form.Item required={false} key={field.key} label={labelText}>
+            <Form.Item {...field} noStyle>
+              <SelectDieSide
+                defaultValue={values[index] || defaultValue}
+                facets={facets}
+                allowClear={!!remove}
+                onClear={() => remove(field.name)}
+              />
+            </Form.Item>
           </Form.Item>
-        </Form.Item>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

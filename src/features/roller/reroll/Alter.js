@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NextButton from "../NextButton";
-import { SelectDieSide } from "../DiceSideSelector";
+import SelectDieSide from "../SelectDieSide";
 import styles from "./Alter.module.less";
 import { Button } from "antd";
 import RerollDiceBox from "./RerollDiceBox";

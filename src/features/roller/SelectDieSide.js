@@ -1,7 +1,7 @@
 import React from "react";
-import { Radio, Select } from "antd";
+import { Select } from "antd";
 import Dice from "./Dice";
-import styles from "./DiceSideSelector.module.less";
+import styles from "./SelectDieSide.module.less";
 const SEPARATOR = "-";
 
 const toString = ({
@@ -48,9 +48,16 @@ export const FACETS = [
   { type: "skill", value: { explosion: 1 } },
 ];
 
-export const SelectDieSide = ({ value, onChange, facets = FACETS }) => {
+const SelectDieSide = ({
+  value,
+  onChange,
+  facets = FACETS,
+  defaultValue,
+  ...props
+}) => {
   return (
     <Select
+      {...props}
       className={styles.select}
       options={facets.map((die) => {
         return {
@@ -58,41 +65,13 @@ export const SelectDieSide = ({ value, onChange, facets = FACETS }) => {
           label: <Dice dice={die} />,
         };
       })}
-      value={toString(value)}
-      onChange={(value) => onChange(toObject(value))}
+      value={value ? toString(value) : undefined}
+      onChange={
+        onChange ? (value) => !!value && onChange(toObject(value)) : undefined
+      }
+      defaultValue={defaultValue ? toString(defaultValue) : undefined}
     />
   );
 };
 
-const Loop = ({ facets, button }) => {
-  return (
-    <>
-      {facets.map(({ type, value, disabled }) => {
-        const key = toString({ type, value });
-        return (
-          <Radio.Button key={key} value={key} disabled={disabled}>
-            <Dice dice={{ type, value }} />
-          </Radio.Button>
-        );
-      })}
-      {button}
-    </>
-  );
-};
-
-export const UncontrolledDiceSideSelector = ({
-  initialValue,
-  onChange,
-  facets = FACETS,
-  button,
-}) => {
-  return (
-    <Radio.Group
-      onChange={({ target: { value } }) => onChange(toObject(value))}
-      className={styles.group}
-      defaultValue={toString(initialValue)}
-    >
-      <Loop facets={facets} button={button} />
-    </Radio.Group>
-  );
-};
+export default SelectDieSide;

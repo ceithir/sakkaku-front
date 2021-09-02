@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NextButton from "../NextButton";
 import { Typography } from "antd";
 import styles from "./Ishiken.module.less";
-import { SelectDieSide } from "../DiceSideSelector";
+import SelectDieSide from "../SelectDieSide";
 import { longname } from "../data/abilities";
 import Dices from "../Dices";
 import { diceWrapper } from "./RerollDiceBox";
