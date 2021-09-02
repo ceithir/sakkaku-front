@@ -554,12 +554,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
           <ExplainOptions
             description={
               <div className={styles["advanced-explanation"]}>
-                <span>{`For rolls that just follow their own rules, not much the default ones, and thus require a greater degree of customization. For example:`}</span>
+                <p>{`For rolls that just follow their own rules, not much the default ones, and thus require a greater degree of customization. For example:`}</p>
                 <ul>
                   <li>{`Rolls modified with previously rolled dice, like Channeling [Core, page 190] or the Kata Striking as Air [Core, page 177].`}</li>
                   <li>{`Rolls without a ring value, like the Center stance of a duel [Core, page 260].`}</li>
                 </ul>
-                <span>{`This mode can also be used to recreate a previous roll result, then pick different dice. Can be useful if you misread a TN or forgot to trigger a disadvantage for example.`}</span>
+                <p>{`This mode can also be used to recreate a previous roll result, then pick different dice. Can be useful if you misread a TN or forgot to trigger a disadvantage for example.`}</p>
               </div>
             }
           />

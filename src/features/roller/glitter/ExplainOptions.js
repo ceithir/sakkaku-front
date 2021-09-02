@@ -5,7 +5,8 @@ import classNames from "classnames";
 const ExplainOptions = ({ options, description, className }) => {
   return (
     <div className={classNames(styles.container, { [className]: !!className })}>
-      {description && <p>{description}</p>}
+      {description &&
+        (typeof description === "string" ? <p>{description}</p> : description)}
       {!!options?.length && (
         <dl>
           {options.map(({ label, description }) => {
