@@ -52,22 +52,13 @@ const IdentifiedRoll = () => {
   const { roll, user: player, result } = data;
   const { dices, parameters, metadata } = roll;
 
-  if (!result && user && player && user.id === player.id) {
+  if (!result && !!user && !!player && user.id === player.id) {
     return <Roller save={data} />;
   }
 
-  return (
-    <Layout>
-      {result ? (
-        <Complete
-          dices={dices}
-          button={<GoBackButton />}
-          intent={parameters}
-          context={data}
-          player={player}
-          metadata={metadata}
-        />
-      ) : (
+  if (!result) {
+    return (
+      <Layout>
         <div className={styles.ongoing}>
           <Summary
             player={player}
@@ -83,7 +74,20 @@ const IdentifiedRoll = () => {
             footer={<GoBackButton style={{ float: "right" }} />}
           />
         </div>
-      )}
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <Complete
+        dices={dices}
+        button={<GoBackButton />}
+        intent={parameters}
+        context={data}
+        player={player}
+        metadata={metadata}
+      />
     </Layout>
   );
 };
