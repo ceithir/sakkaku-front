@@ -180,6 +180,10 @@ const Intent = ({ onFinish, values, onComplete }) => {
       metadata["approach"] = data["approach"];
     }
 
+    if (!!data["namedModifiers"]?.length) {
+      metadata["advantages"] = data["namedModifiers"];
+    }
+
     const assist = [
       unskilledAssist &&
         `unskilledassist${unskilledAssist.toString().padStart(2, "0")}`,

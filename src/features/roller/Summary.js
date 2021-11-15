@@ -11,6 +11,12 @@ import {
 } from "./utils";
 import ABILITIES from "./data/abilities";
 import CharacterSheet from "../display/CharacterSheet";
+import {
+  distinctions,
+  adversities,
+  passions,
+  anxieties,
+} from "./data/advantages";
 
 const { Text } = Typography;
 
@@ -54,14 +60,42 @@ const Summary = ({
   const extraSkillDice =
     (modifiers.includes("wandering") ? 1 : 0) + skilledAssist;
 
+  const namedModifiers = metadata?.["advantages"] || [];
+  const distinction = () => {
+    if (!modifiers.includes("distinction")) {
+      return false;
+    }
+    const name = namedModifiers.find((name) => distinctions.includes(name));
+    if (name) {
+      return `Distinction: ${name}`;
+    }
+    return `Distinction`;
+  };
+  const adversity = () => {
+    if (!modifiers.includes("adversity")) {
+      return false;
+    }
+    const name = namedModifiers.find((name) => adversities.includes(name));
+    if (name) {
+      return `Adversity: ${name}`;
+    }
+    return `Adversity`;
+  };
+
   const special = [
     ...[
       modifiers.includes("unrestricted") && "Fully customized roll",
       modifiers.includes("void") && "Seize the Moment",
       modifiers.includes("compromised") && "Compromised",
       modifiers.includes("offering") && "Proper Offerings",
-      modifiers.includes("adversity") && "Adversity",
-      modifiers.includes("distinction") && "Distinction",
+      adversity(),
+      distinction(),
+      ...namedModifiers
+        .filter((name) => passions.includes(name))
+        .map((name) => `Passion: ${name}`),
+      ...namedModifiers
+        .filter((name) => anxieties.includes(name))
+        .map((name) => `Anxiety: ${name}`),
       skilledAssist > 0 && `Skilled Assistance x${skilledAssist}`,
       unskilledAssist > 0 && `Unskilled Assistance x${unskilledAssist}`,
       modifiers.includes("stirring") && "Shūji — Stirring the Embers",
