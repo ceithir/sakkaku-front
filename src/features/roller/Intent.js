@@ -32,6 +32,8 @@ import Advanced from "./form/Advanced";
 import Loader from "features/navigation/Loader";
 import ApproachSelector from "./form/ApproachSelector";
 import { useHistory } from "react-router-dom";
+import NamedModifiers from "./form/NamedModifiers";
+import { distinctions, adversities } from "./data/advantages";
 
 const { Panel } = Collapse;
 
@@ -84,6 +86,29 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [schoolAbility, setSchoolAbility] = useState();
   const advanced = useSelector(selectAdvanced);
   let history = useHistory();
+  const [namedModifiers, setNamedModifiers] = useState([]);
+
+  useEffect(() => {
+    const distinctionsCount = namedModifiers.filter((name) =>
+      distinctions.includes(name)
+    ).length;
+    const adversitiesCount = namedModifiers.filter((name) =>
+      adversities.includes(name)
+    ).length;
+
+    const updatedModifiers = [
+      ...(form.getFieldValue("common_modifiers") || []).filter((modifier) => {
+        return modifier !== "distinction" && modifier !== "adversity";
+      }),
+      distinctionsCount > adversitiesCount && "distinction",
+      adversitiesCount > distinctionsCount && "adversity",
+    ].filter(Boolean);
+
+    form.setFieldsValue({
+      common_modifiers: updatedModifiers,
+    });
+    setCommonModifiers(updatedModifiers);
+  }, [namedModifiers, form]);
 
   if (advanced) {
     return (
@@ -317,6 +342,13 @@ const Intent = ({ onFinish, values, onComplete }) => {
         ) {
           form.validateFields(["addkept"]);
         }
+        if (
+          Object.keys(changedValues).some((name) =>
+            ["namedModifiers"].includes(name)
+          )
+        ) {
+          setNamedModifiers(form.getFieldValue("namedModifiers"));
+        }
       }}
     >
       <UserContext
@@ -374,6 +406,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
       </fieldset>
       <Divider />
       <ApproachSelector />
+      <NamedModifiers />
       <Collapse ghost>
         <Panel header={"Common modifiers"}>
           <Form.Item name="common_modifiers" className={styles.checkboxes}>
