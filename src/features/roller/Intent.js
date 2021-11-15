@@ -87,6 +87,7 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const advanced = useSelector(selectAdvanced);
   let history = useHistory();
   const [namedModifiers, setNamedModifiers] = useState([]);
+  const [collapseActiveKey, setCollapseActiveKey] = useState();
 
   useEffect(() => {
     const distinctionsCount = namedModifiers.filter((name) =>
@@ -108,6 +109,9 @@ const Intent = ({ onFinish, values, onComplete }) => {
       common_modifiers: updatedModifiers,
     });
     setCommonModifiers(updatedModifiers);
+    if (distinctionsCount > 0 || adversitiesCount > 0) {
+      setCollapseActiveKey(["modifiers"]);
+    }
   }, [namedModifiers, form]);
 
   if (advanced) {
@@ -407,8 +411,12 @@ const Intent = ({ onFinish, values, onComplete }) => {
       <Divider />
       <ApproachSelector />
       <NamedModifiers />
-      <Collapse ghost>
-        <Panel header={"Common modifiers"}>
+      <Collapse
+        ghost
+        activeKey={collapseActiveKey}
+        onChange={setCollapseActiveKey}
+      >
+        <Panel header={"Common modifiers"} key="modifiers">
           <Form.Item name="common_modifiers" className={styles.checkboxes}>
             <Checkbox.Group options={commonModifiersOptions} />
           </Form.Item>
