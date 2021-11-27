@@ -11,9 +11,3 @@
     display: none !important;
   }
 }
-
-@media (min-width: 577px) {
-  .menu > li.sm-only {
-    display: none !important;
-  }
-}

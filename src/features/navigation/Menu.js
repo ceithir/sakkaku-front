@@ -8,8 +8,6 @@ import logo150 from "./logo-150.png";
 import logo100 from "./logo-100.png";
 import logo50 from "./logo-50.png";
 
-const { SubMenu } = Menu;
-
 const CustomMenu = () => {
   const user = useSelector(selectUser);
   const location = useLocation();
@@ -21,8 +19,8 @@ const CustomMenu = () => {
         return "home";
       }
 
-      if (pathname === "/roll") {
-        return "new_roll";
+      if (["/roll", "/heritage", "/probabilities"].includes(pathname)) {
+        return "ffg";
       }
 
       if (pathname === "/rolls" && !search) {
@@ -58,10 +56,10 @@ const CustomMenu = () => {
           />
         </Link>
       </Menu.Item>
-      <Menu.Item key="new_roll">
-        <Link to="/roll">Roll</Link>
+      <Menu.Item key="ffg">
+        <Link to="/roll">{`L5R – FFG`}</Link>
       </Menu.Item>
-      <Menu.Item key="all_rolls" className={styles["sm-hide"]}>
+      <Menu.Item key="all_rolls">
         <Link to="/rolls">All rolls</Link>
       </Menu.Item>
       {user && (
@@ -69,33 +67,6 @@ const CustomMenu = () => {
           <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
         </Menu.Item>
       )}
-      <Menu.Item key="heritage" className={styles["sm-hide"]}>
-        <Link to="/heritage">Heritage</Link>
-      </Menu.Item>
-      <Menu.Item key="probabilities" className={styles["sm-hide"]}>
-        <Link to="/probabilities">{`Probabilities`}</Link>
-      </Menu.Item>
-      <SubMenu
-        key="plus"
-        title={`...`}
-        className={styles["sm-only"]}
-        popupOffset={[0, 0]}
-      >
-        <Menu.Item key="all_rolls">
-          <Link to="/rolls">All rolls</Link>
-        </Menu.Item>
-        {user && (
-          <Menu.Item key="my_rolls">
-            <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
-          </Menu.Item>
-        )}
-        <Menu.Item key="heritage">
-          <Link to="/heritage">Heritage</Link>
-        </Menu.Item>
-        <Menu.Item key="probabilities">
-          <Link to="/probabilities">{`Probabilities`}</Link>
-        </Menu.Item>
-      </SubMenu>
       <Menu.Item className={styles.login}>
         {user ? (
           <a href="/user/profile">{user.name}</a>

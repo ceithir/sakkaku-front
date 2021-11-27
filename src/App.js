@@ -16,6 +16,7 @@ import Search from "./features/browse/Search";
 import Map from "./features/trinket/Map";
 import ScrollToTop from "./features/navigation/ScrollToTop";
 import AnonymousAlertWrapper from "features/display/AnonymousAlertWrapper";
+import FfgSubmenu from "features/navigation/FfgSubmenu";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -38,12 +39,14 @@ const App = () => {
             <Map />
           </Route>
           <Route path="/probabilities" exact>
+            <FfgSubmenu />
             <Calculator />
           </Route>
           <Route path="/heritage/:uuid" exact>
             <HeritageRollLoader />
           </Route>
           <Route path="/heritage" exact>
+            <FfgSubmenu />
             <AnonymousAlertWrapper>
               <HeritageRoll />
             </AnonymousAlertWrapper>
@@ -56,11 +59,13 @@ const App = () => {
             <Search />
           </Route>
           <Route path="/roll-advanced" exact>
+            <FfgSubmenu />
             <AnonymousAlertWrapper>
               <AdvancedRoller />
             </AnonymousAlertWrapper>
           </Route>
           <Route path="/roll" exact>
+            <FfgSubmenu />
             <AnonymousAlertWrapper>
               <StandardRoller />
             </AnonymousAlertWrapper>
