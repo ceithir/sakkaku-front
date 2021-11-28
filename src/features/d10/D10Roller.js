@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Title from "features/display/Title";
-import { Form, Input, Typography, Button } from "antd";
+import { Form, Input, Typography, Button, InputNumber } from "antd";
 import { parse, cap } from "./formula";
 import { postOnServer } from "server";
 import DefaultErrorMessage from "DefaultErrorMessage";
+import styles from "./D10Roller.module.less";
 
 const { Text, Paragraph } = Typography;
 
@@ -39,7 +40,7 @@ const TextSummary = ({ original, capped }) => {
         <strong>{capped.roll}</strong>
         {` ten-sided dice, keeping the `}
         <strong>{capped.keep}</strong>
-        {` best`}
+        {` highest values`}
         {!!capped.modifier && (
           <>
             {`, adding `}
@@ -62,29 +63,42 @@ const TextSummary = ({ original, capped }) => {
 
 const Result = ({ dice, parameters }) => {
   const modifier = parameters.modifier || 0;
+  const total =
+    dice
+      .filter(({ status }) => status === "kept")
+      .reduce((acc, { value }) => acc + value, 0) + modifier;
+  const tn = parameters.tn;
 
   return (
-    <div>
-      {dice.map(({ status, value }, index) => {
-        return (
-          <Text
-            key={index.toString()}
-            disabled={status !== "kept"}
-            strong={status === "kept"}
-          >
-            {value}{" "}
+    <div className={styles.result}>
+      <div>
+        <span className={styles.dice}>
+          {dice.map(({ status, value }, index) => {
+            return (
+              <Text
+                key={index.toString()}
+                disabled={status !== "kept"}
+                strong={status === "kept"}
+              >
+                {value}
+              </Text>
+            );
+          })}
+        </span>
+        {!!modifier && (
+          <Text className={styles.modifier}>
+            {modifier > 0 ? ` +${modifier}` : ` ${modifier}`}
           </Text>
-        );
-      })}
-      {!!modifier && modifier > 0 ? ` +${modifier}` : ` ${modifier}`}
-      <Text>
-        {`Total: `}
-        <strong>
-          {dice
-            .filter(({ status }) => status === "kept")
-            .reduce((acc, { value }) => acc + value, 0) + modifier}
-        </strong>
-      </Text>
+        )}
+      </div>
+
+      <Paragraph className={styles.total}>
+        <Text strong={true}>{`Total: `}</Text>
+        <Text type={!tn ? "default" : total >= tn ? "success" : "danger"}>
+          {total}
+        </Text>
+        {!!tn && <Text>{` (TN: ${tn})`}</Text>}
+      </Paragraph>
     </div>
   );
 };
@@ -105,14 +119,15 @@ const D10Roller = () => {
       <Form
         onValuesChange={(_, { formula }) => {
           setParsedFormula(parse(formula));
+          setResult(undefined);
         }}
-        onFinish={({ formula }) => {
+        onFinish={({ formula, tn }) => {
           setLoading(true);
           setResult(undefined);
           postOnServer({
             uri: "/public/aeg/l5r/rolls/create",
             body: {
-              parameters: { ...cap(parse(formula)) },
+              parameters: { ...cap(parse(formula)), tn },
             },
             success: (data) => {
               setResult(data);
@@ -124,6 +139,7 @@ const D10Roller = () => {
             },
           });
         }}
+        className={styles.form}
       >
         <Form.Item
           label={`Your dice pool`}
@@ -134,19 +150,24 @@ const D10Roller = () => {
         >
           <Input placeholder={`5k4 +1k0 -5`} />
         </Form.Item>
+        <Form.Item label={`TN`} name="tn">
+          <InputNumber />
+        </Form.Item>
         {!!parsedFormula ? (
           <TextSummary original={parsedFormula} capped={cap(parsedFormula)} />
         ) : (
-          <Text type="secondary">{`Waiting for complete formula…`}</Text>
+          <Paragraph type="secondary">{`Waiting for complete formula…`}</Paragraph>
         )}
-        <Button
-          type="primary"
-          htmlType="submit"
-          disabled={!parsedFormula}
-          loading={loading}
-        >
-          {`Roll`}
-        </Button>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={!parsedFormula}
+            loading={loading}
+          >
+            {`Roll`}
+          </Button>
+        </Form.Item>
       </Form>
       {!!result && <Result {...result} />}
     </>
