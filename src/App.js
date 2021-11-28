@@ -17,6 +17,7 @@ import Map from "./features/trinket/Map";
 import ScrollToTop from "./features/navigation/ScrollToTop";
 import AnonymousAlertWrapper from "features/display/AnonymousAlertWrapper";
 import FfgSubmenu from "features/navigation/FfgSubmenu";
+import D10Roller from "features/d10/D10Roller";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -62,6 +63,11 @@ const App = () => {
             <FfgSubmenu />
             <AnonymousAlertWrapper>
               <AdvancedRoller />
+            </AnonymousAlertWrapper>
+          </Route>
+          <Route path="/roll-d10" exact>
+            <AnonymousAlertWrapper>
+              <D10Roller />
             </AnonymousAlertWrapper>
           </Route>
           <Route path="/roll" exact>

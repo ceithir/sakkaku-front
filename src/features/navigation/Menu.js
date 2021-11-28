@@ -23,6 +23,10 @@ const CustomMenu = () => {
         return "ffg";
       }
 
+      if (["roll-d10"].includes(pathname)) {
+        return "aeg";
+      }
+
       if (pathname === "/rolls" && !search) {
         return "all_rolls";
       }
@@ -58,6 +62,9 @@ const CustomMenu = () => {
       </Menu.Item>
       <Menu.Item key="ffg">
         <Link to="/roll">{`L5R – FFG`}</Link>
+      </Menu.Item>
+      <Menu.Item key="aeg">
+        <Link to="/roll-d10">{`L5R – AEG`}</Link>
       </Menu.Item>
       <Menu.Item key="all_rolls">
         <Link to="/rolls">All rolls</Link>
