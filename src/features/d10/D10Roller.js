@@ -75,13 +75,14 @@ const Result = ({ dice, parameters }) => {
         <span className={styles.dice}>
           {dice.map(({ status, value }, index) => {
             return (
-              <Text
-                key={index.toString()}
-                disabled={status !== "kept"}
-                strong={status === "kept"}
-              >
-                {value}
-              </Text>
+              <React.Fragment key={index.toString()}>
+                <Text disabled={status !== "kept"} strong={status === "kept"}>
+                  {value}
+                </Text>
+                {status === "rerolled" && (
+                  <span className={styles["reroll-arrow"]}>{`→`}</span>
+                )}
+              </React.Fragment>
             );
           })}
         </span>
@@ -121,13 +122,13 @@ const D10Roller = () => {
           setParsedFormula(parse(formula));
           setResult(undefined);
         }}
-        onFinish={({ formula, tn, explosions }) => {
+        onFinish={({ formula, tn, explosions, rerolls }) => {
           setLoading(true);
           setResult(undefined);
           postOnServer({
             uri: "/public/aeg/l5r/rolls/create",
             body: {
-              parameters: { ...cap(parse(formula)), tn, explosions },
+              parameters: { ...cap(parse(formula)), tn, explosions, rerolls },
             },
             success: (data) => {
               setResult(data);
@@ -160,6 +161,19 @@ const D10Roller = () => {
               { label: 8, value: 8 },
               { label: 9, value: 9 },
               { label: 10, value: 10 },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          label={`Reroll (once)`}
+          name="rerolls"
+          tooltip={`Check "1" to apply a 4th edition Emphasis [Core, page 133]`}
+        >
+          <Checkbox.Group
+            options={[
+              { label: 1, value: 1 },
+              { label: 2, value: 2 },
+              { label: 3, value: 3 },
             ]}
           />
         </Form.Item>
