@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Title from "features/display/Title";
-import { Form, Input, Typography, Button, InputNumber } from "antd";
+import { Form, Input, Typography, Button, InputNumber, Checkbox } from "antd";
 import { parse, cap } from "./formula";
 import { postOnServer } from "server";
 import DefaultErrorMessage from "DefaultErrorMessage";
@@ -121,13 +121,13 @@ const D10Roller = () => {
           setParsedFormula(parse(formula));
           setResult(undefined);
         }}
-        onFinish={({ formula, tn }) => {
+        onFinish={({ formula, tn, explosions }) => {
           setLoading(true);
           setResult(undefined);
           postOnServer({
             uri: "/public/aeg/l5r/rolls/create",
             body: {
-              parameters: { ...cap(parse(formula)), tn },
+              parameters: { ...cap(parse(formula)), tn, explosions },
             },
             success: (data) => {
               setResult(data);
@@ -140,6 +140,7 @@ const D10Roller = () => {
           });
         }}
         className={styles.form}
+        initialValues={{ explosions: [10] }}
       >
         <Form.Item
           label={`Your dice pool`}
@@ -152,6 +153,15 @@ const D10Roller = () => {
         </Form.Item>
         <Form.Item label={`TN`} name="tn">
           <InputNumber />
+        </Form.Item>
+        <Form.Item label={`Dice explode on`} name="explosions">
+          <Checkbox.Group
+            options={[
+              { label: 8, value: 8 },
+              { label: 9, value: 9 },
+              { label: 10, value: 10 },
+            ]}
+          />
         </Form.Item>
         {!!parsedFormula ? (
           <TextSummary original={parsedFormula} capped={cap(parsedFormula)} />
