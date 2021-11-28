@@ -42,3 +42,32 @@ export const parse = (str) => {
 
   return { roll, keep, modifier };
 };
+
+export const cap = ({ roll, keep, modifier = 0 }) => {
+  if (roll < 10 || (roll === 10 && keep <= 10)) {
+    return { roll, keep: keep > roll ? roll : keep, modifier };
+  }
+
+  let cappedRoll = roll;
+  let cappedKeep = keep;
+  let updatedModifier = modifier;
+
+  while (cappedRoll > 10) {
+    if (cappedKeep < 10) {
+      if (cappedRoll === 11) {
+        cappedRoll = 10;
+      } else {
+        cappedRoll -= 2;
+        cappedKeep += 1;
+      }
+    } else {
+      cappedRoll -= 1;
+      updatedModifier += 2;
+    }
+  }
+  while (cappedKeep > 10) {
+    cappedKeep -= 1;
+    updatedModifier += 2;
+  }
+  return { roll: cappedRoll, keep: cappedKeep, modifier: updatedModifier };
+};

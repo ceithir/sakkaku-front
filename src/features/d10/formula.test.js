@@ -1,4 +1,5 @@
-import { parse } from "./formula";
+import { describe } from "jest-circus";
+import { parse, cap } from "./formula";
 
 describe("parse", () => {
   test("empty", () => {
@@ -40,6 +41,49 @@ describe("parse", () => {
     });
     test("addition", () => {
       expect(parse("3k2+3-2+5")).toEqual({ roll: 3, keep: 2, modifier: 6 });
+    });
+  });
+});
+
+describe("cap", () => {
+  test("nothing to do", () => {
+    expect(cap({ roll: 5, keep: 3 })).toEqual({
+      roll: 5,
+      keep: 3,
+      modifier: 0,
+    });
+  });
+
+  test("more kept than rolled", () => {
+    expect(cap({ roll: 3, keep: 4 })).toEqual({
+      roll: 3,
+      keep: 3,
+      modifier: 0,
+    });
+  });
+
+  describe("4ed ten dice rules", () => {
+    test("book examples", () => {
+      expect(cap({ roll: 12, keep: 4 })).toEqual({
+        roll: 10,
+        keep: 5,
+        modifier: 0,
+      });
+      expect(cap({ roll: 13, keep: 9 })).toEqual({
+        roll: 10,
+        keep: 10,
+        modifier: 2,
+      });
+      expect(cap({ roll: 10, keep: 12 })).toEqual({
+        roll: 10,
+        keep: 10,
+        modifier: 4,
+      });
+      expect(cap({ roll: 14, keep: 12 })).toEqual({
+        roll: 10,
+        keep: 10,
+        modifier: 12,
+      });
     });
   });
 });
