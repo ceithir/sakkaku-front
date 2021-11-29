@@ -52,6 +52,14 @@ const D10IdentifiedRoll = () => {
       label: `Input`,
       content: metadata.original,
     },
+    !!parameters.explosions?.length && {
+      label: `Explode on`,
+      content: parameters.explosions.join(", "),
+    },
+    !!parameters.rerolls?.length && {
+      label: `Reroll once on`,
+      content: parameters.rerolls.join(", "),
+    },
     {
       label: `Roll`,
       content: <RollResult dice={dice} parameters={parameters} />,
