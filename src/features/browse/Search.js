@@ -89,6 +89,7 @@ const StaticSearch = ({
                   options={[
                     { value: "FFG-L5R", label: `FFG L5R Check` },
                     { value: "FFG-L5R-Heritage", label: `FFG L5R Heritage` },
+                    { value: "AEG-L5R", label: `L5R D10 Roll` },
                   ]}
                   allowClear={true}
                 />
