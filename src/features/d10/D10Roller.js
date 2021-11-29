@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Title from "features/display/Title";
+import Title from "./Title";
 import { Form, Input, Typography, Button, InputNumber, Checkbox } from "antd";
-import { parse, cap } from "./formula";
+import { parse, cap, stringify } from "./formula";
 import { postOnServer, authentifiedPostOnServer } from "server";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import styles from "./D10Roller.module.less";
@@ -9,17 +9,9 @@ import UserContext from "components/form/UserContext";
 import { addCampaign, addCharacter, selectUser } from "features/user/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
+import RollResult from "./RollResult";
 
-const { Text, Paragraph } = Typography;
-
-const TextFormula = ({ roll, keep, modifier }) => {
-  return (
-    <Text>
-      {`${roll}k${keep}`}
-      {!!modifier && (modifier > 0 ? `+${modifier}` : modifier)}
-    </Text>
-  );
-};
+const { Paragraph } = Typography;
 
 const TextSummary = ({ original, capped, explosions, rerolls }) => {
   const wasCapped =
@@ -31,11 +23,11 @@ const TextSummary = ({ original, capped, explosions, rerolls }) => {
     <>
       <Paragraph>
         <strong>
-          <TextFormula {...original} />
+          {stringify(original)}
           {wasCapped && (
             <>
               {` ⇒ `}
-              <TextFormula {...capped} />
+              {stringify(capped)}
             </>
           )}
           {`:`}
@@ -79,49 +71,6 @@ const TextSummary = ({ original, capped, explosions, rerolls }) => {
   );
 };
 
-const Result = ({ dice, parameters }) => {
-  const modifier = parameters.modifier || 0;
-  const total =
-    dice
-      .filter(({ status }) => status === "kept")
-      .reduce((acc, { value }) => acc + value, 0) + modifier;
-  const tn = parameters.tn;
-
-  return (
-    <div className={styles.result}>
-      <div>
-        <span className={styles.dice}>
-          {dice.map(({ status, value }, index) => {
-            return (
-              <React.Fragment key={index.toString()}>
-                <Text disabled={status !== "kept"} strong={status === "kept"}>
-                  {value}
-                </Text>
-                {status === "rerolled" && (
-                  <span className={styles["reroll-arrow"]}>{`→`}</span>
-                )}
-              </React.Fragment>
-            );
-          })}
-        </span>
-        {!!modifier && (
-          <Text className={styles.modifier}>
-            {modifier > 0 ? ` +${modifier}` : ` ${modifier}`}
-          </Text>
-        )}
-      </div>
-
-      <Paragraph className={styles.total}>
-        <Text strong={true}>{`Total: `}</Text>
-        <Text type={!tn ? "default" : total >= tn ? "success" : "danger"}>
-          {total}
-        </Text>
-        {!!tn && <Text>{` (TN: ${tn})`}</Text>}
-      </Paragraph>
-    </div>
-  );
-};
-
 const initialValues = { explosions: [10], rerolls: [] };
 
 const D10Roller = () => {
@@ -141,7 +90,7 @@ const D10Roller = () => {
 
   return (
     <>
-      <Title>{`Legend of the Five Rings – D10 Roll & Keep`}</Title>
+      <Title />
       <Form
         onValuesChange={(_, { formula, explosions, rerolls }) => {
           setParsedFormula(parse(formula));
@@ -267,7 +216,7 @@ const D10Roller = () => {
           </Button>
         </Form.Item>
       </Form>
-      {!!result && <Result {...result} />}
+      {!!result && <RollResult {...result} className={styles.result} />}
     </>
   );
 };

@@ -18,6 +18,7 @@ import ScrollToTop from "./features/navigation/ScrollToTop";
 import AnonymousAlertWrapper from "features/display/AnonymousAlertWrapper";
 import FfgSubmenu from "features/navigation/FfgSubmenu";
 import D10Roller from "features/d10/D10Roller";
+import D10IdentifiedRoll from "features/d10/D10IdentifiedRoll";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,9 @@ const App = () => {
             <AnonymousAlertWrapper>
               <AdvancedRoller />
             </AnonymousAlertWrapper>
+          </Route>
+          <Route path="/d10-rolls/:id" exact>
+            <D10IdentifiedRoll />
           </Route>
           <Route path="/roll-d10" exact>
             <AnonymousAlertWrapper>

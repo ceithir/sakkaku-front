@@ -1,5 +1,4 @@
-import { describe } from "jest-circus";
-import { parse, cap } from "./formula";
+import { parse, cap, stringify } from "./formula";
 
 describe("parse", () => {
   test("empty", () => {
@@ -85,5 +84,11 @@ describe("cap", () => {
         modifier: 12,
       });
     });
+  });
+});
+
+describe("stringify", () => {
+  test("full loop", () => {
+    expect(stringify(parse("3k2-5"))).toEqual("3k2-5");
   });
 });

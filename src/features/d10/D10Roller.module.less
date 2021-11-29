@@ -30,32 +30,9 @@
 
 .result {
   .torii-box();
-  margin: 24px auto;
-
-  .dice {
-    border: 1px solid black;
-    padding: 12px;
-
-    & > * {
-      margin-right: 12px;
-
-      &:last-child {
-        margin-right: 0;
-      }
-
-      &.reroll-arrow {
-        margin-left: -12px;
-        margin-right: 0px;
-      }
-    }
-  }
-
-  .modifier {
-    margin-left: 12px;
-  }
-
-  .total {
-    margin-top: 24px;
-    margin-bottom: -12px;
+  margin: 0 auto;
+  text-align: center;
+  @media (min-width: @screen-md) {
+    min-width: @screen-sm;
   }
 }

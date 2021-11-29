@@ -159,6 +159,10 @@ const columns = [
           return `/heritage/${uuid}`;
         }
 
+        if (type === "AEG-L5R") {
+          return `/d10-rolls/${id}`;
+        }
+
         return null;
       })();
 

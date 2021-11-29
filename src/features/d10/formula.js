@@ -71,3 +71,9 @@ export const cap = ({ roll, keep, modifier = 0 }) => {
   }
   return { roll: cappedRoll, keep: cappedKeep, modifier: updatedModifier };
 };
+
+export const stringify = ({ roll, keep, modifier }) => {
+  return `${roll}k${keep}${
+    !!modifier ? (modifier > 0 ? `+${modifier}` : modifier) : ""
+  }`;
+};
