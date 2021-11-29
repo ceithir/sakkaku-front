@@ -89,7 +89,7 @@ const D10Roller = () => {
   }
 
   return (
-    <>
+    <div className={styles.background}>
       <Title />
       <Form
         onValuesChange={(_, { formula, explosions, rerolls }) => {
@@ -217,7 +217,7 @@ const D10Roller = () => {
         </Form.Item>
       </Form>
       {!!result && <RollResult {...result} className={styles.result} />}
-    </>
+    </div>
   );
 };
 

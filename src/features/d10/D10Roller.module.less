@@ -1,5 +1,10 @@
 @import (reference) "common.less";
 
+.background {
+  .paper-background();
+  flex: 1;
+}
+
 .form {
   .torii-box();
   margin: 24px auto;
@@ -32,7 +37,5 @@
   .torii-box();
   margin: 0 auto;
   text-align: center;
-  @media (min-width: @screen-md) {
-    min-width: @screen-sm;
-  }
+  max-width: @screen-md;
 }
