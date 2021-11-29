@@ -23,7 +23,7 @@ const CustomMenu = () => {
         return "ffg";
       }
 
-      if (["/roll-d10"].includes(pathname)) {
+      if (["/roll-d10", "/roll-d10-4th-ed"].includes(pathname)) {
         return "aeg";
       }
 

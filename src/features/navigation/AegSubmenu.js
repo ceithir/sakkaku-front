@@ -24,6 +24,9 @@ const AegSubmenu = () => {
       <Menu.Item key="roll-d10">
         <Link to="/roll-d10">{`XkY Roll`}</Link>
       </Menu.Item>
+      <Menu.Item key="roll-d10-4th-ed">
+        <Link to="/roll-d10-4th-ed">{`4th Edition Roll (guided mode)`}</Link>
+      </Menu.Item>
       <Menu.Item key="probabilities">
         <ExternalLink href="https://lynks.se/probability/">{`Probabilities`}</ExternalLink>
       </Menu.Item>
