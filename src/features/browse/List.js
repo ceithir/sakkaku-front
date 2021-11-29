@@ -143,7 +143,7 @@ const columns = [
     dataIndex: "see_more",
     key: "see_more",
     render: ({ id, uuid, type }) => {
-      const url = () => {
+      const url = (() => {
         if (type === "FFG-L5R") {
           return `/rolls/${id}`;
         }
@@ -153,10 +153,14 @@ const columns = [
         }
 
         return null;
-      };
+      })();
+
+      if (!url) {
+        return null;
+      }
 
       return (
-        <Link title="See more" to={url()} className={styles["see-more"]}>
+        <Link title="See more" to={url} className={styles["see-more"]}>
           {"➥"}
         </Link>
       );
