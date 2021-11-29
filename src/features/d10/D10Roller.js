@@ -17,7 +17,7 @@ const TextFormula = ({ roll, keep, modifier }) => {
   );
 };
 
-const TextSummary = ({ original, capped }) => {
+const TextSummary = ({ original, capped, explosions, rerolls }) => {
   const wasCapped =
     original.roll !== capped.roll ||
     original.keep !== capped.keep ||
@@ -49,6 +49,20 @@ const TextSummary = ({ original, capped }) => {
           </>
         )}
         {`.`}
+        {!!rerolls?.length && (
+          <>
+            {` Dice that show `}
+            <strong>{rerolls.join(", ")}</strong>
+            {` after the initial roll will be rerolled (once).`}
+          </>
+        )}
+        {!!explosions?.length && (
+          <>
+            {` Dice that show `}
+            <strong>{explosions.join(", ")}</strong>
+            {` will explode (possibly several times).`}
+          </>
+        )}
       </Paragraph>
       {wasCapped && (
         <Paragraph type="warning">
@@ -104,11 +118,15 @@ const Result = ({ dice, parameters }) => {
   );
 };
 
+const initialValues = { explosions: [10], rerolls: [] };
+
 const D10Roller = () => {
   const [parsedFormula, setParsedFormula] = useState();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState();
+  const [explosions, setExplosions] = useState(initialValues.explosions);
+  const [rerolls, setRerolls] = useState(initialValues.rerolls);
 
   if (error) {
     return <DefaultErrorMessage />;
@@ -118,8 +136,10 @@ const D10Roller = () => {
     <>
       <Title>{`Legend of the Five Rings – D10 Roll & Keep`}</Title>
       <Form
-        onValuesChange={(_, { formula }) => {
+        onValuesChange={(_, { formula, explosions, rerolls }) => {
           setParsedFormula(parse(formula));
+          setExplosions(explosions);
+          setRerolls(rerolls);
           setResult(undefined);
         }}
         onFinish={({ formula, tn, explosions, rerolls }) => {
@@ -141,7 +161,7 @@ const D10Roller = () => {
           });
         }}
         className={styles.form}
-        initialValues={{ explosions: [10] }}
+        initialValues={initialValues}
       >
         <Form.Item
           label={`Your dice pool`}
@@ -167,7 +187,7 @@ const D10Roller = () => {
         <Form.Item
           label={`Reroll (once)`}
           name="rerolls"
-          tooltip={`Check "1" to apply a 4th edition Emphasis [Core, page 133]`}
+          tooltip={`Check "1" to apply a 4th edition Emphasis [see Core, page 133]`}
         >
           <Checkbox.Group
             options={[
@@ -178,7 +198,12 @@ const D10Roller = () => {
           />
         </Form.Item>
         {!!parsedFormula ? (
-          <TextSummary original={parsedFormula} capped={cap(parsedFormula)} />
+          <TextSummary
+            original={parsedFormula}
+            capped={cap(parsedFormula)}
+            explosions={explosions}
+            rerolls={rerolls}
+          />
         ) : (
           <Paragraph type="secondary">{`Waiting for complete formula…`}</Paragraph>
         )}
