@@ -8,6 +8,7 @@ import CharacterSheet from "features/display/CharacterSheet";
 import styles from "./D10IdentifiedRoll.module.less";
 import Title from "./Title";
 import GoBackButton from "features/browse/GoBackButton";
+import StandardButtons from "./StandardButtons";
 
 const D10IdentifiedRoll = () => {
   const { id } = useParams();
@@ -42,8 +43,8 @@ const D10IdentifiedRoll = () => {
     return null;
   }
 
-  const { dice, parameters, metadata } = data.roll;
-  const { character, campaign, user: player, description } = data;
+  const { character, campaign, user: player, description, roll } = data;
+  const { dice, parameters, metadata } = roll;
 
   const organizedData = [
     { label: `Description`, content: description },
@@ -69,6 +70,7 @@ const D10IdentifiedRoll = () => {
         </div>
 
         <div className={styles.buttons}>
+          <StandardButtons id={id} description={description} roll={roll} />
           <GoBackButton />
         </div>
       </div>

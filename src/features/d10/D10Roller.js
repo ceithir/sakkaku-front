@@ -10,6 +10,7 @@ import { addCampaign, addCharacter, selectUser } from "features/user/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
 import RollResult from "./RollResult";
+import StandardButtons from "./StandardButtons";
 
 const { Paragraph } = Typography;
 
@@ -80,6 +81,7 @@ const D10Roller = () => {
   const [result, setResult] = useState();
   const [explosions, setExplosions] = useState(initialValues.explosions);
   const [rerolls, setRerolls] = useState(initialValues.rerolls);
+  const [context, setContext] = useState();
 
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -110,6 +112,7 @@ const D10Roller = () => {
         }) => {
           setLoading(true);
           setResult(undefined);
+          setContext(undefined);
 
           const parameters = {
             ...cap(parse(formula)),
@@ -150,8 +153,9 @@ const D10Roller = () => {
               description,
               metadata,
             },
-            success: ({ roll }) => {
+            success: ({ roll, ...context }) => {
               setResult(roll);
+              setContext(context);
               setLoading(false);
             },
             error,
@@ -221,7 +225,18 @@ const D10Roller = () => {
           </Button>
         </Form.Item>
       </Form>
-      {!!result && <RollResult {...result} className={styles.result} />}
+      {!!result && (
+        <div className={styles.result}>
+          <RollResult {...result} />
+          <div className={styles.buttons}>
+            <StandardButtons
+              id={context?.id}
+              description={context?.description}
+              roll={result}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
