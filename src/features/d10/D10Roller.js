@@ -150,8 +150,8 @@ const D10Roller = () => {
               description,
               metadata,
             },
-            success: (data) => {
-              setResult(data);
+            success: ({ roll }) => {
+              setResult(roll);
               setLoading(false);
             },
             error,
