@@ -42,8 +42,20 @@ const D10IdentifiedRoll = () => {
     return null;
   }
 
-  const { dice, parameters } = data.roll;
+  const { dice, parameters, metadata } = data.roll;
   const { character, campaign, user: player, description } = data;
+
+  const organizedData = [
+    { label: `Description`, content: description },
+    !!metadata.original && {
+      label: `Input`,
+      content: metadata.original,
+    },
+    {
+      label: `Roll`,
+      content: <RollResult dice={dice} parameters={parameters} />,
+    },
+  ].filter(Boolean);
 
   return (
     <div className={styles.background}>
@@ -52,13 +64,7 @@ const D10IdentifiedRoll = () => {
         <div className={styles.context}>
           <CharacterSheet
             identity={{ character, campaign, player }}
-            data={[
-              { label: `Description`, content: description },
-              {
-                label: `Roll`,
-                content: <RollResult dice={dice} parameters={parameters} />,
-              },
-            ]}
+            data={organizedData}
           />
         </div>
 

@@ -117,6 +117,9 @@ const D10Roller = () => {
             explosions,
             rerolls,
           };
+          const metadata = {
+            original: formula,
+          };
           const error = () => {
             setError(true);
             setLoading(false);
@@ -127,6 +130,7 @@ const D10Roller = () => {
               uri: "/public/aeg/l5r/rolls/create",
               body: {
                 parameters,
+                metadata,
               },
               success: (data) => {
                 setResult(data);
@@ -144,6 +148,7 @@ const D10Roller = () => {
               campaign,
               character,
               description,
+              metadata,
             },
             success: (data) => {
               setResult(data);
