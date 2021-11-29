@@ -44,6 +44,7 @@ const columns = [
       return {
         "FFG-L5R": `FFG L5R Check`,
         "FFG-L5R-Heritage": `FFG L5R Heritage`,
+        "AEG-L5R": `L5R D10 Roll`,
       }[type];
     },
     responsive: ["md"],
@@ -106,6 +107,10 @@ const columns = [
         return <HeritageResult result={result} metadata={metadata} />;
       }
 
+      if (type === "AEG-L5R") {
+        return <strong>{result["total"]}</strong>;
+      }
+
       return null;
     },
     responsive: ["md"],
@@ -116,7 +121,7 @@ const columns = [
     key: "success",
     align: "center",
     render: ({ type, roll, result }) => {
-      if (type === "FFG-L5R") {
+      if (type === "FFG-L5R" || type === "AEG-L5R") {
         const tn = roll.parameters.tn;
 
         if (!result) {
@@ -127,7 +132,9 @@ const columns = [
           return <Text>{"?"}</Text>;
         }
 
-        return result.success >= tn ? (
+        const total = result.total || result.success;
+
+        return total >= tn ? (
           <Text type="success">{"Yes"}</Text>
         ) : (
           <Text type="danger">{"No"}</Text>
