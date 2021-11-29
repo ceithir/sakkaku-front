@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import Title from "features/display/Title";
 import { Form, Input, Typography, Button, InputNumber, Checkbox } from "antd";
 import { parse, cap } from "./formula";
-import { postOnServer } from "server";
+import { postOnServer, authentifiedPostOnServer } from "server";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import styles from "./D10Roller.module.less";
+import UserContext from "components/form/UserContext";
+import { addCampaign, addCharacter, selectUser } from "features/user/reducer";
+import { useSelector, useDispatch } from "react-redux";
+import classNames from "classnames";
 
 const { Text, Paragraph } = Typography;
 
@@ -128,6 +132,9 @@ const D10Roller = () => {
   const [explosions, setExplosions] = useState(initialValues.explosions);
   const [rerolls, setRerolls] = useState(initialValues.rerolls);
 
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
   if (error) {
     return <DefaultErrorMessage />;
   }
@@ -142,27 +149,69 @@ const D10Roller = () => {
           setRerolls(rerolls);
           setResult(undefined);
         }}
-        onFinish={({ formula, tn, explosions, rerolls }) => {
+        onFinish={({
+          formula,
+          tn,
+          explosions,
+          rerolls,
+          campaign,
+          character,
+          description,
+          testMode,
+        }) => {
           setLoading(true);
           setResult(undefined);
-          postOnServer({
-            uri: "/public/aeg/l5r/rolls/create",
+
+          const parameters = {
+            ...cap(parse(formula)),
+            tn,
+            explosions,
+            rerolls,
+          };
+          const error = () => {
+            setError(true);
+            setLoading(false);
+          };
+
+          if (!user || testMode) {
+            postOnServer({
+              uri: "/public/aeg/l5r/rolls/create",
+              body: {
+                parameters,
+              },
+              success: (data) => {
+                setResult(data);
+                setLoading(false);
+              },
+              error,
+            });
+            return;
+          }
+
+          authentifiedPostOnServer({
+            uri: "/aeg/l5r/rolls/create",
             body: {
-              parameters: { ...cap(parse(formula)), tn, explosions, rerolls },
+              parameters,
+              campaign,
+              character,
+              description,
             },
             success: (data) => {
               setResult(data);
               setLoading(false);
             },
-            error: () => {
-              setError(true);
-              setLoading(false);
-            },
+            error,
           });
+
+          dispatch(addCampaign(campaign));
+          dispatch(addCharacter(character));
         }}
-        className={styles.form}
+        className={classNames(styles.form, {
+          [styles["fix-user-switch"]]: !!user,
+        })}
         initialValues={initialValues}
       >
+        <UserContext />
         <Form.Item
           label={`Your dice pool`}
           name="formula"
