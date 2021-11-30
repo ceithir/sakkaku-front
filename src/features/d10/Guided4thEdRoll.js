@@ -154,6 +154,12 @@ const Guided4thEdRoll = () => {
         burnedFreeRaises: 0,
       });
     }
+    if (nonskilled) {
+      setEmphasis(false);
+      form.setFieldsValue({
+        emphasis: false,
+      });
+    }
   }, [skill, nonskilled, form]);
 
   useEffect(() => {
