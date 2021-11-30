@@ -84,9 +84,14 @@ const explosions = (type) => {
   return [10];
 };
 
+const rerolls = ({ emphasis }) => {
+  return emphasis ? [1] : [];
+};
+
 const initialValues = {
   nonskilled: false,
   voided: "none",
+  emphasis: false,
 };
 
 const Guided4thEdRoll = () => {
@@ -94,6 +99,7 @@ const Guided4thEdRoll = () => {
   const [rawFormula, setRawFormula] = useState();
   const [nonskilled, setNonskilled] = useState(initialValues.nonskilled);
   const [skill, setSkill] = useState();
+  const [emphasis, setEmphasis] = useState(initialValues.emphasis);
 
   const [result, setResult] = useState();
   const [context, setContext] = useState();
@@ -126,6 +132,7 @@ const Guided4thEdRoll = () => {
           setRawFormula(completeFormula(allValues));
           setNonskilled(allValues.nonskilled);
           setSkill(allValues.skill);
+          setEmphasis(allValues.emphasis);
         }}
         className={styles.form}
         onFinish={(values) => {
@@ -140,6 +147,7 @@ const Guided4thEdRoll = () => {
             ...values,
             formula: completeFormula(values),
             explosions: explosions(rollType(values)),
+            rerolls: rerolls(values),
           });
         }}
       >
@@ -203,17 +211,20 @@ const Guided4thEdRoll = () => {
             ]}
           />
         </Form.Item>
-        <Divider />
-        {!!rawFormula && (
+        {type === "skilled" && (
           <>
-            {parse(rawFormula) ? (
-              <TextSummary
-                original={parse(rawFormula)}
-                explosions={explosions(type)}
-              />
-            ) : (
-              <Paragraph type="secondary">{`Unrecognized syntax. Is the modifier right?`}</Paragraph>
-            )}
+            <Paragraph>
+              {`This is a `}
+              <strong>{`Skilled Roll`}</strong>
+              {`, and as such it may benefit from an emphasis (see core, page 133).`}
+            </Paragraph>
+            <Form.Item
+              name="emphasis"
+              valuePropName="checked"
+              tooltip={`As per core, page 133`}
+            >
+              <Checkbox>{`Apply Emphasis?`}</Checkbox>
+            </Form.Item>
           </>
         )}
         {type === "unskilled" && (
@@ -222,6 +233,20 @@ const Guided4thEdRoll = () => {
             <strong>{`Unskilled Roll`}</strong>
             {`. As per page 80 of the 4th edition core rulebook, dice never explode on that kind of roll, also it cannot benefit from raises (called or free).`}
           </Paragraph>
+        )}
+        <Divider />
+        {!!rawFormula && (
+          <>
+            {parse(rawFormula) ? (
+              <TextSummary
+                original={parse(rawFormula)}
+                explosions={explosions(type)}
+                rerolls={rerolls({ emphasis })}
+              />
+            ) : (
+              <Paragraph type="secondary">{`Unrecognized syntax. Is the modifier right?`}</Paragraph>
+            )}
+          </>
         )}
         <Form.Item>
           <Button
