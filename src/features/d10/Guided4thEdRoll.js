@@ -197,7 +197,7 @@ const Guided4thEdRoll = () => {
                 disabled: skill > 0 || nonskilled,
               },
               {
-                label: `Don't spend a Void Point.`,
+                label: `Don't spend a Void Point for any of these effects.`,
                 value: "none",
               },
             ]}
