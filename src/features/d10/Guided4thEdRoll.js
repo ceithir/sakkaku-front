@@ -88,10 +88,21 @@ const rerolls = ({ emphasis }) => {
   return emphasis ? [1] : [];
 };
 
+const totalTn = ({ base, calledRaises = 0, burnedFreeRaises = 0 }) => {
+  if (!base) {
+    return base;
+  }
+
+  return base + 5 * calledRaises - 5 * burnedFreeRaises;
+};
+
 const initialValues = {
   nonskilled: false,
   voided: "none",
   emphasis: false,
+  calledRaises: 0,
+  freeRaises: 0,
+  burnedFreeRaises: 0,
 };
 
 const Guided4thEdRoll = () => {
@@ -100,6 +111,10 @@ const Guided4thEdRoll = () => {
   const [nonskilled, setNonskilled] = useState(initialValues.nonskilled);
   const [skill, setSkill] = useState();
   const [emphasis, setEmphasis] = useState(initialValues.emphasis);
+  const [tnParameters, setTnParameters] = useState({
+    base: undefined,
+    ...initialValues,
+  });
 
   const [result, setResult] = useState();
   const [context, setContext] = useState();
@@ -115,7 +130,30 @@ const Guided4thEdRoll = () => {
       setType(rollType(form.getFieldsValue()));
       setRawFormula(completeFormula(form.getFieldsValue()));
     }
+    if (skill === 0 && !nonskilled) {
+      form.setFieldsValue({
+        calledRaises: 0,
+        freeRaises: 0,
+        burnedFreeRaises: 0,
+      });
+      setTnParameters({
+        base: form.getFieldValue("tn"),
+        calledRaises: 0,
+        freeRaises: 0,
+        burnedFreeRaises: 0,
+      });
+    }
   }, [skill, nonskilled, form]);
+
+  useEffect(() => {
+    if (form.getFieldValue("burnedFreeRaises") > tnParameters.freeRaises) {
+      form.setFieldsValue({ burnedFreeRaises: tnParameters.freeRaises });
+      setTnParameters({
+        ...tnParameters,
+        burnedFreeRaises: tnParameters.freeRaises,
+      });
+    }
+  }, [form, tnParameters]);
 
   if (error) {
     return <DefaultErrorMessage />;
@@ -133,6 +171,12 @@ const Guided4thEdRoll = () => {
           setNonskilled(allValues.nonskilled);
           setSkill(allValues.skill);
           setEmphasis(allValues.emphasis);
+          setTnParameters({
+            base: allValues.tn,
+            calledRaises: allValues.calledRaises,
+            freeRaises: allValues.freeRaises,
+            burnedFreeRaises: allValues.burnedFreeRaises,
+          });
 
           if (
             Object.keys(changedValues).some((name) =>
@@ -156,6 +200,7 @@ const Guided4thEdRoll = () => {
             formula: completeFormula(values),
             explosions: explosions(rollType(values)),
             rerolls: rerolls(values),
+            tn: totalTn({ ...values, base: values.tn }),
           });
         }}
       >
@@ -192,9 +237,41 @@ const Guided4thEdRoll = () => {
           <Input placeholder={`+1k0`} />
         </Form.Item>
         <Divider />
-        <Form.Item label={`TN`} name="tn">
+        <Form.Item label={`Base TN`} name="tn">
           <InputNumber />
         </Form.Item>
+        <Form.Item
+          label={`Called Raises`}
+          name="calledRaises"
+          tooltip={`As a default, you may not call more Raises than your Void Ring (see core page 79).`}
+        >
+          <InputNumber disabled={type === "unskilled"} min="0" />
+        </Form.Item>
+        <Form.Item label={`Free Raises`} name="freeRaises">
+          <InputNumber disabled={type === "unskilled"} min="0" />
+        </Form.Item>
+        {tnParameters.freeRaises > 0 && (
+          <>
+            <Paragraph>{`As per core page 79, you may use any number of your Free Raises to reduce the TN by 5 for each Raise employed that way. This however 'consumes' the Free Raise (it may not be used anymore to grant additional effects to the roll).`}</Paragraph>
+            <Form.Item
+              label={`Free Raises used to reduce TN`}
+              name="burnedFreeRaises"
+            >
+              <InputNumber
+                disabled={type === "unskilled"}
+                min="0"
+                max={tnParameters.freeRaises}
+              />
+            </Form.Item>
+          </>
+        )}
+        {!!tnParameters.base &&
+          (!!tnParameters.calledRaises || !!tnParameters.burnedFreeRaises) && (
+            <Paragraph>
+              {`Total TN: `}
+              <strong>{totalTn(tnParameters)}</strong>
+            </Paragraph>
+          )}
         <Divider />
         <Form.Item
           name="voided"
