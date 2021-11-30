@@ -248,42 +248,7 @@ const Guided4thEdRoll = () => {
         >
           <Input placeholder={`+1k0`} />
         </Form.Item>
-        <Divider />
-        <Form.Item label={`Base TN`} name="tn">
-          <InputNumber />
-        </Form.Item>
-        <Form.Item
-          label={`Called Raises`}
-          name="calledRaises"
-          tooltip={`As a default, you may not call more Raises than your Void Ring (see core page 79).`}
-        >
-          <InputNumber disabled={type === "unskilled"} min="0" />
-        </Form.Item>
-        <Form.Item label={`Free Raises`} name="freeRaises">
-          <InputNumber disabled={type === "unskilled"} min="0" />
-        </Form.Item>
-        {tnParameters.freeRaises > 0 && (
-          <>
-            <Paragraph>{`As per core page 79, you may use any number of your Free Raises to reduce the TN by 5 for each Raise employed that way. This however 'consumes' the Free Raise (it may not be used anymore to grant additional effects to the roll).`}</Paragraph>
-            <Form.Item
-              label={`Free Raises used to reduce TN`}
-              name="burnedFreeRaises"
-            >
-              <InputNumber
-                disabled={type === "unskilled"}
-                min="0"
-                max={tnParameters.freeRaises}
-              />
-            </Form.Item>
-          </>
-        )}
-        {!!tnParameters.base &&
-          (!!tnParameters.calledRaises || !!tnParameters.burnedFreeRaises) && (
-            <Paragraph>
-              {`Total TN: `}
-              <strong>{totalTn(tnParameters)}</strong>
-            </Paragraph>
-          )}
+
         <Divider />
         <Form.Item
           name="voided"
@@ -331,6 +296,42 @@ const Guided4thEdRoll = () => {
             {`. As per page 80 of the 4th edition core rulebook, dice never explode on that kind of roll, also it cannot benefit from raises (called or free).`}
           </Paragraph>
         )}
+        <Divider />
+        <Form.Item label={`Base TN`} name="tn">
+          <InputNumber />
+        </Form.Item>
+        <Form.Item
+          label={`Called Raises`}
+          name="calledRaises"
+          tooltip={`As a default, you may not call more Raises than your Void Ring (see core page 79).`}
+        >
+          <InputNumber disabled={type === "unskilled"} min="0" />
+        </Form.Item>
+        <Form.Item label={`Free Raises`} name="freeRaises">
+          <InputNumber disabled={type === "unskilled"} min="0" />
+        </Form.Item>
+        {tnParameters.freeRaises > 0 && (
+          <>
+            <Paragraph>{`As per core page 79, you may use any number of your Free Raises to reduce the TN by 5 for each Raise employed that way. This however 'consumes' the Free Raise (it may not be used anymore to grant additional effects to the roll).`}</Paragraph>
+            <Form.Item
+              label={`Free Raises used to reduce TN`}
+              name="burnedFreeRaises"
+            >
+              <InputNumber
+                disabled={type === "unskilled"}
+                min="0"
+                max={tnParameters.freeRaises}
+              />
+            </Form.Item>
+          </>
+        )}
+        {!!tnParameters.base &&
+          (!!tnParameters.calledRaises || !!tnParameters.burnedFreeRaises) && (
+            <Paragraph>
+              {`Total TN: `}
+              <strong>{totalTn(tnParameters)}</strong>
+            </Paragraph>
+          )}
         <Divider />
         {!!rawFormula && (
           <>
