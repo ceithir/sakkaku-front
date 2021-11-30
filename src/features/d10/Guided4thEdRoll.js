@@ -176,6 +176,10 @@ const Guided4thEdRoll = () => {
           <Input placeholder={`+1k0`} />
         </Form.Item>
         <Divider />
+        <Form.Item label={`TN`} name="tn">
+          <InputNumber />
+        </Form.Item>
+        <Divider />
         <Form.Item
           name="voided"
           label={`Common Void Point effects`}
