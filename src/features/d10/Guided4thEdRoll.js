@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import { Form, InputNumber, Checkbox, Input, Typography, Button } from "antd";
+import React, { useState, useEffect } from "react";
+import {
+  Form,
+  InputNumber,
+  Checkbox,
+  Input,
+  Typography,
+  Button,
+  Radio,
+  Divider,
+} from "antd";
 import styles from "./Guided4thEdRoll.module.less";
 import { parse } from "./formula";
 import TextSummary from "./TextSummary";
@@ -13,8 +22,11 @@ import DefaultErrorMessage from "DefaultErrorMessage";
 
 const { Paragraph } = Typography;
 
-const rollType = ({ ring, skill, nonskilled }) => {
+const rollType = ({ ring, skill, nonskilled, voided }) => {
   if (ring > 0) {
+    if (voided === "skill") {
+      return "skilled";
+    }
     if (nonskilled) {
       return "nonskilled";
     }
@@ -28,13 +40,10 @@ const rollType = ({ ring, skill, nonskilled }) => {
   return undefined;
 };
 
-const baseFormula = ({ ring, skill, nonskilled }) => {
-  const type = rollType({ ring, skill, nonskilled });
-  if (!type) {
-    return undefined;
-  }
+const baseFormula = (values) => {
+  const { ring, skill } = values;
 
-  switch (rollType({ ring, skill, nonskilled })) {
+  switch (rollType(values)) {
     case "skilled":
       return `${ring + skill}k${ring}`;
     case "unskilled":
@@ -45,8 +54,23 @@ const baseFormula = ({ ring, skill, nonskilled }) => {
   }
 };
 
-const completeFormula = ({ modifier, ...values }) => {
+const fullModifier = ({ modifier, voided }) => {
+  let full = "";
+  if (modifier) {
+    full += modifier;
+  }
+  if (voided === "moment") {
+    full += "+1k1";
+  }
+  if (voided === "skill") {
+    full += "+1k0";
+  }
+  return full;
+};
+
+const completeFormula = (values) => {
   const base = baseFormula(values);
+  const modifier = fullModifier(values);
   if (!base || !modifier) {
     return base;
   }
@@ -62,12 +86,14 @@ const explosions = (type) => {
 
 const initialValues = {
   nonskilled: false,
+  voided: "none",
 };
 
 const Guided4thEdRoll = () => {
   const [type, setType] = useState();
   const [rawFormula, setRawFormula] = useState();
   const [nonskilled, setNonskilled] = useState(initialValues.nonskilled);
+  const [skill, setSkill] = useState();
 
   const [result, setResult] = useState();
   const [context, setContext] = useState();
@@ -76,7 +102,14 @@ const Guided4thEdRoll = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
-  const parsedFormula = parse(rawFormula);
+  const [form] = Form.useForm();
+  useEffect(() => {
+    if ((skill > 0 || nonskilled) && form.getFieldValue("voided") === "skill") {
+      form.setFieldsValue({ voided: "moment" });
+      setType(rollType(form.getFieldsValue()));
+      setRawFormula(completeFormula(form.getFieldsValue()));
+    }
+  }, [skill, nonskilled, form]);
 
   if (error) {
     return <DefaultErrorMessage />;
@@ -86,11 +119,13 @@ const Guided4thEdRoll = () => {
     <>
       <Title />
       <Form
+        form={form}
         initialValues={initialValues}
         onValuesChange={(_, allValues) => {
           setType(rollType(allValues));
           setRawFormula(completeFormula(allValues));
           setNonskilled(allValues.nonskilled);
+          setSkill(allValues.skill);
         }}
         className={styles.form}
         onFinish={(values) => {
@@ -140,11 +175,36 @@ const Guided4thEdRoll = () => {
         >
           <Input placeholder={`+1k0`} />
         </Form.Item>
+        <Divider />
+        <Form.Item
+          name="voided"
+          label={`Common Void Point effects`}
+          tooltip={`As per core, page 78`}
+        >
+          <Radio.Group
+            options={[
+              {
+                label: `Spend a Void Point to gain a bonus of +1k1.`,
+                value: "moment",
+              },
+              {
+                label: `Spend a Void Point to increase Skill from 0 to 1.`,
+                value: "skill",
+                disabled: skill > 0 || nonskilled,
+              },
+              {
+                label: `Don't spend a Void Point.`,
+                value: "none",
+              },
+            ]}
+          />
+        </Form.Item>
+        <Divider />
         {!!rawFormula && (
           <>
-            {parsedFormula ? (
+            {parse(rawFormula) ? (
               <TextSummary
-                original={parsedFormula}
+                original={parse(rawFormula)}
                 explosions={explosions(type)}
               />
             ) : (
@@ -163,7 +223,7 @@ const Guided4thEdRoll = () => {
           <Button
             type="primary"
             htmlType="submit"
-            disabled={!parsedFormula}
+            disabled={!parse(rawFormula)}
             loading={loading}
           >
             {`Roll`}
