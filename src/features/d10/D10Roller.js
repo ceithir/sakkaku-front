@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import Title from "./Title";
 import { Form, Input, Typography, Button, InputNumber, Checkbox } from "antd";
-import { parse, cap } from "./formula";
-import { postOnServer, authentifiedPostOnServer } from "server";
+import { parse } from "./formula";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import styles from "./D10Roller.module.less";
 import UserContext from "components/form/UserContext";
-import { addCampaign, addCharacter, selectUser } from "features/user/reducer";
+import { selectUser } from "features/user/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import classNames from "classnames";
-import RollResult from "./RollResult";
-import StandardButtons from "./StandardButtons";
 import TextSummary from "./TextSummary";
+import { prepareFinish } from "./form";
+import FormResult from "./FormResult";
 
 const { Paragraph } = Typography;
 
@@ -43,69 +42,22 @@ const D10Roller = () => {
           setRerolls(rerolls);
           setResult(undefined);
         }}
-        onFinish={({
-          formula,
-          tn,
-          explosions,
-          rerolls,
-          campaign,
-          character,
-          description,
-          testMode,
-        }) => {
-          setLoading(true);
-          setResult(undefined);
-          setContext(undefined);
+        onFinish={(values) => {
+          const { formula } = values;
 
-          const parameters = {
-            ...cap(parse(formula)),
-            tn,
-            explosions,
-            rerolls,
-          };
-          const metadata = {
-            original: formula,
-          };
-          const error = () => {
-            setError(true);
-            setLoading(false);
-          };
-
-          if (!user || testMode) {
-            postOnServer({
-              uri: "/public/aeg/l5r/rolls/create",
-              body: {
-                parameters,
-                metadata,
-              },
-              success: (data) => {
-                setResult(data);
-                setLoading(false);
-              },
-              error,
-            });
-            return;
-          }
-
-          authentifiedPostOnServer({
-            uri: "/aeg/l5r/rolls/create",
-            body: {
-              parameters,
-              campaign,
-              character,
-              description,
-              metadata,
+          prepareFinish({
+            setLoading,
+            setResult,
+            setContext,
+            setError,
+            dispatch,
+            user,
+          })({
+            ...values,
+            metadata: {
+              original: formula,
             },
-            success: ({ roll, ...context }) => {
-              setResult(roll);
-              setContext(context);
-              setLoading(false);
-            },
-            error,
           });
-
-          dispatch(addCampaign(campaign));
-          dispatch(addCharacter(character));
         }}
         className={classNames(styles.form, {
           [styles["fix-user-switch"]]: !!user,
@@ -167,18 +119,7 @@ const D10Roller = () => {
           </Button>
         </Form.Item>
       </Form>
-      {!!result && (
-        <div className={styles.result}>
-          <RollResult {...result} />
-          <div className={styles.buttons}>
-            <StandardButtons
-              id={context?.id}
-              description={context?.description}
-              roll={result}
-            />
-          </div>
-        </div>
-      )}
+      <FormResult result={result} context={context} />
     </div>
   );
 };

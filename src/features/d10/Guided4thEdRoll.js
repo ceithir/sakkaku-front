@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { Form, InputNumber, Checkbox, Input, Typography } from "antd";
+import { Form, InputNumber, Checkbox, Input, Typography, Button } from "antd";
 import styles from "./Guided4thEdRoll.module.less";
 import { parse } from "./formula";
 import TextSummary from "./TextSummary";
 import Title from "./Title";
+import UserContext from "components/form/UserContext";
+import { selectUser } from "features/user/reducer";
+import { useSelector, useDispatch } from "react-redux";
+import { prepareFinish } from "./form";
+import FormResult from "./FormResult";
+import DefaultErrorMessage from "DefaultErrorMessage";
 
 const { Paragraph } = Typography;
 
@@ -23,7 +29,6 @@ const rollType = ({ ring, skill, nonskilled }) => {
 };
 
 const baseFormula = ({ ring, skill, nonskilled }) => {
-  console.log({ ring, skill, nonskilled });
   const type = rollType({ ring, skill, nonskilled });
   if (!type) {
     return undefined;
@@ -59,6 +64,19 @@ const Guided4thEdRoll = () => {
   const [type, setType] = useState();
   const [rawFormula, setRawFormula] = useState();
 
+  const [result, setResult] = useState();
+  const [context, setContext] = useState();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+
+  const parsedFormula = parse(rawFormula);
+
+  if (error) {
+    return <DefaultErrorMessage />;
+  }
+
   return (
     <>
       <Title />
@@ -68,7 +86,22 @@ const Guided4thEdRoll = () => {
           setRawFormula(completeFormula(allValues));
         }}
         className={styles.form}
+        onFinish={(values) => {
+          return prepareFinish({
+            setLoading,
+            setResult,
+            setContext,
+            setError,
+            dispatch,
+            user,
+          })({
+            ...values,
+            formula: completeFormula(values),
+            explosions: explosions(rollType(values)),
+          });
+        }}
       >
+        <UserContext />
         <Form.Item
           label={`Ring`}
           name="ring"
@@ -82,8 +115,16 @@ const Guided4thEdRoll = () => {
             name="skill"
             rules={[
               {
-                required: true,
-                message: `Please enter a skill value (can be zero) or check the next box.`,
+                validator: (_, value) => {
+                  if (value >= 0 || type === "nonskilled") {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      `Please enter a skill value (can be zero) or check the next box.`
+                    )
+                  );
+                },
               },
             ]}
           >
@@ -102,9 +143,9 @@ const Guided4thEdRoll = () => {
         </Form.Item>
         {!!rawFormula && (
           <>
-            {parse(rawFormula) ? (
+            {parsedFormula ? (
               <TextSummary
-                original={parse(rawFormula)}
+                original={parsedFormula}
                 explosions={explosions(type)}
               />
             ) : (
@@ -119,7 +160,18 @@ const Guided4thEdRoll = () => {
             {`. As per page 80 of the 4th edition core rulebook, dice never explode on that kind of roll, also it cannot benefit from raises (called or free).`}
           </Paragraph>
         )}
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={!parsedFormula}
+            loading={loading}
+          >
+            {`Roll`}
+          </Button>
+        </Form.Item>
       </Form>
+      <FormResult result={result} context={context} />
     </>
   );
 };
