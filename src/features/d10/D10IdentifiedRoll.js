@@ -73,10 +73,10 @@ const D10IdentifiedRoll = () => {
       metadata.raises.called + metadata.raises.free > 0 && {
         label: `Raises`,
         content: `${metadata.raises.called + metadata.raises.free}: ${
-          metadata.raises.called
+          metadata.raises.called || 0
         } Called, ${
-          metadata.raises.free
-        } Free (Free Raises spent to reduce TN: ${metadata.raises.burnt})`,
+          metadata.raises.free || 0
+        } Free (Free Raises spent to reduce TN: ${metadata.raises.burnt || 0})`,
       },
     {
       label: `Roll`,
