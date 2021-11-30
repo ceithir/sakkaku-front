@@ -177,7 +177,7 @@ const Guided4thEdRoll = () => {
   }
 
   return (
-    <>
+    <div className={styles.background}>
       <Title />
       <Form
         form={form}
@@ -352,7 +352,7 @@ const Guided4thEdRoll = () => {
             )}
           </>
         )}
-        <Form.Item>
+        <Form.Item className={styles.submit}>
           <Button
             type="primary"
             htmlType="submit"
@@ -364,7 +364,7 @@ const Guided4thEdRoll = () => {
         </Form.Item>
       </Form>
       <FormResult result={result} context={context} />
-    </>
+    </div>
   );
 };
 

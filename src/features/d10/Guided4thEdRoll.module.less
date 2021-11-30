@@ -1,8 +1,15 @@
 @import (reference) "common.less";
 
+.background {
+  .paper-background();
+  flex: 1;
+  padding-bottom: 24px;
+}
+
 .form {
   .torii-box();
-  margin: 24px;
+  margin: 24px auto;
+  max-width: @screen-lg;
 
   .skilled-or-not {
     display: flex;
@@ -10,6 +17,16 @@
 
     & > *:first-child {
       margin-right: 24px;
+    }
+  }
+
+  .submit {
+    margin-top: 24px;
+    margin-bottom: 0;
+
+    :global(.ant-form-item-control-input-content) {
+      display: flex;
+      justify-content: flex-end;
     }
   }
 }
