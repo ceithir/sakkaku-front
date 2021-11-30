@@ -96,6 +96,17 @@ const totalTn = ({ base, calledRaises = 0, burnedFreeRaises = 0 }) => {
   return base + 5 * calledRaises - 5 * burnedFreeRaises;
 };
 
+const metadata = (values) => {
+  const { voided, calledRaises, freeRaises, burnedFreeRaises } = values;
+
+  return {
+    type: rollType(values),
+    original: completeFormula(values),
+    voided,
+    raises: { called: calledRaises, free: freeRaises, burnt: burnedFreeRaises },
+  };
+};
+
 const initialValues = {
   nonskilled: false,
   voided: "none",
@@ -201,6 +212,7 @@ const Guided4thEdRoll = () => {
             explosions: explosions(rollType(values)),
             rerolls: rerolls(values),
             tn: totalTn({ ...values, base: values.tn }),
+            metadata: metadata(values),
           });
         }}
       >

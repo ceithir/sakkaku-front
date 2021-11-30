@@ -48,6 +48,10 @@ const D10IdentifiedRoll = () => {
 
   const organizedData = [
     { label: `Description`, content: description },
+    !!parameters.tn && {
+      label: `TN`,
+      content: parameters.tn,
+    },
     !!metadata.original && {
       label: `Input`,
       content: metadata.original,
@@ -60,6 +64,20 @@ const D10IdentifiedRoll = () => {
       label: `Reroll once on`,
       content: parameters.rerolls.join(", "),
     },
+    !!metadata.voided &&
+      metadata.voided !== "none" && {
+        label: `Void Point Effect`,
+        content: metadata.voided === "skill" ? `Phantom rank` : `+1k1`,
+      },
+    !!metadata.raises &&
+      metadata.raises.called + metadata.raises.free > 0 && {
+        label: `Raises`,
+        content: `${metadata.raises.called + metadata.raises.free}: ${
+          metadata.raises.called
+        } Called, ${
+          metadata.raises.free
+        } Free (Free Raises spent to reduce TN: ${metadata.raises.burnt})`,
+      },
     {
       label: `Roll`,
       content: <RollResult dice={dice} parameters={parameters} />,
