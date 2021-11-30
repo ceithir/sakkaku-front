@@ -60,9 +60,14 @@ const explosions = (type) => {
   return [10];
 };
 
+const initialValues = {
+  nonskilled: false,
+};
+
 const Guided4thEdRoll = () => {
   const [type, setType] = useState();
   const [rawFormula, setRawFormula] = useState();
+  const [nonskilled, setNonskilled] = useState(initialValues.nonskilled);
 
   const [result, setResult] = useState();
   const [context, setContext] = useState();
@@ -81,9 +86,11 @@ const Guided4thEdRoll = () => {
     <>
       <Title />
       <Form
+        initialValues={initialValues}
         onValuesChange={(_, allValues) => {
           setType(rollType(allValues));
           setRawFormula(completeFormula(allValues));
+          setNonskilled(allValues.nonskilled);
         }}
         className={styles.form}
         onFinish={(values) => {
@@ -115,20 +122,12 @@ const Guided4thEdRoll = () => {
             name="skill"
             rules={[
               {
-                validator: (_, value) => {
-                  if (value >= 0 || type === "nonskilled") {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(
-                    new Error(
-                      `Please enter a skill value (can be zero) or check the next box.`
-                    )
-                  );
-                },
+                message: `Please enter a skill value (can be zero) or check the next box.`,
+                required: !nonskilled,
               },
             ]}
           >
-            <InputNumber min="0" max="10" disabled={type === "nonskilled"} />
+            <InputNumber min="0" max="10" disabled={nonskilled} />
           </Form.Item>
           <Form.Item name="nonskilled" valuePropName="checked">
             <Checkbox>{`This is a Ring/Trait Roll.`}</Checkbox>
