@@ -127,12 +127,20 @@ const Guided4thEdRoll = () => {
       <Form
         form={form}
         initialValues={initialValues}
-        onValuesChange={(_, allValues) => {
+        onValuesChange={(changedValues, allValues) => {
           setType(rollType(allValues));
           setRawFormula(completeFormula(allValues));
           setNonskilled(allValues.nonskilled);
           setSkill(allValues.skill);
           setEmphasis(allValues.emphasis);
+
+          if (
+            Object.keys(changedValues).some((name) =>
+              ["skill", "nonskilled"].includes(name)
+            )
+          ) {
+            form.validateFields(["skill"]);
+          }
         }}
         className={styles.form}
         onFinish={(values) => {
