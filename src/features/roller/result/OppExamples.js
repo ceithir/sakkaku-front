@@ -12,6 +12,11 @@ const opportunities = [
     condition: ({ success }) => !success,
   },
   {
+    text: `If you failed, provide assistance to the next character trying to accomplish the same action.`,
+    count: 1,
+    condition: ({ success }) => !success,
+  },
+  {
     text: (
       <>
         Remove 1 strife you gained from this check per <Opportunity /> spent
@@ -23,6 +28,7 @@ const opportunities = [
   {
     text: `Provide assistance to the next character to attempt a check to accomplish something similar.`,
     count: 2,
+    condition: ({ success }) => success,
   },
   {
     text: `Learn another character in the scene’s demeanor (if an NPC) and current strife.`,
