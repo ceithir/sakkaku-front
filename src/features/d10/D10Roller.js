@@ -119,7 +119,7 @@ const D10Roller = () => {
           </Button>
         </Form.Item>
       </Form>
-      <FormResult result={result} context={context} />
+      <FormResult result={result} context={context} loading={loading} />
     </div>
   );
 };
