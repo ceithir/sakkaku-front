@@ -45,6 +45,8 @@ const D10IdentifiedRoll = () => {
 
   const { character, campaign, user: player, description, roll } = data;
   const { dice, parameters, metadata } = roll;
+  const { raises = {} } = metadata;
+  const { called = 0, free = 0, burnt = 0 } = raises;
 
   const organizedData = [
     { label: `Description`, content: description },
@@ -69,15 +71,15 @@ const D10IdentifiedRoll = () => {
         label: `Void Point Effect`,
         content: metadata.voided === "skill" ? `Phantom rank` : `+1k1`,
       },
-    !!metadata.raises &&
-      metadata.raises.called + metadata.raises.free > 0 && {
-        label: `Raises`,
-        content: `${metadata.raises.called + metadata.raises.free}: ${
-          metadata.raises.called || 0
-        } Called, ${
-          metadata.raises.free || 0
-        } Free (Free Raises spent to reduce TN: ${metadata.raises.burnt || 0})`,
-      },
+    called + free > 0 && {
+      label: `Raises`,
+      content: (
+        <>
+          {`${called} Called, ${free} Free (${burnt} spent to reduce TN), Total: `}
+          <strong>{called + free - burnt}</strong>
+        </>
+      ),
+    },
     {
       label: `Roll`,
       content: <RollResult dice={dice} parameters={parameters} />,
