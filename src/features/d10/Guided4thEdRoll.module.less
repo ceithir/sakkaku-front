@@ -12,15 +12,6 @@
   max-width: @screen-lg;
   margin-top: 0;
 
-  .skilled-or-not {
-    display: flex;
-    flex-wrap: wrap;
-
-    & > *:first-child {
-      margin-right: 24px;
-    }
-  }
-
   .submit {
     margin-top: 24px;
     margin-bottom: 0;
@@ -30,4 +21,15 @@
       justify-content: flex-end;
     }
   }
+
+  .numbers {
+    display: flex;
+    & > * {
+      margin-right: 24px;
+    }
+  }
+}
+
+.hide {
+  display: none;
 }

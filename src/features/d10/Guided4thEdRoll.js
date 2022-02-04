@@ -19,15 +19,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { prepareFinish } from "./form";
 import FormResult from "./FormResult";
 import DefaultErrorMessage from "DefaultErrorMessage";
+import classNames from "classnames";
 
 const { Paragraph } = Typography;
 
-const rollType = ({ ring, skill, nonskilled, voided }) => {
+const rollType = ({ ring, skill, supertype, voided }) => {
   if (ring > 0) {
     if (voided === "skill") {
       return "skilled";
     }
-    if (nonskilled) {
+    if (supertype !== "skill") {
       return "nonskilled";
     }
     if (skill > 0) {
@@ -108,7 +109,7 @@ const metadata = (values) => {
 };
 
 const initialValues = {
-  nonskilled: false,
+  supertype: "skill",
   voided: "none",
   emphasis: false,
   calledRaises: 0,
@@ -119,13 +120,14 @@ const initialValues = {
 const Guided4thEdRoll = () => {
   const [type, setType] = useState();
   const [rawFormula, setRawFormula] = useState();
-  const [nonskilled, setNonskilled] = useState(initialValues.nonskilled);
+  const [nonskilled, setNonskilled] = useState(false);
   const [skill, setSkill] = useState();
   const [emphasis, setEmphasis] = useState(initialValues.emphasis);
   const [tnParameters, setTnParameters] = useState({
     base: undefined,
     ...initialValues,
   });
+  const [supertype, setSupertype] = useState(initialValues.supertype);
 
   const [result, setResult] = useState();
   const [context, setContext] = useState();
@@ -182,10 +184,11 @@ const Guided4thEdRoll = () => {
       <Form
         form={form}
         initialValues={initialValues}
-        onValuesChange={(changedValues, allValues) => {
+        onValuesChange={(_, allValues) => {
           setType(rollType(allValues));
           setRawFormula(completeFormula(allValues));
-          setNonskilled(allValues.nonskilled);
+          setSupertype(allValues.supertype);
+          setNonskilled(allValues.supertype !== "skill");
           setSkill(allValues.skill);
           setEmphasis(allValues.emphasis);
           setTnParameters({
@@ -194,14 +197,6 @@ const Guided4thEdRoll = () => {
             freeRaises: allValues.freeRaises,
             burnedFreeRaises: allValues.burnedFreeRaises,
           });
-
-          if (
-            Object.keys(changedValues).some((name) =>
-              ["skill", "nonskilled"].includes(name)
-            )
-          ) {
-            form.validateFields(["skill"]);
-          }
         }}
         className={styles.form}
         onFinish={(values) => {
@@ -223,28 +218,42 @@ const Guided4thEdRoll = () => {
         }}
       >
         <UserContext />
-        <Form.Item
-          label={`Ring`}
-          name="ring"
-          rules={[{ required: true, message: `Please enter a ring value.` }]}
-        >
-          <InputNumber min="1" max="10" />
+        <Form.Item label={`Type`} name="supertype">
+          <Radio.Group
+            options={[
+              { label: `Skill Roll`, value: "skill" },
+              { label: `Trait Roll`, value: "trait" },
+              { label: `Ring Roll`, value: "ring" },
+            ]}
+          />
         </Form.Item>
-        <div className={styles["skilled-or-not"]}>
+        <div className={styles.numbers}>
+          <Form.Item
+            label={supertype === "ring" ? `Ring` : `Trait`}
+            name="ring"
+            rules={[
+              {
+                required: true,
+                message: `Please enter a value.`,
+              },
+            ]}
+          >
+            <InputNumber min="1" max="10" />
+          </Form.Item>
           <Form.Item
             label={`Skill`}
             name="skill"
             rules={[
               {
-                message: `Please enter a skill value (can be zero) or check the next box.`,
-                required: !nonskilled,
+                message: `Please enter a value (can be zero).`,
+                required: supertype === "skill",
               },
             ]}
+            className={classNames({
+              [styles["hide"]]: supertype !== "skill",
+            })}
           >
-            <InputNumber min="0" max="10" disabled={nonskilled} />
-          </Form.Item>
-          <Form.Item name="nonskilled" valuePropName="checked">
-            <Checkbox>{`This is a Ring/Trait Roll.`}</Checkbox>
+            <InputNumber min="0" max="10" />
           </Form.Item>
         </div>
         <Form.Item
