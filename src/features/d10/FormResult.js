@@ -3,6 +3,7 @@ import styles from "./FormResult.module.less";
 import RollResult from "./RollResult";
 import StandardButtons from "./StandardButtons";
 import Loader from "features/navigation/Loader";
+import { Link } from "react-router-dom";
 
 const ScrollForm = ({ result, context }) => {
   const refContainer = useRef();
@@ -20,6 +21,9 @@ const ScrollForm = ({ result, context }) => {
           description={context?.description}
           roll={result}
         />
+        {!!context?.id && (
+          <Link to={`/d10-rolls/${context.id}`}>{`Go to page`}</Link>
+        )}
       </div>
     </div>
   );
