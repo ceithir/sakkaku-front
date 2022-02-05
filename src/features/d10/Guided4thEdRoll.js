@@ -315,19 +315,21 @@ const Guided4thEdRoll = () => {
         <Form.Item label={`Base TN`} name="tn">
           <InputNumber />
         </Form.Item>
-        <Form.Item
-          label={`Called Raises`}
-          name="calledRaises"
-          tooltip={`As a default, you may not call more Raises than your Void Ring (see core page 79).`}
-        >
-          <InputNumber disabled={type === "unskilled"} min="0" />
-        </Form.Item>
-        <Form.Item label={`Free Raises`} name="freeRaises">
-          <InputNumber disabled={type === "unskilled"} min="0" />
-        </Form.Item>
+        <div className={styles.numbers}>
+          <Form.Item
+            label={`Called Raises`}
+            name="calledRaises"
+            tooltip={`As a default you may not call more Raises than your Void Ring (see core page 79).`}
+          >
+            <InputNumber disabled={type === "unskilled"} min="0" />
+          </Form.Item>
+          <Form.Item label={`Free Raises`} name="freeRaises">
+            <InputNumber disabled={type === "unskilled"} min="0" />
+          </Form.Item>
+        </div>
         {tnParameters.freeRaises > 0 && (
           <>
-            <Paragraph>{`As per core page 79, you may use any number of your Free Raises to reduce the TN by 5 for each Raise employed that way. This however 'consumes' the Free Raise (it may not be used anymore to grant additional effects to the roll).`}</Paragraph>
+            <Paragraph>{`As per core page 79, you may use any number of your Free Raises to reduce the TN by 5 for each Raise employed that way. This however consumes the Free Raise (it may not be used anymore to grant additional effects to the roll).`}</Paragraph>
             <Form.Item
               label={`Free Raises used to reduce TN`}
               name="burnedFreeRaises"
@@ -347,7 +349,7 @@ const Guided4thEdRoll = () => {
               <strong>{totalTn(tnParameters)}</strong>
             </Paragraph>
           )}
-        <Divider />
+        <Divider className={styles["submit-divider"]} />
         {!!rawFormula && (
           <>
             {parse(rawFormula) ? (
