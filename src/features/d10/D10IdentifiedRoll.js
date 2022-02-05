@@ -52,7 +52,10 @@ const D10IdentifiedRoll = () => {
     { label: `Description`, content: description },
     !!parameters.tn && {
       label: `TN`,
-      content: parameters.tn,
+      content:
+        free > 0
+          ? `${parameters.tn + free * 5}-${free}x5 → ${parameters.tn}`
+          : parameters.tn,
     },
     !!metadata.original && {
       label: `Input`,
