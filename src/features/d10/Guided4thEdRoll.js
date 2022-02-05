@@ -23,8 +23,11 @@ import classNames from "classnames";
 
 const { Paragraph } = Typography;
 
-const rollType = ({ ring, skill, supertype, voided }) => {
+const rollType = ({ ring, skill, shugenja, supertype, voided }) => {
   if (ring > 0) {
+    if (supertype === "spell" && !shugenja) {
+      return undefined;
+    }
     if (voided === "skill") {
       return "skilled";
     }
@@ -42,13 +45,16 @@ const rollType = ({ ring, skill, supertype, voided }) => {
 };
 
 const baseFormula = (values) => {
-  const { ring, skill } = values;
+  const { ring, skill, shugenja, supertype } = values;
 
   switch (rollType(values)) {
     case "skilled":
       return `${ring + skill}k${ring}`;
     case "unskilled":
     case "nonskilled":
+      if (supertype === "spell") {
+        return `${ring + shugenja}k${ring}`;
+      }
       return `${ring}k${ring}`;
     default:
       return undefined;
@@ -224,12 +230,16 @@ const Guided4thEdRoll = () => {
               { label: `Skill Roll`, value: "skill" },
               { label: `Trait Roll`, value: "trait" },
               { label: `Ring Roll`, value: "ring" },
+              {
+                label: `Spell Casting Roll`,
+                value: "spell",
+              },
             ]}
           />
         </Form.Item>
         <div className={styles.numbers}>
           <Form.Item
-            label={supertype === "ring" ? `Ring` : `Trait`}
+            label={["ring", "spell"].includes(supertype) ? `Ring` : `Trait`}
             name="ring"
             rules={[
               {
@@ -254,6 +264,21 @@ const Guided4thEdRoll = () => {
             })}
           >
             <InputNumber min="0" max="10" />
+          </Form.Item>
+          <Form.Item
+            label={`Shugenja School Rank`}
+            name="shugenja"
+            rules={[
+              {
+                message: `Please enter a value.`,
+                required: supertype === "spell",
+              },
+            ]}
+            className={classNames({
+              [styles["hide"]]: supertype !== "spell",
+            })}
+          >
+            <InputNumber min="1" max="10" />
           </Form.Item>
         </div>
         <Form.Item
