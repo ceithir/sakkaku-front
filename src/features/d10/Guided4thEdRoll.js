@@ -23,7 +23,14 @@ import classNames from "classnames";
 
 const { Paragraph } = Typography;
 
-const rollType = ({ ring, skill, shugenja, supertype, voided }) => {
+const rollType = ({ ring, skill, shugenja, supertype, voided, dr, str }) => {
+  if (supertype === "damage") {
+    if (dr && Number.isInteger(str)) {
+      return "nonskilled";
+    }
+    return undefined;
+  }
+
   if (ring > 0) {
     if (supertype === "spell" && !shugenja) {
       return undefined;
@@ -45,7 +52,7 @@ const rollType = ({ ring, skill, shugenja, supertype, voided }) => {
 };
 
 const baseFormula = (values) => {
-  const { ring, skill, shugenja, supertype } = values;
+  const { ring, skill, shugenja, supertype, dr, str } = values;
 
   switch (rollType(values)) {
     case "skilled":
@@ -54,6 +61,9 @@ const baseFormula = (values) => {
     case "nonskilled":
       if (supertype === "spell") {
         return `${ring + shugenja}k${ring}`;
+      }
+      if (supertype === "damage") {
+        return `${dr}+${str}k0`;
       }
       return `${ring}k${ring}`;
     default:
@@ -171,6 +181,19 @@ const Guided4thEdRoll = () => {
   }, [skill, nonskilled, form]);
 
   useEffect(() => {
+    if (supertype === "damage") {
+      form.setFieldsValue({
+        voided: "none",
+        tn: null,
+        calledRaises: 0,
+        freeRaises: 0,
+        burnedFreeRaises: 0,
+      });
+      setRawFormula(completeFormula(form.getFieldsValue()));
+    }
+  }, [supertype, form]);
+
+  useEffect(() => {
     if (form.getFieldValue("burnedFreeRaises") > tnParameters.freeRaises) {
       form.setFieldsValue({ burnedFreeRaises: tnParameters.freeRaises });
       setTnParameters({
@@ -234,6 +257,10 @@ const Guided4thEdRoll = () => {
                 label: `Spell Casting Roll`,
                 value: "spell",
               },
+              {
+                label: `Damage Roll`,
+                value: "damage",
+              },
             ]}
           />
         </Form.Item>
@@ -243,10 +270,13 @@ const Guided4thEdRoll = () => {
             name="ring"
             rules={[
               {
-                required: true,
+                required: supertype !== "damage",
                 message: `Please enter a value.`,
               },
             ]}
+            className={classNames({
+              [styles["hide"]]: supertype === "damage",
+            })}
           >
             <InputNumber min="1" max="10" />
           </Form.Item>
@@ -280,6 +310,37 @@ const Guided4thEdRoll = () => {
           >
             <InputNumber min="1" max="10" />
           </Form.Item>
+          <Form.Item
+            label={`Weapon's damage rating`}
+            name="dr"
+            rules={[
+              {
+                message: `Please enter a XkY style value.`,
+                required: supertype === "damage",
+              },
+            ]}
+            className={classNames({
+              [styles["hide"]]: supertype !== "damage",
+            })}
+          >
+            <Input placeholder={`3k2`} />
+          </Form.Item>
+          <Form.Item
+            label={`Strength`}
+            name="str"
+            rules={[
+              {
+                message: `Please enter a value (can be zero).`,
+                required: supertype === "damage",
+              },
+            ]}
+            className={classNames({
+              [styles["hide"]]: supertype !== "damage",
+            })}
+            tooltip={`Some weapons might have specific rules, like for example a cap on Strength (bows). Adapt as needed.`}
+          >
+            <InputNumber min="0" max="10" />
+          </Form.Item>
         </div>
         <Form.Item
           label={`Additional modifier`}
@@ -290,12 +351,21 @@ const Guided4thEdRoll = () => {
         </Form.Item>
 
         <Divider />
+        {supertype === "damage" && (
+          <Paragraph>
+            {`As a default Void points cannot be spent on damage rolls.`}
+          </Paragraph>
+        )}
         <Form.Item
           name="voided"
           label={`Common Void Point effects`}
           tooltip={`As per core, page 78`}
+          className={classNames({
+            [styles["hide"]]: supertype === "damage",
+          })}
         >
           <Radio.Group
+            disabled={supertype === "damage"}
             options={[
               {
                 label: `Spend a Void Point to gain a bonus of +1k1.`,
@@ -337,43 +407,55 @@ const Guided4thEdRoll = () => {
           </Paragraph>
         )}
         <Divider />
-        <Form.Item label={`Base TN`} name="tn">
-          <InputNumber />
-        </Form.Item>
-        <div className={styles.numbers}>
-          <Form.Item
-            label={`Called Raises`}
-            name="calledRaises"
-            tooltip={`As a default you may not call more Raises than your Void Ring (see core page 79).`}
-          >
-            <InputNumber disabled={type === "unskilled"} min="0" />
-          </Form.Item>
-          <Form.Item label={`Free Raises`} name="freeRaises">
-            <InputNumber disabled={type === "unskilled"} min="0" />
-          </Form.Item>
-        </div>
-        {tnParameters.freeRaises > 0 && (
-          <>
-            <Paragraph>{`As per core page 79, you may use any number of your Free Raises to reduce the TN by 5 for each Raise employed that way. This however consumes the Free Raise (it may not be used anymore to grant additional effects to the roll).`}</Paragraph>
-            <Form.Item
-              label={`Free Raises used to reduce TN`}
-              name="burnedFreeRaises"
-            >
-              <InputNumber
-                disabled={type === "unskilled"}
-                min="0"
-                max={tnParameters.freeRaises}
-              />
-            </Form.Item>
-          </>
+        {supertype === "damage" && (
+          <Paragraph>
+            {`Damage rolls have no TN or concept of raises.`}
+          </Paragraph>
         )}
-        {!!tnParameters.base &&
-          (!!tnParameters.calledRaises || !!tnParameters.burnedFreeRaises) && (
-            <Paragraph>
-              {`Total TN: `}
-              <strong>{totalTn(tnParameters)}</strong>
-            </Paragraph>
+        <div
+          className={classNames({
+            [styles["hide"]]: supertype === "damage",
+          })}
+        >
+          <Form.Item label={`Base TN`} name="tn">
+            <InputNumber />
+          </Form.Item>
+          <div className={styles.numbers}>
+            <Form.Item
+              label={`Called Raises`}
+              name="calledRaises"
+              tooltip={`As a default you may not call more Raises than your Void Ring (see core page 79).`}
+            >
+              <InputNumber disabled={type === "unskilled"} min="0" />
+            </Form.Item>
+            <Form.Item label={`Free Raises`} name="freeRaises">
+              <InputNumber disabled={type === "unskilled"} min="0" />
+            </Form.Item>
+          </div>
+          {tnParameters.freeRaises > 0 && (
+            <>
+              <Paragraph>{`As per core page 79, you may use any number of your Free Raises to reduce the TN by 5 for each Raise employed that way. This however consumes the Free Raise (it may not be used anymore to grant additional effects to the roll).`}</Paragraph>
+              <Form.Item
+                label={`Free Raises used to reduce TN`}
+                name="burnedFreeRaises"
+              >
+                <InputNumber
+                  disabled={type === "unskilled"}
+                  min="0"
+                  max={tnParameters.freeRaises}
+                />
+              </Form.Item>
+            </>
           )}
+          {!!tnParameters.base &&
+            (!!tnParameters.calledRaises ||
+              !!tnParameters.burnedFreeRaises) && (
+              <Paragraph>
+                {`Total TN: `}
+                <strong>{totalTn(tnParameters)}</strong>
+              </Paragraph>
+            )}
+        </div>
         <Divider className={styles["submit-divider"]} />
         {!!rawFormula && (
           <>
