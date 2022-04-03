@@ -12,7 +12,6 @@ import HeritageRoll from "./features/heritage/Roll";
 import HeritageRollLoader from "./features/heritage/RollLoader";
 import Calculator from "./features/probabilities/Calculator";
 import Homepage from "./features/navigation/Homepage";
-import Search from "./features/browse/Search";
 import Map from "./features/trinket/Map";
 import ScrollToTop from "./features/navigation/ScrollToTop";
 import AnonymousAlertWrapper from "features/display/AnonymousAlertWrapper";
@@ -60,7 +59,6 @@ const App = () => {
           </Route>
           <Route path="/rolls" exact>
             <List />
-            <Search />
           </Route>
           <Route path="/roll-advanced" exact>
             <FfgSubmenu />
