@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./Map.module.less";
 import mapData from "./map-data";
-import { AutoComplete, Typography, Input } from "antd";
+import { AutoComplete, Input } from "antd";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Animate from "rc-animate";
 import { useLocation, useHistory } from "react-router-dom";
@@ -12,8 +12,6 @@ const {
   captions,
   grid: { columns: mapMaxX, rows: mapMaxY },
 } = mapData;
-
-const { Text } = Typography;
 
 const bound = ({ value, min, max }) => {
   return Math.max(min, Math.min(Math.round(value), max));
@@ -215,7 +213,6 @@ const Search = ({ scrollContainerRef, imageLoaded }) => {
             onSearch={onSearch}
           />
         </AutoComplete>
-        {search && <Text strong={true}>{`x${search.x} / y${search.y}`}</Text>}
       </div>
       <PositionalCross
         scrollContainerRef={scrollContainerRef}
