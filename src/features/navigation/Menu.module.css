@@ -6,8 +6,4 @@
   .logo {
     padding-left: 12px !important;
   }
-
-  .menu > li.sm-hide {
-    display: none !important;
-  }
 }

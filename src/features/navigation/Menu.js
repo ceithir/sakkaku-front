@@ -70,7 +70,7 @@ const CustomMenu = () => {
         <Link to="/rolls">All rolls</Link>
       </Menu.Item>
       {user && (
-        <Menu.Item key="my_rolls" className={styles["sm-hide"]}>
+        <Menu.Item key="my_rolls">
           <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
         </Menu.Item>
       )}
