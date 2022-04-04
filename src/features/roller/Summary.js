@@ -17,6 +17,7 @@ import {
   passions,
   anxieties,
 } from "./data/advantages";
+import Description from "features/trinket/Description";
 
 const { Text } = Typography;
 
@@ -117,7 +118,7 @@ const Summary = ({
   const data = [
     description && {
       label: `Description`,
-      content: description,
+      content: <Description>{description}</Description>,
     },
 
     {

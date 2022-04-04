@@ -9,6 +9,7 @@ import styles from "./D10IdentifiedRoll.module.less";
 import Title from "./Title";
 import GoBackButton from "features/browse/GoBackButton";
 import StandardButtons from "./StandardButtons";
+import Description from "features/trinket/Description";
 
 const D10IdentifiedRoll = () => {
   const { id } = useParams();
@@ -49,7 +50,7 @@ const D10IdentifiedRoll = () => {
   const { called = 0, free = 0, burnt = 0 } = raises;
 
   const organizedData = [
-    { label: `Description`, content: description },
+    { label: `Description`, content: <Description>{description}</Description> },
     !!parameters.tn && {
       label: `TN`,
       content:

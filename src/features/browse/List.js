@@ -11,6 +11,7 @@ import Pagination from "../../Pagination";
 import HeritageResult from "./HeritageResult";
 import heritageTables from "../heritage/data/heritage";
 import { CharacterLink, CampaignLink, PlayerLink } from "../navigation/Links";
+import Description from "features/trinket/Description";
 
 const { Text } = Typography;
 
@@ -86,7 +87,7 @@ const columns = [
         );
       }
 
-      return description;
+      return <Description>{description}</Description>;
     },
   },
   {

@@ -3,6 +3,7 @@ import CharacterSheet from "../display/CharacterSheet";
 import styles from "./Context.module.less";
 import classNames from "classnames";
 import TABLES from "./data/heritage";
+import Description from "features/trinket/Description";
 
 const Context = ({
   character,
@@ -27,7 +28,10 @@ const Context = ({
         { label: "Effect", content: thirdDie?.value || `?` },
       ],
     },
-    description && { label: `Description`, content: description },
+    description && {
+      label: `Description`,
+      content: <Description>{description}</Description>,
+    },
     table && { label: `Ref.`, content: TABLES[table]?.name },
   ].filter(Boolean);
 
