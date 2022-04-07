@@ -48,15 +48,19 @@ const D10IdentifiedRoll = () => {
   const { dice, parameters, metadata } = roll;
   const { raises = {} } = metadata;
   const { called = 0, free = 0, burnt = 0 } = raises;
+  const { tn } = parameters;
+  const originalTn = tn && tn - called * 5 + burnt * 5;
 
   const organizedData = [
     { label: `Description`, content: <Description>{description}</Description> },
-    !!parameters.tn && {
+    !!tn && {
       label: `TN`,
       content:
-        free > 0
-          ? `${parameters.tn + free * 5}-${free}x5 → ${parameters.tn}`
-          : parameters.tn,
+        tn !== originalTn
+          ? `${originalTn}${called > 0 ? `+${called}x5` : ""}${
+              burnt > 0 ? `-${burnt}x5` : ""
+            } → ${tn}`
+          : tn,
     },
     !!metadata.original && {
       label: `Input`,
