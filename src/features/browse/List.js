@@ -38,19 +38,6 @@ const columns = [
     },
   },
   {
-    title: "Type",
-    dataIndex: "type",
-    key: "type",
-    render: (type) => {
-      return {
-        "FFG-L5R": `FFG L5R Check`,
-        "FFG-L5R-Heritage": `FFG L5R Heritage`,
-        "AEG-L5R": `L5R D10 Roll`,
-      }[type];
-    },
-    responsive: ["md"],
-  },
-  {
     title: "Campaign",
     dataIndex: "campaign",
     key: "campaign",
@@ -249,7 +236,6 @@ const List = () => {
         result: { result, type, metadata },
         success: { type, roll, result },
         see_more: { id, uuid, type },
-        type,
       };
     }
   );
