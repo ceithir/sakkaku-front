@@ -17,11 +17,13 @@ const arrayToAutoCompleteOptions = (values) => {
     return undefined;
   }
 
-  return values.map((value) => {
-    return {
-      value,
-    };
-  });
+  return [...values]
+    .sort((a, b) => a.localeCompare(b))
+    .map((value) => {
+      return {
+        value,
+      };
+    });
 };
 
 const UserContext = ({ description = {} }) => {
