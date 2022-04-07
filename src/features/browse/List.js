@@ -81,7 +81,6 @@ const columns = [
     title: "Result",
     dataIndex: "result",
     key: "result",
-    width: 200,
     render: ({ result, type, metadata }) => {
       if (!result) {
         return <Text type="secondary">{`Ongoing…`}</Text>;

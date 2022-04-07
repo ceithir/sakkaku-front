@@ -4,14 +4,14 @@ import { Success, Opportunity, Strife } from "../display/Symbol";
 
 const CheckResult = ({ opportunity, success, strife }) => {
   return (
-    <span className={styles.result}>
+    <div className={styles.result}>
       <Success />
       <span>{`: ${success}, `}</span>
       <Opportunity />
       <span>{`: ${opportunity}, `}</span>
       <Strife />
       <span>{`: ${strife}`}</span>
-    </span>
+    </div>
   );
 };
 
