@@ -3,7 +3,7 @@ import { Form, InputNumber, Typography, Switch, Divider } from "antd";
 import styles from "./Calculator.module.less";
 import worker from "workerize-loader!./worker"; // eslint-disable-line import/no-webpack-loader-syntax
 import { LoadingOutlined } from "@ant-design/icons";
-import useInterval from "./useInterval";
+import useInterval from "useInterval";
 import Title from "../display/Title";
 
 const { Paragraph, Text } = Typography;

@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getOnServer } from "server";
 
 const slice = createSlice({
   name: "user",
   initialState: {
     campaigns: [],
     characters: [],
+    showReconnectionModal: false,
   },
   reducers: {
     setUser: (state, action) => {
@@ -13,6 +15,7 @@ const slice = createSlice({
       state.name = name;
       state.campaigns = campaigns;
       state.characters = characters;
+      state.showReconnectionModal = false;
     },
     addCampaign: (state, action) => {
       const campaign = action.payload;
@@ -26,13 +29,29 @@ const slice = createSlice({
         state.characters.push(character);
       }
     },
+    setShowReconnectionModal: (state, action) => {
+      state.showReconnectionModal = action.payload;
+    },
   },
 });
 
-export const { setUser, addCampaign, addCharacter } = slice.actions;
+export const { setUser, addCampaign, addCharacter, setShowReconnectionModal } =
+  slice.actions;
 
 export const selectUser = (state) => (state.user.id ? state.user : undefined);
 export const selectCampaigns = (state) => state.user.campaigns;
 export const selectCharacters = (state) => state.user.characters;
+export const selectShowReconnectionModal = (state) =>
+  state.user.showReconnectionModal;
+
+export const fetchUser = (dispatch) => {
+  getOnServer({
+    uri: "/user",
+    success: (data) => {
+      dispatch(setUser(data));
+    },
+    error: (_) => {},
+  });
+};
 
 export default slice.reducer;

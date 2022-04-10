@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 import "./App.less";
 import { StandardRoller, AdvancedRoller } from "./features/roller";
 import Layout from "./features/navigation/Layout";
-import { getOnServer } from "./server";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import List from "./features/browse/List";
 import IdentifiedRoll from "./features/roller/IdentifiedRoll";
 import { useDispatch } from "react-redux";
-import { setUser } from "./features/user/reducer";
+import { fetchUser } from "./features/user/reducer";
 import HeritageRoll from "./features/heritage/Roll";
 import HeritageRollLoader from "./features/heritage/RollLoader";
 import Calculator from "./features/probabilities/Calculator";
@@ -20,23 +19,19 @@ import D10Roller from "features/d10/D10Roller";
 import D10IdentifiedRoll from "features/d10/D10IdentifiedRoll";
 import AegSubmenu from "features/navigation/AegSubmenu";
 import Guided4thEdRoll from "features/d10/Guided4thEdRoll";
+import ReconnectionModal from "features/user/ReconnectionModal";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    getOnServer({
-      uri: "/user",
-      success: (data) => {
-        dispatch(setUser(data));
-      },
-      error: (_) => {},
-    });
+    fetchUser(dispatch);
   }, [dispatch]);
 
   return (
     <Router>
       <ScrollToTop />
       <Layout>
+        <ReconnectionModal />
         <Switch>
           <Route path="/resources/rokugan-map" exact>
             <Map />
