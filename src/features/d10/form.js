@@ -1,6 +1,10 @@
 import { parse, cap } from "./formula";
 import { postOnServer, authentifiedPostOnServer } from "server";
-import { addCampaign, addCharacter } from "features/user/reducer";
+import {
+  addCampaign,
+  addCharacter,
+  setShowReconnectionModal,
+} from "features/user/reducer";
 
 export const prepareFinish =
   ({ setLoading, setResult, setContext, setError, dispatch, user }) =>
@@ -25,8 +29,12 @@ export const prepareFinish =
       explosions,
       rerolls,
     };
-    const error = () => {
-      setError(true);
+    const error = (err) => {
+      if (err.message === "Unauthenticated") {
+        dispatch(setShowReconnectionModal(true));
+      } else {
+        setError(true);
+      }
       setLoading(false);
     };
 

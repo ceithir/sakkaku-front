@@ -38,6 +38,10 @@ const requestOnServer = async ({
       body: body ? JSON.stringify(body) : undefined,
     });
     if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error("Unauthenticated");
+      }
+
       throw new Error(`Bad status: ${response.status}`);
     }
     const data = await response.json();
