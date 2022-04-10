@@ -27,9 +27,7 @@ const Mod = () => {
       visible={true}
       title={`Session expired`}
       footer={null}
-      onCancel={() => {
-        dispatch(setShowReconnectionModal(false));
-      }}
+      closable={false}
     >
       <Alert
         message={`You have been disconnected. Please reconnect, then try again.`}
