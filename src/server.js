@@ -1,5 +1,21 @@
 const apiRoot = `/api`;
 
+// Based on https://dmitripavlutin.com/timeout-fetch-request/
+const fetchWithTimeout = async (resource, options = {}) => {
+  const { timeout = 30 * 1000 } = options;
+
+  const controller = new AbortController();
+  const id = setTimeout(() => {
+    controller.abort();
+  }, timeout);
+  const response = await fetch(resource, {
+    ...options,
+    signal: controller.signal,
+  });
+  clearTimeout(id);
+  return response;
+};
+
 const requestOnServer = async ({
   uri,
   method,
@@ -16,7 +32,7 @@ const requestOnServer = async ({
   }
 
   try {
-    const response = await fetch(`${apiRoot}${uri}`, {
+    const response = await fetchWithTimeout(`${apiRoot}${uri}`, {
       method,
       headers: { ...defaultHeaders, ...extraHeaders },
       body: body ? JSON.stringify(body) : undefined,
