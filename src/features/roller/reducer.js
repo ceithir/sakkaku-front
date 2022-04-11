@@ -153,9 +153,7 @@ export const create = (request, user) => (dispatch) => {
   dispatch(setLoading(true));
   dispatch(setParameters(request));
 
-  const error = () => {
-    dispatch(setError(true));
-  };
+  const error = errorHandler(dispatch);
 
   const {
     tn,
