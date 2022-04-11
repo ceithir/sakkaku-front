@@ -13,13 +13,7 @@ import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
 import { useSelector, useDispatch } from "react-redux";
 import { addCampaign, addCharacter } from "../user/reducer";
-import {
-  setAnimatedStep,
-  selectHidden,
-  selectAdvanced,
-} from "../roller/reducer";
-import Animate from "rc-animate";
-import { DECLARE } from "./Steps";
+import { selectAdvanced } from "../roller/reducer";
 import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import classNames from "classnames";
 import AbilityDescription from "./glitter/AbilityDescription";
@@ -29,7 +23,6 @@ import { Strife, Success, Explosion } from "../display/Symbol";
 import { ControlOutlined } from "@ant-design/icons";
 import UserContext from "components/form/UserContext";
 import Advanced from "./form/Advanced";
-import Loader from "features/navigation/Loader";
 import ApproachSelector from "./form/ApproachSelector";
 import { useHistory } from "react-router-dom";
 import NamedModifiers from "./form/NamedModifiers";
@@ -39,8 +32,6 @@ const { Panel } = Collapse;
 
 const AnimatedIntent = ({ onFinish, values }) => {
   const [completed, setCompleted] = useState(false);
-  const dispatch = useDispatch();
-  const hidden = useSelector(selectHidden);
 
   useEffect(() => {
     if (completed) {
@@ -50,29 +41,9 @@ const AnimatedIntent = ({ onFinish, values }) => {
 
   const onComplete = () => {
     setCompleted(true);
-    dispatch(setAnimatedStep(DECLARE));
   };
 
-  if (hidden) {
-    return <Loader />;
-  }
-
-  return (
-    <Animate
-      transitionName="fade"
-      transitionEnter={false}
-      transitionLeave={true}
-      showProp="visible"
-      onEnd={() => dispatch(setAnimatedStep(null))}
-    >
-      <Intent
-        visible={!completed}
-        onComplete={onComplete}
-        onFinish={onFinish}
-        values={values}
-      />
-    </Animate>
-  );
+  return <Intent onComplete={onComplete} onFinish={onFinish} values={values} />;
 };
 
 const Intent = ({ onFinish, values, onComplete }) => {

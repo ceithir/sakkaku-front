@@ -78,9 +78,6 @@ const slice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
-    setAnimatedStep: (state, action) => {
-      state.animatedStep = action.payload;
-    },
     load: (state, action) => {
       const { id, player, dices, metadata } = action.payload;
       state.id = id;
@@ -129,7 +126,6 @@ export const {
   setParameters,
   setLoading,
   softReset,
-  setAnimatedStep,
   load,
   setToKeep,
   setAddKept,
@@ -430,11 +426,7 @@ export const channel = (roll, positions) => (dispatch) => {
 export const selectAll = (state) => state.roll;
 export const selectLoading = (state) => state.roll.loading;
 export const selectStep = (state) => {
-  const { dices, metadata, modifiers, animatedStep } = state.roll;
-
-  if (animatedStep) {
-    return animatedStep;
-  }
+  const { dices, metadata, modifiers } = state.roll;
 
   const dicesRolled = dices.length > 0;
   const atLeastOneUnresolvedDice =
@@ -486,8 +478,6 @@ export const selectIntent = (state) => {
     addkept,
   };
 };
-export const selectHidden = (state) =>
-  state.roll.loading && !state.roll.animatedStep;
 
 export const selectToKeep = (state) => state.roll.toKeep;
 
