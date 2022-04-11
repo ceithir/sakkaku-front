@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer, authentifiedPostOnServer } from "../../server";
+import { setShowReconnectionModal } from "features/user/reducer";
 
 const slice = createSlice({
   name: "heritage",
@@ -54,15 +55,24 @@ export const { setLoading, setError, reset, load } = slice.actions;
 
 const { update, setContext, setUuid } = slice.actions;
 
+const errorHandler = (dispatch) => {
+  return (err) => {
+    if (err.message === "Unauthenticated") {
+      dispatch(setShowReconnectionModal(true));
+    } else {
+      dispatch(setError(true));
+    }
+    dispatch(setLoading(false));
+  };
+};
+
 export const create =
   ({ context, metadata, user }) =>
   (dispatch) => {
     dispatch(setLoading(true));
     dispatch(setContext({ ...context, user }));
 
-    const error = () => {
-      dispatch(setError(true));
-    };
+    const error = errorHandler(dispatch);
 
     if (user) {
       const { campaign, character, description } = context;
@@ -99,9 +109,7 @@ export const keep =
   (dispatch) => {
     dispatch(setLoading(true));
 
-    const error = () => {
-      dispatch(setError(true));
-    };
+    const error = errorHandler(dispatch);
 
     const { uuid } = roll;
     if (uuid) {
