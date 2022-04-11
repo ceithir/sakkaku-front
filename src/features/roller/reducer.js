@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { postOnServer, authentifiedPostOnServer } from "../../server";
 import { DECLARE, REROLL, KEEP, RESOLVE } from "./Steps";
 import { isReroll, bestKeepableDice } from "./utils";
+import { setShowReconnectionModal } from "features/user/reducer";
 
 const initialState = {
   modifiers: [],
@@ -141,6 +142,17 @@ export const {
 
 const { update, setError, setModifiers } = slice.actions;
 
+const errorHandler = (dispatch) => {
+  return (err) => {
+    if (err.message === "Unauthenticated") {
+      dispatch(setShowReconnectionModal(true));
+    } else {
+      dispatch(setError(true));
+    }
+    dispatch(setLoading(false));
+  };
+};
+
 export const create = (request, user) => (dispatch) => {
   dispatch(setLoading(true));
   dispatch(setParameters(request));
@@ -210,9 +222,7 @@ export const reroll = (roll, positions, modifier, label) => (dispatch) => {
   const success = (data) => {
     dispatch(update(data));
   };
-  const error = () => {
-    dispatch(setError(true));
-  };
+  const error = errorHandler(dispatch);
 
   const { id } = roll;
   if (id) {
@@ -253,9 +263,7 @@ export const alter = (roll, alterations, modifier, label) => (dispatch) => {
   const success = (data) => {
     dispatch(update(data));
   };
-  const error = () => {
-    dispatch(setError(true));
-  };
+  const error = errorHandler(dispatch);
 
   const { id } = roll;
   if (id) {
@@ -296,9 +304,7 @@ export const keep = (roll, positions, toAdd) => (dispatch) => {
   const success = (data) => {
     dispatch(update(data));
   };
-  const error = () => {
-    dispatch(setError(true));
-  };
+  const error = errorHandler(dispatch);
 
   const { id } = roll;
   if (id) {
@@ -375,9 +381,7 @@ const updateModifiers = (id, allModifiers, dispatch) => {
         dispatch(setModifiers(modifiers));
         dispatch(setLoading(false));
       },
-      error: () => {
-        dispatch(setError(true));
-      },
+      error: errorHandler(dispatch),
     });
     return;
   }
@@ -392,9 +396,7 @@ export const channel = (roll, positions) => (dispatch) => {
   const success = (data) => {
     dispatch(update(data));
   };
-  const error = () => {
-    dispatch(setError(true));
-  };
+  const error = errorHandler(dispatch);
 
   const { id } = roll;
   if (id) {
