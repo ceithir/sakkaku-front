@@ -15,7 +15,6 @@ const slice = createSlice({
       state.name = name;
       state.campaigns = campaigns;
       state.characters = characters;
-      state.showReconnectionModal = false;
     },
     addCampaign: (state, action) => {
       const campaign = action.payload;
@@ -44,11 +43,12 @@ export const selectCharacters = (state) => state.user.characters;
 export const selectShowReconnectionModal = (state) =>
   state.user.showReconnectionModal;
 
-export const fetchUser = (dispatch) => {
+export const fetchUser = (dispatch, callback) => {
   getOnServer({
     uri: "/user",
     success: (data) => {
       dispatch(setUser(data));
+      callback && callback(data);
     },
     error: (_) => {},
   });

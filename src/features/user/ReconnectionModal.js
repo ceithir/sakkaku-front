@@ -13,14 +13,15 @@ import useTimeout from "useTimeout";
 const Mod = () => {
   const dispatch = useDispatch();
 
+  // FIXME: There's definetely a better solution than spamming the server
+  useInterval(() => {
+    fetchUser(dispatch, () => dispatch(setShowReconnectionModal(false)));
+  }, 1 * 1000);
+
   // To avoid an infinity of calls, close the modal after three minutes
   useTimeout(() => {
     dispatch(setShowReconnectionModal(false));
   }, 3 * 60 * 1000);
-
-  useInterval(() => {
-    fetchUser(dispatch);
-  }, 1 * 1000);
 
   return (
     <Modal
