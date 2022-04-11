@@ -10,7 +10,7 @@ import {
 import useInterval from "useInterval";
 import useTimeout from "useTimeout";
 
-const Mod = ({ setSuccess }) => {
+const Iframe = ({ setSuccess }) => {
   const dispatch = useDispatch();
 
   // FIXME: There's definetely a better solution than spamming the server
@@ -23,22 +23,7 @@ const Mod = ({ setSuccess }) => {
     dispatch(setShowReconnectionModal(false));
   }, 3 * 60 * 1000);
 
-  return (
-    <Modal
-      visible={true}
-      title={`Session expired`}
-      footer={null}
-      closable={false}
-    >
-      <Alert
-        message={`You have been disconnected. Please reconnect to pursue.`}
-        type="warning"
-        showIcon
-        className={styles.message}
-      />
-      <iframe title={`Login page`} src="/login" className={styles.iframe} />
-    </Modal>
-  );
+  return <iframe title={`Login page`} src="/login" className={styles.iframe} />;
 };
 
 const ReconnectionModal = () => {
@@ -57,25 +42,37 @@ const ReconnectionModal = () => {
     return null;
   }
 
-  if (success) {
-    return (
-      <Modal
-        visible={true}
-        title={`Session restored`}
-        footer={null}
-        onCancel={() => dispatch(setShowReconnectionModal(false))}
-      >
+  const close = () => dispatch(setShowReconnectionModal(false));
+
+  return (
+    <Modal
+      visible={true}
+      title={success ? `Session restored` : `Session expired`}
+      footer={null}
+      closable={success}
+      onCancel={success && close}
+    >
+      {!success && (
+        <>
+          <Alert
+            message={`You have been disconnected. Please reconnect to pursue.`}
+            type="warning"
+            showIcon
+            className={styles.message}
+          />
+          <Iframe setSuccess={setSuccess} />
+        </>
+      )}
+      {success && (
         <Alert
           message={`You have been reconnected. You can now close this window and continue what you were doing before this interruption.`}
           type="success"
           showIcon
           className={styles.message}
         />
-      </Modal>
-    );
-  }
-
-  return <Mod setSuccess={setSuccess} />;
+      )}
+    </Modal>
+  );
 };
 
 export default ReconnectionModal;
