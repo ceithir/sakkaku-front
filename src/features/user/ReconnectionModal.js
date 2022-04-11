@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Alert } from "antd";
 import styles from "./ReconnectionModal.module.less";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,12 +10,12 @@ import {
 import useInterval from "useInterval";
 import useTimeout from "useTimeout";
 
-const Mod = () => {
+const Mod = ({ setSuccess }) => {
   const dispatch = useDispatch();
 
   // FIXME: There's definetely a better solution than spamming the server
   useInterval(() => {
-    fetchUser(dispatch, () => dispatch(setShowReconnectionModal(false)));
+    fetchUser(dispatch, setSuccess);
   }, 1 * 1000);
 
   // To avoid an infinity of calls, close the modal after three minutes
@@ -31,7 +31,7 @@ const Mod = () => {
       closable={false}
     >
       <Alert
-        message={`You have been disconnected. Please reconnect, then try again.`}
+        message={`You have been disconnected. Please reconnect to pursue.`}
         type="warning"
         showIcon
         className={styles.message}
@@ -43,12 +43,39 @@ const Mod = () => {
 
 const ReconnectionModal = () => {
   const show = useSelector(selectShowReconnectionModal);
+  const dispatch = useDispatch();
+
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (show) {
+      setSuccess(false);
+    }
+  }, [show]);
 
   if (!show) {
     return null;
   }
 
-  return <Mod />;
+  if (success) {
+    return (
+      <Modal
+        visible={true}
+        title={`Session restored`}
+        footer={null}
+        onCancel={() => dispatch(setShowReconnectionModal(false))}
+      >
+        <Alert
+          message={`You have been reconnected. You can now close this window and continue what you were doing before this interruption.`}
+          type="success"
+          showIcon
+          className={styles.message}
+        />
+      </Modal>
+    );
+  }
+
+  return <Mod setSuccess={setSuccess} />;
 };
 
 export default ReconnectionModal;
