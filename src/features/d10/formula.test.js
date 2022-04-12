@@ -42,6 +42,10 @@ describe("parse", () => {
       expect(parse("3k2+3-2+5")).toEqual({ roll: 3, keep: 2, modifier: 6 });
     });
   });
+
+  test("case insensitive", () => {
+    expect(parse("4K2+1k1+0K1")).toEqual({ roll: 5, keep: 4, modifier: 0 });
+  });
 });
 
 describe("cap", () => {

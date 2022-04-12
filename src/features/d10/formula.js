@@ -3,7 +3,7 @@ export const parse = (str) => {
     return false;
   }
 
-  const s = str.replace(/\s+/g, "");
+  const s = str.replace(/\s+/g, "").toLowerCase();
   const matches = s.match(/^([0-9]+)k([0-9]+)((\+|-)([0-9]+k[0-9]+|[0-9]+))*$/);
 
   if (!matches) {
