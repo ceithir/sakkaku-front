@@ -9,6 +9,7 @@ const ScrollForm = ({ result, context }) => {
   const refContainer = useRef();
 
   useEffect(() => {
+    document.querySelector(":focus")?.blur();
     refContainer?.current?.scrollIntoView({ behavior: "smooth" });
   }, [refContainer]);
 
