@@ -20,6 +20,7 @@ import D10IdentifiedRoll from "features/d10/D10IdentifiedRoll";
 import AegSubmenu from "features/navigation/AegSubmenu";
 import Guided4thEdRoll from "features/d10/Guided4thEdRoll";
 import ReconnectionModal from "features/user/ReconnectionModal";
+import DnDRoll from "features/dnd/Roller";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,11 @@ const App = () => {
           </Route>
           <Route path="/d10-rolls/:id" exact>
             <D10IdentifiedRoll />
+          </Route>
+          <Route path="/roll-dnd" exact>
+            <AnonymousAlertWrapper>
+              <DnDRoll />
+            </AnonymousAlertWrapper>
           </Route>
           <Route path="/roll-d10" exact>
             <AegSubmenu />

@@ -66,6 +66,9 @@ const CustomMenu = () => {
       <Menu.Item key="aeg">
         <Link to="/roll-d10">{`L5R – AEG`}</Link>
       </Menu.Item>
+      <Menu.Item key="dnd">
+        <Link to="/roll-dnd">{`DnD`}</Link>
+      </Menu.Item>
       <Menu.Item key="all_rolls">
         <Link to="/rolls">All rolls</Link>
       </Menu.Item>
