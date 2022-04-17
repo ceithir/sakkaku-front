@@ -27,6 +27,10 @@ const CustomMenu = () => {
         return "aeg";
       }
 
+      if (["/roll-dnd"].includes(pathname)) {
+        return "dnd";
+      }
+
       if (pathname === "/rolls" && !search) {
         return "all_rolls";
       }
