@@ -8,6 +8,7 @@ import styles from "./IdentifiedRoll.module.less";
 import Description from "features/trinket/Description";
 import Layout from "./Layout";
 import CopyButtons from "./CopyButtons";
+import TextResult from "./TextResult";
 
 const D10IdentifiedRoll = () => {
   const { id } = useParams();
@@ -56,9 +57,9 @@ const D10IdentifiedRoll = () => {
       label: `Input`,
       content: metadata.original,
     },
-    !!result.total && {
+    {
       label: `Result`,
-      content: result.total,
+      content: <TextResult {...roll} />,
     },
   ].filter(Boolean);
 
