@@ -6,7 +6,12 @@ import styles from "./Roller.module.less";
 import { parse } from "./formula";
 import { postOnServer, authentifiedPostOnServer } from "server";
 import UserContext from "components/form/UserContext";
-import { selectUser, addCampaign, addCharacter } from "features/user/reducer";
+import {
+  selectUser,
+  addCampaign,
+  addCharacter,
+  setShowReconnectionModal,
+} from "features/user/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import Result, { ResultPlaceholder } from "./FormResult";
 
@@ -56,8 +61,12 @@ const Roller = () => {
               original: formula,
             };
 
-            const error = (_err) => {
-              setError(true);
+            const error = (err) => {
+              if (err.message === "Unauthenticated") {
+                dispatch(setShowReconnectionModal(true));
+              } else {
+                setError(true);
+              }
               setLoading(false);
             };
 
