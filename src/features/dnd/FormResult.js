@@ -1,15 +1,19 @@
 import React from "react";
-import { Typography, Button } from "antd";
+import { Typography } from "antd";
 import styles from "./FormResult.module.less";
 import { Link } from "react-router-dom";
+import CopyButtons from "./CopyButtons";
 
 const { Text } = Typography;
 
 export const ResultPlaceholder = () => {
   return (
-    <div className={styles.result}>
-      <Text type="secondary">{`Pending…`}</Text>
-    </div>
+    <>
+      <div className={styles.result}>
+        <Text type="secondary">{`Pending…`}</Text>
+      </div>
+      <Buttons />
+    </>
   );
 };
 
@@ -56,14 +60,16 @@ const ActualResult = ({ parameters, dice }) => {
   );
 };
 
-const Buttons = ({ id }) => {
-  const disabled = !id;
-
+const Buttons = ({ id, input, description, total }) => {
   return (
     <div className={styles.buttons}>
-      <Button disabled={true}>{`Copy link`}</Button>
-      <Button disabled={true}>{`Copy as BBCode`}</Button>
-      <Link disabled={disabled} to={`/dnd-rolls/${id}`}>{`Go to page`}</Link>
+      <CopyButtons
+        input={input}
+        id={id}
+        description={description}
+        total={total}
+      />
+      <Link disabled={!id} to={`/dnd-rolls/${id}`}>{`Go to page`}</Link>
     </div>
   );
 };
@@ -72,7 +78,12 @@ const Result = ({ result, context }) => {
   return (
     <>
       <ActualResult {...result} />
-      <Buttons {...context} />
+      <Buttons
+        id={context?.id}
+        input={result.metadata.original}
+        description={context?.description}
+        total={context?.result?.total}
+      />
     </>
   );
 };

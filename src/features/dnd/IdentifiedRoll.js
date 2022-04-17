@@ -7,6 +7,7 @@ import CharacterSheet from "features/display/CharacterSheet";
 import styles from "./IdentifiedRoll.module.less";
 import Description from "features/trinket/Description";
 import Layout from "./Layout";
+import CopyButtons from "./CopyButtons";
 
 const D10IdentifiedRoll = () => {
   const { id } = useParams();
@@ -68,6 +69,14 @@ const D10IdentifiedRoll = () => {
           identity={{ character, campaign, player }}
           data={organizedData}
         />
+        <div className={styles.buttons}>
+          <CopyButtons
+            id={id}
+            total={result.total}
+            input={metadata.original}
+            description={description}
+          />
+        </div>
       </div>
     </Layout>
   );
