@@ -4,60 +4,13 @@ import DefaultErrorMessage from "DefaultErrorMessage";
 import Layout from "./Layout";
 import styles from "./Roller.module.less";
 import { parse } from "./formula";
-import { postOnServer } from "server";
+import { postOnServer, authentifiedPostOnServer } from "server";
+import UserContext from "components/form/UserContext";
+import { selectUser, addCampaign, addCharacter } from "features/user/reducer";
+import { useSelector, useDispatch } from "react-redux";
+import Result, { ResultPlaceholder } from "./FormResult";
 
-const { Paragraph, Text } = Typography;
-
-const ResultPlaceholder = () => {
-  return (
-    <div className={styles.result}>
-      <Text type="secondary">{`Pending…`}</Text>
-    </div>
-  );
-};
-
-const Result = ({ parameters, dice }) => {
-  const keptDice = dice
-    .filter(({ status }) => status === "kept")
-    .map(({ value }) => value);
-  const modifier = parameters.modifier;
-
-  const total = keptDice.reduce((acc, value) => {
-    return acc + value;
-  }, modifier);
-
-  return (
-    <div className={styles.result}>
-      <>
-        {`${dice
-          .filter(({ status }) => status === "kept")
-          .map(({ value }) => value)
-          .join("+")}`}
-        {!!modifier && (
-          <>
-            {` `}
-            <Text code={true}>
-              {modifier > 0 ? `+${modifier}` : `${modifier}`}
-            </Text>
-          </>
-        )}
-        {` ⇒ `}
-      </>
-      <Text
-        strong={true}
-        type={
-          parameters.tn
-            ? total >= parameters.tn
-              ? "success"
-              : "danger"
-            : undefined
-        }
-      >
-        {total}
-      </Text>
-    </div>
-  );
-};
+const { Paragraph } = Typography;
 
 const Roller = () => {
   const [formula, setFormula] = useState();
@@ -65,6 +18,10 @@ const Roller = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState();
+
+  const [context, setContext] = useState();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (!!result) {
@@ -84,10 +41,12 @@ const Roller = () => {
             setFormula(formula);
             setParsedFormula(parse(formula));
             setResult(undefined);
+            setContext(undefined);
           }}
-          onFinish={({ formula, tn }) => {
+          onFinish={({ formula, tn, ...values }) => {
             setLoading(true);
             setResult(undefined);
+            setContext(undefined);
 
             const parameters = {
               ...parse(formula),
@@ -102,14 +61,40 @@ const Roller = () => {
               setLoading(false);
             };
 
-            postOnServer({
-              uri: "/public/dnd/rolls/create",
+            const { testMode } = values;
+
+            if (!user || testMode) {
+              postOnServer({
+                uri: "/public/dnd/rolls/create",
+                body: {
+                  parameters,
+                  metadata,
+                },
+                success: (data) => {
+                  setResult(data);
+                  setLoading(false);
+                },
+                error,
+              });
+              return;
+            }
+
+            const { campaign, character, description } = values;
+
+            authentifiedPostOnServer({
+              uri: "/dnd/rolls/create",
               body: {
                 parameters,
                 metadata,
+                campaign,
+                character,
+                description,
               },
-              success: (data) => {
-                setResult(data);
+              success: ({ roll, ...context }) => {
+                setResult(roll);
+                setContext(context);
+                dispatch(addCampaign(campaign));
+                dispatch(addCharacter(character));
                 setLoading(false);
               },
               error,
@@ -117,6 +102,7 @@ const Roller = () => {
           }}
           className={styles.form}
         >
+          <UserContext />
           <Form.Item
             label={`Dice`}
             name="formula"
@@ -144,7 +130,7 @@ const Roller = () => {
           </Form.Item>
         </Form>
         <Divider />
-        {result && <Result {...result} />}
+        {result && <Result result={result} context={context} />}
         {!result && <ResultPlaceholder />}
       </div>
     </Layout>
