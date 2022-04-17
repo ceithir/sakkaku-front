@@ -94,7 +94,7 @@ const columns = [
         return <HeritageResult result={result} metadata={metadata} />;
       }
 
-      if (type === "AEG-L5R") {
+      if (type === "AEG-L5R" || type === "DnD") {
         return <strong>{result["total"]}</strong>;
       }
 
@@ -108,7 +108,7 @@ const columns = [
     key: "success",
     align: "center",
     render: ({ type, roll, result }) => {
-      if (type === "FFG-L5R" || type === "AEG-L5R") {
+      if (["FFG-L5R", "AEG-L5R", "DnD"].includes(type)) {
         const tn = roll.parameters.tn;
 
         if (!result) {
