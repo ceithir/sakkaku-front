@@ -56,12 +56,14 @@ const ActualResult = ({ parameters, dice }) => {
   );
 };
 
-const Buttons = () => {
+const Buttons = ({ id }) => {
+  const disabled = !id;
+
   return (
     <div className={styles.buttons}>
       <Button disabled={true}>{`Copy link`}</Button>
       <Button disabled={true}>{`Copy as BBCode`}</Button>
-      <Link disabled={true} to={`TODO`}>{`Go to page`}</Link>
+      <Link disabled={disabled} to={`/dnd-rolls/${id}`}>{`Go to page`}</Link>
     </div>
   );
 };

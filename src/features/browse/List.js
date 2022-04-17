@@ -150,6 +150,10 @@ const columns = [
           return `/d10-rolls/${id}`;
         }
 
+        if (type === "DnD") {
+          return `/dnd-rolls/${id}`;
+        }
+
         return null;
       })();
 
