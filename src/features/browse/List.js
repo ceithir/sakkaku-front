@@ -12,6 +12,7 @@ import HeritageResult from "./HeritageResult";
 import heritageTables from "../heritage/data/heritage";
 import { CharacterLink, CampaignLink, PlayerLink } from "../navigation/Links";
 import Description from "features/trinket/Description";
+import { stringify as aegStringify } from "features/d10/formula";
 
 const { Text } = Typography;
 
@@ -81,7 +82,11 @@ const columns = [
     title: `Dice pool`,
     dataIndex: "input",
     key: "input",
-    render: ({ metadata }) => {
+    render: ({ metadata, roll, type }) => {
+      if (type === "AEG-L5R") {
+        return <>{aegStringify(roll.parameters)}</>;
+      }
+
       if (!!metadata?.original) {
         return <>{metadata.original}</>;
       }
@@ -252,7 +257,7 @@ const List = () => {
         result: { result, type, metadata },
         success: { type, roll, result },
         see_more: { id, uuid, type },
-        input: { metadata },
+        input: { metadata, roll, type },
       };
     }
   );
