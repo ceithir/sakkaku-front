@@ -16,10 +16,7 @@ const TextResult = ({ parameters, dice }) => {
   return (
     <>
       <>
-        {`${dice
-          .filter(({ status }) => status === "kept")
-          .map(({ value }) => value)
-          .join("+")}`}
+        {`${keptDice.join("+")}`}
         {!!modifier && (
           <>
             {` `}
