@@ -1,9 +1,14 @@
 @import (reference) "common.less";
 
 .container {
-  .torii-box();
-  max-width: @screen-lg;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+
+  & > * {
+    .torii-box();
+    max-width: @screen-lg;
+    margin: 0 12px;
+  }
 }
 
 .buttons {

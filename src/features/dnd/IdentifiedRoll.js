@@ -67,18 +67,20 @@ const D10IdentifiedRoll = () => {
   return (
     <Layout>
       <div className={styles.container}>
-        <CharacterSheet
-          identity={{ character, campaign, player }}
-          data={organizedData}
-        />
-        <Divider />
-        <div className={styles.buttons}>
-          <CopyButtons
-            id={id}
-            total={result.total}
-            input={metadata.original}
-            description={description}
+        <div>
+          <CharacterSheet
+            identity={{ character, campaign, player }}
+            data={organizedData}
           />
+          <Divider />
+          <div className={styles.buttons}>
+            <CopyButtons
+              id={id}
+              total={result.total}
+              input={metadata.original}
+              description={description}
+            />
+          </div>
         </div>
       </div>
     </Layout>
