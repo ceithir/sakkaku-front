@@ -9,6 +9,7 @@ import Description from "features/trinket/Description";
 import Layout from "./Layout";
 import CopyButtons from "./CopyButtons";
 import TextResult from "./TextResult";
+import { Divider } from "antd";
 
 const D10IdentifiedRoll = () => {
   const { id } = useParams();
@@ -70,6 +71,7 @@ const D10IdentifiedRoll = () => {
           identity={{ character, campaign, player }}
           data={organizedData}
         />
+        <Divider />
         <div className={styles.buttons}>
           <CopyButtons
             id={id}
