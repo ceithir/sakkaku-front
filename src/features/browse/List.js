@@ -78,6 +78,19 @@ const columns = [
     },
   },
   {
+    title: `Dice pool`,
+    dataIndex: "input",
+    key: "input",
+    render: ({ metadata }) => {
+      if (!!metadata?.original) {
+        return <>{metadata.original}</>;
+      }
+
+      return <Text type="secondary">{`See page`}</Text>;
+    },
+    responsive: ["md"],
+  },
+  {
     title: "Result",
     dataIndex: "result",
     key: "result",
@@ -239,6 +252,7 @@ const List = () => {
         result: { result, type, metadata },
         success: { type, roll, result },
         see_more: { id, uuid, type },
+        input: { metadata },
       };
     }
   );
