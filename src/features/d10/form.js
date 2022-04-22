@@ -30,7 +30,7 @@ export const prepareFinish =
       rerolls,
     };
     const error = (err) => {
-      if (err.message === "Unauthenticated") {
+      if (err.message === "Authentication issue") {
         dispatch(setShowReconnectionModal(true));
       } else {
         setError(true);

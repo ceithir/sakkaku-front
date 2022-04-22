@@ -140,7 +140,7 @@ const { update, setError, setModifiers } = slice.actions;
 
 const errorHandler = (dispatch) => {
   return (err) => {
-    if (err.message === "Unauthenticated") {
+    if (err.message === "Authentication issue") {
       dispatch(setShowReconnectionModal(true));
     } else {
       dispatch(setError(true));
