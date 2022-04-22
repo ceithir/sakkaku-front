@@ -98,6 +98,7 @@ const columns = [
       return <Text type="secondary">{`See page`}</Text>;
     },
     responsive: ["md"],
+    align: "center",
   },
   {
     title: "Result",
@@ -123,6 +124,7 @@ const columns = [
       return null;
     },
     responsive: ["md"],
+    align: "center",
   },
   {
     title: "Success?",
