@@ -87,6 +87,10 @@ const columns = [
         return <>{aegStringify(roll.parameters)}</>;
       }
 
+      if (type === "FFG-L5R-Heritage") {
+        return `—`;
+      }
+
       if (!!metadata?.original) {
         return <>{metadata.original}</>;
       }
