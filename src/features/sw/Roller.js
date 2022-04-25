@@ -4,6 +4,7 @@ import styles from "./Roller.module.less";
 import { Form, Button, InputNumber, Divider } from "antd";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import { postOnServer } from "server";
+import Result from "./Result";
 
 const DiceNumber = ({ label, name, rules = [] }) => {
   return (
@@ -136,7 +137,7 @@ const Roller = () => {
         {!!result && (
           <>
             <Divider />
-            <pre>{JSON.stringify(result)}</pre>
+            <Result {...result} />
           </>
         )}
       </div>
