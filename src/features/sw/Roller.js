@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import styles from "./Roller.module.less";
-import { Form, Button, InputNumber } from "antd";
+import { Form, Button, InputNumber, Divider } from "antd";
+import DefaultErrorMessage from "DefaultErrorMessage";
+import { postOnServer } from "server";
 
 const DiceNumber = ({ label, name, rules = [] }) => {
   return (
@@ -24,10 +26,71 @@ const DiceNumber = ({ label, name, rules = [] }) => {
 };
 
 const Roller = () => {
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState();
+
+  useEffect(() => {
+    if (!!result) {
+      document.querySelector(":focus")?.blur();
+    }
+  }, [result]);
+
+  if (error) {
+    return <DefaultErrorMessage />;
+  }
+
   return (
     <Layout>
       <div className={styles.container}>
-        <Form className={styles.form}>
+        <Form
+          className={styles.form}
+          onValuesChange={() => {
+            setResult(undefined);
+          }}
+          onFinish={({
+            boost,
+            ability,
+            proficiency,
+            setback,
+            difficulty,
+            challenge,
+            force,
+          }) => {
+            setLoading(true);
+            setResult(undefined);
+
+            const parameters = {
+              boost,
+              ability,
+              proficiency,
+              setback,
+              difficulty,
+              challenge,
+              force,
+            };
+            const metadata = {};
+
+            const error = (err) => {
+              setError(true);
+              setLoading(false);
+            };
+
+            postOnServer({
+              uri: "/public/ffg/sw/rolls/create",
+              body: {
+                parameters,
+                metadata,
+              },
+              success: (data) => {
+                setResult(data);
+                setLoading(false);
+              },
+              error,
+            });
+            return;
+          }}
+        >
           <div className={styles.line}>
             <DiceNumber label={`Boost`} name="boost" />
             <DiceNumber label={`Ability`} name="ability" />
@@ -65,11 +128,17 @@ const Roller = () => {
             />
           </div>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loading}>
               {`Roll`}
             </Button>
           </Form.Item>
         </Form>
+        {!!result && (
+          <>
+            <Divider />
+            <pre>{JSON.stringify(result)}</pre>
+          </>
+        )}
       </div>
     </Layout>
   );
