@@ -31,6 +31,10 @@ const CustomMenu = () => {
         return "dnd";
       }
 
+      if (["/roll-ffg-sw"].includes(pathname)) {
+        return "ffg-sw";
+      }
+
       if (pathname === "/rolls" && !search) {
         return "all_rolls";
       }
@@ -72,6 +76,9 @@ const CustomMenu = () => {
       </Menu.Item>
       <Menu.Item key="dnd">
         <Link to="/roll-dnd">{`DnD`}</Link>
+      </Menu.Item>
+      <Menu.Item key="ffg-sw">
+        <Link to="/roll-ffg-sw">{`Star Wars – FFG`}</Link>
       </Menu.Item>
       <Menu.Item key="all_rolls">
         <Link to="/rolls">All rolls</Link>

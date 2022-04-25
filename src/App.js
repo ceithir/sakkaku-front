@@ -22,6 +22,7 @@ import Guided4thEdRoll from "features/d10/Guided4thEdRoll";
 import ReconnectionModal from "features/user/ReconnectionModal";
 import DnDRoller from "features/dnd/Roller";
 import DnDRoll from "features/dnd/IdentifiedRoll";
+import FFGSWRoller from "features/sw/Roller";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,11 @@ const App = () => {
             <FfgSubmenu />
             <AnonymousAlertWrapper>
               <StandardRoller />
+            </AnonymousAlertWrapper>
+          </Route>
+          <Route path="/roll-ffg-sw" exact>
+            <AnonymousAlertWrapper>
+              <FFGSWRoller />
             </AnonymousAlertWrapper>
           </Route>
           <Route path="/" exact>
