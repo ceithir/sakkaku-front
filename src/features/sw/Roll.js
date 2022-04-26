@@ -6,6 +6,18 @@ import Loader from "features/navigation/Loader";
 import Layout from "./Layout";
 import ResultBox from "components/aftermath/ResultBox";
 import Result from "./Result";
+import { diceToImageSrc } from "./ImageDie";
+
+export const link = (id) =>
+  !!id && `${window.location.origin}/ffg-sw-rolls/${id}`;
+export const bbMessage = ({ id, description, dice }) =>
+  `${description}[/url]` +
+  "\n" +
+  `[url="${link(id)}"]${dice
+    .map(
+      (dice) => `[img]${window.location.origin}${diceToImageSrc(dice)}[/img]`
+    )
+    .join(" ")}`;
 
 const Roll = () => {
   const { id } = useParams();
@@ -52,6 +64,8 @@ const Roll = () => {
         identity={identity}
         description={description}
         rollSpecificData={rollSpecificData}
+        link={link(id)}
+        bbMessage={bbMessage({ id, description, dice })}
       >
         <Result parameters={parameters} dice={dice} />
       </ResultBox>
