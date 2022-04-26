@@ -194,6 +194,10 @@ const columns = [
           return `/dnd-rolls/${id}`;
         }
 
+        if (type === "FFG-SW") {
+          return `/ffg-sw-rolls/${id}`;
+        }
+
         return null;
       })();
 

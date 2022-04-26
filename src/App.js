@@ -23,6 +23,7 @@ import ReconnectionModal from "features/user/ReconnectionModal";
 import DnDRoller from "features/dnd/Roller";
 import DnDRoll from "features/dnd/IdentifiedRoll";
 import FFGSWRoller from "features/sw/Roller";
+import FFGSWRoll from "features/sw/Roll";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -97,6 +98,9 @@ const App = () => {
             <AnonymousAlertWrapper>
               <FFGSWRoller />
             </AnonymousAlertWrapper>
+          </Route>
+          <Route path="/ffg-sw-rolls/:id" exact>
+            <FFGSWRoll />
           </Route>
           <Route path="/" exact>
             <Homepage />
