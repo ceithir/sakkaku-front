@@ -14,13 +14,13 @@ export const link = (id) =>
 export const bbMessage = ({ id, description, dice, parameters, result }) =>
   `${description}[/url]` +
   "\n" +
-  `[url="${link(id)}"]${dice
+  `[url=${link(id)}]${dice
     .map(
       (dice) => `[img]${window.location.origin}${diceToImageSrc(dice)}[/img]`
     )
     .join(" ")}` +
   (!isAForceRoll(parameters)
-    ? `[/url]\n[url="${link(id)}"]Net Successes: [b]${netSuccesses(
+    ? `[/url]\n[url=${link(id)}]Net Successes: [b]${netSuccesses(
         result
       )}[/b]; Net Advantages: ${netAdvantages(result)}`
     : "");

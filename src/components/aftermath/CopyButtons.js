@@ -26,7 +26,7 @@ const BbCode = ({ link, bbMessage }) => {
     return <Button disabled>{buttonText}</Button>;
   }
 
-  const text = `[url="${link}"]${bbMessage}[/url]`;
+  const text = `[url=${link}]${bbMessage}[/url]`;
 
   return (
     <CopyToClipboard
