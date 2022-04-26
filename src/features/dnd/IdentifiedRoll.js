@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import { getOnServer } from "server";
 import Loader from "features/navigation/Loader";
-import CharacterSheet from "features/display/CharacterSheet";
-import styles from "./IdentifiedRoll.module.less";
-import Description from "features/trinket/Description";
 import Layout from "./Layout";
-import CopyButtons from "./CopyButtons";
 import TextResult from "./TextResult";
-import { Divider } from "antd";
+import ResultBox from "components/aftermath/ResultBox";
+
+export const link = (id) => !!id && `${window.location.origin}/dnd-rolls/${id}`;
+export const bbMessage = ({ description, total, input }) =>
+  `${description} | ${input} ⇒ [b]${total}[/b]`;
 
 const D10IdentifiedRoll = () => {
   const { id } = useParams();
@@ -48,8 +48,7 @@ const D10IdentifiedRoll = () => {
   const { parameters, metadata } = roll;
   const { tn } = parameters;
 
-  const organizedData = [
-    { label: `Description`, content: <Description>{description}</Description> },
+  const rollSpecificData = [
     !!tn && {
       label: `TN`,
       content: tn,
@@ -66,23 +65,17 @@ const D10IdentifiedRoll = () => {
 
   return (
     <Layout>
-      <div className={styles.container}>
-        <div>
-          <CharacterSheet
-            identity={{ character, campaign, player }}
-            data={organizedData}
-          />
-          <Divider />
-          <div className={styles.buttons}>
-            <CopyButtons
-              id={id}
-              total={result.total}
-              input={metadata.original}
-              description={description}
-            />
-          </div>
-        </div>
-      </div>
+      <ResultBox
+        identity={{ character, campaign, player }}
+        description={description}
+        rollSpecificData={rollSpecificData}
+        link={link(id)}
+        bbMessage={bbMessage({
+          description,
+          total: result.total,
+          input: metadata.original,
+        })}
+      />
     </Layout>
   );
 };

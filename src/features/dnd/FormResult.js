@@ -2,8 +2,9 @@ import React from "react";
 import { Typography } from "antd";
 import styles from "./FormResult.module.less";
 import { Link } from "react-router-dom";
-import CopyButtons from "./CopyButtons";
+import CopyButtons from "components/aftermath/CopyButtons";
 import TextResult from "./TextResult";
+import { link, bbMessage } from "./IdentifiedRoll";
 
 const { Text } = Typography;
 
@@ -30,10 +31,8 @@ const Buttons = ({ id, input, description, total }) => {
   return (
     <div className={styles.buttons}>
       <CopyButtons
-        input={input}
-        id={id}
-        description={description}
-        total={total}
+        link={link(id)}
+        bbMessage={bbMessage({ input, description, total })}
       />
       <Link disabled={!id} to={`/dnd-rolls/${id}`}>{`Go to page`}</Link>
     </div>

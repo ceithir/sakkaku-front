@@ -92,6 +92,16 @@ const Summary = ({ parameters, result }) => {
   );
 };
 
+const Dice = ({ dice }) => {
+  return (
+    <div className={styles.dice}>
+      {dice.map((die, index) => {
+        return <ImageDie key={index.toString()} {...die} />;
+      })}
+    </div>
+  );
+};
+
 const Result = ({ parameters, dice }) => {
   const result = {
     success: 0,
@@ -111,11 +121,7 @@ const Result = ({ parameters, dice }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.dice}>
-        {dice.map((die, index) => {
-          return <ImageDie key={index.toString()} {...die} />;
-        })}
-      </div>
+      <Dice dice={dice} />
       <Summary parameters={parameters} result={result} />
     </div>
   );

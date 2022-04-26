@@ -2,14 +2,12 @@ import React from "react";
 import { Button, message } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const CopyLink = ({ id }) => {
+const CopyLink = ({ link }) => {
   const buttonText = `Copy link`;
 
-  if (!id) {
+  if (!link) {
     return <Button disabled>{buttonText}</Button>;
   }
-
-  const link = `${window.location.origin}/dnd-rolls/${id}`;
 
   return (
     <CopyToClipboard
@@ -21,16 +19,14 @@ const CopyLink = ({ id }) => {
   );
 };
 
-const BbCode = ({ id, description, input, total }) => {
+const BbCode = ({ link, bbMessage }) => {
   const buttonText = `Copy as BBCode`;
 
-  if (!id) {
+  if (!bbMessage || !link) {
     return <Button disabled>{buttonText}</Button>;
   }
 
-  const link = `${window.location.origin}/dnd-rolls/${id}`;
-
-  const text = `[url="${link}"]${description} | ${input} ⇒ [b]${total}[/b][/url]`;
+  const text = `[url="${link}"]${bbMessage}[/url]`;
 
   return (
     <CopyToClipboard
@@ -42,11 +38,11 @@ const BbCode = ({ id, description, input, total }) => {
   );
 };
 
-const CopyButtons = ({ id, description, total, input }) => {
+const CopyButtons = ({ link, bbMessage }) => {
   return (
     <>
-      <CopyLink id={id} />
-      <BbCode id={id} description={description} input={input} total={total} />
+      <CopyLink link={link} />
+      <BbCode link={link} bbMessage={bbMessage} />
     </>
   );
 };

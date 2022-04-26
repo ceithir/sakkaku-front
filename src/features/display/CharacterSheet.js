@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./CharacterSheet.module.less";
 import { CharacterLink, CampaignLink, PlayerLink } from "../navigation/Links";
+import Description from "features/trinket/Description";
 
-const buildData = ({ data, identity }) => {
+const buildIdentity = (identity) => {
   if (!identity?.character) {
-    return data;
+    return [];
   }
 
   const { character, campaign, player } = identity;
@@ -27,6 +28,23 @@ const buildData = ({ data, identity }) => {
         },
       ],
     },
+  ];
+};
+
+const buildDescription = (description) => {
+  if (!description) {
+    return [];
+  }
+
+  return [
+    { label: `Description`, content: <Description>{description}</Description> },
+  ];
+};
+
+const buildData = ({ data, identity, description }) => {
+  return [
+    ...buildIdentity(identity),
+    ...buildDescription(description),
     ...data,
   ];
 };
@@ -46,10 +64,10 @@ const buildDl = (data) => {
   );
 };
 
-const CharacterSheet = ({ data, identity }) => {
+const CharacterSheet = ({ data, identity, description }) => {
   return (
     <div className={styles.container}>
-      {buildDl(buildData({ data, identity }))}
+      {buildDl(buildData({ data, identity, description }))}
     </div>
   );
 };
