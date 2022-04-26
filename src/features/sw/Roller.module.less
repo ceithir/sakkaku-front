@@ -33,4 +33,21 @@
       margin-bottom: 12px;
     }
   }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+
+    & > * {
+      margin-right: 12px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    a {
+      line-height: 32px;
+    }
+  }
 }

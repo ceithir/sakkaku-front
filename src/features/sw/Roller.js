@@ -13,6 +13,9 @@ import {
   setShowReconnectionModal,
 } from "features/user/reducer";
 import { useSelector, useDispatch } from "react-redux";
+import CopyButtons from "components/aftermath/CopyButtons";
+import { link, bbMessage } from "./Roll";
+import { Link } from "react-router-dom";
 
 const DiceNumber = ({ label, name, rules = [] }) => {
   return (
@@ -38,6 +41,7 @@ const Roller = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState();
+  const [context, setContext] = useState();
 
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -59,6 +63,7 @@ const Roller = () => {
           className={styles.form}
           onValuesChange={() => {
             setResult(undefined);
+            setContext(undefined);
           }}
           onFinish={({
             boost,
@@ -76,6 +81,7 @@ const Roller = () => {
           }) => {
             setLoading(true);
             setResult(undefined);
+            setContext(undefined);
 
             const parameters = {
               boost,
@@ -122,8 +128,9 @@ const Roller = () => {
                 character,
                 description,
               },
-              success: ({ roll }) => {
+              success: ({ roll, ...context }) => {
                 setResult(roll);
+                setContext(context);
                 dispatch(addCampaign(campaign));
                 dispatch(addCharacter(character));
                 setLoading(false);
@@ -179,6 +186,22 @@ const Roller = () => {
           <>
             <Divider />
             <Result {...result} />
+            {!!context?.id && (
+              <>
+                <Divider />
+                <div className={styles.buttons}>
+                  <CopyButtons
+                    link={link(context.id)}
+                    bbMessage={bbMessage({
+                      id: context.id,
+                      description: context.description,
+                      dice: result.dice,
+                    })}
+                  />
+                  <Link to={`/ffg-sw-rolls/${context.id}`}>{`Go to page`}</Link>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
