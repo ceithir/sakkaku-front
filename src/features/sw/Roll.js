@@ -7,17 +7,23 @@ import Layout from "./Layout";
 import ResultBox from "components/aftermath/ResultBox";
 import Result from "./Result";
 import { diceToImageSrc } from "./ImageDie";
+import { isAForceRoll, netSuccesses, netAdvantages } from "./Result";
 
 export const link = (id) =>
   !!id && `${window.location.origin}/ffg-sw-rolls/${id}`;
-export const bbMessage = ({ id, description, dice }) =>
+export const bbMessage = ({ id, description, dice, parameters, result }) =>
   `${description}[/url]` +
   "\n" +
   `[url="${link(id)}"]${dice
     .map(
       (dice) => `[img]${window.location.origin}${diceToImageSrc(dice)}[/img]`
     )
-    .join(" ")}`;
+    .join(" ")}` +
+  (!isAForceRoll(parameters)
+    ? `[/url]\n[url="${link(id)}"]Net Successes: [b]${netSuccesses(
+        result
+      )}[/b]; Net Advantages: ${netAdvantages(result)}`
+    : "");
 
 const Roll = () => {
   const { id } = useParams();
@@ -52,7 +58,7 @@ const Roll = () => {
     return null;
   }
 
-  const { character, campaign, user: player, description, roll } = data;
+  const { character, campaign, user: player, description, roll, result } = data;
 
   const identity = { character, campaign, player };
   const rollSpecificData = [].filter(Boolean);
@@ -65,7 +71,7 @@ const Roll = () => {
         description={description}
         rollSpecificData={rollSpecificData}
         link={link(id)}
-        bbMessage={bbMessage({ id, description, dice })}
+        bbMessage={bbMessage({ id, description, dice, parameters, result })}
       >
         <Result parameters={parameters} dice={dice} />
       </ResultBox>

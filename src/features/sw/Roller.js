@@ -196,6 +196,8 @@ const Roller = () => {
                       id: context.id,
                       description: context.description,
                       dice: result.dice,
+                      parameters: result.parameters,
+                      result: context.result,
                     })}
                   />
                   <Link to={`/ffg-sw-rolls/${context.id}`}>{`Go to page`}</Link>
