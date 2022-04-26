@@ -27,16 +27,7 @@ export const isAForceRoll = ({
 
 const Additions = ({
   parameters,
-  result: {
-    success,
-    failure,
-    triumph,
-    despair,
-    advantage,
-    threat,
-    light,
-    dark,
-  },
+  result: { success, failure, triumph, despair, advantage, threat },
 }) => {
   if (isAForceRoll(parameters)) {
     return null;
