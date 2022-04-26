@@ -3,8 +3,16 @@ import Layout from "./Layout";
 import styles from "./Roller.module.less";
 import { Form, Button, InputNumber, Divider } from "antd";
 import DefaultErrorMessage from "DefaultErrorMessage";
-import { postOnServer } from "server";
+import { postOnServer, authentifiedPostOnServer } from "server";
 import Result from "./Result";
+import UserContext from "components/form/UserContext";
+import {
+  selectUser,
+  addCampaign,
+  addCharacter,
+  setShowReconnectionModal,
+} from "features/user/reducer";
+import { useSelector, useDispatch } from "react-redux";
 
 const DiceNumber = ({ label, name, rules = [] }) => {
   return (
@@ -30,6 +38,9 @@ const Roller = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState();
+
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (!!result) {
@@ -57,6 +68,11 @@ const Roller = () => {
             difficulty,
             challenge,
             force,
+
+            testMode,
+            campaign,
+            character,
+            description,
           }) => {
             setLoading(true);
             setResult(undefined);
@@ -73,25 +89,50 @@ const Roller = () => {
             const metadata = {};
 
             const error = (err) => {
-              setError(true);
+              if (err.message === "Authentication issue") {
+                dispatch(setShowReconnectionModal(true));
+              } else {
+                setError(true);
+              }
               setLoading(false);
             };
 
-            postOnServer({
-              uri: "/public/ffg/sw/rolls/create",
+            if (!user || testMode) {
+              postOnServer({
+                uri: "/public/ffg/sw/rolls/create",
+                body: {
+                  parameters,
+                  metadata,
+                },
+                success: (data) => {
+                  setResult(data);
+                  setLoading(false);
+                },
+                error,
+              });
+              return;
+            }
+
+            authentifiedPostOnServer({
+              uri: "/ffg/sw/rolls/create",
               body: {
                 parameters,
                 metadata,
+                campaign,
+                character,
+                description,
               },
-              success: (data) => {
-                setResult(data);
+              success: ({ roll }) => {
+                setResult(roll);
+                dispatch(addCampaign(campaign));
+                dispatch(addCharacter(character));
                 setLoading(false);
               },
               error,
             });
-            return;
           }}
         >
+          <UserContext />
           <div className={styles.line}>
             <DiceNumber label={`Boost`} name="boost" />
             <DiceNumber label={`Ability`} name="ability" />
