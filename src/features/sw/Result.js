@@ -25,27 +25,31 @@ export const isAForceRoll = ({
   );
 };
 
-const Additions = ({
-  parameters,
-  result: { success, failure, triumph, despair, advantage, threat },
-}) => {
+export const netSuccesses = ({ success, failure, triumph, despair }) =>
+  success + triumph - failure - despair;
+
+export const netAdvantages = ({ advantage, threat }) => advantage - threat;
+
+const Additions = ({ parameters, result }) => {
   if (isAForceRoll(parameters)) {
     return null;
   }
 
-  const netSuccesses = success + triumph - failure - despair;
-  const netAdvantages = advantage - threat;
+  const { triumph, despair } = result;
+
+  const netS = netSuccesses(result);
+  const netA = netAdvantages(result);
 
   const dataSource = [
     {
       label: `Net Successes (including Triumph and Despair)`,
-      value: netSuccesses,
-      color: netSuccesses > 0 ? "success" : "danger",
+      value: netS,
+      color: netS > 0 ? "success" : "danger",
     },
     {
       label: `Net Advantages`,
-      value: netAdvantages,
-      color: netAdvantages >= 0 ? null : "warning",
+      value: netA,
+      color: netA >= 0 ? null : "warning",
     },
     {
       label: `Triumph`,

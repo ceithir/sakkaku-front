@@ -13,6 +13,8 @@ import heritageTables from "../heritage/data/heritage";
 import { CharacterLink, CampaignLink, PlayerLink } from "../navigation/Links";
 import Description from "features/trinket/Description";
 import { stringify as aegStringify } from "features/d10/formula";
+import FFGSWResult from "./FFGSWResult";
+import { isAForceRoll, netSuccesses } from "features/sw/Result";
 
 const { Text } = Typography;
 
@@ -104,7 +106,7 @@ const columns = [
     title: "Result",
     dataIndex: "result",
     key: "result",
-    render: ({ result, type, metadata }) => {
+    render: ({ result, type, metadata, parameters }) => {
       if (!result) {
         return <Text type="secondary">{`Ongoing…`}</Text>;
       }
@@ -121,6 +123,10 @@ const columns = [
         return <strong>{result["total"]}</strong>;
       }
 
+      if (type === "FFG-SW") {
+        return <FFGSWResult parameters={parameters} result={result} />;
+      }
+
       return null;
     },
     responsive: ["md"],
@@ -132,8 +138,10 @@ const columns = [
     key: "success",
     align: "center",
     render: ({ type, roll, result }) => {
+      const { parameters } = roll;
+
       if (["FFG-L5R", "AEG-L5R", "DnD"].includes(type)) {
-        const tn = roll.parameters.tn;
+        const tn = parameters.tn;
 
         if (!result) {
           return <Text type="secondary">{"TBD"}</Text>;
@@ -146,6 +154,14 @@ const columns = [
         const total = result.total || result.success;
 
         return total >= tn ? (
+          <Text type="success">{"Yes"}</Text>
+        ) : (
+          <Text type="danger">{"No"}</Text>
+        );
+      }
+
+      if (type === "FFG-SW" && !isAForceRoll(parameters)) {
+        return netSuccesses(result) > 0 ? (
           <Text type="success">{"Yes"}</Text>
         ) : (
           <Text type="danger">{"No"}</Text>
@@ -251,7 +267,7 @@ const List = () => {
       result,
       roll,
     }) => {
-      const { metadata } = roll;
+      const { parameters, metadata } = roll;
 
       return {
         key: id,
@@ -260,7 +276,7 @@ const List = () => {
         character: { campaign, character },
         player: user,
         description: { description, type, metadata },
-        result: { result, type, metadata },
+        result: { result, type, metadata, parameters },
         success: { type, roll, result },
         see_more: { id, uuid, type },
         input: { metadata, roll, type },
