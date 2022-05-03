@@ -6,6 +6,7 @@ import Loader from "features/navigation/Loader";
 import Layout from "./Layout";
 import TextResult from "./TextResult";
 import ResultBox from "components/aftermath/ResultBox";
+import { stringify } from "./formula";
 
 export const link = (id) => !!id && `${window.location.origin}/dnd-rolls/${id}`;
 export const bbMessage = ({ description, total, input }) =>
@@ -73,7 +74,7 @@ const D10IdentifiedRoll = () => {
         bbMessage={bbMessage({
           description,
           total: result.total,
-          input: metadata.original,
+          input: stringify(parameters),
         })}
       />
     </Layout>
