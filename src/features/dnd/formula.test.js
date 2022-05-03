@@ -32,6 +32,15 @@ describe("parse", () => {
       modifier: 5,
     });
   });
+  test("multiple dice type", () => {
+    expect(parse("1d20+3d6")).toEqual({
+      dices: [
+        { sides: 20, number: 1 },
+        { sides: 6, number: 3 },
+      ],
+      modifier: 0,
+    });
+  });
 });
 
 describe("stringify", () => {
