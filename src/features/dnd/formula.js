@@ -5,14 +5,21 @@ export const parse = (str) => {
 
   const s = str.replace(/\s+/g, "").toLowerCase();
 
-  const matches = s.match(/^([0-9]{1,2})d([0-9]{1,3})((\+|-)[0-9]+)?$/);
+  const matches = s.match(/^([0-9]{1,2})d([0-9]{1,3})((\+|-)[0-9]+)*$/);
 
   if (!matches) {
     return false;
   }
   const number = parseInt(matches[1]);
   const sides = parseInt(matches[2]);
-  const modifier = !!matches[3] ? parseInt(matches[3]) : 0;
+
+  let modifier = 0;
+  const modifiers = s.match(/(\+|-)[0-9]+(?!d)/g);
+  if (!!modifiers) {
+    modifiers.forEach((mod) => {
+      modifier += parseInt(mod);
+    });
+  }
 
   if (!number || !sides) {
     return false;

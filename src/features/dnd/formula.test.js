@@ -26,6 +26,12 @@ describe("parse", () => {
     expect(parse("3d0")).toEqual(false);
     expect(parse("0d0")).toEqual(false);
   });
+  test("modifier addition", () => {
+    expect(parse("1d20+3-2+4")).toEqual({
+      dices: [{ sides: 20, number: 1 }],
+      modifier: 5,
+    });
+  });
 });
 
 describe("stringify", () => {
