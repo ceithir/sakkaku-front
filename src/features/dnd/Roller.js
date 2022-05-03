@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Typography, Button, InputNumber, Divider } from "antd";
+import { Form, Input, Button, InputNumber, Divider } from "antd";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import Layout from "./Layout";
 import styles from "./Roller.module.less";
@@ -14,8 +14,6 @@ import {
 } from "features/user/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import Result, { ResultPlaceholder } from "./FormResult";
-
-const { Paragraph } = Typography;
 
 const Roller = () => {
   const [formula, setFormula] = useState();
@@ -37,6 +35,19 @@ const Roller = () => {
   if (error) {
     return <DefaultErrorMessage />;
   }
+
+  const placeholderMessage = () => {
+    if (loading) {
+      return `Loading…`;
+    }
+    if (!formula) {
+      return `Awaiting formula…`;
+    }
+    if (!parsedFormula) {
+      return `Incomplete or erroneous formula…`;
+    }
+    return `…`;
+  };
 
   return (
     <Layout>
@@ -124,9 +135,6 @@ const Roller = () => {
           <Form.Item label={`Target number`} name="tn">
             <InputNumber />
           </Form.Item>
-          {formula && !parsedFormula && (
-            <Paragraph type="secondary">{`Incomplete or erroneous formula…`}</Paragraph>
-          )}
           <Form.Item>
             <Button
               type="primary"
@@ -140,7 +148,7 @@ const Roller = () => {
         </Form>
         <Divider />
         {result && <Result result={result} context={context} />}
-        {!result && <ResultPlaceholder />}
+        {!result && <ResultPlaceholder text={placeholderMessage()} />}
       </div>
     </Layout>
   );

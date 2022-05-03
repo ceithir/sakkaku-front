@@ -8,11 +8,11 @@ import { link, bbMessage } from "./IdentifiedRoll";
 
 const { Text } = Typography;
 
-export const ResultPlaceholder = () => {
+export const ResultPlaceholder = ({ text }) => {
   return (
     <>
       <div className={styles.result}>
-        <Text type="secondary">{`Pending…`}</Text>
+        <Text type="secondary">{text}</Text>
       </div>
       <Buttons />
     </>
