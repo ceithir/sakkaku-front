@@ -1,4 +1,4 @@
-import { parse } from "./formula";
+import { parse, stringify } from "./formula";
 
 describe("parse", () => {
   test("empty", () => {
@@ -25,5 +25,15 @@ describe("parse", () => {
     expect(parse("0d12")).toEqual(false);
     expect(parse("3d0")).toEqual(false);
     expect(parse("0d0")).toEqual(false);
+  });
+});
+
+describe("stringify", () => {
+  test("one type, no modifier", () => {
+    expect(
+      stringify({
+        dices: [{ sides: 6, number: 3 }],
+      })
+    ).toBe("3d6");
   });
 });

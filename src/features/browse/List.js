@@ -15,6 +15,7 @@ import Description from "features/trinket/Description";
 import { stringify as aegStringify } from "features/d10/formula";
 import FFGSWResult from "./FFGSWResult";
 import { isAForceRoll, netSuccesses } from "features/sw/Result";
+import { stringify as dndStringify } from "features/dnd/formula";
 
 const { Text } = Typography;
 
@@ -93,8 +94,8 @@ const columns = [
         return `—`;
       }
 
-      if (!!metadata?.original) {
-        return <>{metadata.original}</>;
+      if (type === "DnD") {
+        return <>{dndStringify(roll.parameters)}</>;
       }
 
       return <Text type="secondary">{`See page`}</Text>;

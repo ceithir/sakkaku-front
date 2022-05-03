@@ -20,3 +20,17 @@ export const parse = (str) => {
 
   return { dices: [{ number, sides }], modifier };
 };
+
+export const stringify = (parameters) => {
+  const { dices, modifier } = parameters;
+  const diceString = dices
+    .map(({ number, sides }) => `${number}d${sides}`)
+    .join("+");
+  const modifierString = !!modifier
+    ? modifier > 0
+      ? `+${modifier}`
+      : modifier.toString()
+    : "";
+
+  return `${diceString}${modifierString}`;
+};
