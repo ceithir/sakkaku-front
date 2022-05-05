@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
 import { orderDices } from "./utils";
 import styles from "./IdentifiedRoll.module.less";
-import GoBackButton from "../browse/GoBackButton";
 import Layout from "./Layout";
 
 const IdentifiedRoll = () => {
@@ -71,7 +70,6 @@ const IdentifiedRoll = () => {
             dices={orderDices(
               dices.filter(({ status }) => ["pending", "kept"].includes(status))
             )}
-            footer={<GoBackButton style={{ float: "right" }} />}
           />
         </div>
       </Layout>
@@ -82,7 +80,6 @@ const IdentifiedRoll = () => {
     <Layout>
       <Complete
         dices={dices}
-        button={<GoBackButton />}
         intent={parameters}
         context={data}
         player={player}

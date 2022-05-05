@@ -7,7 +7,6 @@ import RollResult from "./RollResult";
 import CharacterSheet from "features/display/CharacterSheet";
 import styles from "./D10IdentifiedRoll.module.less";
 import Title from "./Title";
-import GoBackButton from "features/browse/GoBackButton";
 import StandardButtons from "./StandardButtons";
 import Description from "features/trinket/Description";
 
@@ -107,7 +106,6 @@ const D10IdentifiedRoll = () => {
 
         <div className={styles.buttons}>
           <StandardButtons id={id} description={description} roll={roll} />
-          <GoBackButton />
         </div>
       </div>
     </div>

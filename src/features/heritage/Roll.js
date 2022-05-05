@@ -9,14 +9,12 @@ import Summary from "./Summary";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
 import CopyLink from "../trinket/CopyLink";
-import { useHistory } from "react-router-dom";
 
 const Roll = () => {
   const error = useSelector(selectError);
   const dispatch = useDispatch();
   const roll = useSelector(selectRoll);
   const context = useSelector(selectContext);
-  const history = useHistory();
 
   const { dices, metadata } = roll;
 
@@ -73,14 +71,6 @@ const Roll = () => {
         />
         <div className={styles.footer}>
           <CopyLink disabled={!roll.uuid} />
-          {roll.uuid && (
-            <Button
-              onClick={() => {
-                dispatch(reset());
-                history.push("/rolls");
-              }}
-            >{`Go back`}</Button>
-          )}
           <Button
             onClick={() => {
               dispatch(reset());

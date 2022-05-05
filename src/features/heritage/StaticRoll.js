@@ -3,7 +3,6 @@ import Summary from "./Summary";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
 import styles from "./StaticRoll.module.less";
-import GoBackButton from "../browse/GoBackButton";
 import CopyLink from "../trinket/CopyLink";
 
 const StaticRoll = ({ roll, context }) => {
@@ -21,7 +20,6 @@ const StaticRoll = ({ roll, context }) => {
         {children}
         <div className={styles["go-back-container"]}>
           <CopyLink />
-          <GoBackButton />
         </div>
       </Layout>
     );
