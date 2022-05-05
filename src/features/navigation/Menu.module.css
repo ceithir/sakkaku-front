@@ -1,9 +1,0 @@
-.login {
-  float: right;
-}
-
-@media (max-width: 576px) {
-  .logo {
-    padding-left: 12px !important;
-  }
-}

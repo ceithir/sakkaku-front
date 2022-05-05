@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import styles from "./Menu.module.css";
+import styles from "./Menu.module.less";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../user/reducer";
@@ -49,15 +49,10 @@ const CustomMenu = () => {
     setSelectedKey(getMenuKey(location));
   }, [location, user]);
 
-  return (
-    <Menu
-      theme="dark"
-      mode="horizontal"
-      selectedKeys={[selectedKey]}
-      onSelect={({ key }) => setSelectedKey(key)}
-      className={styles.menu}
-    >
-      <Menu.Item className={styles.logo} key="home">
+  const items = [
+    {
+      key: "home",
+      label: (
         <Link to="/">
           <img
             alt="Logo"
@@ -67,35 +62,46 @@ const CustomMenu = () => {
             srcSet={`${logo50}, ${logo100} 2x, ${logo150} 3x`}
           />
         </Link>
-      </Menu.Item>
-      <Menu.Item key="ffg">
-        <Link to="/roll">{`L5R – FFG`}</Link>
-      </Menu.Item>
-      <Menu.Item key="aeg">
-        <Link to="/roll-d10">{`L5R – AEG`}</Link>
-      </Menu.Item>
-      <Menu.Item key="dnd">
-        <Link to="/roll-dnd">{`DnD`}</Link>
-      </Menu.Item>
-      <Menu.Item key="ffg-sw">
-        <Link to="/roll-ffg-sw">{`Star Wars – FFG`}</Link>
-      </Menu.Item>
-      <Menu.Item key="all_rolls">
-        <Link to="/rolls">All rolls</Link>
-      </Menu.Item>
-      {user && (
-        <Menu.Item key="my_rolls">
-          <Link to={`/rolls?player=${user.id}`}>My rolls</Link>
-        </Menu.Item>
-      )}
-      <Menu.Item className={styles.login}>
-        {user ? (
-          <a href="/user/profile">{user.name}</a>
-        ) : (
-          <a href="/login">Login</a>
-        )}
-      </Menu.Item>
-    </Menu>
+      ),
+    },
+    {
+      key: "ffg",
+      label: <Link to="/roll">{`L5R – FFG`}</Link>,
+    },
+    {
+      key: "aeg",
+      label: <Link to="/roll-d10">{`L5R – AEG`}</Link>,
+    },
+    { key: "dnd", label: <Link to="/roll-dnd">{`DnD`}</Link> },
+    {
+      key: "ffg-sw",
+      label: <Link to="/roll-ffg-sw">{`Star Wars – FFG`}</Link>,
+    },
+    { key: "all_rolls", label: <Link to="/rolls">{`All rolls`}</Link> },
+    !!user && {
+      key: "my_rolls",
+      label: <Link to={`/rolls?player=${user.id}`}>{`My rolls`}</Link>,
+    },
+    {
+      key: "login",
+      label: user ? (
+        <a href="/user/profile">{user.name}</a>
+      ) : (
+        <a href="/login">{`Login`}</a>
+      ),
+      className: styles.login,
+    },
+  ].filter(Boolean);
+
+  return (
+    <Menu
+      theme="dark"
+      mode="horizontal"
+      selectedKeys={[selectedKey]}
+      onSelect={({ key }) => setSelectedKey(key)}
+      className={styles.menu}
+      items={items}
+    />
   );
 };
 
