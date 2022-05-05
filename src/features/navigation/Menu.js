@@ -102,7 +102,7 @@ const CustomMenu = () => {
         },
       ],
     },
-    { key: "all_rolls", label: <Link to="/rolls">{`Past rolls`}</Link> },
+    { key: "all_rolls", label: <Link to="/rolls">{`Saved rolls`}</Link> },
     !!user && {
       key: "my_rolls",
       label: <Link to={`/rolls?player=${user.id}`}>{`My rolls`}</Link>,

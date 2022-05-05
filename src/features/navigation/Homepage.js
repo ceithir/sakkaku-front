@@ -49,34 +49,55 @@ const Section = ({ title, text, links = [] }) => {
 const Homepage = () => {
   return (
     <div className={styles.container}>
-      <MainTitle>{`Sakkaku – Table of contents`}</MainTitle>
+      <MainTitle>{`Sakkaku`}</MainTitle>
       <Section
-        title={`Dice Roller`}
+        title={`Dice rollers`}
         text={
           <>
             <p>
-              {`Sakkaku's first goal is to provide a dice roller for Fantasy Flight Games/EDGE Studio `}
-              <em>{`Legend of the Five Rings`}</em>
-              {` roleplaying game that isn't dependent on another software (ex: Discord) or operating system (ex: iOS/Android).`}
+              {`Sakkaku aims to provide dice rollers for various roleplaying games that are easy to use and, most importantly, that don't require any installation or setup.`}
             </p>
-            <p>{`As of now, it offers the following features:`}</p>
+            <p>{`As of now, the following types of rolls are supported:`}</p>
           </>
         }
         links={[
           {
+            uri: "/roll-dnd",
+            label: `DnD classic`,
+            description: `For the most common needs, like rolling 2d6, 1d20+3, 1d12+1d4, etc.`,
+          },
+          {
+            uri: "/roll-d10",
+            label: `L5R ‒ AEG Roll & Keep (d10)`,
+            description: (
+              <>
+                {`The easiest way (available here) to roll dice for the `}
+                <em>{`Legend of the Five Rings`}</em>
+                {` (AEG d10 version) thanks to preconfigured explosions and the like.`}
+              </>
+            ),
+          },
+          {
             uri: "/roll",
-            label: `Check roller`,
-            description: `Perform a standard roll and keep Check Roll using the game's custom dice as per the rules of the core book (pages 22 to 25).`,
+            label: `L5R ‒ FFG Roll & Keep (custom dice)`,
+            description: (
+              <>
+                {`Support for the custom dice of the `}
+                <em>{`Legend of the Five Rings`}</em>
+                {` (FFG version). Also offers many quality-of-life features and tools to alleviate some of the complexity of this system.`}
+              </>
+            ),
           },
           {
-            uri: "/heritage",
-            label: `Heritage roller`,
-            description: `Roll to determine your character's ancestor as per the rules of the core book (page 95).`,
-          },
-          {
-            uri: "/probabilities",
-            label: `Probability calculator`,
-            description: `If you're curious about the math (results) behind the roll and keep system.`,
+            uri: "/roll-ffg-sw",
+            label: `Star Wars ‒ FFG`,
+            description: (
+              <>
+                {`Support for the custom dice of the `}
+                <em>{`Star Wars`}</em>
+                {` roleplaying game (FFG version).`}
+              </>
+            ),
           },
         ]}
       />
@@ -84,62 +105,22 @@ const Homepage = () => {
         title={`Play-by-post`}
         text={
           <>
-            <p>{`Sakkaku has been designed with play-by-post in mind, and includes a few features dedicated to that style of play.`}</p>
-            <p>{`In practice this means that, if you're logged in, any roll made will be saved in the site's database, and can be shared freely afterward.`}</p>
+            <p>
+              {`Sakkaku was first and foremost designed with play-by-post in mind, as a complement to `}
+              <ExternalLink
+                href={"https://orokos.com/"}
+              >{`Orokos`}</ExternalLink>
+              {`.`}
+            </p>
+            <p>{`Thus, while logged in, you can permanently save any roll you trigger into Sakkaku's database. Such a roll can then be shared freely on your play-by-post platform of choice (forum, Discord…).`}</p>
+            <p>{`Note that all rolls persisted on Sakkaku can be accessed publicly. For easier bookkeeping on all sides, some context information (campaign name, what the roll is for, etc.) might be requested.`}</p>
           </>
         }
         links={[
           {
             uri: "/rolls",
-            label: `List of all saved rolls`,
-            description: `Every roll registered on the site since its inception is listed and publicly accessible there. Rolls can be tagged with a specific campaign or character name, and filtering on those values is available.`,
-          },
-        ]}
-      />
-      <Section
-        title={`Other tools`}
-        text={
-          <>
-            <p>{`Sakkaku is but one small stone in a vast ecosystem, and will likely only cover a small portion of your L5R needs. Here's a nonexhaustive list of other resources to complement it.`}</p>
-            <p>{`These resources are provided as is, with no guarantee. Sakkaku is not affiliated with any of these websites and in particular has no tie with FFG/EDGE.`}</p>
-          </>
-        }
-        links={[
-          {
-            uri: "https://www.fantasyflightgames.com/en/legend-of-the-five-rings-roleplaying-game/",
-            label: `Official Fantasy Flight Games page`,
-            description: `To buy physical copies of the books (if you're in the US) and download a bunch of free bonus PDFs (character sheets, extra adventures, additional schools…).`,
-          },
-
-          {
-            uri: "https://www.drivethrurpg.com/browse/pub/17946/EDGE-Studio",
-            label: `EDGE Studio DriveThru page`,
-            description: `To buy digital copies of the books.`,
-          },
-          {
-            uri: "https://craneclan.weebly.com/rpg-tools.html",
-            label: `The Winter Gardens of the Kakita`,
-            description: `Compilations of various resources otherwise spread through the books or the Internet. Several of the links below are just shortcuts to tools available there.`,
-          },
-          {
-            uri: "https://craneclan.weebly.com/5th-edition-opportunity-table.html",
-            label: `Opportunity Table`,
-            description: `All the ways Opportunities can be used associated with each type of action.`,
-          },
-          {
-            uri: "https://docs.google.com/spreadsheets/d/1jyzqW6j5rjqnhQONE7vYMshfhD6PPZyVHU9LED-Ksn4",
-            label: `The big index`,
-            description: `List all existing schools, techniques, items… and where to find them.`,
-          },
-          {
-            uri: "https://github.com/dashnine/PaperBlossoms",
-            label: `Paper Blossoms`,
-            description: `A free character generator available on Windows, OSX, and Linux.`,
-          },
-          {
-            uri: "/resources/rokugan-map",
-            label: `Rokugan map`,
-            description: `Fan-enhanced L5R 5th ed map, reuploaded here for convenience.`,
+            label: `Saved rolls`,
+            description: `Every roll registered on the site since its inception.`,
           },
         ]}
       />

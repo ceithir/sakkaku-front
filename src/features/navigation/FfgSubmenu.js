@@ -8,6 +8,10 @@ const FfgSubmenu = () => {
 
   useEffect(() => {
     const getMenuKey = ({ pathname }) => {
+      if (pathname === "/resources/rokugan-map") {
+        return "rokugan-map";
+      }
+
       return pathname.substring(1, pathname.length);
     };
 
@@ -23,6 +27,10 @@ const FfgSubmenu = () => {
     {
       key: "probabilities",
       label: <Link to="/probabilities">{`Probabilities`}</Link>,
+    },
+    {
+      key: "rokugan-map",
+      label: <Link to="/resources/rokugan-map">{`World map`}</Link>,
     },
   ];
 

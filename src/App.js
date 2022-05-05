@@ -38,6 +38,7 @@ const App = () => {
         <ReconnectionModal />
         <Switch>
           <Route path="/resources/rokugan-map" exact>
+            <FfgSubmenu />
             <Map />
           </Route>
           <Route path="/probabilities" exact>
