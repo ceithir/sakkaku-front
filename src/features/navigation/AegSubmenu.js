@@ -15,22 +15,32 @@ const AegSubmenu = () => {
     setSelectedKey(getMenuKey(location));
   }, [location]);
 
+  const items = [
+    {
+      key: "roll-d10",
+      label: <Link to="/roll-d10">{`XkY Roll`}</Link>,
+    },
+    {
+      key: "roll-d10-4th-ed",
+      label: (
+        <Link to="/roll-d10-4th-ed">{`4th Edition Roll (guided mode)`}</Link>
+      ),
+    },
+    {
+      key: "probabilities",
+      label: (
+        <ExternalLink href="https://lynks.se/probability/">{`Probabilities`}</ExternalLink>
+      ),
+    },
+  ];
+
   return (
     <Menu
       mode="horizontal"
       selectedKeys={[selectedKey]}
       onSelect={({ key }) => setSelectedKey(key)}
-    >
-      <Menu.Item key="roll-d10">
-        <Link to="/roll-d10">{`XkY Roll`}</Link>
-      </Menu.Item>
-      <Menu.Item key="roll-d10-4th-ed">
-        <Link to="/roll-d10-4th-ed">{`4th Edition Roll (guided mode)`}</Link>
-      </Menu.Item>
-      <Menu.Item key="probabilities">
-        <ExternalLink href="https://lynks.se/probability/">{`Probabilities`}</ExternalLink>
-      </Menu.Item>
-    </Menu>
+      items={items}
+    />
   );
 };
 

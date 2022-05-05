@@ -14,22 +14,25 @@ const FfgSubmenu = () => {
     setSelectedKey(getMenuKey(location));
   }, [location]);
 
+  const items = [
+    {
+      key: "roll",
+      label: <Link to="/roll">{`Check Roll`}</Link>,
+    },
+    { key: "heritage", label: <Link to="/heritage">{`Heritage Roll`}</Link> },
+    {
+      key: "probabilities",
+      label: <Link to="/probabilities">{`Probabilities`}</Link>,
+    },
+  ];
+
   return (
     <Menu
       mode="horizontal"
       selectedKeys={[selectedKey]}
       onSelect={({ key }) => setSelectedKey(key)}
-    >
-      <Menu.Item key="roll">
-        <Link to="/roll">{`Check Roll`}</Link>
-      </Menu.Item>
-      <Menu.Item key="heritage">
-        <Link to="/heritage">{`Heritage Roll`}</Link>
-      </Menu.Item>
-      <Menu.Item key="probabilities">
-        <Link to="/probabilities">{`Probabilities`}</Link>
-      </Menu.Item>
-    </Menu>
+      items={items}
+    />
   );
 };
 
