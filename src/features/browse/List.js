@@ -174,7 +174,7 @@ const columns = [
     responsive: ["md"],
   },
   {
-    title: "",
+    title: `Link`,
     dataIndex: "see_more",
     key: "see_more",
     render: ({ id, uuid, type }) => {
