@@ -65,22 +65,48 @@ const CustomMenu = () => {
       ),
     },
     {
-      key: "ffg",
-      label: <Link to="/roll">{`L5R – FFG`}</Link>,
+      label: `New roll`,
+      popupOffset: [-20, 0],
+      theme: "light",
+      popupClassName: styles["sub-menu"],
+      children: [
+        {
+          key: "dnd",
+          label: (
+            <Link to="/roll-dnd">{`DnD classic (d6, d20, d4, d12…)`}</Link>
+          ),
+        },
+        {
+          type: "group",
+          label: `Legend of the Five Rings`,
+          children: [
+            {
+              key: "aeg",
+              label: <Link to="/roll-d10">{`AEG Roll & Keep (d10)`}</Link>,
+            },
+            {
+              key: "ffg",
+              label: <Link to="/roll">{`FFG Roll & Keep (custom dice)`}</Link>,
+            },
+          ],
+        },
+        {
+          type: "group",
+          label: `Star Wars`,
+          children: [
+            {
+              key: "ffg-sw",
+              label: <Link to="/roll-ffg-sw">{`FFG custom dice`}</Link>,
+            },
+          ],
+        },
+      ],
     },
-    {
-      key: "aeg",
-      label: <Link to="/roll-d10">{`L5R – AEG`}</Link>,
-    },
-    { key: "dnd", label: <Link to="/roll-dnd">{`DnD`}</Link> },
-    {
-      key: "ffg-sw",
-      label: <Link to="/roll-ffg-sw">{`Star Wars – FFG`}</Link>,
-    },
-    { key: "all_rolls", label: <Link to="/rolls">{`All rolls`}</Link> },
+    { key: "all_rolls", label: <Link to="/rolls">{`Past rolls`}</Link> },
     !!user && {
       key: "my_rolls",
       label: <Link to={`/rolls?player=${user.id}`}>{`My rolls`}</Link>,
+      className: styles["push-to-right"],
     },
     {
       key: "login",
@@ -89,7 +115,7 @@ const CustomMenu = () => {
       ) : (
         <a href="/login">{`Login`}</a>
       ),
-      className: styles.login,
+      className: !user && styles["push-to-right"],
     },
   ].filter(Boolean);
 
