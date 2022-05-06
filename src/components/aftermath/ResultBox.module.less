@@ -3,11 +3,16 @@
 .container {
   display: flex;
   justify-content: center;
+  margin: 0 12px;
 
-  & > * {
-    .torii-box();
+  .column {
     max-width: @screen-lg;
-    margin: 0 12px;
+    display: flex;
+    flex-direction: column;
+
+    .box {
+      .torii-box();
+    }
   }
 }
 

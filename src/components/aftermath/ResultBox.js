@@ -14,19 +14,20 @@ const ResultBox = ({
 }) => {
   return (
     <div className={styles.container}>
-      <div>
-        <CharacterSheet
-          identity={identity}
-          description={description}
-          data={rollSpecificData}
-        />
-        {!!children && (
-          <>
-            <Divider />
-            {children}
-          </>
-        )}
-        <Divider />
+      <div className={styles.column}>
+        <div className={styles.box}>
+          <CharacterSheet
+            identity={identity}
+            description={description}
+            data={rollSpecificData}
+          />
+          {!!children && (
+            <>
+              <Divider />
+              {children}
+            </>
+          )}
+        </div>
         <div className={styles.buttons}>
           <CopyButtons link={link} bbMessage={bbMessage} />
         </div>
