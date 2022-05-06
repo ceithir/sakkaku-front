@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./FormResult.module.less";
 import RollResult from "./RollResult";
-import StandardButtons from "./StandardButtons";
 import Loader from "features/navigation/Loader";
 import { Link } from "react-router-dom";
+import CopyButtons from "components/aftermath/CopyButtons";
+import { link, bbMessage } from "./D10IdentifiedRoll";
 
 const ScrollForm = ({ result, context }) => {
   const refContainer = useRef();
@@ -17,10 +18,12 @@ const ScrollForm = ({ result, context }) => {
     <div className={styles.result} ref={refContainer}>
       <RollResult {...result} />
       <div className={styles.buttons}>
-        <StandardButtons
-          id={context?.id}
-          description={context?.description}
-          roll={result}
+        <CopyButtons
+          link={link(context?.id)}
+          bbMessage={bbMessage({
+            description: context?.description,
+            roll: result,
+          })}
         />
         {!!context?.id && (
           <Link to={`/d10-rolls/${context.id}`}>{`Go to page`}</Link>

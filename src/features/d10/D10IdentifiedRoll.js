@@ -7,8 +7,23 @@ import RollResult from "./RollResult";
 import CharacterSheet from "features/display/CharacterSheet";
 import styles from "./D10IdentifiedRoll.module.less";
 import Title from "./Title";
-import StandardButtons from "./StandardButtons";
 import Description from "features/trinket/Description";
+import { stringify } from "./formula";
+import CopyButtons from "components/aftermath/CopyButtons";
+
+export const link = (id) => !!id && `${window.location.origin}/d10-rolls/${id}`;
+export const bbMessage = ({ description, roll }) => {
+  const { parameters, dice } = roll;
+  const { tn } = parameters;
+  const total =
+    dice
+      .filter(({ status }) => status === "kept")
+      .reduce((acc, { value }) => acc + value, 0) + (parameters.modifier || 0);
+
+  return `${description} | ${stringify(parameters)} ⇒ [b]${total}[/b] (TN: ${
+    tn || "?"
+  })`;
+};
 
 const D10IdentifiedRoll = () => {
   const { id } = useParams();
@@ -105,7 +120,10 @@ const D10IdentifiedRoll = () => {
         </div>
 
         <div className={styles.buttons}>
-          <StandardButtons id={id} description={description} roll={roll} />
+          <CopyButtons
+            link={link(id)}
+            bbMessage={bbMessage({ description, roll })}
+          />
         </div>
       </div>
     </div>
