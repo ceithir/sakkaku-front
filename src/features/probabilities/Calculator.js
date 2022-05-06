@@ -168,7 +168,7 @@ const Calculator = () => {
 
   return (
     <div className={styles.layout}>
-      <Title>{`Legend of the Five Rings – Probabilities`}</Title>
+      <Title>{`Legend of the Five Rings (FFG) – Probabilities`}</Title>
       <Form
         layout={"inline"}
         form={form}

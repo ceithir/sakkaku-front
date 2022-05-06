@@ -269,7 +269,7 @@ const Roller = ({ save }) => {
   if (currentStep === DECLARE) {
     return (
       <div className={styles["intent-container"]}>
-        <Title>{`Legend of the Five Rings – Check Roll`}</Title>
+        <Title>{`Legend of the Five Rings (FFG) – Check Roll`}</Title>
         <div>
           <ConfigOpener />
           <Intent

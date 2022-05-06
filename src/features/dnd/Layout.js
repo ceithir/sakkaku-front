@@ -5,7 +5,7 @@ import styles from "./Layout.module.less";
 const Layout = ({ children }) => {
   return (
     <div className={styles.container}>
-      <Title>{`Classic roll`}</Title>
+      <Title>{`DnD classic`}</Title>
       <>{children}</>
     </div>
   );

@@ -5,7 +5,7 @@ import styles from "./Layout.module.less";
 const Layout = ({ children }) => {
   return (
     <div className={styles.layout}>
-      <Title>{`Legend of the Five Rings – Check Roll`}</Title>
+      <Title>{`Legend of the Five Rings (FFG) – Check Roll`}</Title>
       <>{children}</>
     </div>
   );
