@@ -2,7 +2,7 @@ import React from "react";
 import { Button, message } from "antd";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const CopyLink = ({ link }) => {
+export const CopyLink = ({ link }) => {
   const buttonText = `Copy link`;
 
   if (!link) {
@@ -19,7 +19,7 @@ const CopyLink = ({ link }) => {
   );
 };
 
-const BbCode = ({ link, bbMessage }) => {
+export const BbCode = ({ link, bbMessage }) => {
   const buttonText = `Copy as BBCode`;
 
   if (!bbMessage || !link) {

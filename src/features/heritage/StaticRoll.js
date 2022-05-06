@@ -3,7 +3,10 @@ import Summary from "./Summary";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
 import styles from "./StaticRoll.module.less";
-import CopyLink from "../trinket/CopyLink";
+import { CopyLink } from "components/aftermath/CopyButtons";
+
+export const link = (uuid) =>
+  !!uuid && `${window.location.origin}/heritage/${uuid}`;
 
 const StaticRoll = ({ roll, context }) => {
   const { dices, metadata } = roll;
@@ -19,7 +22,7 @@ const StaticRoll = ({ roll, context }) => {
       <Layout dices={dices} context={{ ...context, metadata }} {...props}>
         {children}
         <div className={styles["go-back-container"]}>
-          <CopyLink />
+          <CopyLink link={link(context.uuid)} />
         </div>
       </Layout>
     );

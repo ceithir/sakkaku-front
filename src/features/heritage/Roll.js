@@ -8,7 +8,8 @@ import Form from "./Form";
 import Summary from "./Summary";
 import Layout from "./Layout";
 import SummaryList from "./SummaryList";
-import CopyLink from "../trinket/CopyLink";
+import { CopyLink } from "components/aftermath/CopyButtons";
+import { link } from "./StaticRoll";
 
 const Roll = () => {
   const error = useSelector(selectError);
@@ -70,7 +71,7 @@ const Roll = () => {
             .map(({ value }) => value)}
         />
         <div className={styles.footer}>
-          <CopyLink disabled={!roll.uuid} />
+          <CopyLink link={link(roll.uuid)} />
           <Button
             onClick={() => {
               dispatch(reset());
