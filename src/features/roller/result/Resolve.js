@@ -1,13 +1,58 @@
 import React from "react";
 import Result from "../Result";
-import BbCode from "../button/BbCode";
 import styles from "./Resolve.module.less";
 import Dices from "../Dices";
 import { replaceRerolls, orderDices } from "../utils";
-import CopyLink from "../../trinket/CopyLink";
 import LineContainer from "../button/LineContainer";
 import { Typography } from "antd";
 import OppExamples from "./OppExamples";
+import CopyButtons from "components/aftermath/CopyButtons";
+import { diceToImageSrc } from "../Dice";
+import { countDices } from "../utils";
+
+const link = (id) => !!id && `${window.location.origin}/rolls/${id}`;
+const bbMessage = ({ id, description, tn, modifiers = [], cleanedUpDice }) => {
+  const { successCount, opportunityCount, strifeCount, blankCount } =
+    countDices(cleanedUpDice);
+
+  let result = [
+    {
+      label: "Success",
+      value: successCount,
+    },
+    {
+      label: "Opportunity",
+      value: opportunityCount,
+    },
+    {
+      label: "Strife",
+      value: strifeCount,
+    },
+  ];
+
+  if (modifiers.includes("ishiken")) {
+    result.push({
+      label: "Magnitude",
+      value: blankCount,
+    });
+  }
+
+  const shortResult = result
+    .map(({ label, value }) => `${label}: [b]${value}[/b]`)
+    .join(" / ");
+
+  const url = link(id);
+
+  return (
+    `${description} | TN: ${tn || "?"} | ${shortResult}[/url]` +
+    "\n" +
+    `[url=${url}]${cleanedUpDice
+      .map(
+        (dice) => `[img]${window.location.origin}${diceToImageSrc(dice)}[/img]`
+      )
+      .join(" ")}`
+  );
+};
 
 const { Text, Paragraph } = Typography;
 
@@ -60,13 +105,15 @@ const Resolve = ({
       </div>
       {!isChannel && <OppExamples approach={approach} dices={dices} tn={tn} />}
       <LineContainer>
-        <CopyLink disabled={!id} />
-        <BbCode
-          id={id}
-          tn={tn}
-          description={description}
-          modifiers={rerollTypes}
-          cleanedUpDice={cleanedUpDice}
+        <CopyButtons
+          link={link(id)}
+          bbMessage={bbMessage({
+            id,
+            description,
+            tn,
+            modifiers: rerollTypes,
+            cleanedUpDice,
+          })}
         />
         {button}
       </LineContainer>
