@@ -16,6 +16,15 @@ import { useSelector, useDispatch } from "react-redux";
 import CopyButtons from "components/aftermath/CopyButtons";
 import { link, bbMessage } from "./Roll";
 import { Link } from "react-router-dom";
+import {
+  AbilityDie,
+  BoostDie,
+  ChallengeDie,
+  DifficutlyDie,
+  ForceDie,
+  ProficiencyDie,
+  SetbackDie,
+} from "./LabeledDie";
 
 const DiceNumber = ({ label, name, rules = [] }) => {
   return (
@@ -143,18 +152,18 @@ const Roller = () => {
         >
           <UserContext />
           <div className={styles.line}>
-            <DiceNumber label={`Boost`} name="boost" />
-            <DiceNumber label={`Ability`} name="ability" />
-            <DiceNumber label={`Proficiency`} name="proficiency" />
+            <DiceNumber label={<BoostDie />} name="boost" />
+            <DiceNumber label={<AbilityDie />} name="ability" />
+            <DiceNumber label={<ProficiencyDie />} name="proficiency" />
           </div>
           <div className={styles.line}>
-            <DiceNumber label={`Setback`} name="setback" />
-            <DiceNumber label={`Difficulty`} name="difficulty" />
-            <DiceNumber label={`Challenge`} name="challenge" />
+            <DiceNumber label={<SetbackDie />} name="setback" />
+            <DiceNumber label={<DifficutlyDie />} name="difficulty" />
+            <DiceNumber label={<ChallengeDie />} name="challenge" />
           </div>
           <div className={styles.center}>
             <DiceNumber
-              label={`Force`}
+              label={<ForceDie />}
               name="force"
               rules={[
                 ({ getFieldValue }) => ({
