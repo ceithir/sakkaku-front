@@ -56,6 +56,80 @@ const Roller = () => {
     return <DefaultErrorMessage />;
   }
 
+  const onFinish = ({
+    boost,
+    ability,
+    proficiency,
+    setback,
+    difficulty,
+    challenge,
+    force,
+
+    testMode,
+    campaign,
+    character,
+    description,
+  }) => {
+    setLoading(true);
+    setResult(undefined);
+    setContext(undefined);
+
+    const parameters = {
+      boost,
+      ability,
+      proficiency,
+      setback,
+      difficulty,
+      challenge,
+      force,
+    };
+    const metadata = {};
+
+    const error = (err) => {
+      if (err.message === "Authentication issue") {
+        dispatch(setShowReconnectionModal(true));
+      } else {
+        setError(true);
+      }
+      setLoading(false);
+    };
+
+    if (!user || testMode) {
+      postOnServer({
+        uri: "/public/ffg/sw/rolls/create",
+        body: {
+          parameters,
+          metadata,
+        },
+        success: (data) => {
+          setResult(data);
+          setLoading(false);
+        },
+        error,
+      });
+      return;
+    }
+
+    authentifiedPostOnServer({
+      uri: "/ffg/sw/rolls/create",
+      body: {
+        parameters,
+        metadata,
+        campaign,
+        character,
+        description,
+      },
+      success: ({ roll, ...context }) => {
+        setResult(roll);
+        setContext(context);
+        dispatch(addCampaign(campaign));
+        dispatch(addCharacter(character));
+        setLoading(false);
+      },
+      error,
+    });
+  };
+
   return (
     <Layout>
       <div className={styles.container}>
@@ -65,79 +139,7 @@ const Roller = () => {
             setResult(undefined);
             setContext(undefined);
           }}
-          onFinish={({
-            boost,
-            ability,
-            proficiency,
-            setback,
-            difficulty,
-            challenge,
-            force,
-
-            testMode,
-            campaign,
-            character,
-            description,
-          }) => {
-            setLoading(true);
-            setResult(undefined);
-            setContext(undefined);
-
-            const parameters = {
-              boost,
-              ability,
-              proficiency,
-              setback,
-              difficulty,
-              challenge,
-              force,
-            };
-            const metadata = {};
-
-            const error = (err) => {
-              if (err.message === "Authentication issue") {
-                dispatch(setShowReconnectionModal(true));
-              } else {
-                setError(true);
-              }
-              setLoading(false);
-            };
-
-            if (!user || testMode) {
-              postOnServer({
-                uri: "/public/ffg/sw/rolls/create",
-                body: {
-                  parameters,
-                  metadata,
-                },
-                success: (data) => {
-                  setResult(data);
-                  setLoading(false);
-                },
-                error,
-              });
-              return;
-            }
-
-            authentifiedPostOnServer({
-              uri: "/ffg/sw/rolls/create",
-              body: {
-                parameters,
-                metadata,
-                campaign,
-                character,
-                description,
-              },
-              success: ({ roll, ...context }) => {
-                setResult(roll);
-                setContext(context);
-                dispatch(addCampaign(campaign));
-                dispatch(addCharacter(character));
-                setLoading(false);
-              },
-              error,
-            });
-          }}
+          onFinish={onFinish}
         >
           <UserContext />
           <div className={styles.line}>
