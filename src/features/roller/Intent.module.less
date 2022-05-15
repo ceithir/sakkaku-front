@@ -97,10 +97,13 @@
   }
 
   .custom-school {
-    .paper-background();
-    padding: 24px;
-    padding-bottom: 12;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
+
+    :global(.ant-alert-description) {
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 
   .advanced-button {

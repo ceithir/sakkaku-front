@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import {
   Form,
-  Input,
   InputNumber,
   Divider,
   Select,
   Collapse,
   Checkbox,
   Button,
+  Alert,
 } from "antd";
 import styles from "./Intent.module.less";
 import NextButton from "./NextButton";
 import { useSelector, useDispatch } from "react-redux";
 import { addCampaign, addCharacter } from "../user/reducer";
 import { selectAdvanced } from "../roller/reducer";
-import DynamicDiceSelector from "./form/DynamicDiceSelector";
 import classNames from "classnames";
 import AbilityDescription from "./glitter/AbilityDescription";
 import ABILITIES, { longname } from "./data/abilities";
@@ -53,8 +52,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
   const [skilledAssist, setSkilledAssist] = useState(0);
   const [unskilledAssist, setUnskilledAssist] = useState(0);
   const [commonModifiers, setCommonModifiers] = useState([]);
-  const [addkept, setAddkept] = useState([]);
-  const [schoolAbility, setSchoolAbility] = useState();
   const advanced = useSelector(selectAdvanced);
   let history = useHistory();
   const [namedModifiers, setNamedModifiers] = useState([]);
@@ -112,39 +109,8 @@ const Intent = ({ onFinish, values, onComplete }) => {
     const metadata = {};
 
     let { school } = data;
-    let addkept = [];
-
     if (school === "custom") {
       school = undefined;
-      metadata["labels"] = [];
-
-      const { school_ability, school_name } = data;
-
-      if (school_ability === "addkept") {
-        addkept = data["addkept"];
-        metadata["labels"].push({
-          key: "addkept",
-          label: `${school_name} School Ability`,
-        });
-      } else {
-        const modifierId = () => {
-          if (school_ability === "reroll") {
-            return `ruleless`;
-          }
-          if (school_ability === "alter") {
-            return `reasonless`;
-          }
-          return undefined;
-        };
-        const modId = modifierId();
-        if (modId) {
-          misc.push(modId);
-          metadata["labels"].push({
-            key: modId,
-            label: `${school_name} School Ability`,
-          });
-        }
-      }
     }
 
     if (data["approach"]) {
@@ -169,7 +135,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
         Boolean
       ),
       metadata,
-      addkept,
     });
   };
 
@@ -229,21 +194,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
     },
   ];
 
-  const customSchoolOptions = [
-    {
-      value: "reroll",
-      label: `Reroll one or more dice (ex: Ikoma Shadow)`,
-    },
-    {
-      value: "alter",
-      label: `Alter (change the value) of one or more dice (ex: Kuni Purifier)`,
-    },
-    {
-      value: "addkept",
-      label: `Add one or more kept dice set to a particular value (ex: Doji Diplomat)`,
-    },
-  ];
-
   return (
     <Form
       className={styles.form}
@@ -285,41 +235,6 @@ const Intent = ({ onFinish, values, onComplete }) => {
           )
         ) {
           form.validateFields(["misc"]);
-        }
-        if (
-          Object.keys(changedValues).some((name) => ["addkept"].includes(name))
-        ) {
-          setAddkept(form.getFieldValue("addkept"));
-        }
-        if (
-          Object.keys(changedValues).some((name) =>
-            ["school_ability"].includes(name)
-          )
-        ) {
-          const schoolAbility = form.getFieldValue("school_ability");
-          setSchoolAbility(schoolAbility);
-          if (
-            schoolAbility === "addkept" &&
-            form.getFieldValue("addkept").length === 0
-          ) {
-            const addkept = [
-              {
-                type: "ring",
-                value: { opportunity: 1 },
-              },
-            ];
-            form.setFieldsValue({
-              addkept,
-            });
-            setAddkept(addkept);
-          }
-        }
-        if (
-          Object.keys(changedValues).some((name) =>
-            ["common_modifiers", "addkept"].includes(name)
-          )
-        ) {
-          form.validateFields(["addkept"]);
         }
         if (
           Object.keys(changedValues).some((name) =>
@@ -452,76 +367,20 @@ const Intent = ({ onFinish, values, onComplete }) => {
           </Form.Item>
           {school &&
             (school === "custom" ? (
-              <div className={styles["custom-school"]}>
-                <Form.Item
-                  label="School Name"
-                  name="school_name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please specify your school name",
-                    },
-                  ]}
-                >
-                  <Input placeholder={`Cat Shinobi`} />
-                </Form.Item>
-                <Form.Item
-                  label={`This School Ability allows you to…`}
-                  name="school_ability"
-                  initialValue="reroll"
-                >
-                  <Select options={customSchoolOptions} />
-                </Form.Item>
-                {schoolAbility === "addkept" && (
+              <Alert
+                className={styles["custom-school"]}
+                type="info"
+                showIcon={true}
+                message={`Other Schools`}
+                description={
                   <>
-                    <p className={styles["addkept-summary"]}>
-                      {`The following dice will be added as kept dice:`}
+                    <p>
+                      {`Whether your School Ability allows you to reroll one or more dice (ex: Ikoma Shadow), alter (change the value) of one or more dice (ex: Kuni Purifier), add one or more kept dice set to a particular value (ex: Doji Diplomat), or any similar dice manipulation, you'll be able to apply it on the fly as the roll goes.`}
                     </p>
-                    <Form.List
-                      name="addkept"
-                      rules={[
-                        {
-                          validator: async (_, dices) => {
-                            const compromised = form
-                              .getFieldValue("common_modifiers")
-                              ?.includes("compromised");
-                            if (
-                              compromised &&
-                              dices.some(({ value: { strife = 0 } }) => {
-                                return strife >= 1;
-                              })
-                            ) {
-                              return Promise.reject(
-                                new Error(
-                                  "Cannot add kept dice with strife if compromised."
-                                )
-                              );
-                            }
-                          },
-                        },
-                      ]}
-                    >
-                      {(fields, { add, remove }, { errors }) => {
-                        return (
-                          <DynamicDiceSelector
-                            fields={fields}
-                            defaultValue={{
-                              type: "ring",
-                              value: { opportunity: 1 },
-                            }}
-                            errors={errors}
-                            buttonText={"Add another die"}
-                            buttonPosition={"bottom"}
-                            add={add}
-                            remove={addkept.length > 1 && remove}
-                            className={styles.addkept}
-                          />
-                        );
-                      }}
-                    </Form.List>
+                    <p>{`For now, just roll without it, then, at the Keep step, click the “Do something else” button and select the appropriate option for you.`}</p>
                   </>
-                )}
-              </div>
+                }
+              />
             ) : (
               <AbilityDescription ability={school} className={styles.school} />
             ))}
