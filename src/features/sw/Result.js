@@ -92,10 +92,27 @@ const Summary = ({ parameters, result }) => {
   );
 };
 
+const diceOrder = [
+  "boost",
+  "ability",
+  "proficiency",
+  "setback",
+  "difficulty",
+  "challenge",
+  "force",
+];
+export const sortDice = (dice) => {
+  const sorted = [...dice];
+  sorted.sort(({ type: a }, { type: b }) => {
+    return diceOrder.indexOf(a) - diceOrder.indexOf(b);
+  });
+  return sorted;
+};
+
 const Dice = ({ dice }) => {
   return (
     <div className={styles.dice}>
-      {dice.map((die, index) => {
+      {sortDice(dice).map((die, index) => {
         return <ImageDie key={index.toString()} {...die} />;
       })}
     </div>
