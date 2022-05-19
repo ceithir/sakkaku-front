@@ -12,9 +12,22 @@ import TextSummary from "./TextSummary";
 import { prepareFinish } from "./form";
 import FormResult from "./FormResult";
 
-const { Paragraph } = Typography;
+const { Paragraph, Text } = Typography;
 
 const initialValues = { explosions: [10], rerolls: [] };
+
+const Syntax = () => {
+  return (
+    <Text type="secondary" className={styles.syntax}>
+      {`Expecting standard L5R syntax, the like of:`}
+      <ul>
+        <li>{`6k3`}</li>
+        <li>{`2k2+1k1`}</li>
+        <li>{`7k4-3+5`}</li>
+      </ul>
+    </Text>
+  );
+};
 
 const D10Roller = () => {
   const [parsedFormula, setParsedFormula] = useState();
@@ -71,6 +84,7 @@ const D10Roller = () => {
           rules={[
             { required: true, message: `Please enter what you wish to roll` },
           ]}
+          help={<Syntax />}
         >
           <Input placeholder={`5k4 +1k0 -5`} />
         </Form.Item>
