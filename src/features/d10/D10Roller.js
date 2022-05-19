@@ -146,7 +146,7 @@ const D10Roller = () => {
             rerolls={rerolls}
           />
         ) : (
-          <Paragraph type="secondary">{`Waiting for complete formula…`}</Paragraph>
+          <Paragraph type="secondary">{`Waiting for proper formula…`}</Paragraph>
         )}
         <Form.Item>
           <Button
