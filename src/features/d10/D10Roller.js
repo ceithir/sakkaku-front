@@ -12,7 +12,7 @@ import TextSummary from "./TextSummary";
 import { prepareFinish } from "./form";
 import FormResult from "./FormResult";
 
-const { Paragraph, Text } = Typography;
+const { Text } = Typography;
 
 const initialValues = { explosions: [10], rerolls: [] };
 
@@ -146,15 +146,10 @@ const D10Roller = () => {
             rerolls={rerolls}
           />
         ) : (
-          <Paragraph type="secondary">{`Waiting for proper formula…`}</Paragraph>
+          <div className={styles.placeholder}>{`💮`}</div>
         )}
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            disabled={!parsedFormula}
-            loading={loading}
-          >
+          <Button type="primary" htmlType="submit" loading={loading}>
             {`Roll`}
           </Button>
         </Form.Item>
