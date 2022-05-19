@@ -14,6 +14,24 @@ import {
 } from "features/user/reducer";
 import { useSelector, useDispatch } from "react-redux";
 import Result, { ResultPlaceholder } from "./FormResult";
+import ExternalLink from "features/navigation/ExternalLink";
+
+const Syntax = () => {
+  return (
+    <p className={styles.syntax}>
+      {`Syntax must comply with `}
+      <ExternalLink
+        href={`https://en.wikipedia.org/wiki/Dice_notation`}
+      >{`standard dice notation`}</ExternalLink>
+      {`, like:`}
+      <ul>
+        <li>{`2d6`}</li>
+        <li>{`1d20+3`}</li>
+        <li>{`1d12-3+1d4+2`}</li>
+      </ul>
+    </p>
+  );
+};
 
 const Roller = () => {
   const [formula, setFormula] = useState();
@@ -46,7 +64,7 @@ const Roller = () => {
     if (!parsedFormula) {
       return `Incomplete or erroneous formula…`;
     }
-    return `…`;
+    return `✓`;
   };
 
   return (
@@ -148,7 +166,16 @@ const Roller = () => {
         </Form>
         <Divider />
         {result && <Result result={result} context={context} />}
-        {!result && <ResultPlaceholder text={placeholderMessage()} />}
+        {!result && (
+          <ResultPlaceholder
+            text={
+              <>
+                {placeholderMessage()}
+                <Syntax />
+              </>
+            }
+          />
+        )}
       </div>
     </Layout>
   );
