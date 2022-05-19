@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, InputNumber, Divider } from "antd";
+import { Form, Input, Button, InputNumber, Divider, Spin } from "antd";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import Layout from "./Layout";
 import styles from "./Roller.module.less";
@@ -55,9 +55,6 @@ const Roller = () => {
   }
 
   const placeholderMessage = () => {
-    if (loading) {
-      return `Loading…`;
-    }
     if (!formula) {
       return `Awaiting formula…`;
     }
@@ -170,8 +167,13 @@ const Roller = () => {
           <ResultPlaceholder
             text={
               <>
-                {placeholderMessage()}
-                <Syntax />
+                {loading && <Spin />}
+                {!loading && (
+                  <>
+                    {placeholderMessage()}
+                    <Syntax />
+                  </>
+                )}
               </>
             }
           />
