@@ -40,6 +40,10 @@ export const parse = (str) => {
     });
   }
 
+  if (keep <= 0 || roll <= 0) {
+    return false;
+  }
+
   return { roll, keep, modifier };
 };
 

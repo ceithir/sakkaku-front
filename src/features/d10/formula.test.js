@@ -5,6 +5,12 @@ describe("parse", () => {
     expect(parse()).toEqual(false);
     expect(parse("")).toEqual(false);
   });
+  test("zero", () => {
+    expect(parse("3k0")).toEqual(false);
+    expect(parse("0k2")).toEqual(false);
+    expect(parse("1k2-1k0")).toEqual(false);
+    expect(parse("5k3-1k3")).toEqual(false);
+  });
   test("simple", () => {
     expect(parse("3k2")).toEqual({ roll: 3, keep: 2, modifier: 0 });
   });
