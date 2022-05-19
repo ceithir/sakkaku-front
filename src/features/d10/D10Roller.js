@@ -18,8 +18,8 @@ const initialValues = { explosions: [10], rerolls: [] };
 
 const Syntax = () => {
   return (
-    <Text type="secondary" className={styles.syntax}>
-      {`Expecting standard L5R syntax, the like of:`}
+    <Text type="danger" className={styles.syntax}>
+      {`Please enter a standard L5R syntax, the like of:`}
       <ul>
         <li>{`6k3`}</li>
         <li>{`2k2+1k1`}</li>
@@ -41,6 +41,8 @@ const D10Roller = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
+  const [form] = Form.useForm();
+
   if (error) {
     return <DefaultErrorMessage />;
   }
@@ -49,11 +51,22 @@ const D10Roller = () => {
     <div className={styles.background}>
       <Title />
       <Form
-        onValuesChange={(_, { formula, explosions, rerolls }) => {
+        onValuesChange={(changedValues, { formula, explosions, rerolls }) => {
           setParsedFormula(parse(formula));
           setExplosions(explosions);
           setRerolls(rerolls);
           setResult(undefined);
+
+          // Trickery to revalidate on each if alreayd in error
+          if (Object.keys(changedValues).includes("formula")) {
+            if (
+              form
+                .getFieldInstance("formula")
+                ?.input?.classList?.contains("ant-input-status-error")
+            ) {
+              form.validateFields(["formula"]);
+            }
+          }
         }}
         onFinish={(values) => {
           const { formula } = values;
@@ -76,15 +89,28 @@ const D10Roller = () => {
           [styles["fix-user-switch"]]: !!user,
         })}
         initialValues={initialValues}
+        form={form}
       >
         <UserContext />
         <Form.Item
           label={`Your dice pool`}
           name="formula"
+          validateTrigger={["onBlur"]}
           rules={[
             { required: true, message: `Please enter what you wish to roll` },
+            () => ({
+              validator: (_, value) => {
+                if (!value) {
+                  return Promise.resolve();
+                }
+                if (!!parse(value)) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(`Bad syntax`);
+              },
+              message: <Syntax />,
+            }),
           ]}
-          help={<Syntax />}
         >
           <Input placeholder={`5k4 +1k0 -5`} />
         </Form.Item>
