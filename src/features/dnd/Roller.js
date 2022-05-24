@@ -18,12 +18,14 @@ import ExternalLink from "features/navigation/ExternalLink";
 
 const Syntax = () => {
   return (
-    <p className={styles.syntax}>
-      {`Syntax must comply with `}
-      <ExternalLink
-        href={`https://en.wikipedia.org/wiki/Dice_notation`}
-      >{`standard dice notation`}</ExternalLink>
-      {`, like:`}
+    <div className={styles.syntax}>
+      <p>
+        {`Syntax must comply with `}
+        <ExternalLink
+          href={`https://en.wikipedia.org/wiki/Dice_notation`}
+        >{`standard dice notation`}</ExternalLink>
+        {`, like:`}
+      </p>
       <ul>
         <li>{`2d6`}</li>
         <li>{`1d20+3`}</li>
@@ -31,7 +33,7 @@ const Syntax = () => {
         <li>{`3d6kh2`}</li>
         <li>{`2d20kl1`}</li>
       </ul>
-    </p>
+    </div>
   );
 };
 
