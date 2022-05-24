@@ -27,12 +27,12 @@ const ActualResult = ({ parameters, dice }) => {
   );
 };
 
-const Buttons = ({ id, input, description, total }) => {
+const Buttons = ({ id, parameters, description, total }) => {
   return (
     <div className={styles.buttons}>
       <CopyButtons
         link={link(id)}
-        bbMessage={bbMessage({ input, description, total })}
+        bbMessage={bbMessage({ parameters, description, total })}
       />
       <Link disabled={!id} to={`/dnd-rolls/${id}`}>{`Go to page`}</Link>
     </div>
@@ -45,7 +45,7 @@ const Result = ({ result, context }) => {
       <ActualResult {...result} />
       <Buttons
         id={context?.id}
-        input={result.metadata.original}
+        parameters={result.parameters}
         description={context?.description}
         total={context?.result?.total}
       />

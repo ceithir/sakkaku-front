@@ -68,6 +68,10 @@ export const parse = (str) => {
 };
 
 export const stringify = (parameters) => {
+  if (!parameters) {
+    return false;
+  }
+
   const { dices, modifier } = parameters;
   const diceString = dices
     .map(({ number, sides, keepNumber, keepCriteria }) => {

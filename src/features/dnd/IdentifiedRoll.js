@@ -9,8 +9,8 @@ import ResultBox from "components/aftermath/ResultBox";
 import { stringify } from "./formula";
 
 export const link = (id) => !!id && `${window.location.origin}/dnd-rolls/${id}`;
-export const bbMessage = ({ description, total, input }) =>
-  `${description} | ${input} ⇒ [b]${total}[/b]`;
+export const bbMessage = ({ description, total, parameters }) =>
+  `${description} | ${stringify(parameters)} ⇒ [b]${total}[/b]`;
 
 const D10IdentifiedRoll = () => {
   const { id } = useParams();
@@ -74,7 +74,7 @@ const D10IdentifiedRoll = () => {
         bbMessage={bbMessage({
           description,
           total: result.total,
-          input: stringify(parameters),
+          parameters,
         })}
       />
     </Layout>
