@@ -5,8 +5,12 @@ export const parse = (str) => {
 
   const s = str.replace(/\s+/g, "").toLowerCase();
 
+  const dieRegexp = /([0-9]{1,2})d([0-9]{1,3})/;
+
   const matches = s.match(
-    /^([0-9]{1,2})d([0-9]{1,3})(\+([0-9]{1,2})d([0-9]{1,3})|(\+|-)[0-9]+)*$/
+    new RegExp(
+      "^" + dieRegexp.source + "(\\+" + dieRegexp.source + "|(\\+|-)[0-9]+)*$"
+    )
   );
 
   if (!matches) {
@@ -14,9 +18,9 @@ export const parse = (str) => {
   }
 
   const dices = s
-    .match(/\+?[0-9]+d[0-9]+/g)
+    .match(new RegExp("\\+?" + dieRegexp.source, "g"))
     .map((str) => {
-      const m = str.match(/([0-9]+)d([0-9]+)/);
+      const m = str.match(dieRegexp);
       return {
         number: parseInt(m[1]),
         sides: parseInt(m[2]),
