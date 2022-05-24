@@ -41,6 +41,28 @@ describe("parse", () => {
       modifier: 0,
     });
   });
+  describe("keep", () => {
+    test("keep highest", () => {
+      expect(parse("2d20k1")).toEqual({
+        dices: [
+          { sides: 20, number: 2, keepNumber: 1, keepCriteria: "highest" },
+        ],
+        modifier: 0,
+      });
+    });
+    test("keep lowest", () => {
+      expect(parse("3d6kl2")).toEqual({
+        dices: [{ sides: 6, number: 3, keepNumber: 2, keepCriteria: "lowest" }],
+        modifier: 0,
+      });
+    });
+    test("refuse to keep more than rolled", () => {
+      expect(parse("3d6k4")).toEqual(false);
+    });
+    test("refuse to keep zero", () => {
+      expect(parse("1d20k0")).toEqual(false);
+    });
+  });
 });
 
 describe("stringify", () => {

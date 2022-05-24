@@ -28,6 +28,8 @@ const Syntax = () => {
         <li>{`2d6`}</li>
         <li>{`1d20+3`}</li>
         <li>{`1d12-3+1d4+2`}</li>
+        <li>{`3d6kh2`}</li>
+        <li>{`2d20kl1`}</li>
       </ul>
     </p>
   );
