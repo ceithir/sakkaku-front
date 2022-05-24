@@ -4,7 +4,7 @@ import { stringify, cap } from "./formula";
 
 const { Paragraph } = Typography;
 
-const TextSummary = ({ original, explosions, rerolls }) => {
+const TextSummary = ({ original, explosions, rerolls, select }) => {
   const capped = cap(original);
   const wasCapped =
     original.roll !== capped.roll ||
@@ -28,7 +28,7 @@ const TextSummary = ({ original, explosions, rerolls }) => {
         <strong>{capped.roll}</strong>
         {` ten-sided dice, keeping the `}
         <strong>{capped.keep}</strong>
-        {` highest values`}
+        {` ${select === "low" ? `lowest` : `highest`} values`}
         {!!capped.modifier && (
           <>
             {`, adding `}

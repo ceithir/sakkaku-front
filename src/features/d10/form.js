@@ -13,6 +13,7 @@ export const prepareFinish =
     tn,
     explosions,
     rerolls,
+    select,
     campaign,
     character,
     description,
@@ -28,6 +29,7 @@ export const prepareFinish =
       tn,
       explosions,
       rerolls,
+      select,
     };
     const error = (err) => {
       if (err.message === "Authentication issue") {

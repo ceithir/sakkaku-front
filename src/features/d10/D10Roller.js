@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import Title from "./Title";
-import { Form, Input, Typography, Button, InputNumber, Checkbox } from "antd";
+import {
+  Form,
+  Input,
+  Typography,
+  Button,
+  InputNumber,
+  Checkbox,
+  Radio,
+} from "antd";
 import { parse } from "./formula";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import styles from "./D10Roller.module.less";
@@ -14,7 +22,7 @@ import FormResult from "./FormResult";
 
 const { Text } = Typography;
 
-const initialValues = { explosions: [10], rerolls: [] };
+const initialValues = { explosions: [10], rerolls: [], select: "high" };
 
 const Syntax = () => {
   return (
@@ -34,8 +42,11 @@ const D10Roller = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState();
-  const [explosions, setExplosions] = useState(initialValues.explosions);
-  const [rerolls, setRerolls] = useState(initialValues.rerolls);
+  const [params, setParams] = useState({
+    explosions: initialValues.explosions,
+    rerolls: initialValues.rerolls,
+    select: initialValues.select,
+  });
   const [context, setContext] = useState();
 
   const dispatch = useDispatch();
@@ -51,10 +62,12 @@ const D10Roller = () => {
     <div className={styles.background}>
       <Title />
       <Form
-        onValuesChange={(changedValues, { formula, explosions, rerolls }) => {
+        onValuesChange={(
+          changedValues,
+          { formula, explosions, rerolls, select }
+        ) => {
           setParsedFormula(parse(formula));
-          setExplosions(explosions);
-          setRerolls(rerolls);
+          setParams({ explosions, rerolls, select });
           setResult(undefined);
 
           // Trickery to revalidate on each if alreayd in error
@@ -139,12 +152,16 @@ const D10Roller = () => {
             ]}
           />
         </Form.Item>
-        {!!parsedFormula ? (
-          <TextSummary
-            original={parsedFormula}
-            explosions={explosions}
-            rerolls={rerolls}
+        <Form.Item label={`Keep`} name="select">
+          <Radio.Group
+            options={[
+              { value: "high", label: `Highest dice` },
+              { value: "low", label: `Lowest dice` },
+            ]}
           />
+        </Form.Item>
+        {!!parsedFormula ? (
+          <TextSummary original={parsedFormula} {...params} />
         ) : (
           <div className={styles.placeholder}>{`💮`}</div>
         )}
