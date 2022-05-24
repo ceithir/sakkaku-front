@@ -51,7 +51,6 @@ const RollResult = ({ dice, parameters, className }) => {
       >
         {total}
       </Text>
-      {!!tn && <Text>{` (TN: ${tn})`}</Text>}
     </div>
   );
 };
