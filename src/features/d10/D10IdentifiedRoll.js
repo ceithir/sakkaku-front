@@ -20,9 +20,10 @@ export const bbMessage = ({ description, roll }) => {
       .filter(({ status }) => status === "kept")
       .reduce((acc, { value }) => acc + value, 0) + (parameters.modifier || 0);
 
-  return `${description} | ${stringify(parameters)} ⇒ [b]${total}[/b] (TN: ${
-    tn || "?"
-  })`;
+  return (
+    `${description} | ${stringify(parameters)} ⇒ [b]${total}[/b]` +
+    (!!tn ? ` (TN: ${tn})` : "")
+  );
 };
 
 const D10IdentifiedRoll = () => {
