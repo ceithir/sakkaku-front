@@ -73,4 +73,20 @@ describe("stringify", () => {
       })
     ).toBe("3d6");
   });
+
+  test("show keep if relevant", () => {
+    expect(
+      stringify({
+        dices: [{ sides: 6, number: 3, keepNumber: 2 }],
+      })
+    ).toBe("3d6kh2");
+  });
+
+  test("do not show keep if irrelevant", () => {
+    expect(
+      stringify({
+        dices: [{ sides: 6, number: 3, keepNumber: 3 }],
+      })
+    ).toBe("3d6");
+  });
 });

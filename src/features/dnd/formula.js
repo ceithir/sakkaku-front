@@ -75,7 +75,7 @@ export const stringify = (parameters) => {
   const { dices, modifier } = parameters;
   const diceString = dices
     .map(({ number, sides, keepNumber, keepCriteria }) => {
-      if (!!keepNumber) {
+      if (!!keepNumber && keepNumber !== number) {
         return `${number}d${sides}${
           keepCriteria === "lowest" ? "kl" : "kh"
         }${keepNumber}`;
