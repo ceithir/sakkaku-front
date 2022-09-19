@@ -35,6 +35,10 @@ const CustomMenu = () => {
         return "ffg-sw";
       }
 
+      if (["/draw-cards"].includes(pathname)) {
+        return "cards";
+      }
+
       if (pathname === "/rolls" && !search) {
         return "all_rolls";
       }
@@ -97,6 +101,16 @@ const CustomMenu = () => {
             {
               key: "ffg-sw",
               label: <Link to="/roll-ffg-sw">{`FFG custom dice`}</Link>,
+            },
+          ],
+        },
+        {
+          type: "group",
+          label: `Cards`,
+          children: [
+            {
+              key: "cards",
+              label: <Link to="/draw-cards">{`Standard 52-card deck`}</Link>,
             },
           ],
         },
