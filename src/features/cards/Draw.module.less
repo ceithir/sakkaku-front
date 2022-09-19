@@ -12,8 +12,13 @@
 
 .form-container {
   .torii-box();
-  margin: 24px auto;
+  margin: 0 auto;
   max-width: @screen-md;
+
+  @media (min-width: @screen-sm) {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
 
   .submit {
     margin-bottom: 0;
