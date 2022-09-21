@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 import { postOnServer } from "server";
 import Card from "./Card";
+import DefaultErrorMessage from "DefaultErrorMessage";
 
 const Layout = ({ children }) => {
   return (
@@ -25,8 +26,15 @@ const Layout = ({ children }) => {
 };
 
 const onFinishWrapper =
-  (setResult) =>
+  ({ setResult, setLoading, setError }) =>
   ({ hand, deck: deckKey }) => {
+    const error = () => {
+      setError(true);
+      setLoading(false);
+    };
+
+    setLoading(true);
+
     const deck = [...Array(deckKey).keys()].map((i) => i + 1);
 
     const parameters = { hand, deck };
@@ -40,7 +48,9 @@ const onFinishWrapper =
       },
       success: (data) => {
         setResult(data);
+        setLoading(false);
       },
+      error,
     });
   };
 
@@ -50,12 +60,18 @@ const initialValues = {
 
 const CustomForm = () => {
   const [result, setResult] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [deckSize, setDeckSize] = useState(initialValues.deck);
+
+  if (error) {
+    return <DefaultErrorMessage />;
+  }
 
   return (
     <div className={styles["form-container"]}>
       <Form
-        onFinish={onFinishWrapper(setResult)}
+        onFinish={onFinishWrapper({ setResult, setLoading, setError })}
         initialValues={initialValues}
         onValuesChange={(_, { deck }) => {
           setDeckSize(deck);
@@ -90,7 +106,7 @@ const CustomForm = () => {
             />
           </Form.Item>
 
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             {`Draw`}
           </Button>
         </Form.Item>
