@@ -58,6 +58,24 @@ const initialValues = {
   deck: 52,
 };
 
+const Result = ({ result }) => {
+  if (!result) {
+    return null;
+  }
+
+  const { hand } = result;
+  return (
+    <>
+      <Divider />
+      <div className={styles.cards}>
+        {hand.map((number) => {
+          return <Card number={number} />;
+        })}
+      </div>
+    </>
+  );
+};
+
 const CustomForm = () => {
   const [result, setResult] = useState();
   const [loading, setLoading] = useState(false);
@@ -111,16 +129,7 @@ const CustomForm = () => {
           </Button>
         </Form.Item>
       </Form>
-      {result && (
-        <>
-          <Divider />
-          <div className={styles.cards}>
-            {result.hand.map((number) => {
-              return <Card number={number} />;
-            })}
-          </div>
-        </>
-      )}
+      <Result result={result} />
     </div>
   );
 };
