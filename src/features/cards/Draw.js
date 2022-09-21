@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Draw.module.less";
-import { Breadcrumb, Form, Button } from "antd";
+import { Breadcrumb, Form, Button, InputNumber, Radio } from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
+import { postOnServer } from "server";
+import Card from "./Card";
 
 const Layout = ({ children }) => {
   return (
@@ -22,16 +24,65 @@ const Layout = ({ children }) => {
   );
 };
 
+const onFinishWrapper =
+  (setResult) =>
+  ({ hand, deck: deckKey }) => {
+    const deck = [...Array(deckKey).keys()].map((i) => i + 1);
+
+    const parameters = { hand, deck };
+    const metadata = {};
+
+    postOnServer({
+      uri: "/public/cards/draw",
+      body: {
+        parameters,
+        metadata,
+      },
+      success: (data) => {
+        setResult(data);
+      },
+    });
+  };
+
+const initialValues = {
+  deck: 52,
+};
+
 const CustomForm = () => {
+  const [result, setResult] = useState();
+
   return (
     <div className={styles["form-container"]}>
-      <Form>
+      <Form onFinish={onFinishWrapper(setResult)} initialValues={initialValues}>
         <Form.Item className={styles.submit}>
+          <Form.Item
+            label={`Draw that many cards`}
+            name="hand"
+            rules={[{ required: true, message: `Please enter a number.` }]}
+          >
+            <InputNumber min="1" />
+          </Form.Item>
+          <Form.Item label={`From that deck`} name="deck">
+            <Radio.Group
+              options={[
+                { value: 52, label: `Standard 52 cards` },
+                { value: 54, label: `Standard 52 cards + 2 jokers` },
+              ]}
+            />
+          </Form.Item>
+
           <Button type="primary" htmlType="submit">
             {`Draw`}
           </Button>
         </Form.Item>
       </Form>
+      {result && (
+        <div>
+          {result.hand.map((number) => {
+            return <Card number={number} />;
+          })}
+        </div>
+      )}
     </div>
   );
 };
