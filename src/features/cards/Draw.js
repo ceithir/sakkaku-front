@@ -84,8 +84,8 @@ const Result = ({ result }) => {
     <>
       <Divider />
       <div className={styles.cards}>
-        {hand.map((number) => {
-          return <Card number={number} />;
+        {hand.map((number, index) => {
+          return <Card number={number} key={index.toString()} />;
         })}
       </div>
     </>
