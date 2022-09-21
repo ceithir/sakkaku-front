@@ -50,17 +50,36 @@ const initialValues = {
 
 const CustomForm = () => {
   const [result, setResult] = useState();
+  const [deckSize, setDeckSize] = useState(initialValues.deck);
 
   return (
     <div className={styles["form-container"]}>
-      <Form onFinish={onFinishWrapper(setResult)} initialValues={initialValues}>
+      <Form
+        onFinish={onFinishWrapper(setResult)}
+        initialValues={initialValues}
+        onValuesChange={(_, { deck }) => {
+          setDeckSize(deck);
+        }}
+      >
         <Form.Item className={styles.submit}>
           <Form.Item
             label={`Draw that many cards`}
             name="hand"
-            rules={[{ required: true, message: `Please enter a number.` }]}
+            rules={[
+              { required: true, message: `Please enter a number.` },
+              {
+                min: 1,
+                type: "number",
+                message: `Please enter a number greater than zero.`,
+              },
+              {
+                max: deckSize,
+                type: "number",
+                message: `Not enough cards in deck.`,
+              },
+            ]}
           >
-            <InputNumber min="1" />
+            <InputNumber min="1" max={deckSize} />
           </Form.Item>
           <Form.Item label={`From that deck`} name="deck">
             <Radio.Group
