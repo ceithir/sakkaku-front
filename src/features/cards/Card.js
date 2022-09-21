@@ -38,14 +38,25 @@ const cardName = (number) => {
   return `${value} of ${suit}`;
 };
 
-const Card = ({ number, size = 60 }) => {
+const imgSrc = (number, { size = 1 } = {}) => {
+  return `${baseUrl}/${number.toString().padStart(2, "0")}-${size * 60}.png`;
+};
+
+const imgSrcSet = (number) => {
+  return [1, 2, 3]
+    .map((n) => `${imgSrc(number, { size: n })} ${n}x`)
+    .join(", ");
+};
+
+const Card = ({ number }) => {
   const text = cardName(number);
 
   return (
     <img
-      src={`${baseUrl}/${number.toString().padStart(2, "0")}-${size}.png`}
+      src={imgSrc(number)}
       alt={text}
       title={text}
+      srcSet={imgSrcSet(number)}
     />
   );
 };
