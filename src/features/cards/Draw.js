@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Draw.module.less";
-import { Breadcrumb, Form, Button, InputNumber, Radio } from "antd";
+import { Breadcrumb, Form, Button, InputNumber, Radio, Divider } from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 import { postOnServer } from "server";
@@ -77,11 +77,14 @@ const CustomForm = () => {
         </Form.Item>
       </Form>
       {result && (
-        <div>
-          {result.hand.map((number) => {
-            return <Card number={number} />;
-          })}
-        </div>
+        <>
+          <Divider />
+          <div className={styles.cards}>
+            {result.hand.map((number) => {
+              return <Card number={number} />;
+            })}
+          </div>
+        </>
       )}
     </div>
   );
