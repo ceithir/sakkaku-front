@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import styles from "./Draw.module.less";
-import { Breadcrumb, Form, Button, InputNumber, Radio, Divider } from "antd";
+import {
+  Breadcrumb,
+  Form,
+  Button,
+  InputNumber,
+  Radio,
+  Divider,
+  Checkbox,
+} from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 import { postOnServer } from "server";
 import Card from "./Card";
 import DefaultErrorMessage from "DefaultErrorMessage";
+
+const l = (n) => [...Array(n).keys()].map((i) => i + 1);
 
 const Layout = ({ children }) => {
   return (
@@ -27,7 +37,7 @@ const Layout = ({ children }) => {
 
 const onFinishWrapper =
   ({ setResult, setLoading, setError }) =>
-  ({ hand, deck: deckKey }) => {
+  ({ hand, deck: deckKey, custom }) => {
     const error = () => {
       setError(true);
       setLoading(false);
@@ -35,7 +45,12 @@ const onFinishWrapper =
 
     setLoading(true);
 
-    const deck = [...Array(deckKey).keys()].map((i) => i + 1);
+    const deck = (() => {
+      if (deckKey === "custom") {
+        return custom;
+      }
+      return l(deckKey);
+    })();
 
     const parameters = { hand, deck };
     const metadata = {};
@@ -56,6 +71,7 @@ const onFinishWrapper =
 
 const initialValues = {
   deck: 52,
+  custom: l(54),
 };
 
 const Result = ({ result }) => {
@@ -81,6 +97,7 @@ const CustomForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [deckSize, setDeckSize] = useState(initialValues.deck);
+  const [deckType, setDeckType] = useState(initialValues.deck);
 
   if (error) {
     return <DefaultErrorMessage />;
@@ -91,8 +108,13 @@ const CustomForm = () => {
       <Form
         onFinish={onFinishWrapper({ setResult, setLoading, setError })}
         initialValues={initialValues}
-        onValuesChange={(_, { deck }) => {
-          setDeckSize(deck);
+        onValuesChange={(_, { deck, custom = initialValues.custom }) => {
+          setDeckType(deck);
+          if (deck === "custom") {
+            setDeckSize(custom.length);
+          } else {
+            setDeckSize(deck);
+          }
         }}
       >
         <Form.Item className={styles.submit}>
@@ -120,9 +142,28 @@ const CustomForm = () => {
               options={[
                 { value: 52, label: `Standard 52 cards` },
                 { value: 54, label: `Standard 52 cards + 2 jokers` },
+                {
+                  value: "custom",
+                  label: `Pick from a specific subset of cards`,
+                },
               ]}
             />
           </Form.Item>
+          {deckType === "custom" && (
+            <Form.Item
+              name="custom"
+              label={`Unselect the cards you wish to exclude from the deck`}
+              className={styles["deck-builder"]}
+            >
+              <Checkbox.Group>
+                {l(54).map((number) => (
+                  <Checkbox value={number} key={number.toString()}>
+                    <Card number={number} />
+                  </Checkbox>
+                ))}
+              </Checkbox.Group>
+            </Form.Item>
+          )}
 
           <Button type="primary" htmlType="submit" loading={loading}>
             {`Draw`}
