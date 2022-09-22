@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Draw.module.less";
-import { Form, Button, InputNumber, Radio, Divider, Checkbox } from "antd";
+import { Form, Button, InputNumber, Divider } from "antd";
 import { postOnServer, authentifiedPostOnServer } from "server";
 import Card from "./Card";
 import DefaultErrorMessage from "DefaultErrorMessage";
@@ -10,8 +10,8 @@ import UserContext from "components/form/UserContext";
 import Layout from "./Layout";
 import CopyButtons from "components/aftermath/CopyButtons";
 import { link, bbMessage } from "./IdDraw";
-
-const l = (n) => [...Array(n).keys()].map((i) => i + 1);
+import DeckSelect from "./DeckSelect";
+import { l } from "./utils";
 
 const onFinishWrapper =
   ({ setResult, setLoading, setError, updateUserData }) =>
@@ -110,7 +110,6 @@ const CustomForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [deckSize, setDeckSize] = useState(initialValues.deck);
-  const [deckType, setDeckType] = useState(initialValues.deck);
 
   const dispatch = useDispatch();
   const [context, setContext] = useState();
@@ -136,7 +135,6 @@ const CustomForm = () => {
         })}
         initialValues={initialValues}
         onValuesChange={(_, { deck, custom = initialValues.custom }) => {
-          setDeckType(deck);
           if (deck === "custom") {
             setDeckSize(custom.length);
           } else {
@@ -168,33 +166,7 @@ const CustomForm = () => {
           >
             <InputNumber min="1" max={deckSize} />
           </Form.Item>
-          <Form.Item label={`From that deck`} name="deck">
-            <Radio.Group
-              options={[
-                { value: 52, label: `Standard 52 cards` },
-                { value: 54, label: `Standard 52 cards + 2 jokers` },
-                {
-                  value: "custom",
-                  label: `Pick from a specific subset of cards`,
-                },
-              ]}
-            />
-          </Form.Item>
-          {deckType === "custom" && (
-            <Form.Item
-              name="custom"
-              label={`Unselect the cards you wish to exclude from the deck`}
-              className={styles["deck-builder"]}
-            >
-              <Checkbox.Group>
-                {l(54).map((number) => (
-                  <Checkbox value={number} key={number.toString()}>
-                    <Card number={number} />
-                  </Checkbox>
-                ))}
-              </Checkbox.Group>
-            </Form.Item>
-          )}
+          <DeckSelect initialValues={initialValues} />
 
           <Button
             type="primary"
