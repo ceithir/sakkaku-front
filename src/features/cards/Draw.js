@@ -11,9 +11,12 @@ import {
 } from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
-import { postOnServer } from "server";
+import { postOnServer, authentifiedPostOnServer } from "server";
 import Card from "./Card";
 import DefaultErrorMessage from "DefaultErrorMessage";
+import { addCampaign, addCharacter } from "features/user/reducer";
+import { useDispatch } from "react-redux";
+import UserContext from "components/form/UserContext";
 
 const l = (n) => [...Array(n).keys()].map((i) => i + 1);
 
@@ -36,8 +39,8 @@ const Layout = ({ children }) => {
 };
 
 const onFinishWrapper =
-  ({ setResult, setLoading, setError }) =>
-  ({ hand, deck: deckKey, custom }) => {
+  ({ setResult, setLoading, setError, updateUserData }) =>
+  ({ hand, deck: deckKey, custom, ...userData }) => {
     const error = () => {
       setError(true);
       setLoading(false);
@@ -54,6 +57,29 @@ const onFinishWrapper =
 
     const parameters = { hand, deck };
     const metadata = {};
+
+    const stateful = userData.campaign && !userData.testMode;
+    if (stateful) {
+      const { campaign, character, description } = userData;
+
+      authentifiedPostOnServer({
+        uri: "/cards/draw",
+        body: {
+          parameters,
+          metadata,
+          campaign,
+          character,
+          description,
+        },
+        success: ({ roll, ...context }) => {
+          setResult(roll);
+          updateUserData(context);
+          setLoading(false);
+        },
+        error,
+      });
+      return;
+    }
 
     postOnServer({
       uri: "/public/cards/draw",
@@ -99,6 +125,13 @@ const CustomForm = () => {
   const [deckSize, setDeckSize] = useState(initialValues.deck);
   const [deckType, setDeckType] = useState(initialValues.deck);
 
+  const dispatch = useDispatch();
+  const updateUserData = (context) => {
+    const { campaign, character } = context;
+    dispatch(addCampaign(campaign));
+    dispatch(addCharacter(character));
+  };
+
   if (error) {
     return <DefaultErrorMessage />;
   }
@@ -106,7 +139,12 @@ const CustomForm = () => {
   return (
     <div className={styles["form-container"]}>
       <Form
-        onFinish={onFinishWrapper({ setResult, setLoading, setError })}
+        onFinish={onFinishWrapper({
+          setResult,
+          setLoading,
+          setError,
+          updateUserData,
+        })}
         initialValues={initialValues}
         onValuesChange={(_, { deck, custom = initialValues.custom }) => {
           setDeckType(deck);
@@ -118,6 +156,7 @@ const CustomForm = () => {
         }}
       >
         <Form.Item className={styles.submit}>
+          <UserContext />
           <Form.Item
             label={`Draw that many cards`}
             name="hand"
