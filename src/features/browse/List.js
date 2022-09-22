@@ -16,6 +16,7 @@ import { stringify as aegStringify } from "features/d10/formula";
 import FFGSWResult from "./FFGSWResult";
 import { isAForceRoll, netSuccesses } from "features/sw/Result";
 import { stringify as dndStringify } from "features/dnd/formula";
+import CardResult from "./CardResult";
 
 const { Text } = Typography;
 
@@ -90,7 +91,7 @@ const columns = [
         return <>{aegStringify(roll.parameters)}</>;
       }
 
-      if (type === "FFG-L5R-Heritage") {
+      if (["FFG-L5R-Heritage", "card"].includes(type)) {
         return `—`;
       }
 
@@ -126,6 +127,10 @@ const columns = [
 
       if (type === "FFG-SW") {
         return <FFGSWResult parameters={parameters} result={result} />;
+      }
+
+      if (type === "card") {
+        return <CardResult result={result} />;
       }
 
       return null;
