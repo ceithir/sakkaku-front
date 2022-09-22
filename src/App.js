@@ -25,6 +25,7 @@ import DnDRoll from "features/dnd/IdentifiedRoll";
 import FFGSWRoller from "features/sw/Roller";
 import FFGSWRoll from "features/sw/Roll";
 import DrawCards from "features/cards/Draw";
+import IdDraw from "features/cards/IdDraw";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -108,6 +109,9 @@ const App = () => {
             <AnonymousAlertWrapper>
               <DrawCards />
             </AnonymousAlertWrapper>
+          </Route>
+          <Route path="/draws/:id" exact>
+            <IdDraw />
           </Route>
           <Route path="/" exact>
             <Homepage />

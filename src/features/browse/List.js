@@ -204,6 +204,10 @@ const columns = [
           return `/ffg-sw-rolls/${id}`;
         }
 
+        if (type === "card") {
+          return `/draws/${id}`;
+        }
+
         return null;
       })();
 

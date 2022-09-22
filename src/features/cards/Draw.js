@@ -1,42 +1,15 @@
 import React, { useState } from "react";
 import styles from "./Draw.module.less";
-import {
-  Breadcrumb,
-  Form,
-  Button,
-  InputNumber,
-  Radio,
-  Divider,
-  Checkbox,
-} from "antd";
-import { Link } from "react-router-dom";
-import { HomeOutlined } from "@ant-design/icons";
+import { Form, Button, InputNumber, Radio, Divider, Checkbox } from "antd";
 import { postOnServer, authentifiedPostOnServer } from "server";
 import Card from "./Card";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import { addCampaign, addCharacter } from "features/user/reducer";
 import { useDispatch } from "react-redux";
 import UserContext from "components/form/UserContext";
+import Layout from "./Layout";
 
 const l = (n) => [...Array(n).keys()].map((i) => i + 1);
-
-const Layout = ({ children }) => {
-  return (
-    <div className={styles.container}>
-      <Breadcrumb separator=">" className={styles.breadcrumb}>
-        <Breadcrumb.Item>
-          <Link to="/">
-            <HomeOutlined />
-          </Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>{`Cards`}</Breadcrumb.Item>
-        <Breadcrumb.Item>{`Standard 52-card deck`}</Breadcrumb.Item>
-        <Breadcrumb.Item>{`Draw`}</Breadcrumb.Item>
-      </Breadcrumb>
-      <div>{children}</div>
-    </div>
-  );
-};
 
 const onFinishWrapper =
   ({ setResult, setLoading, setError, updateUserData }) =>
