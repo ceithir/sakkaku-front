@@ -177,7 +177,12 @@ const CustomForm = () => {
             </Form.Item>
           )}
 
-          <Button type="primary" htmlType="submit" loading={loading}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={loading}
+            name="submit"
+          >
             {`Draw`}
           </Button>
         </Form.Item>
