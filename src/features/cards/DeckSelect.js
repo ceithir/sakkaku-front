@@ -10,7 +10,7 @@ const CardsSelect = ({ initialValues }) => {
   return (
     <>
       <Form.Item
-        label={`From that deck`}
+        label={`Configure deck`}
         name="deck"
         rules={[{ required: true, message: "Required." }]}
       >

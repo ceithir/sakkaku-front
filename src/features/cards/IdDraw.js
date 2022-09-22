@@ -8,6 +8,7 @@ import Layout from "./Layout";
 import Card from "./Card";
 import styles from "./IdDraw.module.less";
 import { imgSrc } from "./Card";
+import SmallDeck from "./SmallDeck";
 
 export const link = (id) => !!id && `${window.location.origin}/draws/${id}`;
 export const bbMessage = ({ description, hand, id }) =>
@@ -62,13 +63,7 @@ const IdDraw = () => {
   const rollSpecificData = [
     {
       label: `Deck before draw`,
-      content: (
-        <div className={styles.deck}>
-          {deck.map((number, index) => {
-            return <Card key={index.toString()} number={number} />;
-          })}
-        </div>
-      ),
+      content: <SmallDeck cards={deck} />,
     },
   ];
 

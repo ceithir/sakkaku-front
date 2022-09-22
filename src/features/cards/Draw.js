@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Draw.module.less";
-import { Form, Button, InputNumber, Divider } from "antd";
+import { Form, Button, InputNumber, Divider, Radio } from "antd";
 import { postOnServer, authentifiedPostOnServer } from "server";
 import Card from "./Card";
 import DefaultErrorMessage from "DefaultErrorMessage";
@@ -12,23 +12,17 @@ import CopyButtons from "components/aftermath/CopyButtons";
 import { link, bbMessage } from "./IdDraw";
 import DeckSelect from "./DeckSelect";
 import { l } from "./utils";
+import SmallDeck from "./SmallDeck";
 
 const onFinishWrapper =
   ({ setResult, setLoading, setError, updateUserData }) =>
-  ({ hand, deck: deckKey, custom, ...userData }) => {
+  ({ hand, deck, custom, ...userData }) => {
     const error = () => {
       setError(true);
       setLoading(false);
     };
 
     setLoading(true);
-
-    const deck = (() => {
-      if (deckKey === "custom") {
-        return custom;
-      }
-      return l(deckKey);
-    })();
 
     const parameters = { hand, deck };
     const metadata = {};
@@ -73,6 +67,7 @@ const onFinishWrapper =
 const initialValues = {
   deck: 52,
   custom: l(54),
+  predeck: "new",
 };
 
 const Result = ({ result, context = {} }) => {
@@ -110,6 +105,23 @@ const CustomForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [deckSize, setDeckSize] = useState(initialValues.deck);
+  const [deckSource, setDeckSource] = useState(initialValues.predeck);
+  const [currentDeck, setCurrentDeck] = useState();
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (!result) {
+      return;
+    }
+    const hand = result.hand;
+    const cDeck = result.parameters.deck.cards.filter((n) => !hand.includes(n));
+    setCurrentDeck(cDeck);
+    form.setFieldsValue({
+      predeck: "current",
+    });
+    setDeckSource("current");
+    setDeckSize(cDeck.length);
+  }, [result, form]);
 
   const dispatch = useDispatch();
   const [context, setContext] = useState();
@@ -124,26 +136,63 @@ const CustomForm = () => {
     return <DefaultErrorMessage />;
   }
 
+  const prepareValues = ({ deck: deckKey, custom, predeck, ...params }) => {
+    if (predeck === "current") {
+      return {
+        ...params,
+        deck: currentDeck,
+      };
+    }
+
+    const deck = (() => {
+      if (deckKey === "custom") {
+        return custom;
+      }
+      return l(deckKey);
+    })();
+
+    return {
+      ...params,
+      deck,
+    };
+  };
+
   return (
     <div className={styles["form-container"]}>
       <Form
-        onFinish={onFinishWrapper({
-          setResult,
-          setLoading,
-          setError,
-          updateUserData,
-        })}
+        onFinish={(values) =>
+          onFinishWrapper({
+            setResult,
+            setLoading,
+            setError,
+            updateUserData,
+          })(prepareValues(values))
+        }
         initialValues={initialValues}
-        onValuesChange={(_, { deck, custom = initialValues.custom }) => {
-          if (deck === "custom") {
-            setDeckSize(custom.length);
-          } else {
-            setDeckSize(deck);
+        onValuesChange={(
+          _,
+          {
+            deck = initialValues.predeck,
+            custom = initialValues.custom,
+            predeck,
           }
+        ) => {
+          const compDeckSize = () => {
+            if (predeck === "current") {
+              return currentDeck.length;
+            }
+            if (deck === "custom") {
+              return custom.length;
+            }
+            return deck;
+          };
+          setDeckSize(compDeckSize());
+          setDeckSource(predeck);
 
           setResult(undefined);
           setContext(undefined);
         }}
+        form={form}
       >
         <UserContext />
         <Form.Item
@@ -165,7 +214,29 @@ const CustomForm = () => {
         >
           <InputNumber min="1" max={deckSize} />
         </Form.Item>
-        <DeckSelect initialValues={initialValues} />
+        <Form.Item
+          label={`From`}
+          name="predeck"
+          rules={[{ required: true, message: `Please fill this field.` }]}
+        >
+          <Radio.Group
+            options={[
+              { value: "new", label: `A fresh deck` },
+              {
+                value: "current",
+                label: `Current deck`,
+                disabled: !currentDeck,
+              },
+            ]}
+          />
+        </Form.Item>
+        {deckSource === "new" && <DeckSelect initialValues={initialValues} />}
+        {deckSource === "current" && (
+          <div className={styles.remaining}>
+            <p>{`Cards currently remaining in deck:`}</p>
+            <SmallDeck cards={currentDeck} />
+          </div>
+        )}
 
         <Form.Item className={styles.submit}>
           <Button
