@@ -17,13 +17,30 @@
 }
 
 .explanation {
-  background-color: white;
-  border: 1px solid fade(black, 25%);
-  padding: 12px;
+  .torii-box-light();
 
   margin: 0 24px 24px 24px;
 
   p:last-child {
     margin-bottom: 0;
+  }
+}
+
+.code {
+  background-color: white;
+  border: 1px solid fade(black, 25%);
+  padding: 12px;
+}
+
+.result {
+  padding: 24px;
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+
+    & > * {
+      margin: 0 12px;
+    }
   }
 }

@@ -1,5 +1,12 @@
-import React from "react";
-import { Form, Button, Input, Alert } from "antd";
+import React, { useState } from "react";
+import {
+  Form,
+  Button,
+  Input,
+  Alert,
+  Result as AntdResult,
+  message,
+} from "antd";
 import Layout from "./Layout";
 import { useSelector } from "react-redux";
 import { selectUser } from "features/user/reducer";
@@ -7,6 +14,9 @@ import styles from "./DeckBuilder.module.less";
 import DeckSelect from "./DeckSelect";
 import { l } from "./utils";
 import { Link } from "react-router-dom";
+import { authentifiedPostOnServer } from "server";
+import DefaultErrorMessage from "DefaultErrorMessage";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const { TextArea } = Input;
 
@@ -41,9 +51,83 @@ const Explanation = () => {
   );
 };
 
-const CustomForm = () => {
+const onFinishWrapper =
+  ({ setLoading, setError, setResult }) =>
+  ({ deck: deckKey, custom, description }) => {
+    setLoading(true);
+
+    const deck = (() => {
+      if (deckKey === "custom") {
+        return custom;
+      }
+      return l(deckKey);
+    })();
+
+    authentifiedPostOnServer({
+      uri: "/cards/decks/create",
+      body: {
+        description,
+        deck,
+      },
+      success: (result) => {
+        setResult(result);
+        setLoading(false);
+      },
+      error: () => {
+        setError(true);
+        setLoading(false);
+      },
+    });
+  };
+
+const Result = ({ uuid, reset }) => {
   return (
-    <Form initialValues={initialValues}>
+    <AntdResult
+      status="success"
+      title="Deck created!"
+      subTitle={
+        <div>
+          <p>{`Your deck code is:`}</p>
+          <div className={styles.code}>{uuid}</div>
+        </div>
+      }
+      extra={[
+        <div className={styles.buttons}>
+          <CopyToClipboard
+            text={uuid}
+            onCopy={() => message.success("Copied to clipboard!")}
+          >
+            <Button>{`Copy code to clipboard`}</Button>
+          </CopyToClipboard>
+          <Button
+            type="primary"
+            onClick={() => reset()}
+          >{`Create another deck`}</Button>
+        </div>,
+      ]}
+      className={styles.result}
+    />
+  );
+};
+
+const CustomForm = () => {
+  const [result, setResult] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  if (error) {
+    return <DefaultErrorMessage />;
+  }
+
+  if (result) {
+    return <Result {...result} reset={() => setResult(undefined)} />;
+  }
+
+  return (
+    <Form
+      initialValues={initialValues}
+      onFinish={onFinishWrapper({ setLoading, setError, setResult })}
+    >
       <Form.Item
         label={`Description`}
         name="description"
@@ -56,7 +140,12 @@ const CustomForm = () => {
       <DeckSelect initialValues={initialValues} />
 
       <Form.Item className={styles.submit}>
-        <Button type="primary" htmlType="submit" name="submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          name="submit"
+          loading={loading}
+        >
           {`Create deck`}
         </Button>
       </Form.Item>
