@@ -7,6 +7,15 @@ import ResultBox from "components/aftermath/ResultBox";
 import Layout from "./Layout";
 import Card from "./Card";
 import styles from "./IdDraw.module.less";
+import { imgSrc } from "./Card";
+
+export const link = (id) => !!id && `${window.location.origin}/draws/${id}`;
+export const bbMessage = ({ description, hand, id }) =>
+  `${description}[/url]` +
+  "\n" +
+  `[url=${link(id)}]${hand
+    .map((number) => `[img]${window.location.origin}${imgSrc(number)}[/img]`)
+    .join(" ")}`;
 
 const IdDraw = () => {
   const { id } = useParams();
@@ -69,6 +78,12 @@ const IdDraw = () => {
         identity={{ character, campaign, player }}
         description={description}
         rollSpecificData={rollSpecificData}
+        link={link(id)}
+        bbMessage={bbMessage({
+          id,
+          description,
+          hand,
+        })}
       >
         {hand.map((number, index) => {
           return <Card key={index.toString()} number={number} />;

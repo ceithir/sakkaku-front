@@ -8,6 +8,8 @@ import { addCampaign, addCharacter } from "features/user/reducer";
 import { useDispatch } from "react-redux";
 import UserContext from "components/form/UserContext";
 import Layout from "./Layout";
+import CopyButtons from "components/aftermath/CopyButtons";
+import { link, bbMessage } from "./IdDraw";
 
 const l = (n) => [...Array(n).keys()].map((i) => i + 1);
 
@@ -73,12 +75,14 @@ const initialValues = {
   custom: l(54),
 };
 
-const Result = ({ result }) => {
+const Result = ({ result, context = {} }) => {
   if (!result) {
     return null;
   }
 
   const { hand } = result;
+  const { id, description } = context;
+
   return (
     <>
       <Divider />
@@ -86,6 +90,16 @@ const Result = ({ result }) => {
         {hand.map((number, index) => {
           return <Card number={number} key={index.toString()} />;
         })}
+      </div>
+      <div className={styles["copy-buttons"]}>
+        <CopyButtons
+          link={link(id)}
+          bbMessage={bbMessage({
+            id,
+            description,
+            hand,
+          })}
+        />
       </div>
     </>
   );
@@ -99,7 +113,9 @@ const CustomForm = () => {
   const [deckType, setDeckType] = useState(initialValues.deck);
 
   const dispatch = useDispatch();
+  const [context, setContext] = useState();
   const updateUserData = (context) => {
+    setContext(context);
     const { campaign, character } = context;
     dispatch(addCampaign(campaign));
     dispatch(addCharacter(character));
@@ -126,6 +142,9 @@ const CustomForm = () => {
           } else {
             setDeckSize(deck);
           }
+
+          setResult(undefined);
+          setContext(undefined);
         }}
       >
         <Form.Item className={styles.submit}>
@@ -187,7 +206,7 @@ const CustomForm = () => {
           </Button>
         </Form.Item>
       </Form>
-      <Result result={result} />
+      <Result result={result} context={context} />
     </div>
   );
 };

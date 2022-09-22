@@ -38,7 +38,7 @@ const cardName = (number) => {
   return `${value} of ${suit}`;
 };
 
-const imgSrc = (number, { size = 1 } = {}) => {
+export const imgSrc = (number, { size = 1 } = {}) => {
   return `${baseUrl}/${number.toString().padStart(2, "0")}-${size * 60}.png`;
 };
 
