@@ -145,29 +145,29 @@ const CustomForm = () => {
           setContext(undefined);
         }}
       >
-        <Form.Item className={styles.submit}>
-          <UserContext />
-          <Form.Item
-            label={`Draw that many cards`}
-            name="hand"
-            rules={[
-              { required: true, message: `Please enter a number.` },
-              {
-                min: 1,
-                type: "number",
-                message: `Please enter a number greater than zero.`,
-              },
-              {
-                max: deckSize,
-                type: "number",
-                message: `Not enough cards in deck.`,
-              },
-            ]}
-          >
-            <InputNumber min="1" max={deckSize} />
-          </Form.Item>
-          <DeckSelect initialValues={initialValues} />
+        <UserContext />
+        <Form.Item
+          label={`Draw that many cards`}
+          name="hand"
+          rules={[
+            { required: true, message: `Please enter a number.` },
+            {
+              min: 1,
+              type: "number",
+              message: `Please enter a number greater than zero.`,
+            },
+            {
+              max: deckSize,
+              type: "number",
+              message: `Not enough cards in deck.`,
+            },
+          ]}
+        >
+          <InputNumber min="1" max={deckSize} />
+        </Form.Item>
+        <DeckSelect initialValues={initialValues} />
 
+        <Form.Item className={styles.submit}>
           <Button
             type="primary"
             htmlType="submit"
