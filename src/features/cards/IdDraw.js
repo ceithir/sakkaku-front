@@ -85,9 +85,11 @@ const IdDraw = () => {
           hand,
         })}
       >
-        {hand.map((number, index) => {
-          return <Card key={index.toString()} number={number} />;
-        })}
+        <div className={styles.cards}>
+          {hand.map((number, index) => {
+            return <Card key={index.toString()} number={number} />;
+          })}
+        </div>
       </ResultBox>
     </Layout>
   );
