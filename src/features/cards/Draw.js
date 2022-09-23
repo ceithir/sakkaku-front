@@ -190,7 +190,7 @@ const CustomForm = () => {
     }
 
     const hand = result.hand;
-    const cDeck = result.parameters.deck.cards.filter((n) => !hand.includes(n));
+    const cDeck = result.parameters.deck.filter((n) => !hand.includes(n));
 
     if (form.getFieldValue("predeck") === "configured") {
       setDeckSize(cDeck.length);
