@@ -5,7 +5,7 @@ export const parse = (str) => {
 
   const s = str.replace(/\s+/g, "").toLowerCase();
 
-  const dieRegexp = /([0-9]{1,2})d([0-9]{1,3})((k|kh|kl)([0-9]{1,2}))?/;
+  const dieRegexp = /([0-9]{1,2})d([0-9]{1,3})((k|kh|kl)([0-9]{1,2}))?(!)?/;
 
   const matches = s.match(
     new RegExp(
@@ -25,12 +25,36 @@ export const parse = (str) => {
       const number = parseInt(m[1]);
       const sides = parseInt(m[2]);
 
-      if (!!m[3]) {
+      const explicitKeep = !!m[3];
+      const explode = !!m[6];
+
+      if (explicitKeep) {
+        const keepNumber = parseInt(m[5]);
+        const keepCriteria = m[4] === "kl" ? "lowest" : "highest";
+
+        if (explode) {
+          return {
+            number,
+            sides,
+            keepNumber,
+            keepCriteria,
+            explode,
+          };
+        }
+
         return {
           number,
           sides,
-          keepNumber: parseInt(m[5]),
-          keepCriteria: m[4] === "kl" ? "lowest" : "highest",
+          keepNumber,
+          keepCriteria,
+        };
+      }
+
+      if (explode) {
+        return {
+          number,
+          sides,
+          explode,
         };
       }
 
@@ -74,14 +98,18 @@ export const stringify = (parameters) => {
 
   const { dices, modifier } = parameters;
   const diceString = dices
-    .map(({ number, sides, keepNumber, keepCriteria }) => {
+    .map(({ number, sides, keepNumber, keepCriteria, explode }) => {
+      let str = `${number}d${sides}`;
+
       if (!!keepNumber && keepNumber !== number) {
-        return `${number}d${sides}${
-          keepCriteria === "lowest" ? "kl" : "kh"
-        }${keepNumber}`;
+        str += `${keepCriteria === "lowest" ? "kl" : "kh"}${keepNumber}`;
       }
 
-      return `${number}d${sides}`;
+      if (explode) {
+        str += "!";
+      }
+
+      return str;
     })
     .join("+");
   const modifierString = !!modifier

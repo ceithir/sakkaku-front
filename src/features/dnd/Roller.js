@@ -32,6 +32,7 @@ const Syntax = () => {
         <li>{`1d12-3+1d4+2`}</li>
         <li>{`3d6kh2`}</li>
         <li>{`2d20kl1`}</li>
+        <li>{`5d10k3!+5`}</li>
       </ul>
     </div>
   );

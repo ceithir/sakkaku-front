@@ -63,6 +63,34 @@ describe("parse", () => {
       expect(parse("1d20k0")).toEqual(false);
     });
   });
+  describe("explode", () => {
+    test("one die", () => {
+      expect(parse("1d10!")).toEqual({
+        dices: [
+          {
+            sides: 10,
+            number: 1,
+            explode: true,
+          },
+        ],
+        modifier: 0,
+      });
+    });
+    test("mixed with keep", () => {
+      expect(parse("3d6k1!+3")).toEqual({
+        dices: [
+          {
+            sides: 6,
+            number: 3,
+            explode: true,
+            keepNumber: 1,
+            keepCriteria: "highest",
+          },
+        ],
+        modifier: 3,
+      });
+    });
+  });
 });
 
 describe("stringify", () => {
@@ -88,5 +116,14 @@ describe("stringify", () => {
         dices: [{ sides: 6, number: 3, keepNumber: 3 }],
       })
     ).toBe("3d6");
+  });
+
+  test("show explode", () => {
+    expect(
+      stringify({
+        dices: [{ sides: 6, number: 3, keepNumber: 2, explode: true }],
+        modifier: 5,
+      })
+    ).toBe("3d6kh2!+5");
   });
 });
