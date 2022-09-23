@@ -25,7 +25,7 @@ const onFinishWrapper =
 
     setLoading(true);
 
-    const parameters = { hand, deck, code };
+    const parameters = { hand, deck };
     const metadata = {};
 
     const stateful = userData.campaign && !userData.testMode;
@@ -40,6 +40,7 @@ const onFinishWrapper =
           campaign,
           character,
           description,
+          code,
         },
         success: ({ roll, ...context }) => {
           setResult(roll);
