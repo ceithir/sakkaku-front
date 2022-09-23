@@ -105,7 +105,7 @@ const Result = ({ result, context = {} }) => {
 const uuidPattern =
   /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 
-const ConfiguredLoader = ({ setPreconfiguredDeck }) => {
+const ConfiguredLoader = ({ setPreconfigured }) => {
   const user = useSelector(selectUser);
   const [loading2, setLoading2] = useState(false);
 
@@ -133,9 +133,8 @@ const ConfiguredLoader = ({ setPreconfiguredDeck }) => {
           },
           () => ({
             validator: async (_, value) => {
-              setPreconfiguredDeck(undefined);
-
               if (!value || !value.match(uuidPattern)) {
+                setPreconfigured(undefined);
                 return Promise.resolve();
               }
 
@@ -144,10 +143,11 @@ const ConfiguredLoader = ({ setPreconfiguredDeck }) => {
               await getOnServer({
                 uri: `/public/cards/decks/${value}`,
                 success: (data) => {
-                  setPreconfiguredDeck(data.state.current);
+                  setPreconfigured(data);
                   setLoading2(false);
                 },
                 error: (err) => {
+                  setPreconfigured(undefined);
                   setLoading2(false);
                   if (err.message === "Bad status: 404") {
                     errors.push(`Invalid code.`);
@@ -183,22 +183,22 @@ const CustomForm = () => {
   const [deckSource, setDeckSource] = useState(initialValues.predeck);
   const [currentDeck, setCurrentDeck] = useState();
   const [form] = Form.useForm();
-  const [preconfiguredDeck, setPreconfiguredDeck] = useState();
+  const [preconfigured, setPreconfigured] = useState();
+  const preconfiguredDeck = preconfigured?.state?.current;
 
   useEffect(() => {
     if (!result) {
       return;
     }
 
-    const hand = result.hand;
-    const cDeck = result.parameters.deck.filter((n) => !hand.includes(n));
-
     if (form.getFieldValue("predeck") === "configured") {
-      setDeckSize(cDeck.length);
       setCurrentDeck(undefined);
-      setPreconfiguredDeck(cDeck);
+      // FIXME Disguting way of updating the displayed deck
+      form.validateFields(["code"]);
     }
     if (["new", "current"].includes(form.getFieldValue("predeck"))) {
+      const hand = result.hand;
+      const cDeck = result.parameters.deck.filter((n) => !hand.includes(n));
       setDeckSize(cDeck.length);
       setCurrentDeck(cDeck);
       form.setFieldsValue({
@@ -287,7 +287,8 @@ const CustomForm = () => {
               return currentDeck.length;
             }
             if (predeck === "configured") {
-              return preconfiguredDeck?.length || 0;
+              // FIXME Hack to avoid a warning each time the code is changed
+              return preconfiguredDeck?.length || 999;
             }
             if (deck === "custom") {
               return custom.length;
@@ -351,10 +352,14 @@ const CustomForm = () => {
         )}
         {deckSource === "configured" && (
           <>
-            <ConfiguredLoader setPreconfiguredDeck={setPreconfiguredDeck} />
-            {preconfiguredDeck && (
+            <ConfiguredLoader setPreconfigured={setPreconfigured} />
+            {preconfigured && (
               <div className={styles.preconf}>
-                <p>{`Deck found! Cards remaining in deck at the moment:`}</p>
+                <p>{`Deck found!`}</p>
+                <p className={styles.description}>
+                  {preconfigured.description}
+                </p>
+                <p>{`Cards remaining in deck at the moment:`}</p>
                 <SmallDeck cards={preconfiguredDeck} />
               </div>
             )}
