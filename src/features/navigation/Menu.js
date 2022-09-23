@@ -35,7 +35,7 @@ const CustomMenu = () => {
         return "ffg-sw";
       }
 
-      if (["/draw-cards"].includes(pathname)) {
+      if (["/draw-cards", "/build-deck"].includes(pathname)) {
         return "cards";
       }
 

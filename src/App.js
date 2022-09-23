@@ -27,6 +27,7 @@ import FFGSWRoll from "features/sw/Roll";
 import DrawCards from "features/cards/Draw";
 import IdDraw from "features/cards/IdDraw";
 import DeckBuilder from "features/cards/DeckBuilder";
+import CardSubmenu from "features/navigation/CardSubmenu";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -107,11 +108,13 @@ const App = () => {
             <FFGSWRoll />
           </Route>
           <Route path="/draw-cards" exact>
+            <CardSubmenu />
             <AnonymousAlertWrapper>
               <DrawCards />
             </AnonymousAlertWrapper>
           </Route>
           <Route path="/build-deck" exact>
+            <CardSubmenu />
             <DeckBuilder />
           </Route>
           <Route path="/draws/:id" exact>
