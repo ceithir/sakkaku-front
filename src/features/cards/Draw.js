@@ -212,8 +212,11 @@ const CustomForm = () => {
       setDeckSize(preconfiguredDeck.length);
     }
   }, [deckSource, preconfiguredDeck]);
+
   useEffect(() => {
-    form.validateFields(["hand"]);
+    if (form.getFieldValue("hand")) {
+      form.validateFields(["hand"]);
+    }
   }, [form, deckSize]);
 
   const dispatch = useDispatch();
