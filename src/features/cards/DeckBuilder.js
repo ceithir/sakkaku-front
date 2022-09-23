@@ -24,9 +24,8 @@ const AnonymousUnavailable = () => {
   return (
     <Alert
       showIcon
-      closable
       message={`This feature is only available to logged-in users.`}
-      type="error"
+      type="warning"
     />
   );
 };
@@ -157,7 +156,12 @@ const DeckBuilder = () => {
   const user = useSelector(selectUser);
 
   if (!user) {
-    return <AnonymousUnavailable />;
+    return (
+      <>
+        <AnonymousUnavailable />
+        <Layout></Layout>
+      </>
+    );
   }
 
   return (
