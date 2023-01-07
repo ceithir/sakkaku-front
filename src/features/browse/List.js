@@ -99,6 +99,17 @@ const columns = [
         return <>{dndStringify(roll.parameters)}</>;
       }
 
+      if (type === "Cyberpunk-RED") {
+        const modifier = roll.parameters.modifier;
+        if (!modifier) {
+          return <>{`"1d10"`}</>;
+        }
+        if (modifier < 0) {
+          return <>{`"1d10"${modifier}`}</>;
+        }
+        return <>{`"1d10"+${modifier}`}</>;
+      }
+
       return <Text type="secondary">{`See page`}</Text>;
     },
     responsive: ["md"],
@@ -121,7 +132,7 @@ const columns = [
         return <HeritageResult result={result} metadata={metadata} />;
       }
 
-      if (type === "AEG-L5R" || type === "DnD") {
+      if (type === "AEG-L5R" || type === "DnD" || type === "Cyberpunk-RED") {
         return <strong>{result["total"]}</strong>;
       }
 
