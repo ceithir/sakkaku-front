@@ -135,7 +135,7 @@ const Roller = () => {
               },
             ]}
           >
-            <Input placeholder={`2+5-3`} autoComplete="off" />
+            <Input placeholder={`2+5-3`} />
           </Form.Item>
         </div>
         <Form.Item>
