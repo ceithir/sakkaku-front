@@ -39,6 +39,10 @@ const CustomMenu = () => {
         return "cards";
       }
 
+      if (["/cyberpunk/roll"].includes(pathname)) {
+        return "cyberpunk";
+      }
+
       if (pathname === "/rolls" && !search) {
         return "all_rolls";
       }
@@ -111,6 +115,16 @@ const CustomMenu = () => {
             {
               key: "cards",
               label: <Link to="/draw-cards">{`Standard 52-card deck`}</Link>,
+            },
+          ],
+        },
+        {
+          type: "group",
+          label: `Misc`,
+          children: [
+            {
+              key: "cyberpunk",
+              label: <Link to="/cyberpunk/roll">{`Cyberpunk RED`}</Link>,
             },
           ],
         },
