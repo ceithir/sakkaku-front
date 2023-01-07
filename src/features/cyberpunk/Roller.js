@@ -138,6 +138,11 @@ const Roller = () => {
             <Input placeholder={`2+5-3`} />
           </Form.Item>
         </div>
+        <div className={styles.explanation}>
+          {`"1d10": Standard d10, except exploding once on a 10 and exploding once `}
+          <em>{`downwards`}</em>
+          {` on a 1.`}
+        </div>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             {`Roll`}
