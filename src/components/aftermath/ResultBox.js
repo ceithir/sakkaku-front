@@ -7,7 +7,7 @@ import CopyButtons from "./CopyButtons";
 const ResultBox = ({
   identity,
   description,
-  rollSpecificData,
+  rollSpecificData = [],
   link,
   bbMessage,
   children,

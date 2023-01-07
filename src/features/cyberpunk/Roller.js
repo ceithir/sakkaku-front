@@ -8,33 +8,16 @@ import { pattern, parse } from "./formula";
 import UserContext from "components/form/UserContext";
 import { addCampaign, addCharacter } from "features/user/reducer";
 import { useDispatch } from "react-redux";
+import TextResult from "./TextResult";
 
 const Result = ({ result }) => {
   if (!result) {
     return <div className={styles.result}>{`💮`}</div>;
   }
 
-  const modifier = result.parameters.modifier;
-  const textModifier =
-    !!modifier && (modifier > 0 ? `+${modifier}` : `${modifier}`);
-  const total = result.dice.reduce((prev, cur) => prev + cur, 0) + modifier;
-
-  if (!modifier && result.dice.length === 1) {
-    return (
-      <div className={styles.result}>
-        {`"1d10" ⇒ `}
-        <strong>{total}</strong>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.result}>
-      {`"1d10"`}
-      {` ⇒ ${result.dice.join("+").replace("+-", "-")}`}
-      {textModifier}
-      {` ⇒ `}
-      <strong>{total}</strong>
+      <TextResult {...result} />
     </div>
   );
 };

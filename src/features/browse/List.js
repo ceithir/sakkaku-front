@@ -219,6 +219,10 @@ const columns = [
           return `/draws/${id}`;
         }
 
+        if (type === "Cyberpunk-RED") {
+          return `/cyberpunk/rolls/${id}`;
+        }
+
         return null;
       })();
 
