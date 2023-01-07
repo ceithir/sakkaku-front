@@ -27,6 +27,7 @@ import DrawCards from "features/cards/Draw";
 import IdDraw from "features/cards/IdDraw";
 import DeckBuilder from "features/cards/DeckBuilder";
 import CardSubmenu from "features/navigation/CardSubmenu";
+import CyberpunkRoller from "features/cyberpunk/Roller";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -112,6 +113,9 @@ const App = () => {
           </Route>
           <Route path="/draws/:id" exact>
             <IdDraw />
+          </Route>
+          <Route path="/cyberpunk/roll" exact>
+            <CyberpunkRoller />
           </Route>
           <Route path="/" exact>
             <Homepage />
