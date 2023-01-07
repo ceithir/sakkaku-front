@@ -21,12 +21,6 @@ const AegSubmenu = () => {
       label: <Link to="/roll-d10">{`XkY Roll`}</Link>,
     },
     {
-      key: "roll-d10-4th-ed",
-      label: (
-        <Link to="/roll-d10-4th-ed">{`4th Edition Roll (guided mode)`}</Link>
-      ),
-    },
-    {
       key: "probabilities",
       label: (
         <ExternalLink href="https://lynks.se/probability/">{`Probabilities`}</ExternalLink>

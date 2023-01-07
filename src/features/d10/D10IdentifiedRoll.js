@@ -61,6 +61,7 @@ const D10IdentifiedRoll = () => {
 
   const { character, campaign, user: player, description, roll } = data;
   const { dice, parameters, metadata } = roll;
+  // Legacy (no more way to specify raises as of now)
   const { raises = {} } = metadata;
   const { called = 0, free = 0, burnt = 0 } = raises;
   const { tn } = parameters;

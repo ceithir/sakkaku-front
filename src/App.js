@@ -18,7 +18,6 @@ import FfgSubmenu from "features/navigation/FfgSubmenu";
 import D10Roller from "features/d10/D10Roller";
 import D10IdentifiedRoll from "features/d10/D10IdentifiedRoll";
 import AegSubmenu from "features/navigation/AegSubmenu";
-import Guided4thEdRoll from "features/d10/Guided4thEdRoll";
 import ReconnectionModal from "features/user/ReconnectionModal";
 import DnDRoller from "features/dnd/Roller";
 import DnDRoll from "features/dnd/IdentifiedRoll";
@@ -85,12 +84,6 @@ const App = () => {
             <AegSubmenu />
             <AnonymousAlertWrapper>
               <D10Roller />
-            </AnonymousAlertWrapper>
-          </Route>
-          <Route path="/roll-d10-4th-ed" exact>
-            <AegSubmenu />
-            <AnonymousAlertWrapper>
-              <Guided4thEdRoll />
             </AnonymousAlertWrapper>
           </Route>
           <Route path="/roll" exact>
