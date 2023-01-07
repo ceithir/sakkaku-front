@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Divider, Radio } from "antd";
+import { Form, Input, Button, Divider, Radio, InputNumber } from "antd";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import Layout from "./Layout";
 import styles from "./Roller.module.less";
@@ -66,13 +66,14 @@ const Roller = () => {
   return (
     <div className={styles.container}>
       <Form
-        onFinish={({ formula, ...values }) => {
+        onFinish={({ formula, tn, ...values }) => {
           setLoading(true);
           setResult(undefined);
           setContext(undefined);
 
           const parameters = {
             modifier: parse(formula) || 0,
+            tn,
           };
           const metadata = {
             original: formula,
@@ -143,6 +144,9 @@ const Roller = () => {
           <em>{`downwards`}</em>
           {` on a 1.`}
         </div>
+        <Form.Item label={`Target number`} name="tn">
+          <InputNumber />
+        </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             {`Roll`}

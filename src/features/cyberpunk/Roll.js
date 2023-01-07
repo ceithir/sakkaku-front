@@ -60,6 +60,14 @@ const Roll = () => {
 
   const { character, campaign, user: player, description, roll, result } = data;
 
+  const tn = roll.parameters.tn;
+  const rollSpecificData = [
+    !!tn && {
+      label: `TN`,
+      content: tn,
+    },
+  ].filter(Boolean);
+
   return (
     <Layout>
       <ResultBox
@@ -71,6 +79,7 @@ const Roll = () => {
           total: result.total,
           parameters: roll.parameters,
         })}
+        rollSpecificData={rollSpecificData}
       >
         <div className={styles.result}>
           <TextResult {...roll} />

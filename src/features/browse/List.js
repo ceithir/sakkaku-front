@@ -157,7 +157,7 @@ const columns = [
     render: ({ type, roll, result }) => {
       const { parameters } = roll;
 
-      if (["FFG-L5R", "AEG-L5R", "DnD"].includes(type)) {
+      if (["FFG-L5R", "AEG-L5R", "DnD", "Cyberpunk-RED"].includes(type)) {
         const tn = parameters.tn;
 
         if (!result) {
