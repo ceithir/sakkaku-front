@@ -3,17 +3,13 @@ import NextButton from "../NextButton";
 import { bestDiceToReroll } from "../utils";
 import RerollDiceBox from "./RerollDiceBox";
 
-const Adversity = ({ dices, onFinish, modifiers, mode }) => {
-  const defaultToReroll =
-    mode === "semiauto"
-      ? bestDiceToReroll({
-          roll: { dices, modifiers },
-          max: 2,
-          restrictFunc: ({ value: { success = 0, explosion = 0 } }) =>
-            success > 0 || explosion > 0,
-        })
-      : [];
-
+const Adversity = ({ dices, onFinish, modifiers }) => {
+  const defaultToReroll = bestDiceToReroll({
+    roll: { dices, modifiers },
+    max: 2,
+    restrictFunc: ({ value: { success = 0, explosion = 0 } }) =>
+      success > 0 || explosion > 0,
+  });
   const [toReroll, setToReroll] = useState(defaultToReroll);
   const successDices = dices.filter(
     ({ value }) => value.success || value.explosion

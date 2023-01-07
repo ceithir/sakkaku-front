@@ -15,15 +15,12 @@ const Ability = ({
   title,
   cancel,
   modifiers,
-  shouldPreselectDice,
   showLabelInput,
 }) => {
-  const defaultToReroll = shouldPreselectDice
-    ? bestDiceToReroll({
-        roll: { dices, modifiers },
-        max: 1,
-      })
-    : [];
+  const defaultToReroll = bestDiceToReroll({
+    roll: { dices, modifiers },
+    max: 1,
+  });
   const [toReroll, setToReroll] = useState(defaultToReroll);
   const [label, setLabel] = useState();
 

@@ -21,12 +21,9 @@ import { longname } from "./data/abilities";
 import Wandering from "./reroll/Wandering";
 import styles from "./Modifier.module.less";
 import Offering from "./reroll/Offering";
-import { useSelector } from "react-redux";
-import { selectMode } from "./config/reducer";
 
 const Modifier = ({ roll, dispatch }) => {
   const { dices, modifiers, metadata } = roll;
-  const mode = useSelector(selectMode);
 
   const basePool = rolledDicesCount(roll);
   const rerollTypes = metadata?.rerolls || [];
@@ -40,7 +37,6 @@ const Modifier = ({ roll, dispatch }) => {
         dices={dices}
         onFinish={(positions) => dispatch(reroll(roll, positions, "adversity"))}
         modifiers={modifiers}
-        mode={mode}
       />
     );
   }
@@ -60,7 +56,6 @@ const Modifier = ({ roll, dispatch }) => {
         basePool={basePool}
         rerollTypes={rerollTypes}
         modifiers={modifiers}
-        mode={mode}
         delay={shouldShowDistinction && delay}
       />
     );
@@ -74,7 +69,6 @@ const Modifier = ({ roll, dispatch }) => {
           dispatch(reroll(roll, positions, "distinction"))
         }
         modifiers={modifiers}
-        mode={mode}
       />
     );
   }
@@ -101,7 +95,6 @@ const Modifier = ({ roll, dispatch }) => {
       <AbilityReroll
         name={"deathdealer"}
         text={`Thanks to your School Ability, you may reroll dice up to your school rank.`}
-        shouldPreselectDice={mode === "semiauto"}
       />
     );
   }
@@ -111,7 +104,6 @@ const Modifier = ({ roll, dispatch }) => {
       <AbilityReroll
         name={"manipulator"}
         text={`Thanks to your School Ability, you may reroll dice up to your school rank.`}
-        shouldPreselectDice={mode === "semiauto"}
       />
     );
   }

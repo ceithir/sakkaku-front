@@ -33,6 +33,7 @@ const Dice = ({ dice }) => {
       src={diceToImageSrc(dice)}
       alt={getText(dice)}
       srcSet={diceToImageSrcSet(dice)}
+      title={getText(dice)}
     />
   );
 };

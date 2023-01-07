@@ -2,49 +2,34 @@ import React from "react";
 import styles from "./Dices.module.less";
 import classNames from "classnames";
 import Dice from "./Dice";
-import TextDice from "./glitter/TextDice";
-import { useSelector } from "react-redux";
-import { selectDisplayMode } from "./config/reducer";
 
-const buildClassNames = ({ dice, extended }) => {
+const buildClassNames = ({ dice }) => {
   const { selected, disabled, className } = dice;
 
   return {
-    [styles.extended]: extended,
     [styles.selected]: selected,
     [styles.unselectable]: disabled,
     [className]: !!className,
   };
 };
 
-const WrappedDice = ({ dice, extended }) => {
-  if (extended) {
-    return (
-      <div>
-        <Dice dice={dice} />
-        <TextDice {...dice.value} />
-      </div>
-    );
-  }
+const WrappedDice = ({ dice }) => {
   return <Dice dice={dice} />;
 };
 
-const StaticDice = ({ dice, extended }) => {
+const StaticDice = ({ dice }) => {
   return (
     <div
       className={classNames(styles.dice, {
-        ...buildClassNames({ dice, extended }),
+        ...buildClassNames({ dice }),
       })}
     >
-      <WrappedDice dice={dice} extended={extended} />
+      <WrappedDice dice={dice} />
     </div>
   );
 };
 
 const Dices = ({ dices, className }) => {
-  const displayMode = useSelector(selectDisplayMode);
-  const extended = displayMode === "verbose";
-
   if (!dices?.length) {
     return null;
   }
@@ -59,7 +44,7 @@ const Dices = ({ dices, className }) => {
           const { selectable, selected, toggle } = dice;
 
           if (!selectable) {
-            return <StaticDice key={key} dice={dice} extended={extended} />;
+            return <StaticDice key={key} dice={dice} />;
           }
 
           return (
@@ -67,10 +52,10 @@ const Dices = ({ dices, className }) => {
               key={key}
               className={classNames(styles.dice, {
                 [styles.selectable]: true,
-                ...buildClassNames({ dice, extended }),
+                ...buildClassNames({ dice }),
               })}
             >
-              <WrappedDice dice={dice} extended={extended} />
+              <WrappedDice dice={dice} />
               <input type="checkbox" checked={selected} onChange={toggle} />
             </label>
           );
@@ -82,9 +67,7 @@ const Dices = ({ dices, className }) => {
   return (
     <div className={classNames(styles.dices, { [className]: !!className })}>
       {dices.map((dice, index) => {
-        return (
-          <StaticDice key={index.toString()} dice={dice} extended={extended} />
-        );
+        return <StaticDice key={index.toString()} dice={dice} />;
       })}
     </div>
   );

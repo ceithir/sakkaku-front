@@ -11,20 +11,16 @@ const Offering = ({
   basePool,
   rerollTypes,
   modifiers,
-  mode,
   delay,
 }) => {
   const max = 3;
   const isBlank = ({ value: { opportunity, success, explosion, strife } }) =>
     success === 0 && explosion === 0 && opportunity === 0 && strife === 0;
-  const defaultToReroll =
-    mode === "semiauto"
-      ? bestDiceToReroll({
-          roll: { dices, modifiers },
-          max,
-          restrictFunc: isBlank,
-        })
-      : [];
+  const defaultToReroll = bestDiceToReroll({
+    roll: { dices, modifiers },
+    max,
+    restrictFunc: isBlank,
+  });
   const [toReroll, setToReroll] = useState(defaultToReroll);
 
   const toggle = (index) => {

@@ -30,22 +30,9 @@ import Modifier from "./Modifier";
 import Channel from "./Channel";
 import Layout from "./Layout";
 import styles from "./index.module.less";
-import { selectDisplayMode, selectMode } from "./config/reducer";
-import ConfigOpener from "./config/Opener";
-import classNames from "classnames";
 import Title from "features/display/Title";
 
 const { Panel } = Collapse;
-
-const ConfigButton = ({ step }) => {
-  const currentStep = useSelector(selectStep);
-
-  if (step !== currentStep) {
-    return null;
-  }
-
-  return <ConfigOpener className={styles["config-opener"]} />;
-};
 
 export const StandardRoller = (props) => {
   const dispatch = useDispatch();
@@ -77,8 +64,6 @@ const Roller = ({ save }) => {
   const currentStep = useSelector(selectStep);
   const intent = useSelector(selectIntent);
   const dispatch = useDispatch();
-  const mode = useSelector(selectMode);
-  const displayMode = useSelector(selectDisplayMode);
 
   useEffect(() => {
     if (!save || !dispatch) {
@@ -110,8 +95,8 @@ const Roller = ({ save }) => {
     if (currentStep !== KEEP) {
       return;
     }
-    dispatch(initToKeep(mode));
-  }, [currentStep, mode, dispatch, roll.dices.length]);
+    dispatch(initToKeep());
+  }, [currentStep, dispatch, roll.dices.length]);
 
   const {
     dices,
@@ -262,16 +247,11 @@ const Roller = ({ save }) => {
     return null;
   };
 
-  const defaultClassName = classNames({
-    [styles.extended]: displayMode === "verbose",
-  });
-
   if (currentStep === DECLARE) {
     return (
       <div className={styles["intent-container"]}>
         <Title>{`Legend of the Five Rings (FFG) – Check Roll`}</Title>
         <div>
-          <ConfigOpener />
           <Intent
             onFinish={(data) => dispatch(create({ ...roll, ...data }, user))}
             values={roll}
@@ -297,9 +277,7 @@ const Roller = ({ save }) => {
           collapsible={
             disabled(REROLL) || currentStep === REROLL ? "disabled" : "header"
           }
-          className={defaultClassName}
         >
-          <ConfigButton step={REROLL} />
           <PanelContent name={REROLL} />
         </Panel>
         <Panel
@@ -308,9 +286,7 @@ const Roller = ({ save }) => {
           collapsible={
             disabled(KEEP) || currentStep === KEEP ? "disabled" : "header"
           }
-          className={defaultClassName}
         >
-          <ConfigButton step={KEEP} />
           <PanelContent name={KEEP} />
         </Panel>
         <Panel
@@ -319,9 +295,7 @@ const Roller = ({ save }) => {
           collapsible={
             disabled(RESOLVE) || currentStep === RESOLVE ? "disabled" : "header"
           }
-          className={defaultClassName}
         >
-          <ConfigButton step={RESOLVE} />
           <PanelContent name={RESOLVE} />
         </Panel>
       </Collapse>

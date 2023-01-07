@@ -113,8 +113,8 @@ const slice = createSlice({
     setDelayAfterDistinction: (state, action) => {
       state.delayAfterDistinction = action.payload;
     },
-    initToKeep: (state, { payload: mode }) => {
-      state.toKeep = mode === "semiauto" ? bestKeepableDice(state) : [];
+    initToKeep: (state) => {
+      state.toKeep = bestKeepableDice(state);
     },
     setAdvanced: (state, { payload: advanced }) => {
       state.advanced = advanced;

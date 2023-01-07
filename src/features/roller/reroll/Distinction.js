@@ -3,18 +3,15 @@ import NextButton from "../NextButton";
 import { bestDiceToReroll } from "../utils";
 import RerollDiceBox from "./RerollDiceBox";
 
-const Distinction = ({ dices, onFinish, modifiers, mode }) => {
+const Distinction = ({ dices, onFinish, modifiers }) => {
   const max = modifiers.includes("stirring") ? 3 : 2;
   const bypassMax =
     modifiers.includes("deathdealer") || modifiers.includes("manipulator");
 
-  const defaultToReroll =
-    mode === "semiauto"
-      ? bestDiceToReroll({
-          roll: { dices, modifiers },
-          max: bypassMax ? 3 : max,
-        })
-      : [];
+  const defaultToReroll = bestDiceToReroll({
+    roll: { dices, modifiers },
+    max: bypassMax ? 3 : max,
+  });
   const [toReroll, setToReroll] = useState(defaultToReroll);
 
   const toggle = (index) => {
