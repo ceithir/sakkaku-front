@@ -8,6 +8,23 @@ import Layout from "./Layout";
 import TextResult from "./TextResult";
 import styles from "./Roll.module.less";
 
+export const link = (id) =>
+  !!id && `${window.location.origin}/cyberpunk/rolls/${id}`;
+export const bbMessage = ({ description, total, parameters }) => {
+  const textModifier = () => {
+    const { modifier } = parameters;
+    if (!modifier) {
+      return "";
+    }
+    if (modifier < 0) {
+      return modifier;
+    }
+    return `+${modifier}`;
+  };
+
+  return `${description} | "1d10"${textModifier()} ⇒ [b]${total}[/b]`;
+};
+
 const Roll = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -41,16 +58,22 @@ const Roll = () => {
     return null;
   }
 
-  const { character, campaign, user: player, description } = data;
+  const { character, campaign, user: player, description, roll, result } = data;
 
   return (
     <Layout>
       <ResultBox
         identity={{ character, campaign, player }}
         description={description}
+        link={link(id)}
+        bbMessage={bbMessage({
+          description,
+          total: result.total,
+          parameters: roll.parameters,
+        })}
       >
         <div className={styles.result}>
-          <TextResult {...data.roll} />
+          <TextResult {...roll} />
         </div>
       </ResultBox>
     </Layout>
