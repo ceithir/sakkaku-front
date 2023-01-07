@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Divider } from "antd";
+import { Form, Input, Button, Divider, Radio } from "antd";
 import DefaultErrorMessage from "DefaultErrorMessage";
 import Layout from "./Layout";
 import styles from "./Roller.module.less";
@@ -12,6 +12,7 @@ import TextResult from "./TextResult";
 import { link, bbMessage } from "./Roll";
 import CopyButtons from "components/aftermath/CopyButtons";
 import { Link } from "react-router-dom";
+import { Roller as DnDRoller } from "features/dnd/Roller";
 
 const Buttons = ({ id, parameters, description, total }) => {
   return (
@@ -63,92 +64,111 @@ const Roller = () => {
   }
 
   return (
-    <Layout>
-      <div className={styles.container}>
-        <Form
-          onFinish={({ formula, ...values }) => {
-            setLoading(true);
-            setResult(undefined);
-            setContext(undefined);
+    <div className={styles.container}>
+      <Form
+        onFinish={({ formula, ...values }) => {
+          setLoading(true);
+          setResult(undefined);
+          setContext(undefined);
 
-            const parameters = {
-              modifier: parse(formula) || 0,
-            };
-            const metadata = {
-              original: formula,
-            };
+          const parameters = {
+            modifier: parse(formula) || 0,
+          };
+          const metadata = {
+            original: formula,
+          };
 
-            const error = () => {
-              setError(true);
-              setLoading(false);
-            };
+          const error = () => {
+            setError(true);
+            setLoading(false);
+          };
 
-            const { testMode, campaign, character, description } = values;
-            const stateless = testMode || !campaign;
+          const { testMode, campaign, character, description } = values;
+          const stateless = testMode || !campaign;
 
-            if (stateless) {
-              postOnServer({
-                uri: "/public/cyberpunk/rolls/create",
-                body: {
-                  parameters,
-                  metadata,
-                },
-                success: (data) => {
-                  setResult(data);
-                  setLoading(false);
-                },
-                error,
-              });
-              return;
-            }
-
-            authentifiedPostOnServer({
-              uri: "/cyberpunk/rolls/create",
+          if (stateless) {
+            postOnServer({
+              uri: "/public/cyberpunk/rolls/create",
               body: {
                 parameters,
                 metadata,
-                campaign,
-                character,
-                description,
               },
-              success: ({ roll, ...context }) => {
-                setResult(roll);
-                setContext(context);
-                updateUser({ campaign, character });
+              success: (data) => {
+                setResult(data);
                 setLoading(false);
               },
               error,
             });
-          }}
-          className={styles.form}
-        >
-          <UserContext />
-          <div className={styles.formula}>
-            <span>{`"1d10"`}</span>
-            <span>{` + `}</span>
-            <Form.Item
-              name="formula"
-              rules={[
-                {
-                  pattern,
-                  message: `Unrecognized syntax`,
-                },
-              ]}
-            >
-              <Input placeholder={`2+5-3`} autoComplete="off" />
-            </Form.Item>
-          </div>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading}>
-              {`Roll`}
-            </Button>
+            return;
+          }
+
+          authentifiedPostOnServer({
+            uri: "/cyberpunk/rolls/create",
+            body: {
+              parameters,
+              metadata,
+              campaign,
+              character,
+              description,
+            },
+            success: ({ roll, ...context }) => {
+              setResult(roll);
+              setContext(context);
+              updateUser({ campaign, character });
+              setLoading(false);
+            },
+            error,
+          });
+        }}
+        className={styles.form}
+      >
+        <UserContext />
+        <div className={styles.formula}>
+          <span>{`"1d10"`}</span>
+          <span>{` + `}</span>
+          <Form.Item
+            name="formula"
+            rules={[
+              {
+                pattern,
+                message: `Unrecognized syntax`,
+              },
+            ]}
+          >
+            <Input placeholder={`2+5-3`} autoComplete="off" />
           </Form.Item>
-        </Form>
-        <Divider />
-        <Result result={result} context={context} />
+        </div>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            {`Roll`}
+          </Button>
+        </Form.Item>
+      </Form>
+      <Divider />
+      <Result result={result} context={context} />
+    </div>
+  );
+};
+
+const RollerWraper = () => {
+  const [diceType, setDiceType] = useState("d10");
+
+  return (
+    <Layout>
+      <div className={styles["dice-type-selector"]}>
+        <Radio.Group
+          options={[
+            { value: "d10", label: `Exploding d10` },
+            { value: "other", label: `Other dice (d6, d100, ordinary d10…)` },
+          ]}
+          value={diceType}
+          onChange={(event) => setDiceType(event.target.value)}
+        />
       </div>
+      {diceType === "d10" && <Roller />}
+      {diceType === "other" && <DnDRoller />}
     </Layout>
   );
 };
 
-export default Roller;
+export default RollerWraper;

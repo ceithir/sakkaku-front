@@ -38,7 +38,7 @@ const Syntax = () => {
   );
 };
 
-const Roller = () => {
+export const Roller = () => {
   const [formula, setFormula] = useState();
   const [parsedFormula, setParsedFormula] = useState();
   const [error, setError] = useState(false);
@@ -70,122 +70,128 @@ const Roller = () => {
   };
 
   return (
-    <Layout>
-      <div className={styles.container}>
-        <Form
-          onValuesChange={(_, { formula }) => {
-            setFormula(formula);
-            setParsedFormula(parse(formula));
-            setResult(undefined);
-            setContext(undefined);
-          }}
-          onFinish={({ formula, tn, ...values }) => {
-            setLoading(true);
-            setResult(undefined);
-            setContext(undefined);
+    <div className={styles.container}>
+      <Form
+        onValuesChange={(_, { formula }) => {
+          setFormula(formula);
+          setParsedFormula(parse(formula));
+          setResult(undefined);
+          setContext(undefined);
+        }}
+        onFinish={({ formula, tn, ...values }) => {
+          setLoading(true);
+          setResult(undefined);
+          setContext(undefined);
 
-            const parameters = {
-              ...parse(formula),
-              tn,
-            };
-            const metadata = {
-              original: formula,
-            };
+          const parameters = {
+            ...parse(formula),
+            tn,
+          };
+          const metadata = {
+            original: formula,
+          };
 
-            const error = (err) => {
-              if (err.message === "Authentication issue") {
-                dispatch(setShowReconnectionModal(true));
-              } else {
-                setError(true);
-              }
-              setLoading(false);
-            };
-
-            const { testMode } = values;
-
-            if (!user || testMode) {
-              postOnServer({
-                uri: "/public/dnd/rolls/create",
-                body: {
-                  parameters,
-                  metadata,
-                },
-                success: (data) => {
-                  setResult(data);
-                  setLoading(false);
-                },
-                error,
-              });
-              return;
+          const error = (err) => {
+            if (err.message === "Authentication issue") {
+              dispatch(setShowReconnectionModal(true));
+            } else {
+              setError(true);
             }
+            setLoading(false);
+          };
 
-            const { campaign, character, description } = values;
+          const { testMode } = values;
 
-            authentifiedPostOnServer({
-              uri: "/dnd/rolls/create",
+          if (!user || testMode) {
+            postOnServer({
+              uri: "/public/dnd/rolls/create",
               body: {
                 parameters,
                 metadata,
-                campaign,
-                character,
-                description,
               },
-              success: ({ roll, ...context }) => {
-                setResult(roll);
-                setContext(context);
-                dispatch(addCampaign(campaign));
-                dispatch(addCharacter(character));
+              success: (data) => {
+                setResult(data);
                 setLoading(false);
               },
               error,
             });
-          }}
-          className={styles.form}
+            return;
+          }
+
+          const { campaign, character, description } = values;
+
+          authentifiedPostOnServer({
+            uri: "/dnd/rolls/create",
+            body: {
+              parameters,
+              metadata,
+              campaign,
+              character,
+              description,
+            },
+            success: ({ roll, ...context }) => {
+              setResult(roll);
+              setContext(context);
+              dispatch(addCampaign(campaign));
+              dispatch(addCharacter(character));
+              setLoading(false);
+            },
+            error,
+          });
+        }}
+        className={styles.form}
+      >
+        <UserContext />
+        <Form.Item
+          label={`Dice`}
+          name="formula"
+          rules={[
+            { required: true, message: `Please enter what you wish to roll` },
+          ]}
         >
-          <UserContext />
-          <Form.Item
-            label={`Dice`}
-            name="formula"
-            rules={[
-              { required: true, message: `Please enter what you wish to roll` },
-            ]}
+          <Input placeholder={`2d6`} />
+        </Form.Item>
+        <Form.Item label={`Target number`} name="tn">
+          <InputNumber />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={!parsedFormula}
+            loading={loading}
           >
-            <Input placeholder={`2d6`} />
-          </Form.Item>
-          <Form.Item label={`Target number`} name="tn">
-            <InputNumber />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              disabled={!parsedFormula}
-              loading={loading}
-            >
-              {`Roll`}
-            </Button>
-          </Form.Item>
-        </Form>
-        <Divider />
-        {result && <Result result={result} context={context} />}
-        {!result && (
-          <ResultPlaceholder
-            text={
-              <>
-                {loading && <Spin />}
-                {!loading && (
-                  <>
-                    {placeholderMessage()}
-                    <Syntax />
-                  </>
-                )}
-              </>
-            }
-          />
-        )}
-      </div>
+            {`Roll`}
+          </Button>
+        </Form.Item>
+      </Form>
+      <Divider />
+      {result && <Result result={result} context={context} />}
+      {!result && (
+        <ResultPlaceholder
+          text={
+            <>
+              {loading && <Spin />}
+              {!loading && (
+                <>
+                  {placeholderMessage()}
+                  <Syntax />
+                </>
+              )}
+            </>
+          }
+        />
+      )}
+    </div>
+  );
+};
+
+const RollerWrapper = () => {
+  return (
+    <Layout>
+      <Roller />
     </Layout>
   );
 };
 
-export default Roller;
+export default RollerWrapper;
