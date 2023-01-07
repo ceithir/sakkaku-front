@@ -9,15 +9,39 @@ import UserContext from "components/form/UserContext";
 import { addCampaign, addCharacter } from "features/user/reducer";
 import { useDispatch } from "react-redux";
 import TextResult from "./TextResult";
+import { link, bbMessage } from "./Roll";
+import CopyButtons from "components/aftermath/CopyButtons";
+import { Link } from "react-router-dom";
 
-const Result = ({ result }) => {
+const Buttons = ({ id, parameters, description, total }) => {
+  return (
+    <div className={styles.buttons}>
+      <CopyButtons
+        link={link(id)}
+        bbMessage={bbMessage({ parameters, description, total })}
+      />
+      <Link disabled={!id} to={`/cyberpunk/rolls/${id}`}>{`Go to page`}</Link>
+    </div>
+  );
+};
+
+const Result = ({ result, context = {} }) => {
   if (!result) {
     return <div className={styles.result}>{`💮`}</div>;
   }
 
+  const { parameters, dice } = result;
+  const { id, description } = context;
+
   return (
     <div className={styles.result}>
-      <TextResult {...result} />
+      <TextResult parameters={parameters} dice={dice} />
+      <Buttons
+        id={id}
+        description={description}
+        parameters={parameters}
+        total={dice.reduce((prev, cur) => prev + cur, 0) + parameters.modifier}
+      />
     </div>
   );
 };
@@ -26,6 +50,7 @@ const Roller = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState();
+  const [context, setContext] = useState();
 
   const dispatch = useDispatch();
   const updateUser = ({ campaign, character }) => {
@@ -44,6 +69,7 @@ const Roller = () => {
           onFinish={({ formula, ...values }) => {
             setLoading(true);
             setResult(undefined);
+            setContext(undefined);
 
             const parameters = {
               modifier: parse(formula) || 0,
@@ -85,8 +111,9 @@ const Roller = () => {
                 character,
                 description,
               },
-              success: ({ roll }) => {
+              success: ({ roll, ...context }) => {
                 setResult(roll);
+                setContext(context);
                 updateUser({ campaign, character });
                 setLoading(false);
               },
@@ -118,7 +145,7 @@ const Roller = () => {
           </Form.Item>
         </Form>
         <Divider />
-        <Result result={result} />
+        <Result result={result} context={context} />
       </div>
     </Layout>
   );
