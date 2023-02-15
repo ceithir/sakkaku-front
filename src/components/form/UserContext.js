@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, Divider, AutoComplete, Switch } from "antd";
+import { Form, Input, Divider, AutoComplete, Switch, Alert } from "antd";
 import { useSelector } from "react-redux";
 import {
   selectCampaigns,
@@ -26,6 +26,18 @@ const arrayToAutoCompleteOptions = (values) => {
     });
 };
 
+const AnonymousAlert = () => {
+  return (
+    <Alert
+      className={styles["anonymous-alert"]}
+      showIcon
+      message={`You are not logged in.`}
+      description={`No history of your rolls will be kept, and you won't be able to retrieve or share them later.`}
+      type="warning"
+    />
+  );
+};
+
 const UserContext = ({ description = {} }) => {
   const campaigns = useSelector(selectCampaigns);
   const characters = useSelector(selectCharacters);
@@ -33,7 +45,7 @@ const UserContext = ({ description = {} }) => {
   const [testMode, setTestMode] = useState(false);
 
   if (!user) {
-    return null;
+    return <AnonymousAlert />;
   }
 
   return (

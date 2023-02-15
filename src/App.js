@@ -13,7 +13,6 @@ import Calculator from "./features/probabilities/Calculator";
 import Homepage from "./features/navigation/Homepage";
 import Map from "./features/trinket/Map";
 import ScrollToTop from "./features/navigation/ScrollToTop";
-import AnonymousAlertWrapper from "features/display/AnonymousAlertWrapper";
 import FfgSubmenu from "features/navigation/FfgSubmenu";
 import D10Roller from "features/d10/D10Roller";
 import D10IdentifiedRoll from "features/d10/D10IdentifiedRoll";
@@ -55,9 +54,7 @@ const App = () => {
           </Route>
           <Route path="/heritage" exact>
             <FfgSubmenu />
-            <AnonymousAlertWrapper>
-              <HeritageRoll />
-            </AnonymousAlertWrapper>
+            <HeritageRoll />
           </Route>
           <Route path="/rolls/:id" exact>
             <IdentifiedRoll />
@@ -67,46 +64,35 @@ const App = () => {
           </Route>
           <Route path="/roll-advanced" exact>
             <FfgSubmenu />
-            <AnonymousAlertWrapper>
-              <AdvancedRoller />
-            </AnonymousAlertWrapper>
+
+            <AdvancedRoller />
           </Route>
           <Route path="/d10-rolls/:id" exact>
             <D10IdentifiedRoll />
           </Route>
           <Route path="/roll-dnd" exact>
-            <AnonymousAlertWrapper>
-              <DnDRoller />
-            </AnonymousAlertWrapper>
+            <DnDRoller />
           </Route>
           <Route path="/dnd-rolls/:id" exact>
             <DnDRoll />
           </Route>
           <Route path="/roll-d10" exact>
             <AegSubmenu />
-            <AnonymousAlertWrapper>
-              <D10Roller />
-            </AnonymousAlertWrapper>
+            <D10Roller />
           </Route>
           <Route path="/roll" exact>
             <FfgSubmenu />
-            <AnonymousAlertWrapper>
-              <StandardRoller />
-            </AnonymousAlertWrapper>
+            <StandardRoller />
           </Route>
           <Route path="/roll-ffg-sw" exact>
-            <AnonymousAlertWrapper>
-              <FFGSWRoller />
-            </AnonymousAlertWrapper>
+            <FFGSWRoller />
           </Route>
           <Route path="/ffg-sw-rolls/:id" exact>
             <FFGSWRoll />
           </Route>
           <Route path="/draw-cards" exact>
             <CardSubmenu />
-            <AnonymousAlertWrapper>
-              <DrawCards />
-            </AnonymousAlertWrapper>
+            <DrawCards />
           </Route>
           <Route path="/build-deck" exact>
             <CardSubmenu />
