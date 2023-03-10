@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Divider, AutoComplete, Switch, Alert } from "antd";
 import { useSelector } from "react-redux";
 import {
@@ -7,6 +7,8 @@ import {
   selectUser,
 } from "features/user/reducer";
 import styles from "./UserContext.module.less";
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
 
 const { TextArea } = Input;
 
@@ -43,6 +45,18 @@ const UserContext = ({ description = {} }) => {
   const characters = useSelector(selectCharacters);
   const user = useSelector(selectUser);
   const [testMode, setTestMode] = useState(false);
+
+  const location = useLocation();
+  const form = Form.useFormInstance();
+  useEffect(() => {
+    const params = queryString.parse(location.search);
+    if (params.campaign) {
+      form.setFieldsValue({ campaign: params.campaign });
+    }
+    if (params.description) {
+      form.setFieldsValue({ description: params.description });
+    }
+  }, [location, form]);
 
   if (!user) {
     return <AnonymousAlert />;
