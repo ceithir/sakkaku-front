@@ -20,9 +20,11 @@ const Prefiller = () => {
           className={styles.form}
           initialValues={{ type: "roll-dnd" }}
           onFinish={({ campaign, type, description }) => {
-            let link = `${window.location.origin}/${type}/?campaign=${campaign}`;
+            let link = `${
+              window.location.origin
+            }/${type}/?campaign=${encodeURIComponent(campaign)}`;
             if (description) {
-              link += `&description=${description}`;
+              link += `&description=${encodeURIComponent(description)}`;
             }
             setLink(link);
           }}
