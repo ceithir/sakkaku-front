@@ -47,7 +47,6 @@ const ReconnectionModal = () => {
   return (
     <Modal
       visible={true}
-      title={success ? `Session restored` : `Session expired`}
       footer={null}
       closable={success}
       onCancel={success && close}
@@ -55,7 +54,7 @@ const ReconnectionModal = () => {
       {!success && (
         <>
           <Alert
-            message={`You have been disconnected. Please reconnect to pursue.`}
+            message={`You are currently logged out. Please log in to pursue.`}
             type="warning"
             showIcon
             className={styles.message}
@@ -65,7 +64,7 @@ const ReconnectionModal = () => {
       )}
       {success && (
         <Alert
-          message={`You have been reconnected. You can now close this window and continue what you were doing before this interruption.`}
+          message={`Success! You can now close this window and continue what you were doing before this interruption.`}
           type="success"
           showIcon
           className={styles.message}
