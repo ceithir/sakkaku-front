@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Form, AutoComplete, Input, Select, Button } from "antd";
 import styles from "./Prefiller.module.less";
-import { useSelector } from "react-redux";
-import { selectCampaigns } from "features/user/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCampaigns, addCampaign } from "features/user/reducer";
 import { arrayToAutoCompleteOptions } from "components/form/UserContext";
 
 const { TextArea } = Input;
 
 const Prefiller = () => {
   const campaigns = useSelector(selectCampaigns);
-
+  const dispatch = useDispatch();
   const [link, setLink] = useState();
 
   return (
@@ -27,6 +27,7 @@ const Prefiller = () => {
               link += `&description=${encodeURIComponent(description)}`;
             }
             setLink(link);
+            dispatch(addCampaign(campaign));
           }}
         >
           <Form.Item
