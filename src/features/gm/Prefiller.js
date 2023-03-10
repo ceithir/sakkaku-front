@@ -4,6 +4,7 @@ import styles from "./Prefiller.module.less";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCampaigns, addCampaign } from "features/user/reducer";
 import { arrayToAutoCompleteOptions } from "components/form/UserContext";
+import { CopyLink } from "components/aftermath/CopyButtons";
 
 const { TextArea } = Input;
 
@@ -77,6 +78,7 @@ const Prefiller = () => {
             <a href={link} target="_blank" rel="noreferrer">
               {link}
             </a>
+            <CopyLink link={link} />
           </div>
         )}
       </div>
