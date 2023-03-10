@@ -51,6 +51,10 @@ const CustomMenu = () => {
         return "my_rolls";
       }
 
+      if (pathname === "/gm/prefiller") {
+        return "prefiller";
+      }
+
       return pathname.substring(1, pathname.length);
     };
 
@@ -131,6 +135,18 @@ const CustomMenu = () => {
       ],
     },
     { key: "all_rolls", label: <Link to="/rolls">{`Saved rolls`}</Link> },
+    {
+      label: `GM tools`,
+      theme: "light",
+      popupClassName: styles["sub-menu"],
+      popupOffset: [-20, 0],
+      children: [
+        {
+          key: "prefiller",
+          label: <Link to="/gm/prefiller">{`Prefill roll options`}</Link>,
+        },
+      ],
+    },
     !!user && {
       key: "my_rolls",
       label: <Link to={`/rolls?player=${user.id}`}>{`My rolls`}</Link>,
