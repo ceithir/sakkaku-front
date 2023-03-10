@@ -55,7 +55,15 @@ const Prefiller = () => {
             label={`Roll type`}
             rules={[{ required: true }]}
           >
-            <Select options={[{ label: `D&D`, value: "roll-dnd" }]} />
+            <Select
+              options={[
+                { label: `D&D`, value: "roll-dnd" },
+                { label: `L5R AEG`, value: "roll-d10" },
+                { label: `L5R FFG`, value: "roll" },
+                { label: `Star Wars FFG`, value: "roll-ffg-sw" },
+                { label: `Cyberpunk RED`, value: "cyberpunk/roll" },
+              ]}
+            />
           </Form.Item>
 
           <Form.Item>
