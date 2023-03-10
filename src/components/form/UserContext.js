@@ -29,13 +29,24 @@ export const arrayToAutoCompleteOptions = (values) => {
 };
 
 const AnonymousAlert = () => {
+  const location = useLocation();
+  const [params, setParams] = useState({});
+  useEffect(() => {
+    setParams(queryString.parse(location.search));
+  }, [location]);
+
+  const campaign = params.campaign;
+  const description = campaign
+    ? `This appears to be a campaign roll, for the campaign "${campaign}". Please log in first to access all information your GM added to it in top of the usual benefits for being logged it (like rolls being persisted in the database).`
+    : `No history of your rolls will be kept, and you won't be able to retrieve or share them later.`;
+
   return (
     <Alert
       className={styles["anonymous-alert"]}
       showIcon
       message={`You are not logged in.`}
-      description={`No history of your rolls will be kept, and you won't be able to retrieve or share them later.`}
-      type="warning"
+      description={description}
+      type={campaign ? "error" : "warning"}
     />
   );
 };
