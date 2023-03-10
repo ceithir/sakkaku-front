@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCampaigns, addCampaign } from "features/user/reducer";
 import { arrayToAutoCompleteOptions } from "components/form/UserContext";
 import { CopyLink } from "components/aftermath/CopyButtons";
+import queryString from "query-string";
 
 const { TextArea } = Input;
 
@@ -21,12 +22,12 @@ const Prefiller = () => {
           className={styles.form}
           initialValues={{ type: "roll-dnd" }}
           onFinish={({ campaign, type, description }) => {
-            let link = `${
+            const link = `${
               window.location.origin
-            }/${type}/?campaign=${encodeURIComponent(campaign)}`;
-            if (description) {
-              link += `&description=${encodeURIComponent(description)}`;
-            }
+            }/${type}/?${queryString.stringify(
+              { campaign, description },
+              { skipEmptyString: true }
+            )}`;
             setLink(link);
             dispatch(addCampaign(campaign));
           }}
