@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Divider, AutoComplete, Switch, Alert } from "antd";
-import { useSelector } from "react-redux";
+import {
+  Form,
+  Input,
+  Divider,
+  AutoComplete,
+  Switch,
+  Alert,
+  Button,
+} from "antd";
+import { useSelector, useDispatch } from "react-redux";
 import {
   selectCampaigns,
   selectCharacters,
   selectUser,
+  setShowReconnectionModal,
 } from "features/user/reducer";
 import styles from "./UserContext.module.less";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
+import { LoginOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
@@ -34,11 +44,25 @@ const AnonymousAlert = () => {
   useEffect(() => {
     setParams(queryString.parse(location.search));
   }, [location]);
+  const dispatch = useDispatch();
 
   const campaign = params.campaign;
-  const description = campaign
-    ? `This appears to be a campaign roll, for the campaign "${campaign}". Please log in first to access all information your GM added to it in top of the usual benefits for being logged it (like rolls being persisted in the database).`
-    : `No history of your rolls will be kept, and you won't be able to retrieve or share them later.`;
+  const description = campaign ? (
+    <>
+      <p>{`This appears to be a campaign roll, for the campaign "${campaign}".`}</p>
+      <p>{`Please log in first to access all information your GM added to it in top of the usual benefits for being logged it (like rolls being persisted in the database).`}</p>
+      <div className={styles["button-wrapper"]}>
+        <Button
+          onClick={() => {
+            dispatch(setShowReconnectionModal(true));
+          }}
+          icon={<LoginOutlined />}
+        >{`Log in`}</Button>
+      </div>
+    </>
+  ) : (
+    `No history of your rolls will be kept, and you won't be able to retrieve or share them later.`
+  );
 
   return (
     <Alert
