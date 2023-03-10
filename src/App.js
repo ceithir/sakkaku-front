@@ -28,6 +28,7 @@ import DeckBuilder from "features/cards/DeckBuilder";
 import CardSubmenu from "features/navigation/CardSubmenu";
 import CyberpunkRoller from "features/cyberpunk/Roller";
 import CyberpunkRoll from "features/cyberpunk/Roll";
+import Prefiller from "features/gm/Prefiller";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,6 +42,9 @@ const App = () => {
       <Layout>
         <ReconnectionModal />
         <Switch>
+          <Route path="/gm/prefiller" exact>
+            <Prefiller />
+          </Route>
           <Route path="/resources/rokugan-map" exact>
             <FfgSubmenu />
             <Map />

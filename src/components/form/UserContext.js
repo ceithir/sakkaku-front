@@ -12,7 +12,7 @@ const { TextArea } = Input;
 
 const defaultRules = [{ required: true, message: "Please fill this field" }];
 
-const arrayToAutoCompleteOptions = (values) => {
+export const arrayToAutoCompleteOptions = (values) => {
   if (!values) {
     return undefined;
   }
