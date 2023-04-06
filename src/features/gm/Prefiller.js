@@ -59,7 +59,7 @@ const Prefiller = () => {
           >
             <Select
               options={[
-                { label: `D&D`, value: "roll-dnd" },
+                { label: `Classic (d6, d20, d4, d12…)`, value: "roll-dnd" },
                 { label: `L5R AEG`, value: "roll-d10" },
                 { label: `L5R FFG`, value: "roll" },
                 { label: `Star Wars FFG`, value: "roll-ffg-sw" },

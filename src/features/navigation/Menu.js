@@ -84,9 +84,7 @@ const CustomMenu = () => {
       children: [
         {
           key: "dnd",
-          label: (
-            <Link to="/roll-dnd">{`DnD classic (d6, d20, d4, d12…)`}</Link>
-          ),
+          label: <Link to="/roll-dnd">{`Classic (d6, d20, d4, d12…)`}</Link>,
         },
         {
           type: "group",

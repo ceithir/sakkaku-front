@@ -63,7 +63,7 @@ const Homepage = () => {
         links={[
           {
             uri: "/roll-dnd",
-            label: `DnD classic`,
+            label: `Classic (d6, d20, d4, d12…)`,
             description: `For the most common needs, like rolling 2d6, 1d20+3, 1d12+1d4, etc.`,
           },
           {
