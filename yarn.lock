@@ -7704,8 +7704,10 @@ klona@^2.0.4:
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
   integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
 
-"l5r-ffg-probabilities@file:../../l5r-ffg-math":
+l5r-ffg-probabilities@^0.1.0:
   version "0.1.0"
+  resolved "https://registry.yarnpkg.com/l5r-ffg-probabilities/-/l5r-ffg-probabilities-0.1.0.tgz#9dfe9717c85aeb617a9d32e30dccd1a6071e474d"
+  integrity sha512-ZXTPfKrRbIO2sXsKQHJCm8La5Cquu58W4hQyDx9vhrSSwx6TOGSymQvZz6kKEhQAWWbzw/h/M29Yut/T1hwB6A==
 
 language-subtag-registry@~0.3.2:
   version "0.3.21"
