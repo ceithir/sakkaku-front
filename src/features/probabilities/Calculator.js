@@ -6,6 +6,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import useInterval from "useInterval";
 import Title from "../display/Title";
 import pregenerated from "./data/cached";
+import ExternalLink from "features/navigation/ExternalLink";
 
 const { Paragraph, Text } = Typography;
 
@@ -228,6 +229,13 @@ const Calculator = () => {
         <output>
           <TextOutput {...values} />
         </output>
+        <Divider />
+        <p>
+          {`Some results compiled `}
+          <ExternalLink
+            href={`https://raw.githubusercontent.com/ceithir/l5r-ffg-probabilities/main/probabilities.csv`}
+          >{`as a (CSV) spreadsheet`}</ExternalLink>
+        </p>
       </Form>
     </div>
   );
