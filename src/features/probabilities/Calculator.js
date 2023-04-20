@@ -5,6 +5,7 @@ import worker from "workerize-loader!./worker"; // eslint-disable-line import/no
 import { LoadingOutlined } from "@ant-design/icons";
 import useInterval from "useInterval";
 import Title from "../display/Title";
+import pregenerated from "./data/cached";
 
 const { Paragraph, Text } = Typography;
 
@@ -32,6 +33,17 @@ const validParameters = ({
     tn >= 1 &&
     ring >= 1
   );
+};
+
+const getFromPregenerated = (params) => {
+  // Skilled assistance is not supported
+  if (params.options.keptDiceCount !== params.ring) {
+    return undefined;
+  }
+
+  const { tn, ring, skill, opp } = params;
+  const compromised = params.options.compromised ? 1 : 0;
+  return pregenerated[[ring, skill, tn, compromised, opp].join("|")];
 };
 
 const TextOutput = ({
@@ -89,6 +101,13 @@ const TextOutput = ({
     if (exists(mathParams)) {
       return;
     }
+
+    const pregen = getFromPregenerated(mathParams);
+    if (pregen) {
+      save(mathParams, pregen + "%");
+      return;
+    }
+
     workerInstance.asyncChances(mathParams);
   }, [ring, skill, tn, unskilled_assist, skilled_assist, compromised, opp]);
 
