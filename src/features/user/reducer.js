@@ -10,11 +10,12 @@ const slice = createSlice({
   },
   reducers: {
     setUser: (state, action) => {
-      const { id, name, campaigns, characters } = action.payload;
+      const { id, name, campaigns, characters, superadmin } = action.payload;
       state.id = id;
       state.name = name;
       state.campaigns = campaigns;
       state.characters = characters;
+      state.superadmin = superadmin;
     },
     addCampaign: (state, action) => {
       const campaign = action.payload;

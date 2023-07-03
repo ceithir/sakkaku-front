@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Table, Typography } from "antd";
-import { getOnServer } from "../../server";
+import { Table, Typography, Button, Popconfirm } from "antd";
+import { getOnServer, authentifiedRequestOnServer } from "../../server";
 import CheckResult from "./CheckResult";
 import queryString from "query-string";
 import styles from "./List.module.css";
@@ -17,10 +17,12 @@ import FFGSWResult from "./FFGSWResult";
 import { isAForceRoll, netSuccesses } from "features/sw/Result";
 import { stringify as dndStringify } from "features/dnd/formula";
 import CardResult from "./CardResult";
+import { selectUser } from "features/user/reducer";
+import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 
-const columns = [
+const defaultColumns = [
   {
     title: "Date",
     dataIndex: "date",
@@ -239,6 +241,45 @@ const columns = [
   },
 ];
 
+const columns = ({ user, softReload }) => {
+  return [
+    ...defaultColumns,
+    ...(user?.superadmin
+      ? [
+          {
+            title: "Admin",
+            dataIndex: "admin",
+            key: "admin",
+            render: ({ id, description }) => {
+              return (
+                <Popconfirm
+                  title={<>{`Delete the roll "${description}"?`}</>}
+                  onConfirm={() => {
+                    authentifiedRequestOnServer({
+                      uri: `/admin/rolls/${id}`,
+                      method: "DELETE",
+                      success: () => {
+                        softReload();
+                      },
+                      error: (e) => {
+                        // Old school but good enough for admin only edge case
+                        alert(e);
+                      },
+                    });
+                  }}
+                  okText={`Yes`}
+                  cancelText={`No`}
+                >
+                  <Button danger>{`Delete`}</Button>
+                </Popconfirm>
+              );
+            },
+          },
+        ]
+      : []),
+  ];
+};
+
 const List = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -252,7 +293,9 @@ const List = () => {
     page,
   })}`;
 
-  useEffect(() => {
+  const user = useSelector(selectUser);
+
+  const loadList = (uri) => {
     const timeoutID = setTimeout(() => {
       setLoading(true);
     }, 100);
@@ -269,6 +312,11 @@ const List = () => {
         setLoading(false);
       },
     });
+  };
+  const softReload = () => loadList(uri);
+
+  useEffect(() => {
+    loadList(uri);
   }, [uri]);
 
   if (loading) {
@@ -309,13 +357,18 @@ const List = () => {
         success: { type, roll, result },
         see_more: { id, uuid, type },
         input: { metadata, roll, type },
+        admin: { id, description },
       };
     }
   );
 
   return (
     <>
-      <Table columns={columns} dataSource={dataSource} pagination={false} />
+      <Table
+        columns={columns({ user, softReload })}
+        dataSource={dataSource}
+        pagination={false}
+      />
       <div className={styles["blank-filler"]} />
       <Pagination
         pageSize={data["per_page"]}

@@ -45,6 +45,11 @@ const requestOnServer = async ({
 
       throw new Error(`Bad status: ${response.status}`);
     }
+
+    if (response.status === 204) {
+      return success();
+    }
+
     const data = await response.json();
     success(data);
   } catch (e) {
@@ -66,7 +71,7 @@ const getXsrfToken = () =>
     document.cookie.match("(^|;) ?XSRF-TOKEN=([^;]*)(;|$)")[2]
   );
 
-const authentifiedRequestOnServer = async ({
+export const authentifiedRequestOnServer = async ({
   uri,
   method,
   body,
