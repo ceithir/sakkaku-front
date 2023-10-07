@@ -36,20 +36,28 @@ const { Panel } = Collapse;
 
 const TheEnd = () => {
   const title = (
-    <strong>{`Sakkaku will be decommissioned by early 2024.`}</strong>
+    <s>
+      <strong>{`Sakkaku will be decommissioned by early 2024.`}</strong>
+    </s>
   );
   const explanation = (
     <>
       <p>
-        {`In a world where `}
-        <ExternalLink href={`https://orokos.com/`}>{`Orokos`}</ExternalLink>
-        {` exists, run fine, and whose maintainer (`}
-        <ExternalLink
-          href={`https://mastodon.social/@orokos@corteximplant.com`}
-        >{`Dan`}</ExternalLink>
-        {`) can easily be reached in case a problem arises, Sakkaku serves little purpose.`}
+        <s>
+          {`In a world where `}
+          <ExternalLink href={`https://orokos.com/`}>{`Orokos`}</ExternalLink>
+          {` exists, run fine, and whose maintainer (`}
+          <ExternalLink
+            href={`https://mastodon.social/@orokos@corteximplant.com`}
+          >{`Dan`}</ExternalLink>
+          {`) can easily be reached in case a problem arises, Sakkaku serves little purpose.`}
+        </s>
       </p>
-      <p>{`Therefore I will stop providing it with the care and money it requires to subsist by the end of the year. Sorry for the couple of GMs using it. I hope Orokos, Roll20, or similar services will be able to provide you with the features you need to run your games.`}</p>
+      <p>
+        <s>{`Therefore I will stop providing it with the care and money it requires to subsist by the end of the year. Sorry for the couple of GMs using it. I hope Orokos, Roll20, or similar services will be able to provide you with the features you need to run your games.`}</s>
+      </p>
+      <p>{`Orokos and Dan both stopped responding literally a few days after the original message was posted.`}</p>
+      <p>{`Consequently, everything is postponed while waiting for news on the actual state of things.`}</p>
     </>
   );
 
